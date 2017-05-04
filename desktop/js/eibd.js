@@ -131,39 +131,23 @@ $(function(){
 		});
 	});
 	$('.log').on('click', function() {
-		$('#md_modal').dialog({
-			title: "{{log}}",
-			height: "auto",
-			width: "auto"});
+		$('#md_modal').dialog({title: "{{log}}"});
 		$('#md_modal').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd').dialog('open');
 		});
 	$('.GadInconue').on('click', function() {
-		$('#md_modal').dialog({
-			title: "{{Importer les Gad inconnue}}",
-			height: "auto",
-			width: "auto"});
+		$('#md_modal').dialog({title: "{{Importer les Gad inconnue}}"});
 		$('#md_modal').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd').dialog('open');
 	});
 	$('.BusMoniteur').on('click', function() {
-		$('#md_modal').dialog({
-			title: "{{Bus Moniteur}}",
-			height: "auto",
-			width: "auto"});
+		$('#md_modal').dialog({title: "{{Bus Moniteur}}"});
 		$('#md_modal').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd').dialog('open');
 	});
 	$('.Ets4Parser').on('click', function() {
-		$('#md_modal').dialog({
-			title: "{{Ajout de vos équipement par ETS}}",
-			height: "auto",
-			width: "auto"});
+		$('#md_modal').dialog({title: "{{Ajout de vos équipement par ETS}}"});
 		$('#md_modal').load('index.php?v=d&modal=eibd.EtsParser&plugin=eibd&type=eibd').dialog('open');
-
 	});
 	$('.EibdParametre').on('click', function() {
-		$('#md_modal').dialog({
-			title: "{{Parametre de connexion EIB}}",
-			height: "auto",
-			width: "auto"});
+		$('#md_modal').dialog({title: "{{Parametre de connexion EIB}}"});
 		$('#md_modal').load('index.php?v=d&modal=eibd.parametre&plugin=eibd&type=eibd').dialog('open');
 	});
 	$('body').on( 'click','.bt_selectCmdExpression', function() {
