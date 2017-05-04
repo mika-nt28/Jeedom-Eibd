@@ -442,7 +442,7 @@ function addCmdToTable(_cmd) {
 					.append('{{Lecture}}')
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-							.attr('title',': Si un télégramme de type "READ" répondre en envoyant sur le bus la valeur actuelle de l\’objet.'))))))
+							.attr('title','Si un télégramme est de type "READ" répondre en envoyant sur le bus la valeur actuelle de l\’objet.'))))))
 		 .append($('<div>')
 			.append($('<span>')
 				.append($('<label class="checkbox-inline">')
