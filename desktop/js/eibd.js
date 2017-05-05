@@ -131,39 +131,23 @@ $(function(){
 		});
 	});
 	$('.log').on('click', function() {
-		$('#md_modal').dialog({
-			title: "{{log}}",
-			height: "auto",
-			width: "auto"});
+		$('#md_modal').dialog({title: "{{log}}"});
 		$('#md_modal').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd').dialog('open');
 		});
 	$('.GadInconue').on('click', function() {
-		$('#md_modal').dialog({
-			title: "{{Importer les Gad inconnue}}",
-			height: "auto",
-			width: "auto"});
+		$('#md_modal').dialog({title: "{{Importer les Gad inconnue}}"});
 		$('#md_modal').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd').dialog('open');
 	});
 	$('.BusMoniteur').on('click', function() {
-		$('#md_modal').dialog({
-			title: "{{Bus Moniteur}}",
-			height: "auto",
-			width: "auto"});
+		$('#md_modal').dialog({title: "{{Bus Moniteur}}"});
 		$('#md_modal').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd').dialog('open');
 	});
 	$('.Ets4Parser').on('click', function() {
-		$('#md_modal').dialog({
-			title: "{{Ajout de vos équipement par ETS}}",
-			height: "auto",
-			width: "auto"});
+		$('#md_modal').dialog({title: "{{Ajout de vos équipement par ETS}}"});
 		$('#md_modal').load('index.php?v=d&modal=eibd.EtsParser&plugin=eibd&type=eibd').dialog('open');
-
 	});
 	$('.EibdParametre').on('click', function() {
-		$('#md_modal').dialog({
-			title: "{{Parametre de connexion EIB}}",
-			height: "auto",
-			width: "auto"});
+		$('#md_modal').dialog({title: "{{Parametre de connexion EIB}}"});
 		$('#md_modal').load('index.php?v=d&modal=eibd.parametre&plugin=eibd&type=eibd').dialog('open');
 	});
 	$('body').on( 'click','.bt_selectCmdExpression', function() {
@@ -458,7 +442,7 @@ function addCmdToTable(_cmd) {
 					.append('{{Lecture}}')
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-							.attr('title',': Si un télégramme de type "READ" répondre en envoyant sur le bus la valeur actuelle de l\’objet.'))))))
+							.attr('title','Si un télégramme est de type "READ" répondre en envoyant sur le bus la valeur actuelle de l\’objet.'))))))
 		 .append($('<div>')
 			.append($('<span>')
 				.append($('<label class="checkbox-inline">')
