@@ -43,6 +43,9 @@
 					"subTypeAuto":"1",
 					"noBatterieCheck":"0"
 				},
+				"display":{
+					"generic_type":"FLAP_STATE"
+				},
 				"isVisible":"0"
 			},{	
 				"name":"Stop - status",
@@ -62,10 +65,7 @@
 					"init":"0",
 					"subTypeAuto":"1",
 					"noBatterieCheck":"0"
-				},
-				"display":{
-					"generic_type":"FLAP_STATE"
-				},
+				},				
 				"isVisible":"0"
 			},{
 				"name":"Montée",
