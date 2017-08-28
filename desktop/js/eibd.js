@@ -217,7 +217,7 @@ $('body').on('keyup','.cmdAttr[data-l1key=logicalId]', function() {
 						$(this).val($(this).val()+'/');
 				}
 			}
-			if($(this).val().substr(-2) =='//' || Gad.length) == data.result)
+			if($(this).val().substr(-2) =='//' || Gad.length == data.result)
 				$(this).val($(this).val().substring(0,$(this).val().length-1));
 		}
 	});
