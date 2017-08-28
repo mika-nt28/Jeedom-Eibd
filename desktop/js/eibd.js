@@ -208,9 +208,9 @@ $('body').on( 'click','.bt_read', function() {
 $('body').on('keyup','.cmdAttr[data-l1key=logicalId]', function() {
 	jeedom.config.load({
 		plugin: 'eibd',
-		configuration: 'level',
+	//	configuration: 'level',
 		success: function (data) {
-			var Gad=$(this).val().split('/');
+			/*var Gad=$(this).val().split('/');
 			if(Gad.length< data.result){
 				if($.isNumeric(Gad[Gad.length - 1])){
 					if(Gad[Gad.length - 1]==0 || Gad[Gad.length - 1]>254)
@@ -218,7 +218,7 @@ $('body').on('keyup','.cmdAttr[data-l1key=logicalId]', function() {
 				}
 			}
 			if($(this).val().substr(-2) =='//' || Gad.length == data.result)
-				$(this).val($(this).val().substring(0,$(this).val().length-1));
+				$(this).val($(this).val().substring(0,$(this).val().length-1));*/
 		}
 	});
 }); 
