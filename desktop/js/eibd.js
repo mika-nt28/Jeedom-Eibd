@@ -211,7 +211,7 @@ $('body').on('keyup','.cmdAttr[data-l1key=logicalId]', function() {
 		configuration: 'level',
 		success: function (data) {
 			var Gad=$(this).val().split('/');
-			if(Gad.length)< data.result){
+			if(Gad.length< data.result){
 				if($.isNumeric(Gad[Gad.length - 1])){
 					if(Gad[Gad.length - 1]==0 || Gad[Gad.length - 1]>254)
 						$(this).val($(this).val()+'/');
