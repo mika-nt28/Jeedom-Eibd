@@ -214,7 +214,7 @@ $('body').on('keyup','.cmdAttr[data-l1key=logicalId]', function() {
 			var Gad=valeur.split('/');
 			if(Gad.length < parseInt(data.result)){
 				if($.isNumeric(Gad[Gad.length - 1])){
-					if(Gad[Gad.length - 1]==0 || Gad[Gad.length - 1]>254)
+					if(Gad[Gad.length - 1]==0 || Gad[Gad.length - 1]+100>254)
 						valeur+='/';
 				}
 			}
