@@ -531,9 +531,9 @@ class eibd extends eqLogic {
 						//$Commande->setCollectDate(date('Y-m-d H:i:s'));
 						//$Commande->event($valeur);
 						//$Commande->save();					
-						if ($Commande->execCmd() != $Commande->formatValue($valeur)) {
+						//if ($Commande->execCmd() != $Commande->formatValue($valeur)) {
 							$Commande->event($valeur);
-						}
+						//}
 						$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
 					}
 				}
@@ -928,9 +928,9 @@ class eibdCmd extends cmd {
 					//$Listener->setConfiguration('doNotRepeatEvent', 1);
 					//$Listener->event($BusValue);
 					//$Listener->save();
-					if ($Listener->execCmd() != $Listener->formatValue($BusValue)) {
+					//if ($Listener->execCmd() != $Listener->formatValue($BusValue)) {
 						$Listener->event($BusValue);
-					}
+					//}
 					$Listener->setCache('collectDate', date('Y-m-d H:i:s'));
 				}
 			break;
@@ -943,9 +943,9 @@ class eibdCmd extends cmd {
 				//$this->setConfiguration('doNotRepeatEvent', 1);
 				//$this->event($BusValue);
 				//$this->save();
-				if ($this->execCmd() != $this->formatValue($BusValue)) {
+				//if ($this->execCmd() != $this->formatValue($BusValue)) {
 					$this->event($BusValue);
-				}
+				//}
 				$this->setCache('collectDate', date('Y-m-d H:i:s'));
 			break;
 		}
