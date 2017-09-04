@@ -625,11 +625,11 @@ class eibd extends eqLogic {
 		$return['state'] = 'nok';
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'eibd':
-				if(exec("sudo command -v eibd")==0)
+				if(empty(exec("command -v eibd")))
 					$return['state'] = 'ok';
 			break;
 			case 'knxd':
-				if(exec("sudo command -v knxd")==0)
+				if(empty(exec("command -v knxd")))
 					$return['state'] = 'ok';
 			break;
 			default:
