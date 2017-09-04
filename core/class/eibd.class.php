@@ -625,16 +625,12 @@ class eibd extends eqLogic {
 		$return['state'] = 'nok';
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'eibd':
-				if(file_exists('/etc/eibd/bcusdk_VERSION')&&file_exists('/etc/eibd/pthsem_VERSION')){
-					if(exec("cat /etc/eibd/bcusdk_VERSION")=="v0.0.5.1" && exec("cat /etc/eibd/pthsem_VERSION")=="v2.0.8.1")
-						$return['state'] = 'ok';
-				}
+				if(exec("sudo command -v eibd")==0)
+					$return['state'] = 'ok';
 			break;
 			case 'knxd':
-				if(file_exists('/etc/eibd/knxd_VERSION')){
-					if(exec("cat /etc/eibd/knxd_VERSION")=="v0.10")
-						$return['state'] = 'ok';
-				}
+				if(exec("sudo command -v knxd")==0)
+					$return['state'] = 'ok';
 			break;
 			default:
 				$return['state'] = 'ok';
