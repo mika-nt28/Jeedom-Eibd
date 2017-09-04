@@ -218,8 +218,10 @@ $('body').on('keyup','.cmdAttr[data-l1key=logicalId]', function() {
 						valeur+='/';
 				}
 			}
-			if(valeur.substr(-2) =='//' || Gad.length == parseInt(data.result))
-				valeur.substring(0,valeur.length-1);
+			if(valeur.substr(-2) =='//')
+				valeur.substring(0,-1);
+			if(valeur.substr(-1) =='//' && Gad.length == parseInt(data.result))
+				valeur.substring(0,-1);
 		}
 	});
 	$(this).val(valeur);
