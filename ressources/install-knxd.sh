@@ -53,7 +53,6 @@ sudo usermod -a -G dialout knxd
 echo 99 > /tmp/compilation_eibd_in_progress
 sudo mkdir /etc/eibd/
 sudo chmod 777 /etc/eibd/
-echo "v0.10" > /etc/eibd/knxd_VERSION
 sudo rm /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
 echo "*                                       Installation terminé                                        *"
