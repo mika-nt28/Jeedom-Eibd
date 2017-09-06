@@ -72,7 +72,8 @@ then
   sudo rm -R /usr/local/src/Knx/
 fi
 sudo mkdir /usr/local/src/Knx/
-sudo cd /usr/local/src/Knx
+sudo chmod 777 /usr/local/src/Knx/
+cd /usr/local/src/Knx
 echo "*****************************************************************************************************"
 echo "*                                         Remove knxd                                               *"
 echo "*****************************************************************************************************"
@@ -87,11 +88,11 @@ echo "**************************************************************************
 echo "*                              Installing PTHSEM V2.0.8 libraries                                   *"
 echo "*****************************************************************************************************"
 echo "Getting pthsem..."
-sudo cd /usr/local/src/Knx
+cd /usr/local/src/Knx
 #tar zxvf "$PWDRESSOURCE/pthsem_2.0.8.1.tar.gz"
 sudo git clone https://github.com/mika-nt28/pthsem.git
 echo 30 > /tmp/compilation_eibd_in_progress
-sudo cd pthsem
+cd pthsem
 echo "Compiliing pthsem..." 
 architecture=$(uname -m)
 if [ "$architecture" = 'aarch64' ]
@@ -112,11 +113,11 @@ echo "**************************************************************************
 echo "*                              Installing BCUSDK V0.0.5 libraries                                   *"
 echo "*****************************************************************************************************"
 echo "Getting bcusdk..."
-sudo cd /usr/local/src/Knx
+cd /usr/local/src/Knx
 sudo git clone https://github.com/mika-nt28/bcusdk.git
 #tar zxvf "$PWDRESSOURCE/bcusdk_0.0.5.tar.gz"
 echo 60 > /tmp/compilation_eibd_in_progress
-sudo cd bcusdk
+cd bcusdk
 echo "Compiliing bcusdk..."
 if [ "$architecture" = 'aarch64' ]
 then
