@@ -1,8 +1,4 @@
 #!/bin/bash
-PWDRESSOURCE=$(cd ${0%/*}; pwd)
-INSTALL_DIR=/usr/local/bin
-TEMP_DIR=`mktemp -d /tmp/eibd.XXXXXX`
-EIBD_bin=$INSTALL_DIR/eibd
 touch /tmp/compilation_eibd_in_progress
 echo 0 > /tmp/compilation_eibd_in_progress
 pkill eibd  
@@ -91,11 +87,11 @@ echo "**************************************************************************
 echo "*                              Installing PTHSEM V2.0.8 libraries                                   *"
 echo "*****************************************************************************************************"
 echo "Getting pthsem..."
-cd $TEMP_DIR
+sudo cd /usr/local/src/Knx
 #tar zxvf "$PWDRESSOURCE/pthsem_2.0.8.1.tar.gz"
 sudo git clone https://github.com/mika-nt28/pthsem.git
 echo 30 > /tmp/compilation_eibd_in_progress
-cd pthsem
+sudo cd pthsem
 echo "Compiliing pthsem..." 
 architecture=$(uname -m)
 if [ "$architecture" = 'aarch64' ]
@@ -116,11 +112,11 @@ echo "**************************************************************************
 echo "*                              Installing BCUSDK V0.0.5 libraries                                   *"
 echo "*****************************************************************************************************"
 echo "Getting bcusdk..."
-cd $TEMP_DIR
+sudo cd /usr/local/src/Knx
 sudo git clone https://github.com/mika-nt28/bcusdk.git
 #tar zxvf "$PWDRESSOURCE/bcusdk_0.0.5.tar.gz"
 echo 60 > /tmp/compilation_eibd_in_progress
-cd bcusdk
+sudo cd bcusdk
 echo "Compiliing bcusdk..."
 if [ "$architecture" = 'aarch64' ]
 then
