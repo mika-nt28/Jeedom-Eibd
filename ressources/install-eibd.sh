@@ -1,5 +1,4 @@
 #!/bin/bash
-sudo su
 touch /tmp/compilation_eibd_in_progress
 echo 0 > /tmp/compilation_eibd_in_progress
 pkill eibd  
@@ -92,7 +91,7 @@ echo "Getting pthsem..."
 cd /usr/local/src/Knx
 sudo git clone https://github.com/mika-nt28/pthsem.git
 echo 30 > /tmp/compilation_eibd_in_progress
-cd pthsem
+cd /usr/local/src/Knx/pthsem
 echo "Compiliing pthsem..." 
 architecture=$(uname -m)
 if [ "$architecture" = 'aarch64' ]
@@ -100,7 +99,7 @@ then
     wget -O config.guess 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
     wget -O config.sub 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
 fi
-./configure --with-mctx-mth=sjlj --with-mctx-dsp=ssjlj --with-mctx-stk=sas --disable-shared
+sudo ./configure --with-mctx-mth=sjlj --with-mctx-dsp=ssjlj --with-mctx-stk=sas --disable-shared
 echo 40 > /tmp/compilation_eibd_in_progress
 sudo make
 echo 45 > /tmp/compilation_eibd_in_progress
@@ -117,14 +116,14 @@ cd /usr/local/src/Knx
 sudo git clone https://github.com/mika-nt28/bcusdk.git
 #tar zxvf "$PWDRESSOURCE/bcusdk_0.0.5.tar.gz"
 echo 60 > /tmp/compilation_eibd_in_progress
-cd bcusdk
+cd /usr/local/src/Knx/bcusdk
 echo "Compiliing bcusdk..."
 if [ "$architecture" = 'aarch64' ]
 then
     wget -O config.guess 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
     wget -O config.sub 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
 fi
-./configure --without-pth-test --enable-onlyeibd --enable-eibnetip --enable-eibnetiptunnel --enable-eibnetipserver --enable-groupcache --enable-usb --enable-ft12 --enable-tpuarts
+sudo ./configure --without-pth-test --enable-onlyeibd --enable-eibnetip --enable-eibnetiptunnel --enable-eibnetipserver --enable-groupcache --enable-usb --enable-ft12 --enable-tpuarts
 echo 70 > /tmp/compilation_eibd_in_progress
 sudo make
 echo 85 > /tmp/compilation_eibd_in_progress
