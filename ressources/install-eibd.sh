@@ -19,64 +19,64 @@ then
   echo "*****************************************************************************************************"
   echo "*                              Remove PTHSEM V2.0.8 libraries                                       *"
   echo "*****************************************************************************************************"
-  rm /etc/eibd/pthsem_VERSION
-  echo $LD_LIBRARY_PATH
-  export LD_LIBRARY_PATH="/usr/local/lib"
-  ldconfig 
+  sudo rm /etc/eibd/pthsem_VERSION
+  sudo echo $LD_LIBRARY_PATH
+  sudo export LD_LIBRARY_PATH="/usr/local/lib"
+  sudo ldconfig 
 fi
 echo 5 > /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
 echo "*                              Remove BCUSDK V0.0.5 libraries                                       *"
 echo "*****************************************************************************************************"
-rm bcusdk-0.0.5 
-rm /etc/eibd/bcusdk_VERSION
+sudo rm bcusdk-0.0.5 
+sudo rm /etc/eibd/bcusdk_VERSION
 echo 10 > /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
 echo "*                                         Remove eibd                                               *"
 echo "*****************************************************************************************************"
 if [ -f "/etc/logrotate.d/eibd" ]
 then
-  rm /etc/logrotate.d/eibd
+  sudo rm /etc/logrotate.d/eibd
 fi
 if [ -f "/etc/default/eibd" ]
 then
-  rm /etc/default/eibd
+  sudo rm /etc/default/eibd
 fi
 if [ -f "/etc/log/eibd.log" ]
 then
-  rm /etc/log/eibd.log
+  sudo rm /etc/log/eibd.log
 fi
 if [ -d "/etc/eibd" ]
 then
-  rm -R /etc/eibd
+  sudo rm -R /etc/eibd
 fi
 if [ -f "/usr/local/lib/libeibclient.so" ]
 then
-  rm -rf /usr/local/lib/libeibclient.so
+  sudo rm -rf /usr/local/lib/libeibclient.so
 fi
 if [ -f "/usr/local/lib/libeibclient.so.0" ]
 then
-  rm -rf /usr/local/lib/libeibclient.so.0
+  sudo rm -rf /usr/local/lib/libeibclient.so.0
 fi
 if [ -f "/usr/local/lib/libeibclient.a" ]
 then
-  rm -rf /usr/local/lib/libeibclient.a
+  sudo rm -rf /usr/local/lib/libeibclient.a
 fi
 if [ -f "/usr/local/lib/libeibclient.la" ]
 then
-  rm -rf /usr/local/lib/libeibclient.la
+  sudo rm -rf /usr/local/lib/libeibclient.la
 fi
 if [ -f "/usr/local/lib/libeibclient.so.0.0.0" ]
 then
-  rm -rf /usr/local/lib/libeibclient.so.0.0.0
+  sudo rm -rf /usr/local/lib/libeibclient.so.0.0.0
 fi
 echo 15 > /tmp/compilation_eibd_in_progress
 if [ -d "/usr/local/src/Knx/" ] 
 then 
-  rm -R /usr/local/src/Knx/
+  sudo rm -R /usr/local/src/Knx/
 fi
-mkdir /usr/local/src/Knx/
-cd /usr/local/src/Knx
+sudo mkdir /usr/local/src/Knx/
+sudo cd /usr/local/src/Knx
 echo "*****************************************************************************************************"
 echo "*                                         Remove knxd                                               *"
 echo "*****************************************************************************************************"
@@ -103,14 +103,14 @@ then
     wget -O config.guess 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
     wget -O config.sub 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
 fi
-./configure --with-mctx-mth=sjlj --with-mctx-dsp=ssjlj --with-mctx-stk=sas --disable-shared
+sudo ./configure --with-mctx-mth=sjlj --with-mctx-dsp=ssjlj --with-mctx-stk=sas --disable-shared
 echo 40 > /tmp/compilation_eibd_in_progress
-make
+sudo make
 echo 45 > /tmp/compilation_eibd_in_progress
 sudo make install
 export LD_LIBRARY_PATH="/usr/local/lib"
 sudo ldconfig 
-mkdir -p /etc/eibd
+sudo mkdir -p /etc/eibd
 echo 50 > /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
 echo "*                              Installing BCUSDK V0.0.5 libraries                                   *"
@@ -127,10 +127,10 @@ then
     wget -O config.guess 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
     wget -O config.sub 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
 fi
-./configure --without-pth-test --enable-onlyeibd --enable-eibnetip --enable-eibnetiptunnel --enable-eibnetipserver --enable-groupcache --enable-usb --enable-ft12 --enable-tpuarts
+sudo ./configure --without-pth-test --enable-onlyeibd --enable-eibnetip --enable-eibnetiptunnel --enable-eibnetipserver --enable-groupcache --enable-usb --enable-ft12 --enable-tpuarts
 
 echo 70 > /tmp/compilation_eibd_in_progress
-make
+sudo make
 echo 85 > /tmp/compilation_eibd_in_progress
 sudo make install
 echo 90 > /tmp/compilation_eibd_in_progress
@@ -148,4 +148,4 @@ echo 100 > /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
 echo "*                              Installing terminé avec succes                                  *"
 echo "*****************************************************************************************************"
-rm /tmp/compilation_eibd_in_progress
+sudo rm /tmp/compilation_eibd_in_progress
