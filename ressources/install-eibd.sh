@@ -100,7 +100,7 @@ then
     wget -O config.guess 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
     wget -O config.sub 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
 fi
-sudo ./configure --with-mctx-mth=sjlj --with-mctx-dsp=ssjlj --with-mctx-stk=sas --disable-shared
+./configure --with-mctx-mth=sjlj --with-mctx-dsp=ssjlj --with-mctx-stk=sas --disable-shared
 echo 40 > /tmp/compilation_eibd_in_progress
 sudo make
 echo 45 > /tmp/compilation_eibd_in_progress
@@ -124,8 +124,7 @@ then
     wget -O config.guess 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
     wget -O config.sub 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
 fi
-sudo ./configure --without-pth-test --enable-onlyeibd --enable-eibnetip --enable-eibnetiptunnel --enable-eibnetipserver --enable-groupcache --enable-usb --enable-ft12 --enable-tpuarts
-
+./configure --without-pth-test --enable-onlyeibd --enable-eibnetip --enable-eibnetiptunnel --enable-eibnetipserver --enable-groupcache --enable-usb --enable-ft12 --enable-tpuarts
 echo 70 > /tmp/compilation_eibd_in_progress
 sudo make
 echo 85 > /tmp/compilation_eibd_in_progress
