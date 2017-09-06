@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo su
 touch /tmp/compilation_eibd_in_progress
 echo 0 > /tmp/compilation_eibd_in_progress
 pkill eibd  
@@ -89,7 +90,6 @@ echo "*                              Installing PTHSEM V2.0.8 libraries         
 echo "*****************************************************************************************************"
 echo "Getting pthsem..."
 cd /usr/local/src/Knx
-#tar zxvf "$PWDRESSOURCE/pthsem_2.0.8.1.tar.gz"
 sudo git clone https://github.com/mika-nt28/pthsem.git
 echo 30 > /tmp/compilation_eibd_in_progress
 cd pthsem
