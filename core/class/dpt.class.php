@@ -163,15 +163,31 @@ class Dpt{
 				$data= array(($value>>24) & 0xFF, ($value>>16) & 0xFF,($value>>8) & 0xFF,$value & 0xFF,$ValInfField->execCmd(),$StatusCommande->execCmd());
 				}
 			break;
-		case "235":
-			if ($dpt != "235.001"){
-				/*if ($value < 0)
-				   $value = (abs($value) ^ 0xffffffff) + 1 ; */
-				foreach(explode('|',$option["ActiveElectricalEnergy"]) as $tarif => $ActiveElectricalEnergy){
-					$value=cmd::byId(str_replace('#','',$ActiveElectricalEnergy));
-					$data= array(($value>>24) & 0xFF, ($value>>16) & 0xFF,($value>>8) & 0xFF,$value & 0xFF,$tarif,(0<< 1) & 0x02 | 0);
+			case "27":
+				foreach(explode('|',$option["Info"]) as $bit => $Info){
+					$value=cmd::byId(str_replace('#','',$Info))->execCmd();
+					if($bit < 8)
+						$data[0].=$value>>$bit;
+					elseif($bit < 16)
+						$data[1].=$value>>$bit;
+					if($value){
+						if($bit < 8)
+							$data[2].=0x01>>$bit;
+						elseif($bit < 16)
+							$data[3].=0x01>>$bit;
+					}
+						
 				}
-			}
+			break;
+			case "235":
+				if ($dpt != "235.001"){
+					/*if ($value < 0)
+					   $value = (abs($value) ^ 0xffffffff) + 1 ; */
+					foreach(explode('|',$option["ActiveElectricalEnergy"]) as $tarif => $ActiveElectricalEnergy){
+						$value=cmd::byId(str_replace('#','',$ActiveElectricalEnergy))->execCmd();
+						$data= array(($value>>24) & 0xFF, ($value>>16) & 0xFF,($value>>8) & 0xFF,$value & 0xFF,$tarif,(0<< 1) & 0x02 | 0);
+					}
+				}
 			break;
 			case "232":	
 				$data= self::html2rgb($value);
@@ -425,13 +441,8 @@ class Dpt{
 			case "27":
 				if ($option != null){
 					for($byte=0;$byte<count($data);$byte++){
-						if($byte<=1){
-							if ($option["Info"] !='')
-								$Info=explode('|',$option["Info"]);								
-						}else{
-							if ($option["Info"] !='')
-								$Info=explode('|',$option["Info"]);
-						}
+						if ($option["Info"] !='')
+							$Info=explode('|',$option["Info"]);	
 						for($bit=0;$bit <= 0xFF;$bit++){
 							$bits=str_split($data[$byte],1)
 							$InfoCmd=cmd::byId(str_replace('#','',$Info[$bit]));
@@ -2027,7 +2038,7 @@ class Dpt{
 				"InfoType"=>'binary',
 				"ActionType"=>'other',
 				"GenericType"=>"DONT",
-				"Option" =>array("Info","Mask"),
+				"Option" =>array("Info"),
 				"Unite" =>""),
 			"235.001"=> array(
 				"Name"=>"Tarif ActiveEnergy",
