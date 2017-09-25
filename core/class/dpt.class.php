@@ -422,6 +422,27 @@ class Dpt{
 						}
 					}
 				break;
+			case "27":
+				if ($option != null){
+					for($byte=0;$byte<count($data);$byte++){
+						if($byte<=1){
+							if ($option["Info"] !='')
+								$Info=explode('|',$option["Info"]);								
+						}else{
+							if ($option["Info"] !='')
+								$Info=explode('|',$option["Info"]);
+						}
+						for($bit=0;$bit <= 0xFF;$bit++){
+							$bits=str_split($data[$byte],1)
+							$InfoCmd=cmd::byId(str_replace('#','',$Info[$bit]));
+							if (is_object($InfoCmd)){
+								log::add('eibd', 'debug', 'Nous allons mettre a jours l\'objet: '. $InfoCmd->getHumanName);
+								$InfoCmd->event($bits[$bit]);
+							}
+						}
+					}
+				}
+			break;
 			case "235":
 				if ($dpt == "235.001"){
 					$value = $data[5] & 0x01;  
@@ -2000,6 +2021,14 @@ class Dpt{
 				"Option" =>array(),
 				"Unite" =>"")),
 		"Other"=> array(
+			"27.001"=> array(
+				"Name"=>"Combined info On/Off",
+				"Valeurs"=>array(),
+				"InfoType"=>'binary',
+				"ActionType"=>'other',
+				"GenericType"=>"DONT",
+				"Option" =>array("Info","Mask"),
+				"Unite" =>""),
 			"235.001"=> array(
 				"Name"=>"Tarif ActiveEnergy",
 				"Valeurs"=>array(),
