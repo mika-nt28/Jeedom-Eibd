@@ -91,6 +91,7 @@ echo "Getting pthsem..."
 cd /usr/local/src/Knx
 sudo git clone https://github.com/mika-nt28/pthsem.git
 echo 30 > /tmp/compilation_eibd_in_progress
+sudo chmod 777 -R /usr/local/src/Knx/pthsem
 cd /usr/local/src/Knx/pthsem
 echo "Compiliing pthsem..." 
 architecture=$(uname -m)
@@ -116,6 +117,7 @@ cd /usr/local/src/Knx
 sudo git clone https://github.com/mika-nt28/bcusdk.git
 #tar zxvf "$PWDRESSOURCE/bcusdk_0.0.5.tar.gz"
 echo 60 > /tmp/compilation_eibd_in_progress
+sudo chmod 777 -R /usr/local/src/Knx/bcusdk
 cd /usr/local/src/Knx/bcusdk
 echo "Compiliing bcusdk..."
 if [ "$architecture" = 'aarch64' ]
