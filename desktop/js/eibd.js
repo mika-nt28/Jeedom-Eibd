@@ -404,8 +404,8 @@ function DptListSelect(Dpt){
 			if (DptKey==Dpt){
 				$.each(DptValue.Valeurs, function(keyValeurs, Valeurs){
 					if (DptListSelect != "")
-						DptListSelect += "|";
-					DptListSelect += keyValeurs;
+						DptListSelect += ";";
+					DptListSelect += keyValeurs + "|" + Valeurs;
 				});
 			}
 		});
