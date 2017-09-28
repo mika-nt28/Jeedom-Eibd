@@ -403,9 +403,9 @@ function DptListSelect(Dpt){
 		$.each(DptValueGroup, function(DptKey, DptValue){
 			if (DptKey==Dpt){
 				$.each(DptValue.Valeurs, function(keyValeurs, Valeurs){
-					if (DptListSelect !="")
-						DptListSelect.="|";
-					DptListSelect.=keyValeurs;
+					if (DptListSelect != "")
+						DptListSelect += "|";
+					DptListSelect += keyValeurs;
 				});
 			}
 		});
