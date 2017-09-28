@@ -146,11 +146,12 @@ class Dpt{
 			$data = array($year,$month & 0x0f ,$day & 0x1f,($wDay << 5 ) & 0xe0| $hour  & 0x1f , $min  & 0x3f , $sec & 0x3f,0x00,0x00);
 		break;
 		case "20":
-			if ($dpt != "20.xxx")
-				{
-				$ValeurDpt=$All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"];
-				$value = array_search($value, $ValeurDpt); 
+			if ($dpt != "20.xxx"){
+				if(!is_numeric($value)){
+					$ValeurDpt=$All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"];
+					$value = array_search($value, $ValeurDpt); 
 				}
+			}
 			$data= array($value);
 			break;
 		case "229":
