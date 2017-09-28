@@ -923,6 +923,7 @@ class eibdCmd extends cmd {
 							$ActionValue =Dpt::OtherValue($dpt,$Listener->execCmd());
 					break;
 				}
+				log::add('eibd','debug', 'Valeur a envoyer '.$ActionValue);
 				$data= Dpt::DptSelectEncode($dpt, $ActionValue, $inverse,$option);
 				$BusValue=Dpt::DptSelectDecode($dpt, $data, $inverse,$option);
 				$WriteBusValue=eibd::EibdWrite($ga, $data);
