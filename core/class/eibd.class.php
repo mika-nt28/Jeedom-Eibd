@@ -914,6 +914,9 @@ class eibdCmd extends cmd {
 					case 'message':
 						$ActionValue = $_options['message'];
 					break;
+					case 'select':
+						$ActionValue = $_options['select'];
+					break;
 					case 'other':
 						$ActionValue =$this->getConfiguration('KnxObjectValue');
 						if (isset($Listener) && is_object($Listener) && $this->getConfiguration('KnxObjectValue') == "") 
