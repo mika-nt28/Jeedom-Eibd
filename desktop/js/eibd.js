@@ -254,7 +254,7 @@ $('body').on('change','.cmdAttr[data-l1key=type]',function() {
 });			
 $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 	var Dpt=$('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
-	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=listValue]').val(''):
+	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=listValue]').val('');
 	switch ($(this).val()){
 		case "cursor":
 		case "numeric":
@@ -286,7 +286,7 @@ $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 			$(this).closest('.cmd').find('.ValeurUnite').hide();
 			$(this).closest('.cmd').find('.ValeurDefaut').hide();
 			$(this).closest('.cmd').find('.listValue').show();
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=listValue]').val(DptListSelect(Dpt)):
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=listValue]').val(DptListSelect(Dpt));
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
 				.closest('.input-group').parent().hide();
 		break;
