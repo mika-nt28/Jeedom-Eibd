@@ -607,9 +607,7 @@ class Dpt{
 			while ($Dpt = current($Type)) 
 				{	
 				if ($dpt == key($Type))
-					return $Dpt["min"=>'',
-				"max"=>'',
-				"InfoType"];
+					return $Dpt["InfoType"];
 				next($Type);
 				}
 			next($All_DPT);
@@ -1323,41 +1321,41 @@ class Dpt{
 				"Unite"=>"K/h"),
 			"9.004"=> array(
 				"Name"=>"Luminous emittance",
-				"Valeurs"=>array(0., +670760.),
-				"min"=>'',
-				"max"=>'',
+				"Valeurs"=>array(),
+				"min"=>0,
+				"max"=>670760,
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
 				"Unite"=>"lx"),
 			"9.005"=> array(
 				"Name"=>"Wind speed",
-				"Valeurs"=>array(0., +670760.),
-				"min"=>'',
-				"max"=>'',
+				"Valeurs"=>array(),
+				"min"=>0,
+				"max"=>670760,
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
 				"Unite"=>"m/s"),
 			"9.006"=> array(
 				"Name"=>"Air pressure",
-				"Valeurs"=>array(0., +670760.),
-				"min"=>'',
-				"max"=>'',
+				"Valeurs"=>array(),
+				"min"=>0,
+				"max"=>670760,
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
 				"Unite"=>"Pa"),
 			"9.007"=> array(
 				"Name"=>"Humidity",
-				"Valeurs"=>array(0., +670760.),
-				"min"=>'',
-				"max"=>'',
+				"Valeurs"=>array(),
+				"min"=>0,
+				"max"=>670760,
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
 				"Unite"=>"%"),
 			"9.008"=> array(
 				"Name"=>"Air quality",
-				"Valeurs"=>array(0., +670760.),
-				"min"=>'',
-				"max"=>'',
+				"Valeurs"=>array(),
+				"min"=>0,
+				"max"=>670760,
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
 				"Unite"=>"ppm"),
