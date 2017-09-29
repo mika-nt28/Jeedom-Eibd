@@ -1105,7 +1105,7 @@ class Dpt{
 				"Name"=>"Generic",
 				"Valeurs"=>array(),
 				"min"=> 0,
-				"max"=> 65535
+				"max"=> 65535,
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
 				"GenericType"=>"DONT",
@@ -1115,7 +1115,7 @@ class Dpt{
 				"Name"=>"Unsigned count",
 				"Valeurs"=>array(),
 				"min"=> 0,
-				"max"=> 65535
+				"max"=> 65535,
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
 				"Unite"=>"pulses"),
@@ -1123,7 +1123,7 @@ class Dpt{
 				"Name"=>"Time period (resol. 1ms)",
 				"Valeurs"=>array(),
 				"min"=> 0,
-				"max"=> 65535
+				"max"=> 65535,
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
 				"Unite"=>"ms"),
@@ -1147,7 +1147,7 @@ class Dpt{
 				"Name"=>"Time period (resol. 1s)",
 				"Valeurs"=>array(),
 				"min"=> 0,
-				"max"=> 65535
+				"max"=> 65535,
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
 				"Unite"=>"s"),
@@ -1155,7 +1155,7 @@ class Dpt{
 				"Name"=>"Time period (resol. 1min)",
 				"Valeurs"=>array(),
 				"min"=> 0,
-				"max"=> 65535
+				"max"=> 65535,
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
 				"Unite"=>"min"),
