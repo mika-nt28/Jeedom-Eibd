@@ -263,6 +263,10 @@ $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 			$(this).closest('.cmd').find('.listValue').hide();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
 				.closest('.input-group').parent().show();
+			if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=minValue]').val() == "")
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=minValue]').val(DptMin(Dpt));
+			if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=maxValue]').val() == "")
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=maxValue]').val(DptMax(Dpt));
 		break;
 		case "other":
 			$(this).closest('.cmd').find('.ValeurDefaut').show();
@@ -302,8 +306,7 @@ $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 	if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').is(':checked')){
 		var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
 		var type=$(this).closest('.cmd').find('.cmdAttr[data-l1key=type]').val();
-		var valeur=getDptSousType(Dpt,type);
-		$(this).find('option[value="'+valeur+'"]').prop('selected', true);
+		$(this).find('option[value="'+getDptSousType(Dpt,type)+'"]').prop('selected', true);
 	}
 });			
 $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
@@ -356,7 +359,27 @@ function DptUnit(Dpt)	{
 	$.each(AllDpt, function(DptKeyGroup, DptValueGroup){
 		$.each(DptValueGroup, function(DptKey, DptValue){
 			if (DptKey==Dpt)
-				result=DptValue;
+				result=DptValue.Unite;
+		});
+	});
+	return result;
+}
+function DptMin(Dpt)	{
+	var result;
+	$.each(AllDpt, function(DptKeyGroup, DptValueGroup){
+		$.each(DptValueGroup, function(DptKey, DptValue){
+			if (DptKey==Dpt)
+				result=DptValue.min;
+		});
+	});
+	return result;
+}
+function DptMax(Dpt)	{
+	var result;
+	$.each(AllDpt, function(DptKeyGroup, DptValueGroup){
+		$.each(DptValueGroup, function(DptKey, DptValue){
+			if (DptKey==Dpt)
+				result=DptValue.max;
 		});
 	});
 	return result;
