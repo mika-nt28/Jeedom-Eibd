@@ -696,7 +696,7 @@ class eibd extends eqLogic {
 		self::deamon_stop();
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
-				$cmd = 'sudo knxd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid --eibaddr='.config::byKey('EibdGad', 'eibd').' --Name=JeedomKnx -D -T -S --listen-tcp='.config::byKey('EibdPort', 'eibd').' -b';
+				$cmd = 'sudo knxd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid --eibaddr='.config::byKey('EibdGad', 'eibd').' -E --Name=JeedomKnx -D -T -S --listen-tcp='.config::byKey('EibdPort', 'eibd').' -b';
 			break;
 			case 'eibd':
 				$cmd = 'sudo eibd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid --eibaddr='.config::byKey('EibdGad', 'eibd').' -D -T -S --listen-tcp='.config::byKey('EibdPort', 'eibd');			
@@ -747,6 +747,9 @@ class eibd extends eqLogic {
 		self::InitInformation();
 	}
 	public static function deamon_stop() {
+		$cmd = 'sudo systemctl service knxd stop';
+		$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
+		exec($cmd);
 		$cache = cache::byKey('eibd::Monitor');
 		$cache->remove();
 		switch(config::byKey('KnxSoft', 'eibd')){
