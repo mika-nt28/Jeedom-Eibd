@@ -255,7 +255,7 @@ $('body').on('change','.cmdAttr[data-l1key=type]',function() {
 $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 	var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
 	switch ($(this).val()){
-		case "cursor":
+		case "slider":
 		case "numeric":
 			$(this).closest('.cmd').find('.ValeurMinMax').show();
 			$(this).closest('.cmd').find('.ValeurUnite').show();
