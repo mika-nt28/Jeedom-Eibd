@@ -747,9 +747,9 @@ class eibd extends eqLogic {
 		self::InitInformation();
 	}
 	public static function deamon_stop() {
-		$cmd = 'sudo systemctl service knxd stop';
-		$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
-		exec($cmd);
+		//$cmd = 'sudo systemctl service knxd stop';
+		//$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
+		//exec($cmd);
 		$cache = cache::byKey('eibd::Monitor');
 		$cache->remove();
 		switch(config::byKey('KnxSoft', 'eibd')){
