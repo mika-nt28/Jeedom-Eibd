@@ -13,8 +13,12 @@
 				"isHistorized":"0",
 				"unite":"W/H",
 				"configuration":{
+					"FlagInit":"0",
+					"FlagRead":"0",
+					"FlagTransmit":"0",
+					"FlagUpdate":"1",
+					"FlagWrite":"1",
 					"KnxObjectType":"13.010",
-					"eventOnly":"1",
 					"subTypeAuto":"1",
 				},
 				"isVisible":"1"
@@ -26,8 +30,12 @@
 				"isHistorized":"0",
 				"unite":"W/H",
 				"configuration":{
+					"FlagInit":"0",
+					"FlagRead":"0",
+					"FlagTransmit":"0",
+					"FlagUpdate":"1",
+					"FlagWrite":"1",
 					"KnxObjectType":"13.010",
-					"eventOnly":"1",
 					"subTypeAuto":"1",
 				},
 				"isVisible":"1"
@@ -38,8 +46,12 @@
 				"subType":"numeric",
 				"unite":"W/H",
 				"configuration":{
+					"FlagInit":"0",
+					"FlagRead":"0",
+					"FlagTransmit":"0",
+					"FlagUpdate":"1",
+					"FlagWrite":"1",
 					"KnxObjectType":"13.010",
-					"eventOnly":"1",
 					"subTypeAuto":"1",
 				},
 				"isVisible":"1"
@@ -49,9 +61,13 @@
 				"subType":"numeric",
 				"unite":"kW/H",
 				"configuration":{
+					"FlagInit":"0",
+					"FlagRead":"0",
+					"FlagTransmit":"0",
+					"FlagUpdate":"1",
+					"FlagWrite":"1",
 					"KnxObjectType":"235.001",
 					"option":{"ActiveElectricalEnergy":"Tarif_1|Tarif_2|Tarif_3"},
-					"eventOnly":"1",
 					"subTypeAuto":"1"
 				},
 				"isVisible":"1"
