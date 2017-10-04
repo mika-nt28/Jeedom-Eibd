@@ -659,24 +659,26 @@ class eibd extends eqLogic {
 	public static function deamon_info() {
 		$return = array();
 		$return['log'] = 'eibd';	
-		if(config::byKey('EibdPort', 'eibd')!=''&&config::byKey('EibdGad', 'eibd')!=''&&config::byKey('KNXgateway', 'eibd')!='')
-			$return['launchable'] = 'ok';
-		else
-			$return['launchable'] = 'nok';
+		$return['launchable'] = 'nok';
 		$return['state'] = 'nok';
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
 				$result=exec("ps aux | grep knxd | grep -v grep | awk '{print $2}'",$result);	
 				if($result!="")
 					$return['state'] = 'ok';
+				if(config::byKey('EibdPort', 'eibd')!=''&&config::byKey('EibdGad', 'eibd')!=''&&config::byKey('KNXgateway', 'eibd')!='')
+					$return['launchable'] = 'ok';
 			break;
 			case 'eibd':
 				$result=exec("ps aux | grep eibd | grep -v grep | awk '{print $2}'",$result);	
 				if($result!="")
 					$return['state'] = 'ok';
+				if(config::byKey('EibdPort', 'eibd')!=''&&config::byKey('EibdGad', 'eibd')!=''&&config::byKey('KNXgateway', 'eibd')!='')
+					$return['launchable'] = 'ok';
 			break;
 			default:
 				$return['state'] = 'ok';
+				$return['launchable'] = 'ok';
 			break;
 		}
 		if($return['state'] == 'ok'){
