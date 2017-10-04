@@ -16,7 +16,7 @@ if (!isConnect()) {
 					<select class="configKey form-control" data-l1key="KnxSoft" >
 						<option value="knxd">KNXd</option>
 						<option value="eibd">EIBD</option>
-						<option value="">Manuel</option>
+						<option value="manual">Manuel</option>
 					</select>
 				</div>
 			</div>
