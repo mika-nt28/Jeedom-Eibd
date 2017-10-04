@@ -632,7 +632,7 @@ class eibd extends eqLogic {
            			if(exec("command -v knxd") !='')
 					$return['state'] = 'ok';
 			break;
-			default:
+			case 'manual':
 				$return['state'] = 'ok';
 			break;
 		}
@@ -676,7 +676,7 @@ class eibd extends eqLogic {
 				if(config::byKey('EibdPort', 'eibd')!=''&&config::byKey('EibdGad', 'eibd')!=''&&config::byKey('KNXgateway', 'eibd')!='')
 					$return['launchable'] = 'ok';
 			break;
-			default:
+			case 'manual':
 				$return['state'] = 'ok';
 				$return['launchable'] = 'ok';
 			break;
