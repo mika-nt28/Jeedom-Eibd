@@ -694,6 +694,7 @@ class eibd extends eqLogic {
 			return;
 		log::remove('eibd');
 		self::deamon_stop();
+		$cmd = '';
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
 				$cmd = 'sudo knxd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid --eibaddr='.config::byKey('EibdGad', 'eibd').' --client-addrs='.config::byKey('EibdGad', 'eibd').':'.config::byKey('EibdNbAddr', 'eibd').' --Name=JeedomKnx -D -T -S --listen-tcp='.config::byKey('EibdPort', 'eibd').' -b';
@@ -702,7 +703,7 @@ class eibd extends eqLogic {
 				$cmd = 'sudo eibd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid --eibaddr='.config::byKey('EibdGad', 'eibd').' -D -T -S --listen-tcp='.config::byKey('EibdPort', 'eibd');			
 			break;
 		}
-		if(isset($cmd)){
+		if($cmd != ''){
 			switch(config::byKey('TypeKNXgateway', 'eibd')){
 				case 'ip':
 					$cmd .=' ip:';
