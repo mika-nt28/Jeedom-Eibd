@@ -48,7 +48,7 @@
 					"KnxObjectType":"1.008",
 					"inverse":"0",
 					"noBatterieCheck":"0",
-					"KnxObjectValue":"1",
+					"KnxObjectValue":"0",
 					"subTypeAuto":"1"
 				},
 				"template":{
@@ -104,7 +104,7 @@
 					"KnxObjectType":"1.008",
 					"inverse":"0",
 					"noBatterieCheck":"0",
-					"KnxObjectValue":"0",
+					"KnxObjectValue":"1",
 					"subTypeAuto":"1"
 				},
 				"template":{
