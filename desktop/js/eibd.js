@@ -2,13 +2,6 @@ var AllDpt=null;
 UpdateVar();
 var template;	
 var GadLevel;
-jeedom.config.load({
-	plugin: 'eibd',
-	configuration: 'level',
-	success: function (data) {
-		GadLevel=data.result;
-	}
-});
 $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	//Creation du formulaire du template
 	var form=$(this).closest('form');
@@ -143,6 +136,13 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 			},
 		}
 	});
+});
+jeedom.config.load({
+	plugin: 'eibd',
+	configuration: 'level',
+	success: function (data) {
+		GadLevel=data.result;
+	}
 });
 $('.log').on('click', function() {
 	$('#md_modal').dialog({
