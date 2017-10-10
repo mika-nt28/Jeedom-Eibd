@@ -1,6 +1,14 @@
 var AllDpt=null;
 UpdateVar();
 var template;	
+var GadLevel;
+jeedom.config.load({
+	plugin: 'eibd',
+	configuration: 'level',
+	success: function (data) {
+		GadLevel=data.result;
+	}
+});
 $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	//Creation du formulaire du template
 	var form=$(this).closest('form');
@@ -207,23 +215,17 @@ $('body').on( 'click','.bt_read', function() {
 });
 $('body').on('keyup','.cmdAttr[data-l1key=logicalId]', function() {
 	var valeur= $(this).val();
-	jeedom.config.load({
-		plugin: 'eibd',
-		configuration: 'level',
-		success: function (data) {
-			var Gad=valeur.split('/');
-			if(Gad.length < parseInt(data.result)){
-				if($.isNumeric(Gad[Gad.length - 1])){
-					if(Gad[Gad.length - 1]==0 || Gad[Gad.length - 1]+100>254)
-						valeur+='/';
-				}
-			}
-			if(valeur.substr(-2) =='//')
-				valeur.substring(0,-1);
-			if(valeur.substr(-1) =='//' && Gad.length == parseInt(data.result))
-				valeur.substring(0,-1);
+	var Gad=valeur.split('/');
+	if(Gad.length < parseInt(GadLevel)){
+		if($.isNumeric(Gad[Gad.length - 1])){
+			if(Gad[Gad.length - 1]==0 || Gad[Gad.length - 1]+100>254)
+				valeur+='/';
 		}
-	});
+	}
+	if(valeur.substr(-2) =='//')
+		valeur.substring(0,-1);
+	if(valeur.substr(-1) =='//' && Gad.length == parseInt(data.result))
+		valeur.substring(0,-1);
 	$(this).val(valeur);
 }); 
 $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]', function() {
@@ -234,7 +236,7 @@ $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectTy
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').empty();
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').append(DptValue($(this).val()));
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+valeur+'"]').prop('selected', true);
-	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
+	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
 }); 
 $('body').on('change','.cmdAttr[data-l1key=type]',function() {
 	switch ($(this).val()){
@@ -251,6 +253,7 @@ $('body').on('change','.cmdAttr[data-l1key=type]',function() {
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().hide();
 		break;
 	}
+	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
 });			
 $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 	var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
