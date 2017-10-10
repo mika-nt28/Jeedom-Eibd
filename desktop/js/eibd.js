@@ -115,7 +115,7 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 					});
 					jeedom.eqLogic.save({
 						type: eqType,
-						eqLogics: eqLogic,
+						eqLogics: JSON.stringify(eqLogic),
 						error: function (error) {
 							$('#div_alert').showAlert({message: error.message, level: 'danger'});
 						},
