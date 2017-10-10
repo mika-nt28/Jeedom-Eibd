@@ -114,7 +114,7 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 						eqLogic.cmd.logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+']').value();
 					});
 					jeedom.eqLogic.save({
-						type: 'eibd',
+						type: eqType,
 						eqLogics: json_encode(eqLogic),
 						error: function (error) {
 							$('#div_alert').showAlert({message: error.message, level: 'danger'});
