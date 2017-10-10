@@ -22,7 +22,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 </table>
 <script>
 initTableSorter();
-$('body').on('eibd::monitor', function (_event,_options) {
+$('body').off().on('eibd::monitor', function (_event,_options) {
 	var monitors=jQuery.parseJSON(_options);
 	$('#table_BusMonitor tbody').prepend($("<tr>")
 		.append($("<td>").text(monitors.datetime))
