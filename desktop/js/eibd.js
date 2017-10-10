@@ -1,7 +1,7 @@
 var AllDpt=null;
 UpdateVar();
 var template;	
-var GadLevel;
+var GadLevel=3;
 $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	//Creation du formulaire du template
 	var form=$(this).closest('form');
@@ -114,7 +114,7 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 						eqLogic.cmd.logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+']').value();
 					});
 					jeedom.eqLogic.save({
-						type: eqType,
+						type: 'eibd',
 						eqLogics: eqLogic,
 						error: function (error) {
 							$('#div_alert').showAlert({message: error.message, level: 'danger'});
