@@ -108,30 +108,43 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
-					var eqLogic=template[$('.EqLogicTemplateAttr[data-l1key=template]').value()];
-					eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
-					$.each(eqLogic.cmd,function(index, value){
-						eqLogic.cmd.logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+']').value();
-					});
-					jeedom.eqLogic.save({
-						type: 'eibd',
-						eqLogics: eqLogic,
-						error: function (error) {
-							$('#div_alert').showAlert({message: error.message, level: 'danger'});
-						},
-						success: function (_data) {
-							var vars = getUrlVars();
-							var url = 'index.php?';
-							for (var i in vars) {
-								if (i != 'id' && i != 'saveSuccessFull' && i != 'removeSuccessFull') {
-									url += i + '=' + vars[i].replace('#', '') + '&';
-								}
+					if($('.EqLogicTemplateAttr[data-l1key=template]').value() != ""){
+						var eqLogic=template[$('.EqLogicTemplateAttr[data-l1key=template]').value()];
+						eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
+						eqLogic.logicalId=$('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
+						jeedom.eqLogic.save({
+							type: 'eibd',
+							eqLogics: eqLogic,
+							error: function (error) {
+								$('#div_alert').showAlert({message: error.message, level: 'danger'});
+							},
+							success: function (_data) {
+								eqLogic.id= _data.id;
 							}
-							modifyWithoutSave = false;
-							url += 'id=' + _data.id + '&saveSuccessFull=1';
-							loadPage(url);
-						}
-					});
+						});
+						$.each(eqLogic.cmd,function(index, value){
+							eqLogic.cmd.logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+']').value();
+						});
+						jeedom.eqLogic.save({
+							type: 'eibd',
+							eqLogics: eqLogic,
+							error: function (error) {
+								$('#div_alert').showAlert({message: error.message, level: 'danger'});
+							},
+							success: function (_data) {
+								var vars = getUrlVars();
+								var url = 'index.php?';
+								for (var i in vars) {
+									if (i != 'id' && i != 'saveSuccessFull' && i != 'removeSuccessFull') {
+										url += i + '=' + vars[i].replace('#', '') + '&';
+									}
+								}
+								modifyWithoutSave = false;
+								url += 'id=' + _data.id + '&saveSuccessFull=1';
+								loadPage(url);
+							}
+						});
+					}
 				}
 			},
 		}
