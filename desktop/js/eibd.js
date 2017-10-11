@@ -249,7 +249,11 @@ $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectTy
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').empty();
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').append(DptValue($(this).val()));
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+valeur+'"]').prop('selected', true);
-	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
+	
+	var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
+	var type=$(this).closest('.cmd').find('.cmdAttr[data-l1key=type]').val();
+	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType] option[value="'+getDptSousType(Dpt,type)+'"]').prop('selected', true);
+	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
 }); 
 $('body').on('change','.cmdAttr[data-l1key=type]',function() {
 	switch ($(this).val()){
@@ -266,7 +270,10 @@ $('body').on('change','.cmdAttr[data-l1key=type]',function() {
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().hide();
 		break;
 	}
-	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
+	var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
+	var type=$(this).closest('.cmd').find('.cmdAttr[data-l1key=type]').val();
+	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType] option[value="'+getDptSousType(Dpt,type)+'"]').prop('selected', true);
+	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
 });			
 $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 	var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
@@ -323,10 +330,6 @@ $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 });			
 $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
 	if($(this).is(':checked')){
-		var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
-		var type=$(this).closest('.cmd').find('.cmdAttr[data-l1key=type]').val();
-		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType] option[value="'+getDptSousType(Dpt,type)+'"]').prop('selected', true);
-		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
 	}
 });
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
