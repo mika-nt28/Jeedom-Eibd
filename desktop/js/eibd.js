@@ -110,16 +110,6 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 				callback: function () {
 					if($('.EqLogicTemplateAttr[data-l1key=template]').value() != "" && $('.EqLogicTemplateAttr[data-l1key=name]').value() != ""){
 						var eqLogic=template[$('.EqLogicTemplateAttr[data-l1key=template]').value()];
-						jeedom.eqLogic.save({
-							type: 'eibd',
-							eqLogics: "[{"+$('.EqLogicTemplateAttr[data-l1key=name]').value()+"}]",
-							error: function (error) {
-								$('#div_alert').showAlert({message: error.message, level: 'danger'});
-							},
-							success: function (_data) {
-								eqLogic.id= _data.id;
-							}
-						});
 						eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
 						eqLogic.logicalId=$('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
 						$.each(eqLogic.cmd,function(index, value){
@@ -127,7 +117,7 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 						});
 						jeedom.eqLogic.save({
 							type: 'eibd',
-							eqLogics: eqLogic,
+							eqLogics: [eqLogic],
 							error: function (error) {
 								$('#div_alert').showAlert({message: error.message, level: 'danger'});
 							},
@@ -329,8 +319,11 @@ $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 	}
 });			
 $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
-	if($(this).is(':checked')){
-	}
+	if($(this).is(':checked'))
+		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',true);
+	else
+		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',false);
+	
 });
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $(".eqLogicAttr[data-l1key=configuration][data-l2key=device]").html($(".eqLogicAttr[data-l1key=configuration][data-l2key=device] option").sort(function (a, b) {
