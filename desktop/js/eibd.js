@@ -108,13 +108,11 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
-					if($('.EqLogicTemplateAttr[data-l1key=template]').value() != ""){
+					if($('.EqLogicTemplateAttr[data-l1key=template]').value() != "" && $('.EqLogicTemplateAttr[data-l1key=name]').value() != ""){
 						var eqLogic=template[$('.EqLogicTemplateAttr[data-l1key=template]').value()];
-						eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
-						eqLogic.logicalId=$('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
 						jeedom.eqLogic.save({
 							type: 'eibd',
-							eqLogics: eqLogic,
+							eqLogics: "[{"+$('.EqLogicTemplateAttr[data-l1key=name]').value()+"}]",
 							error: function (error) {
 								$('#div_alert').showAlert({message: error.message, level: 'danger'});
 							},
@@ -122,6 +120,8 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 								eqLogic.id= _data.id;
 							}
 						});
+						eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
+						eqLogic.logicalId=$('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
 						$.each(eqLogic.cmd,function(index, value){
 							eqLogic.cmd.logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+']').value();
 						});
