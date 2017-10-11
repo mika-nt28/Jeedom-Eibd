@@ -80,9 +80,9 @@ function getKnxGadInconue () {
 			$('#table_GadInconue').trigger('update');
 			if($('#table_GadInconue thead th').length == 6){
 				$(".tablesorter-filter[data-column=1]").val(SelectAddr);
-				$(".tablesorter-filter[data-column=1]").trigger('keypress');
+				$(".tablesorter-filter[data-column=1]").trigger('keyup');
 				$(".tablesorter-filter[data-column=4]").val(SelectDpt);
-				$(".tablesorter-filter[data-column=4]").trigger('keypress');
+				$(".tablesorter-filter[data-column=4]").trigger('keyup');
 			}
 			if ($('#md_modal').dialog('isOpen') === true) {
 				setTimeout(function() {
