@@ -3,165 +3,161 @@ class Dpt{
 	public function DptSelectEncode ($dpt, $value, $inverse=false, $option=null){
 		$All_DPT=self::All_DPT();
 		$type= substr($dpt,0,strpos( $dpt, '.' ));
-		switch ($type)
-		{
-		case "1":
-			if ($value != 0 && $value != 1)
-				{
-				$ValeurDpt=$All_DPT["Boolean"][$dpt]['Valeurs'];
-				$value = array_search($value, $ValeurDpt); 
-				}
-			if ($inverse)
-				{
-				if ($value == 0 )
-					$value = 1;
-				else
-					$value = 0;
-				}
-			$data= $value;
-			break;
-		case "2":
-			$data= $value;
-			break;
-		case "3":
-			$ctrl = 1 ;
-			if ($value > 0)
-				$stepCode = abs($value) & 0x07;
-			$data = $ctrl << 3 | $stepCode;
-			break;
-		case "5":
-			switch ($dpt)
-			{
-				case "5.001":
-					if ($inverse)
-						$value=100-$value;
-					$value = round(intval($value) * 255 / 100);
-					break;
-				case "5.003":
-					if ($inverse)
-						$value=360-$value;
-					$value = round(intval($value) * 255 / 360);
-					break;
-				case "5.004":
-					$value = round(intval($value) * 255);
-					break;
-			}
-			$data= array($value);
-			break;
-		case "6":
-			if ($value < 0)
-				$value = (abs($value) ^ 0xff) + 1 ; # twos complement
-			$data= array($value);
-			break;
-		case "7":
-			$data= array(($value >> 8)&0xff, ($value& 0xff));
-			break;
-		case "8":
-		  /*      if data >= 0x8000:
-				data = -((data - 1) ^ 0xffff)  # invert twos complement
-			else:
-				data = data
-			if self._dpt is self.DPT_DeltaTime10Msec:
-				value = data * 10.
-			elif self._dpt is self.DPT_DeltaTime100Msec:
-				value =data * 100.
-			elif self._dpt is self.DPT_Percent_V16:
-				value = data / 100.
-			else:
-				value = data*/
-			$data= array($value);
-			break;
-		case "9": 
-			if($value<0)
-			{
-				$sign = 1;
-				$value = - $value;
-			}
-			else
-				$sign = 0;
-			$value = $value * 100.0;
-			$exp = 0;
-			while ($value > 2047)
-			{
-				$exp ++;
-				$value = $value / 2;
-			}
-			if ($sign)
-				$value = - $value;
-			$value = $value & 0x7ff;
-			$data= array(($sign << 7) | (($exp & 0x0f)<<3)| (($value >> 8)&0x07), ($value& 0xff));
-			break;
-		case "10": 
-			$value   = new DateTime($value);
-			$wDay = $value->format('N');
-			$hour = $value->format('H');
-			$min = $value->format('i');
-			$sec = $value->format('s');
-			$data = array(($wDay << 5 )| $hour  , $min , $sec);
-			break;
-		case "11":
-			$value   = new DateTime($value);
-			$day = $value->format('d');
-			$month = $value->format('m');
-			$year = $value->format('y');
-			$data = array($day,$month ,$year);
-			break;
-		case "12":
-			$data= array($value);
-			break;
-		case "13":
-		 if ($value < 0)
-			   $value = (abs($value) ^ 0xffffffff) + 1 ; # twos complement
-		   /* if self._dpt is self.DPT_Value_FlowRate_m3h:
-				$data = int(round($value * 10000.))
-			else*/
-			$data= array(($value>>24) & 0xFF, ($value>>16) & 0xFF,($value>>8) & 0xFF,$value & 0xFF);
-			break;
-		case "14":
-			$value = unpack("L",pack("f", $value)); 
-			$data = array(($value[1]>>24)& 0xff, ($value[1]>>16)& 0xff, ($value[1]>>8)& 0xff,$value[1]& 0xff);
-			break;
-		case "16":
-			$data=array();
-			$chr=str_split($value);
-			for ($i = 0; $i < 14; $i++)
-				$data[$i]=ord($chr[$i]);
-			break;
-		case "17":
-			$data= array($value& 0x3f);
-			break;
-		case "18":
-			$control=cmd::byId(str_replace('#','',$option["control"]));
-			$data= array(($control << 8) & 0x80 | $value & 0x3f);
-			break;
-		case "19": 
-			$value   = new DateTime($value);
-			$wDay = $value->format('N');
-			$hour = $value->format('H');
-			$min = $value->format('i');
-			$sec = $value->format('s');
-			$day = $value->format('d');
-			$month = $value->format('m');
-			$year = $value->format('Y')-1900;
-			$data = array($year,$month & 0x0f ,$day & 0x1f,($wDay << 5 ) & 0xe0| $hour  & 0x1f , $min  & 0x3f , $sec & 0x3f,0x00,0x00);
-		break;
-		case "20":
-			if ($dpt != "20.xxx"){
-				if(!is_numeric($value)){
-					$ValeurDpt=$All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"];
+		switch ($type){
+			case "1":
+				if ($value != 0 && $value != 1)
+					{
+					$ValeurDpt=$All_DPT["Boolean"][$dpt]['Valeurs'];
 					$value = array_search($value, $ValeurDpt); 
-				}
-			}
-			$data= array($value);
-			break;
-		case "229":
-			if ($dpt != "229.001")
+					}
+				if ($inverse)
+					{
+					if ($value == 0 )
+						$value = 1;
+					else
+						$value = 0;
+					}
+				$data= $value;
+				break;
+			case "2":
+				$data= $value;
+				break;
+			case "3":
+				$ctrl = 1 ;
+				if ($value > 0)
+					$stepCode = abs($value) & 0x07;
+				$data = $ctrl << 3 | $stepCode;
+				break;
+			case "5":
+				switch ($dpt)
 				{
+					case "5.001":
+						if ($inverse)
+							$value=100-$value;
+						$value = round(intval($value) * 255 / 100);
+						break;
+					case "5.003":
+						if ($inverse)
+							$value=360-$value;
+						$value = round(intval($value) * 255 / 360);
+						break;
+					case "5.004":
+						$value = round(intval($value) * 255);
+						break;
+				}
+				$data= array($value);
+				break;
+			case "6":
 				if ($value < 0)
-				   $value = (abs($value) ^ 0xffffffff) + 1 ; 
-				$ValInfField=cmd::byId(str_replace('#','',$option["ValInfField"]));
-				$StatusCommande=cmd::byId(str_replace('#','',$option["StatusCommande"]));
-				$data= array(($value>>24) & 0xFF, ($value>>16) & 0xFF,($value>>8) & 0xFF,$value & 0xFF,$ValInfField->execCmd(),$StatusCommande->execCmd());
+					$value = (abs($value) ^ 0xff) + 1 ; # twos complement
+				$data= array($value);
+				break;
+			case "7":
+				$data= array(($value >> 8)&0xff, ($value& 0xff));
+				break;
+			case "8":
+			  /*      if data >= 0x8000:
+					data = -((data - 1) ^ 0xffff)  # invert twos complement
+				else:
+					data = data
+				if self._dpt is self.DPT_DeltaTime10Msec:
+					value = data * 10.
+				elif self._dpt is self.DPT_DeltaTime100Msec:
+					value =data * 100.
+				elif self._dpt is self.DPT_Percent_V16:
+					value = data / 100.
+				else:
+					value = data*/
+				$data= array($value);
+				break;
+			case "9": 
+				if($value<0){
+					$sign = 1;
+					$value = - $value;
+				}
+				else
+					$sign = 0;
+				$value = $value * 100.0;
+				$exp = 0;
+				while ($value > 2047){
+					$exp ++;
+					$value = $value / 2;
+				}
+				if ($sign)
+					$value = - $value;
+				$value = $value & 0x7ff;
+				$data= array(($sign << 7) | (($exp & 0x0f)<<3)| (($value >> 8)&0x07), ($value& 0xff));
+				break;
+			case "10": 
+				$value   = new DateTime($value);
+				$wDay = $value->format('N');
+				$hour = $value->format('H');
+				$min = $value->format('i');
+				$sec = $value->format('s');
+				$data = array(($wDay << 5 )| $hour  , $min , $sec);
+				break;
+			case "11":
+				$value   = new DateTime($value);
+				$day = $value->format('d');
+				$month = $value->format('m');
+				$year = $value->format('y');
+				$data = array($day,$month ,$year);
+				break;
+			case "12":
+				$data= array($value);
+				break;
+			case "13":
+			 if ($value < 0)
+				   $value = (abs($value) ^ 0xffffffff) + 1 ; # twos complement
+			   /* if self._dpt is self.DPT_Value_FlowRate_m3h:
+					$data = int(round($value * 10000.))
+				else*/
+				$data= array(($value>>24) & 0xFF, ($value>>16) & 0xFF,($value>>8) & 0xFF,$value & 0xFF);
+				break;
+			case "14":
+				$value = unpack("L",pack("f", $value)); 
+				$data = array(($value[1]>>24)& 0xff, ($value[1]>>16)& 0xff, ($value[1]>>8)& 0xff,$value[1]& 0xff);
+				break;
+			case "16":
+				$data=array();
+				$chr=str_split($value);
+				for ($i = 0; $i < 14; $i++)
+					$data[$i]=ord($chr[$i]);
+				break;
+			case "17":
+				$data= array($value& 0x3f);
+				break;
+			case "18":
+				$control=cmd::byId(str_replace('#','',$option["control"]));
+				$data= array(($control << 8) & 0x80 | $value & 0x3f);
+				break;
+			case "19": 
+				$value   = new DateTime($value);
+				$wDay = $value->format('N');
+				$hour = $value->format('H');
+				$min = $value->format('i');
+				$sec = $value->format('s');
+				$day = $value->format('d');
+				$month = $value->format('m');
+				$year = $value->format('Y')-1900;
+				$data = array($year,$month & 0x0f ,$day & 0x1f,($wDay << 5 ) & 0xe0| $hour  & 0x1f , $min  & 0x3f , $sec & 0x3f,0x00,0x00);
+			break;
+			case "20":
+				if ($dpt != "20.xxx"){
+					if(!is_numeric($value)){
+						$ValeurDpt=$All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"];
+						$value = array_search($value, $ValeurDpt); 
+					}
+				}
+				$data= array($value);
+			break;
+			case "229":
+				if ($dpt != "229.001"){
+					if ($value < 0)
+					   $value = (abs($value) ^ 0xffffffff) + 1 ; 
+					$ValInfField=cmd::byId(str_replace('#','',$option["ValInfField"]));
+					$StatusCommande=cmd::byId(str_replace('#','',$option["StatusCommande"]));
+					$data= array(($value>>24) & 0xFF, ($value>>16) & 0xFF,($value>>8) & 0xFF,$value & 0xFF,$ValInfField->execCmd(),$StatusCommande->execCmd());
 				}
 			break;
 			case "27":
@@ -486,7 +482,7 @@ class Dpt{
 				}
 			break;
 			case "232":
-				$value= self::rgb2html($data[0] << 16 ,$data[1] << 8 , $data[2]);
+				$value= self::rgb2html($data[0],$data[1], $data[2]);
 			break;
 			default:
 				switch($dpt){
