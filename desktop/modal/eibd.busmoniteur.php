@@ -7,20 +7,21 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.min', 'js');
 include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'js');
 ?>
 <style>
-table #table_BusMonitor {
-    width: 100%;
-    display:block;
-}
-thead #table_BusMonitor {
-    display: inline-block;
-    width: 100%;
-}
-tbody #table_BusMonitor {
-    height: 200px;
-    display: inline-block;
-    width: 100%;
-    overflow: auto;
-}
+	table #table_BusMonitor {
+	    width: 100%;
+	    display:block;
+	}
+	thead #table_BusMonitor {
+	    display: inline-block;
+	    width: 100%;
+	}
+	tbody #table_BusMonitor {
+	    height: 200px;
+	    display: inline-block;
+	    width: 100%;
+	    overflow: auto;
+	}
+</style>
 <table id="table_BusMonitor" class="table table-bordered table-condensed tablesorter">
     <thead>
         <tr>
