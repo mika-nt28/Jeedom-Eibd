@@ -19,19 +19,6 @@ class eibd extends eqLogic {
 	}
 	public function preSave() {
 		$this->setLogicalId(trim($this->getLogicalId()));    
-	}
-	public function postSave() {		
-		foreach($this->getCmd() as $cmd){
-			$cache = cache::byKey('eibd::CreateNewGad');
-			$value = json_decode($cache->getValue('[]'), true);
-			foreach ($value as $key => $val) {
-			       if ($val['AdresseGroupe'] == $cmd->getLogicalId()){
-				       unset($value[$key]);
-				       array_shift($value);
-			       }
-			}
-			cache::set('eibd::CreateNewGad', json_encode($value), 0);
-		}
 	}	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                                                                                                                               //
@@ -894,6 +881,21 @@ class eibdCmd extends cmd {
 			}
 			$listener->save();	
 		}		
+		$cache = cache::byKey('eibd::CreateNewGad');
+		$value = json_decode($cache->getValue('[]'), true);
+		/*foreach ($value as $key => $val) {
+		       if ($val['AdresseGroupe'] == $cmd->getLogicalId()){
+			       unset($value[$key]);
+			       array_shift($value);
+		       }
+		}*/
+		$key = array_search($this->getLogicalId(), array_column($value, 'AdresseGroupe'));
+		if($key != false){
+			unset($value[$key]);
+			array_shift($value);
+			cache::set('eibd::CreateNewGad', json_encode($value), 0);
+		}
+		
 	}
 	public function execute($_options = null){
 		$ga=$this->getLogicalId();
