@@ -25,7 +25,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 		?>
         </tr>
     </thead>
-    <tbody></tbody>
+    <tbody style="height: 500px;"></tbody>
 </table>
 <script>
 var SelectGad='';
