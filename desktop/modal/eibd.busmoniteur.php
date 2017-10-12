@@ -18,7 +18,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
             <th>{{Valeur}}</th>
         </tr>
     </thead>
-    <tbody></tbody>
+    <tbody style="height: 500px;"></tbody>
 </table>
 <script>
 initTableSorter();
