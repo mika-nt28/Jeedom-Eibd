@@ -43,7 +43,7 @@
 				},
 				"value":"Luminosité",
 				"isVisible":"1"
-			},
+			},{
 				"name":"Etat",
 				"type":"info",
 				"subType":"string",
