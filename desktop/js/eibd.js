@@ -161,7 +161,6 @@ $('.log').on('click', function() {
 $('.GadInconue').on('click', function() {
 	$('#md_modal').dialog({
 		title: "{{Importer les Gad inconnue}}",
-		position: 'center',
 		resizable: true,
 		height: 700,
 		width: 850});
@@ -170,7 +169,6 @@ $('.GadInconue').on('click', function() {
 $('.BusMoniteur').on('click', function() {
 	$('#md_modal').dialog({
 		title: "{{Bus Moniteur}}",
-		position: 'center',
 		resizable: true,
 		height: 700,
 		width: 850});
@@ -179,7 +177,6 @@ $('.BusMoniteur').on('click', function() {
 $('.Ets4Parser').on('click', function() {
 	$('#md_modal').dialog({
 		title: "{{Ajout de vos équipement par ETS}}",
-		position: 'center',
 		resizable: true,
 		height: 700,
 		width: 850});
