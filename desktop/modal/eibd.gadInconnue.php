@@ -10,6 +10,22 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 //if(!isset($_REQUEST['SelectDpt']))
 	echo '<script>var SelectDpt="'.$_REQUEST['SelectDpt'].'";</script>';
 ?>
+<style>
+	table #table_GadInconue {
+	    width: 100%;
+	    display:block;
+	}
+	thead #table_GadInconue {
+	    display: inline-block;
+	    width: 100%;
+	}
+	tbody #table_GadInconue {
+	    height: 200px;
+	    display: inline-block;
+	    width: 100%;
+	    overflow: auto;
+	}
+</style>
 <table id="table_GadInconue" class="table table-bordered table-condensed tablesorter">
     <thead>
         <tr>
