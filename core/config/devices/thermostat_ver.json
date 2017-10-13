@@ -203,8 +203,8 @@
 					"noBatterieCheck":"0"
 				},
 				"template":{
-					dashboard: "lock",
-					mobile: "lock"
+					"dashboard": "lock",
+					"mobile": "lock"
 				},
 				"value":"Verrouillage - Info",
 				"isVisible":"1"
