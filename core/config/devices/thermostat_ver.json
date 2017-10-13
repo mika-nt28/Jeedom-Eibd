@@ -202,6 +202,10 @@
 					"subTypeAuto":"1",
 					"noBatterieCheck":"0"
 				},
+				"template":{
+					dashboard: "lock",
+					mobile: "lock"
+				},
 				"value":"Verrouillage - Info",
 				"isVisible":"1"
 			},{
@@ -214,7 +218,7 @@
 					"FlagTransmit":"0",
 					"FlagUpdate":"0",
 					"FlagWrite":"0",
-                  	"KnxObjectValue":"1",
+                  			"KnxObjectValue":"1",
 					"KnxObjectType":"1.003",
 					"inverse":"0",
 					"subTypeAuto":"1",
@@ -232,7 +236,7 @@
 					"FlagTransmit":"0",
 					"FlagUpdate":"0",
 					"FlagWrite":"0",
-                  	"KnxObjectValue":"0",
+                  			"KnxObjectValue":"0",
 					"KnxObjectType":"1.003",
 					"inverse":"0",
 					"subTypeAuto":"1",
