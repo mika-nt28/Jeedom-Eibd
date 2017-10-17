@@ -390,7 +390,7 @@ class eibd extends eqLogic {
 						$inverse=$Commande->getConfiguration('inverse');
 						log::add('eibd', 'debug', 'Lecture de '. $Commande->getHumanName().' sur le GAD '.$ga);
 						$DataBus=self::EibdRead($ga);
-                      	if($DataBus === false){
+                      				if($DataBus === false){
 							$Commande->setConfiguration('FlagInit',false);
 							$Commande->save();
 							continue;
@@ -411,7 +411,6 @@ class eibd extends eqLogic {
 		log::add('eibd', 'debug', 'Lancement du Bus Monitor');
 		$host=config::byKey('EibdHost', 'eibd');
 		$port=config::byKey('EibdPort', 'eibd');
-		
 		log::add('eibd', 'debug', 'Connexion a EIBD sur le serveur '.$host.':'.$port);
 		$conBusMonitor = new EIBConnection($host,$port);
 		$buf = new EIBBuffer();		
@@ -470,8 +469,7 @@ class eibd extends eqLogic {
 	public static function addCacheNoGad($_parameter) {
 		$cache = cache::byKey('eibd::CreateNewGad');
 		$value = json_decode($cache->getValue('[]'), true);
-		$key = array_search($_parameter['AdresseGroupe'], array_column($value, 'AdresseGroupe'));
-		if($key == false)
+		if($key = array_search($_parameter['AdresseGroupe'], array_column($value, 'AdresseGroupe')) === false)
 			$value[] = $_parameter;
 		else
 			$value[$key] = $_parameter;
