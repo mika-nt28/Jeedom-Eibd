@@ -6,22 +6,6 @@ include_file('3rdparty', 'jquery.tablesorter/theme.bootstrap', 'css');
 include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.min', 'js');
 include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'js');
 ?>
-<style>
-	table #table_BusMonitor {
-	    width: 100%;
-	    display:block;
-	}
-	thead #table_BusMonitor {
-	    display: inline-block;
-	    width: 100%;
-	}
-	tbody #table_BusMonitor {
-	    height: 200px;
-	    display: inline-block;
-	    width: 100%;
-	    overflow: auto;
-	}
-</style>
 <table id="table_BusMonitor" class="table table-bordered table-condensed tablesorter">
     <thead>
         <tr>
@@ -47,7 +31,9 @@ $('body').off().on('eibd::monitor', function (_event,_options) {
 		.append($("<td>").text(monitors.AdresseGroupe))
 		.append($("<td>").text(monitors.data))
 		.append($("<td>").text(monitors.DataPointType))
-		.append($("<td>").text(monitors.valeur)));			
+		.append($("<td>").text(monitors.valeur)));		
+	if($('#table_BusMonitor tbody tr').length >= 255)
+		$('#table_BusMonitor tbody tr:last').remove();
 	$('#table_BusMonitor').trigger('update');
 });	   
 </script>
