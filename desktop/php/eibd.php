@@ -82,7 +82,11 @@ $eqLogics = eqLogic::byType('eibd');
 			} else {
 				foreach ($eqLogics as $eqLogic) {
 					echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" style="background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >';
-					echo '<center><img src="plugins/eibd/plugin_info/eibd_icon.png" height="105" width="95" /></center>';
+					$file='plugins/eibd/core/config/devices/'.$eqLogic->getConfiguration('typeTemplate').'.png';
+					if(file_exists($file))
+						echo '<center><img src="'.$file.'" height="105" width="95" /></center>';
+					else
+					   echo '<center><img src="plugins/eibd/plugin_info/eibd_icon.png" height="105" width="95" /></center>';
 					echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>' . $eqLogic->getHumanName(true, true) . '</center></span>';
 					echo '</div>';
 				}
@@ -205,7 +209,7 @@ $eqLogics = eqLogic::byType('eibd');
 				<br>
 				<a class="btn btn-success btn-sm cmdAction pull-right" data-action="add"><i class="fa fa-plus-circle"></i> Ajouter une commande</a>
 				<div class="pull-right" >
-					<select class="Template input-sm" data-l1key="type">
+					<select class="eqLogicAttr input-sm" data-l1key="configuration" data-l2key="typeTemplate">
 						<option value="">{{Aucun}}</option>
 						<?php
 						foreach (eibd::devicesParameters() as $id => $info) {
