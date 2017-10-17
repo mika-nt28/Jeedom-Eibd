@@ -329,7 +329,7 @@ $(".eqLogicAttr[data-l1key=configuration][data-l2key=device]").html($(".eqLogicA
 	return a.text == b.text ? 0 : a.text < b.text ? -1 : 1
 }));
 $('.Template[data-action=add]').on('click', function () {
-	if($('.eqLogicAttr[data-l1key=configuration][data-l1key=typeTemplate]').val()!=""){
+	if($('.eqLogicAttr[data-l1key=configuration][data-l2key=typeTemplate]').val()!=""){
 		$('.eqLogicAction[data-action=save]').trigger('click');
 		$.ajax({
 			type: 'POST',   
@@ -338,7 +338,7 @@ $('.Template[data-action=add]').on('click', function () {
 			{
 				action: 'AppliTemplate',
 				id:$('.eqLogicAttr[data-l1key=id]').val(),
-				template:$('.eqLogicAttr[data-l1key=configuration][data-l1key=typeTemplate]').val()
+				template:$('.eqLogicAttr[data-l1key=configuration][data-l2key=typeTemplate]').val()
 			},
 			dataType: 'json',
 			global: true,
