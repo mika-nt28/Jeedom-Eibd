@@ -475,6 +475,10 @@ class eibd extends eqLogic {
 			$value[] = $_parameter;
 		else
 			$value[$key] = $_parameter;
+		if(count($value) >=255){			
+			unset($value[0]);
+			array_shift($value);
+		}
 		cache::set('eibd::CreateNewGad', json_encode($value), 0);
 	}
 	public static function UpdateCommande($Commande,$Mode,$data){	
