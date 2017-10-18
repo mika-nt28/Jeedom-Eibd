@@ -6,9 +6,26 @@ class eibd extends eqLogic {
 	public static function cron() {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
-				foreach($Equipement->getCmd('info') as $Commande){
-					if(!$Commande->getConfiguration('FlagWrite'))
-						$Commande->execute();
+				foreach($Equipement->getCmd('info') as $Commande)	{
+					if (!$Commande->getConfiguration('FlagWrite') && $Commande->getConfiguration('FlagInit')){
+						$ga=$Commande->getLogicalId();
+						$dpt=$Commande->getConfiguration('KnxObjectType');
+						$inverse=$Commande->getConfiguration('inverse');
+						log::add('eibd', 'debug', 'Lecture de '. $Commande->getHumanName().' sur le GAD '.$ga);
+						$DataBus=self::EibdRead($ga);
+						if($DataBus === false){
+							$Commande->setConfiguration('FlagInit',false);
+							$Commande->save();
+							continue;
+						}
+						$option=$Commande->getConfiguration('option');
+						$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$option);
+						log::add('eibd', 'debug', $Commande->getHumanName().' => '.$BusValue);
+						if ($Commande->execCmd() != $Commande->formatValue($BusValue)) {
+							$Commande->event($BusValue);
+						}
+						$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
+					}
 				}
 			}
 		}
@@ -158,14 +175,12 @@ class eibd extends eqLogic {
 			log::add('eibd', 'debug', "socket_create() failed: reason: " . socket_strerror(socket_last_error($BroadcastSocket)));
 			return false;
 		}
-		
 		while(!socket_bind($BroadcastSocket, '0.0.0.0', $ServerPort)) 
 			$ServerPort++;
-		if (!socket_set_option($BroadcastSocket, IPPROTO_IP, MCAST_JOIN_GROUP, array("group"=>"224.0.23.12","interface"=>0))) 
-			{
+		if (!socket_set_option($BroadcastSocket, IPPROTO_IP, MCAST_JOIN_GROUP, array("group"=>"224.0.23.12","interface"=>0))) {
 			log::add('eibd', 'debug', "socket_set_option() failed: reason: " . socket_strerror(socket_last_error($BroadcastSocket)));
 			return false;
-			}
+		}
 		log::add('eibd', 'debug', 'Envoi de la trame search request');
 		$msg = "06".						// 06 HEADER_SIZE
 		"10".					// 10 KNX/IP v1.0
@@ -183,11 +198,10 @@ class eibd extends eqLogic {
 		foreach (unpack("C*", $hex_msg) as $Byte)
 			$dataBrute.=sprintf('%02x',$Byte).' ';
 		log::add('eibd', 'debug', 'Data emise: ' . $dataBrute);
-		if (!$len = socket_sendto($BroadcastSocket, $hex_msg, strlen($hex_msg), 0, "224.0.23.12", 3671)) 
-			{
+		if (!$len = socket_sendto($BroadcastSocket, $hex_msg, strlen($hex_msg), 0, "224.0.23.12", 3671)) {
 			$lastError = "socket_sendto() failed: reason: " . socket_strerror(socket_last_error($BroadcastSocket));
 			return false;
-			}
+		}
 		$NbLoop=0;
 		while(!isset($result['KnxIpGateway'])) { 
 			$buf = '';
@@ -228,7 +242,7 @@ class eibd extends eqLogic {
 		}
 		socket_close($BroadcastSocket);
 		return $result;
-		}
+	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                                                                                                                               //
 	//                                                      Gestion du de la communication KNX                                                       // 
@@ -238,10 +252,9 @@ class eibd extends eqLogic {
 		$buf = unpack("C*", $buf->buffer);
 		if ($buf[1] & 0x3 || ($buf[2] & 0xC0) == 0xC0)
 			log::add('eibd', 'error', "Error: Unknown APDU: ".$buf[1]."X".$buf[2]);
-		else if (($buf[2] & 0xC0) == 0x00){
-			//if ($len == 2)
-				return array ("Read", null);
-		}else if (($buf[2] & 0xC0) == 0x40){
+		else if (($buf[2] & 0xC0) == 0x00)
+			return array ("Read", null);
+		else if (($buf[2] & 0xC0) == 0x40){
 			if ($len == 2)
 				return array ("Reponse", $buf[2] & 0x3F);
 			else
@@ -251,8 +264,7 @@ class eibd extends eqLogic {
 				return array ("Write", $buf[2] & 0x3F);
 			else
 				return array ("Write", array_slice($buf, 2));
-		}
-		else{
+		}else{
 			return array ("Read", null);
 			log::add('eibd','debug','Valeur du Header '.$buf[2] & 0xC0);
 		}
@@ -296,8 +308,7 @@ class eibd extends eqLogic {
 		$data = pack ("n", $val);
 		$len = $EibdConnexion->EIBSendAPDU($data);
 		if ($len == -1)
-          	return false;
-			//throw new Exception(__('Impossible de lire la valeur', __FILE__));
+          		return false;
 		$loop=0;
 		$return=null;
 		while (1){
@@ -306,10 +317,8 @@ class eibd extends eqLogic {
 			$len = $EibdConnexion->EIBGetAPDU_Src($data, $src);
 			if ($len == -1)	
 				return false;
-				//throw new Exception(__('Impossible de lire la valeur', __FILE__));
 			if ($len < 2)
 				return false;
-				//throw new Exception(__('Paquet Invalide', __FILE__));
 			$buf = unpack("C*", $data->buffer);
 			if ($buf[1] & 0x3 || ($buf[2] & 0xC0) == 0xC0){
 				throw new Exception(__("Error: Unknown APDU: ".$buf[1]."X".$buf[2], __FILE__));
@@ -512,12 +521,7 @@ class eibd extends eqLogic {
 					}
 					if($Commande->getType() == 'info'&& ($Commande->getConfiguration('FlagWrite') || $Commande->getConfiguration('FlagUpdate'))){
 						log::add('eibd', 'info',$Commande->getLogicalId().' : Mise a jours de la valeur : '.$valeur.$unite);
-						//$Commande->setCollectDate(date('Y-m-d H:i:s'));
-						//$Commande->event($valeur);
-						//$Commande->save();					
-						//if ($Commande->execCmd() != $Commande->formatValue($valeur)) {
-							$Commande->event($valeur);
-						//}
+						$Commande->event($valeur);
 						$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
 					}
 				}
@@ -734,11 +738,6 @@ class eibd extends eqLogic {
 		self::InitInformation();
 	}
 	public static function deamon_stop() {
-		//$cmd = 'sudo systemctl service knxd stop';
-		//$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
-		//exec($cmd);
-		$cache = cache::byKey('eibd::Monitor');
-		$cache->remove();
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
 				$cmd='sudo pkill knxd';
@@ -838,8 +837,6 @@ class eibd extends eqLogic {
 							else{
 								$Equipement['DeviceName']= "No name - ".$PhysicalAdress;
 							}
-							//Creation d'un equipement dans Jeedom
-							//$Equipement=self::AddEquipement($DeviceName,$PhysicalAdress);
 							foreach($Device->getElementsByTagName('ComObjectInstanceRefs') as $ComObjectInstanceRefs){
 								foreach($ComObjectInstanceRefs->getElementsByTagName('ComObjectInstanceRef') as $ComObjectInstanceRef){
 									$DataPointType=explode('-',$ComObjectInstanceRef->getAttribute('DatapointType'));
@@ -864,8 +861,6 @@ class eibdCmd extends cmd {
 	public function preSave() { 
 		if ($this->getConfiguration('KnxObjectType') == '') 
 			throw new Exception(__('Le type de commande ne peut etre vide', __FILE__));
-		/*if ($this->getLogicalId() == '') 
-			throw new Exception(__('Le GAD ne peut etre vide', __FILE__));		*/	
 		$this->setLogicalId(trim($this->getLogicalId()));    
 	}
 	public function postSave() {	
@@ -885,12 +880,6 @@ class eibdCmd extends cmd {
 		}		
 		$cache = cache::byKey('eibd::CreateNewGad');
 		$value = json_decode($cache->getValue('[]'), true);
-		/*foreach ($value as $key => $val) {
-		       if ($val['AdresseGroupe'] == $cmd->getLogicalId()){
-			       unset($value[$key]);
-			       array_shift($value);
-		       }
-		}*/
 		$key = array_search($this->getLogicalId(), array_column($value, 'AdresseGroupe'));
 		if($key != false){
 			unset($value[$key]);
@@ -933,13 +922,7 @@ class eibdCmd extends cmd {
 				$BusValue=Dpt::DptSelectDecode($dpt, $data, $inverse,$option);
 				$WriteBusValue=eibd::EibdWrite($ga, $data);
 				if ($WriteBusValue != -1 && isset($Listener) && is_object($Listener) && $ga==$Listener->getLogicalId()){
-					//$Listener->setCollectDate(date('Y-m-d H:i:s'));
-					//$Listener->setConfiguration('doNotRepeatEvent', 1);
-					//$Listener->event($BusValue);
-					//$Listener->save();
-					//if ($Listener->execCmd() != $Listener->formatValue($BusValue)) {
-						$Listener->event($BusValue);
-					//}
+					$Listener->event($BusValue);
 					$Listener->setCache('collectDate', date('Y-m-d H:i:s'));
 				}
 			break;
@@ -949,12 +932,7 @@ class eibdCmd extends cmd {
 				$DataBus=eibd::EibdRead($ga);	
 				$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$option);
 				$this->setCollectDate(date('Y-m-d H:i:s'));
-				//$this->setConfiguration('doNotRepeatEvent', 1);
-				//$this->event($BusValue);
-				//$this->save();
-				//if ($this->execCmd() != $this->formatValue($BusValue)) {
-					$this->event($BusValue);
-				//}
+				$this->event($BusValue);
 				$this->setCache('collectDate', date('Y-m-d H:i:s'));
 			break;
 		}
