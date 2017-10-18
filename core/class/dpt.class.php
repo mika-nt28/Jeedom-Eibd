@@ -195,10 +195,8 @@ class Dpt{
 						if ($option["Mode"] !=''){		
 							$Mode=cmd::byId(str_replace('#','',$option["Mode"]));
 							if (is_object($Mode)){
-								$Mode->setCollectDate(date('Y-m-d H:i:s'));
-								//$Mode->setConfiguration('doNotRepeatEvent', 1);
 								$Mode->event(($data[0]>>1) & 0xEF);
-								$Mode->save();
+								$Mode->setCache('collectDate', date('Y-m-d H:i:s'));
 							}
 						}
 						$data= array(($Mode->execCmd()<< 1) & 0xEF | $value& 0x01);
@@ -327,10 +325,8 @@ class Dpt{
 						if (is_object($control)){
 							$ctrl = ($data[0] >> 7) & 0x01;
 							log::add('eibd', 'debug', 'L\'objet '.$control->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $ctrl);
-							$control->setCollectDate(date('Y-m-d H:i:s'));
-							//$control->setConfiguration('doNotRepeatEvent', 1);
 							$control->event($ctrl);
-							$control->save();
+							$control->setCache('collectDate', date('Y-m-d H:i:s'));
 						}
 					}
 				}
@@ -390,8 +386,7 @@ class Dpt{
 					}
 				break;
 			case "229":
-				if ($dpt != "229.001")
-					{
+				if ($dpt != "229.001"){
 					/*if ($value < 0)
 					   $value = (abs($value) ^ 0xffffffff) + 1 ; 
 					$ValInfField=cmd::byId(str_replace('#','',$option["ValInfField"]));
@@ -403,38 +398,30 @@ class Dpt{
 					if ($option != null)
 						{
 						//Mise a jours de l'objet Jeedom ValInfField
-						if ($option["ValInfField"] !='' /*&& is_numeric($data[4])&& $data[4]!=''*/)
-							{	
+						if ($option["ValInfField"] !='' /*&& is_numeric($data[4])&& $data[4]!=''*/){	
 							//log::add('eibd', 'debug', 'Mise a jours de l\'objet Jeedom ValInfField: '.$option["ValInfField"]);
 							$ValInfField=cmd::byId(str_replace('#','',$option["ValInfField"]));
-							if (is_object($ValInfField))
-								{
+							if (is_object($ValInfField)){
 								$valeur=$data[4];
 								log::add('eibd', 'debug', 'L\'objet '.$ValInfField->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $valeur);
-								$ValInfField->setCollectDate(date('Y-m-d H:i:s'));
-								//$ValInfField->setConfiguration('doNotRepeatEvent', 1);
 								$ValInfField->event($valeur);
-								$ValInfField->save();
-								}
+								$ValInfField->setCache('collectDate', date('Y-m-d H:i:s'));
 							}
+						}
 						//Mise a jours de l'objet Jeedom StatusCommande
-						if ($option["StatusCommande"] !='' /*&& is_numeric(($data[5]>>1) & 0x01)&& $data[5]!=''*/)
-							{
+						if ($option["StatusCommande"] !='' /*&& is_numeric(($data[5]>>1) & 0x01)&& $data[5]!=''*/){
 							//log::add('eibd', 'debug', 'Mise a jours de l\'objet Jeedom StatusCommande: '.$option["StatusCommande"]);
 							$StatusCommande=cmd::byId(str_replace('#','',$option["StatusCommande"]));
-							if (is_object($StatusCommande))
-								{
+							if (is_object($StatusCommande)){
 								$valeur=($data[5]>>1) & 0x01;
 								log::add('eibd', 'debug', 'L\'objet '.$StatusCommande->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $valeur);
-								$StatusCommande->setCollectDate(date('Y-m-d H:i:s'));
-								//$StatusCommande->setConfiguration('doNotRepeatEvent', 1);
 								$StatusCommande->event($valeur);
-								$StatusCommande->save();
-								}
+								$StatusCommande->setCache('collectDate', date('Y-m-d H:i:s'));
 							}
 						}
 					}
-				break;
+				}
+			break;
 			case "27":
 				if ($option != null){
 					for($byte=0;$byte<count($data);$byte++){
@@ -446,6 +433,7 @@ class Dpt{
 							if (is_object($InfoCmd)){
 								log::add('eibd', 'debug', 'Nous allons mettre a jours l\'objet: '. $InfoCmd->getHumanName);
 								$InfoCmd->event($bits[$bit]);
+								$InfoCmd->setCache('collectDate', date('Y-m-d H:i:s'));
 							}
 						}
 					}
@@ -468,14 +456,12 @@ class Dpt{
 							log::add('eibd', 'debug', 'Nous allons mettre a jours le tarif '. $Tarif);	
 							$ActiveElectricalEnergyCommande=cmd::byId(str_replace('#','',$ActiveElectricalEnergy[$Tarif]));
 							if (is_object($ActiveElectricalEnergyCommande)){
-								log::add('eibd', 'debug', 'Nous allons mettre a jours l\'objet: '. $ActiveElectricalEnergy[$Tarif]);
 								$valeur =$data[0] << 24 | $data[1] << 16 | $data[2] << 8 | $data[3] ;
 								if ($valeur >= 0x80000000)
 									$valeur = -(($valeur - 1) ^ 0xffffffff);  # invert twos complement    
-								log::add('eibd', 'debug', 'L\'objet '.$ActiveElectricalEnergyCommande->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $valeur);	
-								$ActiveElectricalEnergyCommande->setCollectDate(date('Y-m-d H:i:s'));
+								log::add('eibd', 'debug', 'L\'objet '.$ActiveElectricalEnergyCommande->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $valeur);
 								$ActiveElectricalEnergyCommande->event($valeur);
-								$ActiveElectricalEnergyCommande->save();
+								$ActiveElectricalEnergyCommande->setCache('collectDate', date('Y-m-d H:i:s'));
 							}
 						}
 					}
@@ -493,10 +479,8 @@ class Dpt{
 						if ($option["Mode"] !=''){		
 							$Mode=cmd::byId(str_replace('#','',$option["Mode"]));
 							if (is_object($Mode)){
-								$Mode->setCollectDate(date('Y-m-d H:i:s'));
-								//$Mode->setConfiguration('doNotRepeatEvent', 1);
 								$Mode->event(($data[0]>>1) & 0xEF);
-								$Mode->save();
+								$Mode->setCache('collectDate', date('Y-m-d H:i:s'));
 							}
 						}
 					}
