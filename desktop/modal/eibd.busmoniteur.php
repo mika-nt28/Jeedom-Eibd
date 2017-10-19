@@ -12,6 +12,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
             <th>{{Date}}</th>
             <th>{{Mode}}</th>
             <th>{{Source}}</th>
+            <th>{{Commande Jeedom}}</th>
             <th>{{Destination}}</th>
             <th>{{Data}}</th>
             <th>{{DPT}}</th>
@@ -28,6 +29,7 @@ $('body').off().on('eibd::monitor', function (_event,_options) {
 		.append($("<td>").text(monitors.datetime))
 		.append($("<td>").text(monitors.Mode))
 		.append($("<td>").text(monitors.AdressePhysique))
+		.append($("<td>").text(monitors.cmdJeedom))
 		.append($("<td>").text(monitors.AdresseGroupe))
 		.append($("<td>").text(monitors.data))
 		.append($("<td>").text(monitors.DataPointType))
