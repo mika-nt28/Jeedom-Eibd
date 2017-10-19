@@ -129,7 +129,7 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 						$.each(eqLogic.cmd,function(index, value){
 							eqLogic.cmd[index].logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+']').value();
 							if (typeof(eqLogic.cmd[index].value) !== 'undefined')
-								eqLogic.cmd[index].value="#["+eqLogic.object_id+"]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
+								eqLogic.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object_id] option:selected').text()+"]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
 						});
 						jeedom.eqLogic.save({
 							type: 'eibd',
