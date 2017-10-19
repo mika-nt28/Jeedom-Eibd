@@ -460,6 +460,7 @@ class eibd extends eqLogic {
 		if(count($commandes)>0){
 			foreach($commandes as $Commande){
 				$monitor['valeur']=trim(self::UpdateCommande($Commande,$data["Mode"],$data["Data"]));
+				$monitor['cmdJeedom']= $Commande->getHumanName();
 				$monitor['DataPointType']=$Commande->getConfiguration('KnxObjectType');
 			}
 		}else {
@@ -470,6 +471,7 @@ class eibd extends eqLogic {
 				self::addCacheNoGad($monitor);
 			}else
 				$monitor['valeur']="Impossible de convertire la valeur";
+			$monitor['cmdJeedom']= "La commande n'exites pas";
 			log::add('eibd', 'debug', 'Aucune commande avec l\'adresse de groupe  '.$monitor['AdresseGroupe'].' n\'a pas été trouvée');
 		}
 		$monitor['datetime'] = date('d-m-Y H:i:s');
