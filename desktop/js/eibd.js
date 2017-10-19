@@ -84,7 +84,7 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 						.text('{{Objet parent}}'))
 					.append($('<div class="col-xs-7">')
 						.append($('<select class="EqLogicTemplateAttr form-control" data-l1key="object_id">')
-						       .append($('.eqLogicAttr[data-l1key=object_id]').clone()))))
+						       .append($('.eqLogicAttr[data-l1key=object_id] option').clone()))))
 				.append($('<div class="form-group">')
 					.append($('<label class="col-xs-5 control-label" >')
 						.text('{{Template de votre équipement}}'))
