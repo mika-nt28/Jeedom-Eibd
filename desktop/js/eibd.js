@@ -66,6 +66,13 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 			template=data.result;
 		}
 	});
+	jeedom.object.all({
+		error: function (error) {
+			$('#div_alert').showAlert({message: error.message, level: 'danger'});
+		},
+		success: function (data) {
+		}
+	});
 	var message = $('<div class="row">')
 		.append($('<div class="col-md-12">')
 			.append($('<form class="form-horizontal" onsubmit="return false;">')
@@ -79,6 +86,12 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 						.text('{{Adresse physique de l\'equipement}}'))
 					.append($('<div class="col-xs-7">')
 						.append($('<input class="EqLogicTemplateAttr form-control" data-l1key="logicalId"/>'))))
+				.append($('<div class="form-group">')
+					.append($('<label class="col-xs-5 control-label" >')
+						.text('{{Objet parent}}'))
+					.append($('<div class="col-xs-7">')
+						.append($('<select class="EqLogicTemplateAttr form-control" data-l1key="object_id">')
+						       .append($( ".hello" ).clone('.eqLogicAttr[data-l1key=object_id]')))))
 				.append($('<div class="form-group">')
 					.append($('<label class="col-xs-5 control-label" >')
 						.text('{{Template de votre équipement}}'))
@@ -111,11 +124,14 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 					if($('.EqLogicTemplateAttr[data-l1key=template]').value() != "" && $('.EqLogicTemplateAttr[data-l1key=name]').value() != ""){
 						var eqLogic=template[$('.EqLogicTemplateAttr[data-l1key=template]').value()];
 						eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
+						if (typeof(eqLogic.logicalId) === 'undefined')
+							eqLogic.logicalId=new Object();
 						eqLogic.logicalId=$('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
+						if (typeof(eqLogic.object_id) === 'undefined')
+							eqLogic.object_id=new Object();
+						eqLogic.object_id=$('.EqLogicTemplateAttr[data-l1key=object_id]').value();
 						if (typeof(eqLogic.configuration) === 'undefined')
 							eqLogic.configuration=new Object();
-						/*if (typeof(eqLogic.configuration.typeTemplate) === 'undefined')
-							eqLogic.configuration.typeTemplate=new Object();*/
 						eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
 						$.each(eqLogic.cmd,function(index, value){
 							eqLogic.cmd[index].logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+']').value();
