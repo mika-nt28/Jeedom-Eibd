@@ -112,6 +112,10 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 						var eqLogic=template[$('.EqLogicTemplateAttr[data-l1key=template]').value()];
 						eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
 						eqLogic.logicalId=$('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
+						if (typeof(eqLogic.configuration) === 'undefined')
+							eqLogic.configuration=new Object();
+						/*if (typeof(eqLogic.configuration.typeTemplate) === 'undefined')
+							eqLogic.configuration.typeTemplate=new Object();*/
 						eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
 						$.each(eqLogic.cmd,function(index, value){
 							eqLogic.cmd[index].logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+']').value();
