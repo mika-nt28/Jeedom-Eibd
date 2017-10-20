@@ -330,7 +330,6 @@ $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 				.closest('.input-group').parent().hide();
 		break;
 	}
-	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
 });			
 $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
 	if($(this).is(':checked'))
