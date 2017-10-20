@@ -277,6 +277,7 @@ $('body').on('change','.cmdAttr[data-l1key=type]',function() {
 	var type=$(this).closest('.cmd').find('.cmdAttr[data-l1key=type]').val();
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType] option[value="'+getDptSousType(Dpt,type)+'"]').prop('selected', true);
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
+	$('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
 });			
 $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 	var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
