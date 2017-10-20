@@ -336,6 +336,7 @@ $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',true);
 	else
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',false);
+	$('.cmdAttr[data-l1key=type]').trigger('change');
 	
 });
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
@@ -667,4 +668,5 @@ function addCmdToTable(_cmd) {
 	$('#table_cmd tbody tr:last .cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').trigger('change');
 	$('#table_cmd tbody tr:last').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+init(_cmd.configuration.KnxObjectValue)+'"]').prop('selected', true);		
 	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
+	$('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
 }
