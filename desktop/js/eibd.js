@@ -336,7 +336,6 @@ $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',true);
 	else
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',false);
-	$(this).closest('.cmd').find('.cmdAttr[data-l1key=type]').trigger('change');
 	
 });
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
