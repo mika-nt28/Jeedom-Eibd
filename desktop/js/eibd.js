@@ -252,7 +252,7 @@ $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectTy
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').empty();
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').append(DptValue($(this).val()));
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+valeur+'"]').prop('selected', true);
-	if((this).closest('.cmd').find$('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').is(':checked'))
+	if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').is(':checked'))
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
 }); 
 $('body').on('change','.cmdAttr[data-l1key=type]',function() {
@@ -270,7 +270,7 @@ $('body').on('change','.cmdAttr[data-l1key=type]',function() {
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().hide();
 		break;
 	}
-	if((this).closest('.cmd').find$('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').is(':checked'))
+	if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').is(':checked'))
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
 });			
 $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
