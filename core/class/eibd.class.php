@@ -134,6 +134,7 @@ class eibd extends eqLogic {
 			} catch (Exception $exc) {
 				error_log($exc->getMessage());
 			}
+		$this->setConfiguration('typeTemplate',$template);
 		$this->save();
 		}
 	}
