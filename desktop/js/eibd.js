@@ -271,7 +271,7 @@ $('body').on('change','.cmdAttr[data-l1key=type]',function() {
 	}
 	setTimeout(function() {
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
-	}, 5000);
+	}.bind(this), 500);
 });			
 $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 	var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
