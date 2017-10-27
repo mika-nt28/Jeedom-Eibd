@@ -357,32 +357,35 @@ class Dpt{
 				break;
 			case "20":
 				$value = $data[0];
-				if ($dpt != "20.xxx")
-					{
-					if ($dpt == "20.102_2")
-						{
+				if ($dpt != "20.xxx"){
+					if ($dpt == "20.102_2")	{
 						if (dechex($value)>0x80)
 							$value = dechex($value)-0x80;
 						if (dechex($value)>0x20)
-							$value = dechex($value)-0x20;
-						switch ($value)
-							{
-							case "1":
-								$value ="Comfort";
-								break;
-							case "2":
-								$value ="Standby";
-								break;
-							case "4":
-								$value ="Night";
-								break;
-							case "8":
-								$value ="Frost";
-								break;
+							$value = dechex($value)-0x20;						
+						if ($option != null){
+							switch ($value)	{
+								case "1":
+									$value ="Comfort";
+									break;
+								case "2":
+									$value ="Standby";
+									break;
+								case "4":
+									$value ="Night";
+									break;
+								case "8":
+									$value ="Frost";
+									break;
 							}
 						}
-					else
-						$value = $All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"][$data[0]];
+						
+					}else{
+						if ($option == null)
+							$value = $data[0];
+						else
+							$value = $All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"][$data[0]];
+						}
 					}
 				break;
 			case "229":
@@ -395,8 +398,7 @@ class Dpt{
 					$value = $data[0] << 24 | $data[1] << 16 | $data[2] << 8 | $data[3] ;
 					if ($value >= 0x80000000)
 						$value = -(($value - 1) ^ 0xffffffff);  # invert twos complement       
-					if ($option != null)
-						{
+					if ($option != null){
 						//Mise a jours de l'objet Jeedom ValInfField
 						if ($option["ValInfField"] !='' /*&& is_numeric($data[4])&& $data[4]!=''*/){	
 							//log::add('eibd', 'debug', 'Mise a jours de l\'objet Jeedom ValInfField: '.$option["ValInfField"]);
