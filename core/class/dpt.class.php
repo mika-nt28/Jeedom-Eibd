@@ -379,7 +379,8 @@ class Dpt{
 						}
 						
 					}else
-						$value = $All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"][$data[0]];
+						$value = $All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"][$value];
+				}
 				break;
 			case "229":
 				if ($dpt != "229.001"){
