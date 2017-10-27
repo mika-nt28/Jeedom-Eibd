@@ -362,31 +362,24 @@ class Dpt{
 						if (dechex($value)>0x80)
 							$value = dechex($value)-0x80;
 						if (dechex($value)>0x20)
-							$value = dechex($value)-0x20;						
-						if ($option != null){
-							switch ($value)	{
-								case "1":
-									$value ="Comfort";
-									break;
-								case "2":
-									$value ="Standby";
-									break;
-								case "4":
-									$value ="Night";
-									break;
-								case "8":
-									$value ="Frost";
-									break;
-							}
+							$value = dechex($value)-0x20;
+						switch ($value)	{
+							case "1":
+								$value ="Comfort";
+								break;
+							case "2":
+								$value ="Standby";
+								break;
+							case "4":
+								$value ="Night";
+								break;
+							case "8":
+								$value ="Frost";
+								break;
 						}
 						
-					}else{
-						if ($option == null)
-							$value = $data[0];
-						else
-							$value = $All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"][$data[0]];
-						}
-					}
+					}else
+						$value = $All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"][$data[0]];
 				break;
 			case "229":
 				if ($dpt != "229.001"){
