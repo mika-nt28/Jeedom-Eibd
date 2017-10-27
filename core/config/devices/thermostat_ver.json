@@ -119,7 +119,7 @@
 			},{
 				"name":"Mode de fonctionnement",
 				"type":"info",
-				"subType":"string",
+				"subType":"numeric",
 				"isHistorized":"0",
 				"unite":"",
 				"configuration":{
