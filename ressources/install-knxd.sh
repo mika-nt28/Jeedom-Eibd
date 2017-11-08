@@ -18,6 +18,7 @@ echo "**************************************************************************
 echo "*                                Installation des dependances                                       *"
 echo "*****************************************************************************************************"
 sudo apt-get -qy update
+sudo apt-get -qy install pkg-config
 sudo apt-get -qy install build-essential 
 sudo apt-get -qy install libev-dev
 sudo apt-get -qy install git-core
