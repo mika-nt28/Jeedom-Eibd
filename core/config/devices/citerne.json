@@ -1,0 +1,42 @@
+{
+	"citerne":{
+		"name":"Citerne eau de pluie",
+		"isVisible":"1",
+		"isEnable":"1",
+		"category":{
+			"heating":"0",
+			"security":"0",
+			"energy":"1",
+			"light":"0",
+			"automatism":"0",
+			"multimedia":"0",
+			"default":"0"
+		},
+		"cmd":[	{
+			"name":"valeur",
+			"type":"info",
+			"subType":"numeric",
+			"isHistorized":"1",
+			"unite":"%",
+			"configuration":{
+				"KnxObjectType":"9.xxx",
+				"FlagRead":"0",
+				"FlagWrite":"1",
+				"FlagTransmit":"0",
+				"FlagUpdate":"1",
+				"FlagInit":"1",
+				"inverse":"0",
+				"minValue":"0",
+				"maxValue":"100",
+				"subTypeAuto":"1",
+				"calculValueOffset":"100-#value#",
+				"repeatEventManagement":"always",
+			},
+			"display":	{
+				"generic_type":"GENERIC_INFO",
+				"graphType":"line"
+			},
+			"isVisible":"1"
+		}]
+	}
+}

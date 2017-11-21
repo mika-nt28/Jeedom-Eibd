@@ -1,0 +1,39 @@
+{
+	"detectFumee":	{
+		"name":"Detecteur Fumée",
+		"isVisible":"1",
+		"isEnable":"1",
+		"category":	{
+			"heating":"1",
+			"security":"0",
+			"energy":"0",
+			"light":"0",
+			"automatism":"0",
+			"multimedia":"0",
+			"default":"0"
+		},
+		"cmd":[
+			{
+				"name":"valeur",
+				"type":"info",
+				"subType":"binary",
+				"isHistorized":"1",
+				"unite":"",
+				"configuration":{
+					"KnxObjectType":"1.005",
+					"FlagRead":"0",
+					"FlagWrite":"1",
+					"FlagTransmit":"0",
+					"FlagUpdate":"1",
+					"FlagInit":"1",
+					"inverse":"0",
+					"subTypeAuto":"1",
+				},
+				"display":	{
+					"icon":"",
+					"generic_type":"SMOKE"
+				},
+			}
+		]
+	}
+}
