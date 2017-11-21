@@ -151,14 +151,7 @@ class Dpt{
 				}
 				$data= array($value);
 			break;
-			case "229":
-				if ($dpt != "229.001"){
-					if ($value < 0)
-					   $value = (abs($value) ^ 0xffffffff) + 1 ; 
-					$ValInfField=cmd::byId(str_replace('#','',$option["ValInfField"]));
-					$StatusCommande=cmd::byId(str_replace('#','',$option["StatusCommande"]));
-					$data= array(($value>>24) & 0xFF, ($value>>16) & 0xFF,($value>>8) & 0xFF,$value & 0xFF,$ValInfField->execCmd(),$StatusCommande->execCmd());
-				}
+			case "23":
 			break;
 			case "27":
 				foreach(explode('|',$option["Info"]) as $bit => $Info){
@@ -176,6 +169,18 @@ class Dpt{
 						
 				}
 			break;
+			case "229":
+				if ($dpt != "229.001"){
+					if ($value < 0)
+					   $value = (abs($value) ^ 0xffffffff) + 1 ; 
+					$ValInfField=cmd::byId(str_replace('#','',$option["ValInfField"]));
+					$StatusCommande=cmd::byId(str_replace('#','',$option["StatusCommande"]));
+					$data= array(($value>>24) & 0xFF, ($value>>16) & 0xFF,($value>>8) & 0xFF,$value & 0xFF,$ValInfField->execCmd(),$StatusCommande->execCmd());
+				}
+			break;
+			case "232":	
+				$data= self::html2rgb($value);
+			break;
 			case "235":
 				if ($dpt != "235.001"){
 					/*if ($value < 0)
@@ -185,9 +190,6 @@ class Dpt{
 						$data= array(($value>>24) & 0xFF, ($value>>16) & 0xFF,($value>>8) & 0xFF,$value & 0xFF,$tarif,(0<< 1) & 0x02 | 0);
 					}
 				}
-			break;
-			case "232":	
-				$data= self::html2rgb($value);
 			break;
 			default:
 				switch($dpt){
@@ -382,6 +384,25 @@ class Dpt{
 						$value = $All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"][$value];
 				}
 				break;
+			case "23":
+				break;
+			case "27":
+				if ($option != null){
+					for($byte=0;$byte<count($data);$byte++){
+						if ($option["Info"] !='')
+							$Info=explode('|',$option["Info"]);	
+						for($bit=0;$bit <= 0xFF;$bit++){
+							$bits=str_split($data[$byte],1);
+							$InfoCmd=cmd::byId(str_replace('#','',$Info[$bit]));
+							if (is_object($InfoCmd)){
+								log::add('eibd', 'debug', 'Nous allons mettre a jours l\'objet: '. $InfoCmd->getHumanName);
+								$InfoCmd->event($bits[$bit]);
+								$InfoCmd->setCache('collectDate', date('Y-m-d H:i:s'));
+							}
+						}
+					}
+				}
+			break;
 			case "229":
 				if ($dpt != "229.001"){
 					/*if ($value < 0)
@@ -418,22 +439,8 @@ class Dpt{
 					}
 				}
 			break;
-			case "27":
-				if ($option != null){
-					for($byte=0;$byte<count($data);$byte++){
-						if ($option["Info"] !='')
-							$Info=explode('|',$option["Info"]);	
-						for($bit=0;$bit <= 0xFF;$bit++){
-							$bits=str_split($data[$byte],1);
-							$InfoCmd=cmd::byId(str_replace('#','',$Info[$bit]));
-							if (is_object($InfoCmd)){
-								log::add('eibd', 'debug', 'Nous allons mettre a jours l\'objet: '. $InfoCmd->getHumanName);
-								$InfoCmd->event($bits[$bit]);
-								$InfoCmd->setCache('collectDate', date('Y-m-d H:i:s'));
-							}
-						}
-					}
-				}
+			case "232":
+				$value= self::rgb2html($data[0],$data[1], $data[2]);
 			break;
 			case "235":
 				if ($dpt == "235.001"){
@@ -462,9 +469,6 @@ class Dpt{
 						}
 					}
 				}
-			break;
-			case "232":
-				$value= self::rgb2html($data[0],$data[1], $data[2]);
 			break;
 			default:
 				switch($dpt){
@@ -2362,6 +2366,17 @@ class Dpt{
 				"max"=>'',
 				"InfoType"=>'string',
 				"ActionType"=>'select',
+				"GenericType"=>"DONT",
+				"Option" =>array(),
+				"Unite" =>"")),
+		"2bit"=> array(
+			"23.xxx"=> array(
+				"Name"=>"Colour RGB",
+				"Valeurs"=>array(),
+				"min"=>'',
+				"max"=>'',
+				"InfoType"=>'string',
+				"ActionType"=>'color',
 				"GenericType"=>"DONT",
 				"Option" =>array(),
 				"Unite" =>"")),
