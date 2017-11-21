@@ -32,7 +32,8 @@
 				"display":	{
 					"icon":"",
 					"generic_type":"SMOKE"
-				}
+				},
+				"isVisible":"1"
 			}
 		]
 	}
