@@ -30,13 +30,14 @@
 					"minValue":"0",
 					"maxValue":"65535",
 					"subTypeAuto":"1",
-					"repeatEventManagement":"always",
+					"repeatEventManagement":"always"
 				},
 				"display":	{
 					"graphType":"areaspline",
 					"icon":"",
-					"generic_type":"BRIGHTNESS",
-				}
+					"generic_type":"BRIGHTNESS"
+				},
+				"isVisible":"1"
 			}
 		]
 	}
