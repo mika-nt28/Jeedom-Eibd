@@ -27,12 +27,12 @@
 					"FlagUpdate":"1",
 					"FlagInit":"1",
 					"inverse":"0",
-					"subTypeAuto":"1",
+					"subTypeAuto":"1"
 				},
 				"display":	{
 					"icon":"",
 					"generic_type":"SMOKE"
-				},
+				}
 			}
 		]
 	}
