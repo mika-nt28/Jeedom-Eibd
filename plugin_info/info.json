@@ -4,8 +4,18 @@
 	"description" : "Connecter Jeedom avec votre installation domotique KNX et Jeedom deviendra un participant de votre installation",
 	"licence" : "AGPL",
 	"author" : "Halbout Michael",
+	"installation" : '',
+	"maxDependancyInstallTime" : 30,
+	"eventjs" : false,
+	"hasOwnDeamon" : true,
+	"hasDependency" : true,
 	"require" : "2.4",
 	"category" : "automation protocol",
-	"hasOwnDeamon" : true,
-	"hasDependency" : true
+	"filepath" : "eibd",
+	"index" : "eibd",
+	"display" : "",
+	"issue" : "https://github.com/mika-nt28/Jeedom-Eibd/issues",
+ 	"changelog" : "https://github.com/mika-nt28/Jeedom-Eibd/commits/master",
+ 	"documentation" : "https://github.com/mika-nt28/Jeedom-Eibd/blob/stable/doc/#language#/index.asciidoc",
+	"mobile = ''
 }
