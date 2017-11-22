@@ -152,6 +152,13 @@ class Dpt{
 				$data= array($value);
 			break;
 			case "23":
+				if ($dpt != "23.xxx"){
+					if(!is_numeric($value)){
+						$ValeurDpt=$All_DPT["2bit"][$dpt]["Valeurs"];
+						$value = array_search($value, $ValeurDpt); 
+					}
+				}
+				$data= array($value);
 			break;
 			case "27":
 				foreach(explode('|',$option["Info"]) as $bit => $Info){
@@ -385,6 +392,9 @@ class Dpt{
 				}
 				break;
 			case "23":
+				$value = $data[0];
+				if ($dpt != "23.xxx")
+					$value = $All_DPT["2bit"][$dpt]["Valeurs"][$value];
 				break;
 			case "27":
 				if ($option != null){
@@ -2371,12 +2381,42 @@ class Dpt{
 				"Unite" =>"")),
 		"2bit"=> array(
 			"23.xxx"=> array(
-				"Name"=>"Colour RGB",
+				"Name"=>"Generic",
 				"Valeurs"=>array(),
 				"min"=>'',
 				"max"=>'',
 				"InfoType"=>'string',
-				"ActionType"=>'color',
+				"ActionType"=>'select',
+				"GenericType"=>"DONT",
+				"Option" =>array(),
+				"Unite" =>""),
+			"23.001"=> array(
+				"Name"=>"OnOffAction",
+				"Valeurs"=>array("On","Off","Off/On","On/Off"),
+				"min"=>'',
+				"max"=>'',
+				"InfoType"=>'string',
+				"ActionType"=>'select',
+				"GenericType"=>"DONT",
+				"Option" =>array(),
+				"Unite" =>""),,
+			"23.002"=> array(
+				"Name"=>"Alarm Reaction",
+				"Valeurs"=>array("no alarm is used","alarm position is UP","alarm position is DOWN"),
+				"min"=>'',
+				"max"=>'',
+				"InfoType"=>'string',
+				"ActionType"=>'select',
+				"GenericType"=>"DONT",
+				"Option" =>array(),
+				"Unite" =>""),,
+			"23.003"=> array(
+				"Name"=>"UpDown Action",
+				"Valeurs"=>array("Up","Down","UpDown","DownUp"),
+				"min"=>'',
+				"max"=>'',
+				"InfoType"=>'string',
+				"ActionType"=>'select',
 				"GenericType"=>"DONT",
 				"Option" =>array(),
 				"Unite" =>"")),
