@@ -390,12 +390,12 @@ class Dpt{
 					}else
 						$value = $All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"][$value];
 				}
-				break;
+			break;
 			case "23":
 				$value = $data[0];
 				if ($dpt != "23.xxx")
 					$value = $All_DPT["2bit"][$dpt]["Valeurs"][$value];
-				break;
+			break;
 			case "27":
 				if ($option != null){
 					for($byte=0;$byte<count($data);$byte++){
@@ -2399,7 +2399,7 @@ class Dpt{
 				"ActionType"=>'select',
 				"GenericType"=>"DONT",
 				"Option" =>array(),
-				"Unite" =>""),,
+				"Unite" =>""),
 			"23.002"=> array(
 				"Name"=>"Alarm Reaction",
 				"Valeurs"=>array("no alarm is used","alarm position is UP","alarm position is DOWN"),
@@ -2409,7 +2409,7 @@ class Dpt{
 				"ActionType"=>'select',
 				"GenericType"=>"DONT",
 				"Option" =>array(),
-				"Unite" =>""),,
+				"Unite" =>""),
 			"23.003"=> array(
 				"Name"=>"UpDown Action",
 				"Valeurs"=>array("Up","Down","UpDown","DownUp"),
