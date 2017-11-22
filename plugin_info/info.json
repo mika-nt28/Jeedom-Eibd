@@ -5,17 +5,12 @@
 	"licence" : "AGPL",
 	"author" : "Halbout Michael",
 	"installation" : "Choisissez le programme de votre choix et lancer l'installation des dependance",
-	"maxDependancyInstallTime" : 30,
-	"eventjs" : false,
+	"maxDependancyInstallTime" : 130,
 	"hasOwnDeamon" : true,
 	"hasDependency" : true,
 	"require" : "2.4",
 	"category" : "automation protocol",
-	"filepath" : "eibd",
-	"index" : "eibd",
-	"display" : "",
 	"issue" : "https://github.com/mika-nt28/Jeedom-Eibd/issues",
  	"changelog" : "https://github.com/mika-nt28/Jeedom-Eibd/commits/master",
- 	"documentation" : "https://jeedom.github.io/documentation/third_plugin/eibd/fr_FR/index.html",
-	"mobile : ""
+ 	"documentation" : "https://jeedom.github.io/documentation/third_plugin/eibd/fr_FR/index.html"
 }
