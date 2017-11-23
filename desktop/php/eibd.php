@@ -33,15 +33,15 @@ $eqLogics = eqLogic::byType('eibd');
 		<div class="eqLogicThumbnailContainer">
 			<div class="cursor eqLogicAction" data-action="add" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
 				<center>
-					<i class="fa fa-plus-circle" style="font-size : 5em;color:#0049A7;"></i>
+					<i class="fa fa-plus-circle" style="font-size : 5em;color:#406E88;"></i>
 				</center>
-				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#0049A7"><center>{{Ajouter}}</center></span>
+				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#406E88"><center>{{Ajouter}}</center></span>
 			</div>
 			<div class="cursor eqLogicAction" data-action="addByTemplate" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
 				<center>
-					<i class="fa fa-plus-circle" style="font-size : 5em;color:#0049A7;"></i>
+					<i class="fa fa-plus-circle" style="font-size : 5em;color:#406E88;"></i>
 				</center>
-				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#0049A7"><center>{{Par template}}</center></span>
+				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#406E88"><center>{{Par template}}</center></span>
 			</div>
 			<div class="cursor GadInconue" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
 				<center>
