@@ -23,6 +23,50 @@
 				},
 				"isVisible":"0"
 			},{
+				"name":"Augmenter",
+				"type":"action",
+				"subType":"other",
+				"isHistorized":"0",
+				"configuration":{
+					"FlagInit":"0",
+					"FlagRead":"0",
+					"FlagTransmit":"0",
+					"FlagUpdate":"0",
+					"FlagWrite":"0",
+					"KnxObjectType":"1.001",
+					"KnxObjectValue":"0",
+					"inverse":"0",
+					"subTypeAuto":"1",
+					"noBatterieCheck":"0",
+					"option":{
+						"ctrl": "1"
+					}
+				},
+				"unite":"step",
+				"isVisible":"0"
+			},{
+				"name":"Diminuer",
+				"type":"action",
+				"subType":"other",
+				"isHistorized":"0",
+				"configuration":{
+					"FlagInit":"0",
+					"FlagRead":"0",
+					"FlagTransmit":"0",
+					"FlagUpdate":"0",
+					"FlagWrite":"0",
+					"KnxObjectType":"3.007",
+					"KnxObjectValue":"0",
+					"inverse":"0",
+					"subTypeAuto":"1",
+					"noBatterieCheck":"0",
+					"option":{
+						"ctrl": "0"
+					}
+				},
+				"unite":"step",
+				"isVisible":"0"
+			},{
 				"name":"Variation",
 				"type":"action",
 				"subType":"slider",
