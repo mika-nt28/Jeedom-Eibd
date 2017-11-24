@@ -23,10 +23,9 @@ class Dpt{
 				$data= $value;
 				break;
 			case "3":
-				$ctrl = 1 ;
 				if ($value > 0)
 					$stepCode = abs($value) & 0x07;
-				$data = $ctrl << 3 | $stepCode;
+				$data = $option["ctrl"] << 3 | $stepCode;
 				break;
 			case "5":
 				switch ($dpt)
@@ -976,34 +975,34 @@ class Dpt{
 		"3BitControl"=> array(
 			"3.xxx"=> array(
 				"Name"=>"Generic",
-				"Valeurs"=>array(),
+				"Valeurs"=>array(0,1,2,3,4,5,6,7),
 				"min"=>-7,
 				"max"=>7,
 				"InfoType"=>'numeric',
-				"ActionType"=>'slider',
+				"ActionType"=>'other',
 				"GenericType"=>"DONT",
-				"Option" =>array(),
+				"Option" =>array("ctrl"),
 				"Unite" =>""),
 			"3.007"=> array(
 				"Name"=>"Dimming",
-				"Valeurs"=>array(),
+				"Valeurs"=>array(0,1,2,3,4,5,6,7),
 				"min"=>-7,
 				"max"=>7,
 				"InfoType"=>'numeric',
-				"ActionType"=>'slider',
+				"ActionType"=>'other',
 				"GenericType"=>"DONT",
-				"Option" =>array(),
-				"Unite" =>""),
+				"Option" =>array("ctrl"),
+				"Unite" =>"step"),
 			"3.008"=> array(
 				"Name"=>"Blinds",
-				"Valeurs"=>array(),
+				"Valeurs"=>array(0,1,2,3,4,5,6,7),
 				"min"=>-7,
 				"max"=>7,
 				"InfoType"=>'numeric',
-				"ActionType"=>'slider',
+				"ActionType"=>'other',
 				"GenericType"=>"DONT",
-				"Option" =>array(),
-				"Unite" =>"")),
+				"Option" =>array("ctrl"),
+				"Unite" =>"step")),
 		"8BitUnsigned"=> array(
 			"5.xxx"=> array(
 				"Name"=>"Generic",
