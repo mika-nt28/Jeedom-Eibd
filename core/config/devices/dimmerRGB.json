@@ -37,9 +37,10 @@
 					"KnxObjectValue":"0",
 					"inverse":"0",
 					"subTypeAuto":"1",
-          "value":"Etat Couleur",
-          "isVisible":"1"
-				},{
+				},
+				"value":"Etat Couleur",
+				"isVisible":"1"
+			},{
 				"name":"Luminosité",
 				"type":"info",
 				"subType":"numeric",
