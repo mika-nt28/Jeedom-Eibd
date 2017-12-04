@@ -366,28 +366,11 @@ class Dpt{
 			case "20":
 				$value = $data[0];
 				if ($dpt != "20.xxx"){
-					if ($dpt == "20.102_2")	{
-						if (dechex($value)>0x80)
-							$value = dechex($value)-0x80;
-						if (dechex($value)>0x20)
-							$value = dechex($value)-0x20;
-						switch ($value)	{
-							case "1":
-								$value ="Comfort";
-								break;
-							case "2":
-								$value ="Standby";
-								break;
-							case "4":
-								$value ="Night";
-								break;
-							case "8":
-								$value ="Frost";
-								break;
-						}
-						
-					}else
-						$value = $All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"][$value];
+					if (dechex($value)>0x80)
+						$value = dechex($value)-0x80;
+					if (dechex($value)>0x20)
+						$value = dechex($value)-0x20;
+					$value = $All_DPT["8BitEncAbsValue"][$dpt]["Valeurs"][$value];
 				}
 			break;
 			case "23":
@@ -2360,7 +2343,7 @@ class Dpt{
 				"Unite" =>""),
 			"20.102_2"=> array(
 				"Name"=>"MDT Heating mode",
-				"Valeurs"=>array("Auto","Comfort","Standby","Night","Frost"),
+				"Valeurs"=>array(0=>"Auto",1=>"Comfort",2=>"Standby",4=>"Night",8=>"Frost"),
 				"min"=>'',
 				"max"=>'',
 				"InfoType"=>'string',
