@@ -1,6 +1,6 @@
 {
 	"motion":{
-    "name":"Detecteur Mouvement",
+   		"name":"Detecteur Mouvement",
 		"isVisible":"1",
 		"isEnable":"1",
 		"category":{
