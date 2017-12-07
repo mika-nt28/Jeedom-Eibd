@@ -34,7 +34,7 @@
 					"mobile":"presence"
 				},
 				"display":{
-					"generic_type":"PRESENCE",
+					"generic_type":"PRESENCE"
 				},
 				"isVisible":"1"
 			},{
