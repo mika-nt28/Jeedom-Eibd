@@ -432,7 +432,7 @@ function DptOption(Dpt,div){
 				$.each(DptValue.Option, function(Optionkey, Optionvalue){
 					if (DptKey==Dpt && div.find('.cmdAttr[data-l2key=option][data-l3key='+Optionvalue+']').length <= 0){
 						div.append($('<label>')
-								   .text('{{'+Optionvalue+'}}')
+								   .text(Optionvalue)
 								   .append($('<sup>')
 									   .append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
 										   .attr('title',Optionvalue))));
@@ -470,7 +470,7 @@ function DptValue(Dpt){
 		$.each(DptValueGroup, function(DptKey, DptValue){
 			if (DptKey==Dpt){
 				$.each(DptValue.Valeurs, function(keyValeurs, Valeurs){
-					DptValues.append($('<option>').attr('value',keyValeurs).text('{{'+Valeurs+'}}'));
+					DptValues.append($('<option>').attr('value',keyValeurs).text(Valeurs));
 				});
 			}
 		});
@@ -481,9 +481,9 @@ function OptionSelectDpt(){
   var DptSelectorOption=$('<div>');
     DptSelectorOption.append($('<option>').attr('value','').text('{{Sélèctionner un DPT}}'));
 	$.each(AllDpt, function(DptKeyGroup, DptValueGroup){
-      var DptOptionGroup=$('<optgroup>').attr('label','{{'+DptKeyGroup+'}}');
+      var DptOptionGroup=$('<optgroup>').attr('label',DptKeyGrou);
 		$.each(DptValueGroup, function(DptKey, DptValue){
-          DptOptionGroup.append($('<option>').attr('value',DptKey).text('{{'+DptKey+' - '+DptValue["Name"]+'}}'));
+          DptOptionGroup.append($('<option>').attr('value',DptKey).text(DptKey+' - '+DptValue["Name"]));
 		});
 		DptSelectorOption.append(DptOptionGroup);
 	});
