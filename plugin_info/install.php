@@ -5,7 +5,7 @@ function eibd_install() {
 }
 function eibd_update() {
 	log::add('eibd','debug','Lancement du scripte de mise a  jours des Flags'); 
-	foreach(eqLogic::byType('eibd') as $eqLogic){ 
+	/*foreach(eqLogic::byType('eibd') as $eqLogic){ 
 		foreach($eqLogic->getCmd('info') as $cmd){ 
 			if(is_object($cmd)){
 				if($cmd->getConfiguration('FlagWrite','NoExist') == 'NoExist' && $cmd->getConfiguration('FlagUpdate','NoExist') == 'NoExist'){ 
@@ -25,6 +25,6 @@ function eibd_update() {
 				$cmd->save(); 
 			}
 		}
-	}
+	}*/
 }
 ?>
