@@ -30,10 +30,7 @@
         "Configurer EIBD": "Configurer EIBD",
         "Inverser": "Inverser",
         "Imposer une valeur": "Imposer une valeur",
-        "'+value+'": "'+value+'",
         "Sélèctionner un DPT": "Sélèctionner un DPT",
-        "'+key+'": "'+key+'",
-        "'+key+' - '+value[\"Name\"]+'": "'+key+' - '+value[\"Name\"]+'",
         "Name": "Name",
         "GAD": "GAD",
         "Rechercher une commande": "Rechercher une commande",
@@ -43,7 +40,6 @@
         "Min": "Min",
         "Max": "Max",
         "Unitée": "Unitée",
-        "Lifetime cache": "Lifetime cache",
         "Tester": "Tester",
         "Dupliquer": "Dupliquer"
     },
