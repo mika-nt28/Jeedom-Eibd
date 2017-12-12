@@ -209,6 +209,21 @@ class Dpt{
 						}
 						$data= array(($Mode->execCmd()<< 1) & 0xEF | $value& 0x01);
 					break;
+					case "Color":	
+						$data= self::html2rgb($value);
+						$R=cmd::byId(str_replace('#','',$option["R"]));
+						if(is_object($R))
+							$R->event($data[0]);
+							$R->setCache('collectDate', date('Y-m-d H:i:s'));
+						$G=cmd::byId(str_replace('#','',$option["G"]));
+						if(is_object($G))
+							$G->event($data[1]);
+							$G->setCache('collectDate', date('Y-m-d H:i:s'));
+						$B=cmd::byId(str_replace('#','',$option["B"]));
+						if(is_object($B)
+							$B->event($data[2]);
+							$B->setCache('collectDate', date('Y-m-d H:i:s'));
+					break;
 				}
 			break;
 		};
@@ -465,17 +480,29 @@ class Dpt{
 			default:
 				switch($dpt){
 					case "x.001":
-					$value = $data[0]& 0x01;      
-					if ($option != null){
-						//Mise a jours de l'objet Jeedom Mode
-						if ($option["Mode"] !=''){		
-							$Mode=cmd::byId(str_replace('#','',$option["Mode"]));
-							if (is_object($Mode)){
-								$Mode->event(($data[0]>>1) & 0xEF);
-								$Mode->setCache('collectDate', date('Y-m-d H:i:s'));
+						$value = $data[0]& 0x01;      
+						if ($option != null){
+							//Mise a jours de l'objet Jeedom Mode
+							if ($option["Mode"] !=''){		
+								$Mode=cmd::byId(str_replace('#','',$option["Mode"]));
+								if (is_object($Mode)){
+									$Mode->event(($data[0]>>1) & 0xEF);
+									$Mode->setCache('collectDate', date('Y-m-d H:i:s'));
+								}
 							}
 						}
-					}
+					break;					
+					case "Color":	
+						$R=cmd::byId(str_replace('#','',$option["R"]));
+						if(!is_object($R))
+							return "#000000";
+						$G=cmd::byId(str_replace('#','',$option["G"]));
+						if(!is_object($G))
+							return "#000000";
+						$B=cmd::byId(str_replace('#','',$option["B"]));
+						if(!is_object($B)
+							return "#000000";
+						$value= self::rgb2html($R,$G,$B);
 					break;
 				}
 			break;
@@ -2464,6 +2491,16 @@ class Dpt{
 				"ActionType"=>'message',
 				"GenericType"=>"DONT",
 				"Option" =>array("Mode"),
+				"Unite" =>"")),
+			"Color"=> array(
+				"Name"=>"Gestion des couleur (RGB / HTML)",
+				"Valeurs"=>array(),
+				"min"=>'',
+				"max"=>'',
+				"InfoType"=>'string',
+				"ActionType"=>'color',
+				"GenericType"=>"DONT",
+				"Option" =>array("R","G","B"),
 				"Unite" =>""))
 		);
 	}
