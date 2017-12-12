@@ -500,7 +500,7 @@ class Dpt{
 						if(!is_object($G))
 							$G=0;
 						$B=cmd::byId(str_replace('#','',$option["B"]));
-						if(!is_object($B)
+						if(!is_object($B))
 							$B=0;
 						$value= self::rgb2html($R,$G,$B);
 					break;
