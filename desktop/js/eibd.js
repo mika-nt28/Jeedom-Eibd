@@ -481,7 +481,7 @@ function OptionSelectDpt(){
   var DptSelectorOption=$('<div>');
     DptSelectorOption.append($('<option>').attr('value','').text('{{Sélèctionner un DPT}}'));
 	$.each(AllDpt, function(DptKeyGroup, DptValueGroup){
-      var DptOptionGroup=$('<optgroup>').attr('label',DptKeyGrou);
+      var DptOptionGroup=$('<optgroup>').attr('label',DptKeyGroup);
 		$.each(DptValueGroup, function(DptKey, DptValue){
           DptOptionGroup.append($('<option>').attr('value',DptKey).text(DptKey+' - '+DptValue["Name"]));
 		});
