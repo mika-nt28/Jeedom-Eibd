@@ -495,13 +495,13 @@ class Dpt{
 					case "Color":	
 						$R=cmd::byId(str_replace('#','',$option["R"]));
 						if(!is_object($R))
-							return "#000000";
+							$R=0;
 						$G=cmd::byId(str_replace('#','',$option["G"]));
 						if(!is_object($G))
-							return "#000000";
+							$G=0;
 						$B=cmd::byId(str_replace('#','',$option["B"]));
 						if(!is_object($B)
-							return "#000000";
+							$B=0;
 						$value= self::rgb2html($R,$G,$B);
 					break;
 				}
