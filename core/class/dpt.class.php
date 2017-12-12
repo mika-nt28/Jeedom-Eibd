@@ -220,7 +220,7 @@ class Dpt{
 							$G->event($data[1]);
 							$G->setCache('collectDate', date('Y-m-d H:i:s'));
 						$B=cmd::byId(str_replace('#','',$option["B"]));
-						if(is_object($B)
+						if(is_object($B))
 							$B->event($data[2]);
 							$B->setCache('collectDate', date('Y-m-d H:i:s'));
 					break;
