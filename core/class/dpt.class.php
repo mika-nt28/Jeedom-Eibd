@@ -2491,7 +2491,7 @@ class Dpt{
 				"ActionType"=>'message',
 				"GenericType"=>"DONT",
 				"Option" =>array("Mode"),
-				"Unite" =>"")),
+				"Unite" =>""),
 			"Color"=> array(
 				"Name"=>"Gestion des couleur (RGB / HTML)",
 				"Valeurs"=>array(),
