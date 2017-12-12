@@ -1,7 +1,7 @@
 {
     "plugins\/eibd\/core\/class\/eibd.class.php": {
         "Read failed": "Read failed",
-        "L'adresse physique doit obligatoirement être renseigné": "physical address is empty"
+        "L'adresse physique doit obligatoirement être renseigné": "L'adresse physique doit obligatoirement être renseigné"
     },
     "plugins\/eibd\/desktop\/php\/eibd.php": {
         "Ajouter un équipement": "Add equipment",
