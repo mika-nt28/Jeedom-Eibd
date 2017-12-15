@@ -495,14 +495,26 @@ class Dpt{
 					case "Color":	
 						$R=cmd::byId(str_replace('#','',$option["R"]));
 						if(!is_object($R))
-							$R=0;
+							return;
 						$G=cmd::byId(str_replace('#','',$option["G"]));
 						if(!is_object($G))
-							$G=0;
+							return;
 						$B=cmd::byId(str_replace('#','',$option["B"]));
 						if(!is_object($B))
-							$B=0;
-						$value= self::rgb2html($R,$G,$B);
+							return;
+						$listener = listener::byClassAndFunction('eibd', 'UpdateCmdOption', $option);
+						if (!is_object($listener)){
+						   	$listener = new listener();
+							$listener->setClass('eibd');
+							$listener->setFunction('UpdateCmdOption');
+							$listener->setOption($option);
+							$listener->emptyEvent();
+							$listener->addEvent($R->getId());
+							$listener->addEvent($G->getId());
+							$listener->addEvent($B->getId());
+							$listener->save();
+						}
+						$value= self::rgb2html($R->execCmd(),$G->execCmd(),$B->execCmd());
 					break;
 				}
 			break;
