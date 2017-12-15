@@ -6,7 +6,9 @@ echo 10 > /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
 echo "*                                         Remove knxd                                               *"
 echo "*****************************************************************************************************"
-apt-get autoremove -qy knxd
+#sudo apt-get autoremove -qy knxd
+cd /usr/local/src/knxd
+sudo dpkg -r knxd_*.deb knxd-tools_*.deb
 sudo rm -R /usr/local/src/knxd
 echo 20 > /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
