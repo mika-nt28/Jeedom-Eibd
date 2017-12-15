@@ -18,8 +18,9 @@ class eibd extends eqLogic {
 							$Commande->save();
 							continue;
 						}
-						$option=$Commande->getConfiguration('option');
-						$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$option);
+						$Option=$Commande->getConfiguration('option');
+						$Option["id"]=$Commande->getId();
+						$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
 						log::add('eibd', 'debug', $Commande->getHumanName().' => '.$BusValue);
 						if ($Commande->execCmd() != $Commande->formatValue($BusValue)) {
 							$Commande->event($BusValue);
@@ -405,8 +406,9 @@ class eibd extends eqLogic {
 							$Commande->save();
 							continue;
 						}
-						$option=$Commande->getConfiguration('option');
-						$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$option);
+						$Option=$Commande->getConfiguration('option');
+						$Option["id"]=$Commande->getId();
+						$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
 						log::add('eibd', 'debug', $Commande->getHumanName().' => '.$BusValue);
 						if ($Commande->execCmd() != $Commande->formatValue($BusValue)) {
 							$Commande->event($BusValue);
@@ -497,7 +499,8 @@ class eibd extends eqLogic {
 		if (is_object($Commande)) {		
 			$dpt=$Commande->getConfiguration('KnxObjectType');
 			$inverse=$Commande->getConfiguration('inverse');
-			$option=$Commande->getConfiguration('option');
+			$Option=$Commande->getConfiguration('option');
+			$Option["id"]=$Commande->getId();
 			if ($dpt!= 'aucun' && $dpt!= ''){
 				if($Mode=="Read" && $Commande->getConfiguration('FlagRead')){
 					log::add('eibd', 'debug','Demande de valeur de l\'adresse de groupe '.$Commande->getLogicalId());
@@ -505,14 +508,14 @@ class eibd extends eqLogic {
 					$ActionValue=cmd::byId(str_replace('#','',$Commande->getValue()));
 					if(is_object($ActionValue)){
 						$valeur=$ActionValue->execCmd();
-						$data= Dpt::DptSelectEncode($dpt, $valeur, $inverse,$option);
+						$data= Dpt::DptSelectEncode($dpt, $valeur, $inverse,$Option);
 						self::EibdReponse($Commande->getLogicalId(), $data);
 						log::add('eibd', 'info','Reponse sur l\'adresse de groupe '.$Commande->getLogicalId().' la valeur '.$valeur);
 					}
 				}
 				if($Mode=="Write"  || $Mode=="Reponse"){
 					log::add('eibd', 'debug',$Commande->getLogicalId().' : Décodage de la valeur avec le DPT :'.$dpt);
-					$valeur=Dpt::DptSelectDecode($dpt, $data, $inverse, $option);
+					$valeur=Dpt::DptSelectDecode($dpt, $data, $inverse, $Option);
 					$unite=Dpt::getDptUnite($dpt);
 					if($Commande->getConfiguration('noBatterieCheck')){
 						switch(explode('.',$dpt)[0]){
@@ -534,6 +537,22 @@ class eibd extends eqLogic {
 		} 
 		return $valeur.$unite ;
 	}
+	public static function UpdateCmdOption($_options) { 
+		log::add('eibd', 'Inforamtion', 'Mise a jours d\'une commande par ses options');
+		$Commande=cmd::byId($_options["id"]);
+		if(!is_object($Commande))
+			return;
+		$dpt=$Commande->getConfiguration('KnxObjectType');
+		$inverse=$Commande->getConfiguration('inverse');
+		$Option=$Commande->getConfiguration('option');
+		$Option["id"]=$Commande->getId();
+		$valeur=Dpt::DptSelectDecode($dpt, null, $inverse, $Option);
+		if($Commande->getType() == 'info'&& ($Commande->getConfiguration('FlagWrite') || $Commande->getConfiguration('FlagUpdate'))){
+			log::add('eibd', 'info',$Commande->getLogicalId().' : Mise a jours de la valeur : '.$valeur.$unite);
+			$Commande->event($valeur);
+			$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
+		}
+	}
 	public static function TransmitValue($_options) 	{
 		log::add('eibd', 'debug', 'Mode transmision => ' . json_encode($_option));
 		$Commande = cmd::byId($_option['eibdCmd_id']);
@@ -543,8 +562,9 @@ class eibd extends eqLogic {
 				$ga=$Commande->getLogicalId();
 				$dpt=$Commande->getConfiguration('KnxObjectType');
 				$inverse=$Commande->getConfiguration('inverse');
-				$option=$Commande->getConfiguration('option');
-				$data= Dpt::DptSelectEncode($dpt, $Event->execCmd(), $inverse,$option);
+				$Option=$Commande->getConfiguration('option');
+				$Option["id"]=$Commande->getId();
+				$data= Dpt::DptSelectEncode($dpt, $Event->execCmd(), $inverse,$Option);
 				$WriteBusValue=eibd::EibdWrite($ga, $data);
 			}
 		}
@@ -895,7 +915,8 @@ class eibdCmd extends cmd {
 		$ga=$this->getLogicalId();
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
-		$option=$this->getConfiguration('option');
+		$Option=$this->getConfiguration('option');
+		$Option["id"]=$this->getId();
 		switch ($this->getType()) {
 			case 'action' :
 				$Listener=cmd::byId(str_replace('#','',$this->getValue()));
@@ -921,8 +942,8 @@ class eibdCmd extends cmd {
 					break;
 				}
 				log::add('eibd','debug', 'Valeur a envoyer '.$ActionValue);
-				$data= Dpt::DptSelectEncode($dpt, $ActionValue, $inverse,$option);
-				$BusValue=Dpt::DptSelectDecode($dpt, $data, $inverse,$option);
+				$data= Dpt::DptSelectEncode($dpt, $ActionValue, $inverse,$Option);
+				$BusValue=Dpt::DptSelectDecode($dpt, $data, $inverse,$Option);
 				$WriteBusValue=eibd::EibdWrite($ga, $data);
 				if ($WriteBusValue != -1 && isset($Listener) && is_object($Listener) && $ga==$Listener->getLogicalId()){
 					$Listener->event($BusValue);
@@ -933,7 +954,7 @@ class eibdCmd extends cmd {
 				$inverse=$this->getConfiguration('inverse');
 				log::add('eibd', 'debug', 'Lecture sur le bus de l\'adresse de groupe : '. $ga);
 				$DataBus=eibd::EibdRead($ga);	
-				$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$option);
+				$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
 				$this->setCollectDate(date('Y-m-d H:i:s'));
 				$this->event($BusValue);
 				$this->setCache('collectDate', date('Y-m-d H:i:s'));
