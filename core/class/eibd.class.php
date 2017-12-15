@@ -656,7 +656,10 @@ class eibd extends eqLogic {
 		log::remove('eibd_update');
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
-				$cmd = 'sudo /bin/bash ' . dirname(__FILE__) . '/../../ressources/install-knxd.sh';
+           			if(exec("command -v knxd") !='')
+					$cmd = 'sudo /bin/bash ' . dirname(__FILE__) . '/../../ressources/update-knxd.sh';
+				else
+					$cmd = 'sudo /bin/bash ' . dirname(__FILE__) . '/../../ressources/install-knxd.sh';
 			break;
 			case 'eibd':
 				$cmd = 'sudo /bin/bash ' . dirname(__FILE__) . '/../../ressources/install-eibd.sh';
