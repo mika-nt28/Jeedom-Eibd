@@ -1,10 +1,10 @@
 En cliquant sur cette icône ci dessous, vous allez pouvoir visualiser l'activité qui se passe sur votre bus.
-Pour le débugage d'une configuration défaillante, il est aussi possible de filtrer les messages enregistrés en mémoire cache.
+Zum Debuggen einer fehlgeschlagenen Konfiguration ist es auch möglich, die im Cache gespeicherten Nachrichten zu filtern.
 
 image::../images/eibd_screenshot_BusMonitor.jpg[]
 Avec le bus monitor vous allez pouvoir analyser ce qui se passe sur votre bus et ce que comprend Jeedom au bus.
 
-Le bus monitor affiche l'adresse physique de l’équipement, l'adresse de groupe, la data en hexa et sa conversion
+Der Busmonitor zeigt die physikalische Adresse des Geräts, die Gruppenadresse, die Daten in hex und die Konvertierung an
 
 Le bus monitor vas mettre en cache egalement tous les gad qu'il voit et qui sont inconnue a votre installation.
 Cette liste est disponible sur la page de configuration et il vous est possible d'importer le gad dans un equipement.

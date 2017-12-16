@@ -3,7 +3,7 @@ Nommée votre commande de manière a la retrouve facilement dans Jeedom
 
 ==== KNX Konfiguration
 
-Ces champs de configuration sont important pour la communication 
+Diese Konfiguration sind wichtig für die Kommunikation 
 * Data Point Type : ce champs est important et indispensable pour l'encodage et décodage de la valeur.
 * Groupe d'addresse : ce champs identifi la commande sur le bus et sur jeedom
 
