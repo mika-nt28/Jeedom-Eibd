@@ -210,19 +210,23 @@ class Dpt{
 						$data= array(($Mode->execCmd()<< 1) & 0xEF | $value& 0x01);
 					break;
 					case "Color":	
-						$data= self::html2rgb($value);
-						$R=cmd::byId(str_replace('#','',$option["R"]));
-						if(is_object($R))
-							$R->event($data[0]);
-							$R->setCache('collectDate', date('Y-m-d H:i:s'));
-						$G=cmd::byId(str_replace('#','',$option["G"]));
-						if(is_object($G))
-							$G->event($data[1]);
-							$G->setCache('collectDate', date('Y-m-d H:i:s'));
-						$B=cmd::byId(str_replace('#','',$option["B"]));
-						if(is_object($B))
-							$B->event($data[2]);
-							$B->setCache('collectDate', date('Y-m-d H:i:s'));
+						$data= false;
+						list($r, $g, $b)=self::html2rgb($value);
+						$cmdR=cmd::byId(str_replace('#','',$option["R"]));
+						if(is_object($cmdR)){
+							$cmdR->event($cmdR->execute($r));
+							$cmdR->setCache('collectDate', date('Y-m-d H:i:s'));
+						}
+						$cmdG=cmd::byId(str_replace('#','',$option["G"]));
+						if(is_object($cmdG)){
+							$cmdG->event($cmdG->execute($g));
+							$cmdG->setCache('collectDate', date('Y-m-d H:i:s'));
+						}
+						$cmdB=cmd::byId(str_replace('#','',$option["B"]));
+						if(is_object($cmdB)){
+							$cmdB->event($cmdB->execute($b));
+							$cmdB->setCache('collectDate', date('Y-m-d H:i:s'));
+						}
 					break;
 				}
 			break;
