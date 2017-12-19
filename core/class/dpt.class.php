@@ -213,20 +213,14 @@ class Dpt{
 						$data= false;
 						list($r, $g, $b)=self::html2rgb($value);
 						$cmdR=cmd::byId(str_replace('#','',$option["R"]));
-						if(is_object($cmdR)){
-							$cmdR->event($cmdR->execute(array('slider'=>$r)));
-							$cmdR->setCache('collectDate', date('Y-m-d H:i:s'));
-						}
+						if(is_object($cmdR))
+							$cmdR->execCmd(array('slider'=>$r));
 						$cmdG=cmd::byId(str_replace('#','',$option["G"]));
-						if(is_object($cmdG)){
-							$cmdG->event($cmdG->execute(array('slider'=>$g)));
-							$cmdG->setCache('collectDate', date('Y-m-d H:i:s'));
-						}
+						if(is_object($cmdG))
+							$cmdG->execCmd(array('slider'=>$g));
 						$cmdB=cmd::byId(str_replace('#','',$option["B"]));
-						if(is_object($cmdB)){
-							$cmdB->event($cmdB->execute(array('slider'=>$b)));
-							$cmdB->setCache('collectDate', date('Y-m-d H:i:s'));
-						}
+						if(is_object($cmdB))
+							$cmdB->execCmd(array('slider'=>$b));
 					break;
 				}
 			break;
@@ -498,13 +492,13 @@ class Dpt{
 					break;					
 					case "Color":	
 						$R=cmd::byId(str_replace('#','',$option["R"]));
-						if(!is_object($R))
+						if(!is_object($R) && $R->getType() == 'info')
 							return;
 						$G=cmd::byId(str_replace('#','',$option["G"]));
-						if(!is_object($G))
+						if(!is_object($G) && $G->getType() == 'info')
 							return;
 						$B=cmd::byId(str_replace('#','',$option["B"]));
-						if(!is_object($B))
+						if(!is_object($B) && $B->getType() == 'info')
 							return;
 						$listener = listener::byClassAndFunction('eibd', 'UpdateCmdOption', $option);
 						if (!is_object($listener)){
