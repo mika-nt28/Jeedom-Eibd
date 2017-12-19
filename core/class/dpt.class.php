@@ -214,17 +214,17 @@ class Dpt{
 						list($r, $g, $b)=self::html2rgb($value);
 						$cmdR=cmd::byId(str_replace('#','',$option["R"]));
 						if(is_object($cmdR)){
-							$cmdR->event($r);
+							$cmdR->event($cmdR->execute(array('slider'=>$r)));
 							$cmdR->setCache('collectDate', date('Y-m-d H:i:s'));
 						}
 						$cmdG=cmd::byId(str_replace('#','',$option["G"]));
 						if(is_object($cmdG)){
-							$cmdG->event($g);
+							$cmdG->event($cmdG->execute(array('slider'=>$g)));
 							$cmdG->setCache('collectDate', date('Y-m-d H:i:s'));
 						}
 						$cmdB=cmd::byId(str_replace('#','',$option["B"]));
 						if(is_object($cmdB)){
-							$cmdB->event($b);
+							$cmdB->event($cmdB->execute(array('slider'=>$b)));
 							$cmdB->setCache('collectDate', date('Y-m-d H:i:s'));
 						}
 					break;
