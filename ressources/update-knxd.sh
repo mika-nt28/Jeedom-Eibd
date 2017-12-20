@@ -16,8 +16,8 @@ echo 60 > /tmp/compilation_eibd_in_progress
 cd ..
 sudo dpkg -i knxd_*.deb knxd-tools_*.deb
 echo 90 > /tmp/compilation_eibd_in_progress
-sudo systemctl service knxd stop
-sudo systemctl service knxd disable
+sudo systemctl knxd.service stop
+sudo systemctl knxd.service disable
 echo 100 > /tmp/compilation_eibd_in_progress
 sudo rm /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
