@@ -52,7 +52,6 @@ git checkout stable
 sudo dpkg-buildpackage -b -uc -d
 cd /usr/local/src/knxd
 sudo dpkg -i knxd_*.deb knxd-tools_*.deb
-sudo apt-get -f -qy install
 sudo usermod -a -G dialout knxd
 echo 99 > /tmp/compilation_eibd_in_progress
 sudo mkdir /etc/eibd/
