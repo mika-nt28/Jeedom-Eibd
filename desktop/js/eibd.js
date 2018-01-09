@@ -5,7 +5,8 @@ var GadLevel=3;
 $('.templateAction').hide();
 $('.templateAction').first().show();
 $('.eqLogicDisplayCard').each(function(){
-	$('.templateAction[data-template='+$(this).attr('data-template')+']').show();
+	if($(this).attr('data-template') != "")
+		$('.templateAction[data-template='+$(this).attr('data-template')+']').show();
 });
 $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	//Creation du formulaire du template
