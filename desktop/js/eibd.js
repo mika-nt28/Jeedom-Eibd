@@ -46,6 +46,10 @@ $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	form.find('.CmdsTempates').remove();
 	form.append(cmds);
 });
+$('.templateAction').on('click', function () {
+	$('.eqLogicDisplayCard').hide();
+	$('.eqLogicDisplayCard[data-template='+$(this).text()+']').show();
+});
 $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 	$.ajax({
 		type: 'POST',            
