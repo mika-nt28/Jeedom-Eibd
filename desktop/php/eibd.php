@@ -76,7 +76,7 @@ $eqLogics = eqLogic::byType('eibd');
 		</div>
      	   	<legend>{{Mes Modules KNX}}</legend>
 		<div style="text-align : center;">
-			<a class="btn btn-primary btn-sm templateAction" data-template="Tous" style="margin-bottom: 5px;margin-right: 3px;">
+			<a class="btn btn-primary btn-sm templateAction" data-template="" style="margin-bottom: 5px;margin-right: 3px;">
 				<i class="fa fa-asterisk"></i> Tous
 			</a>
 			<?php
