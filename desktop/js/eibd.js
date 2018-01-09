@@ -3,7 +3,7 @@ UpdateVar();
 var template;	
 var GadLevel=3;
 $('.templateAction').hide();
-$('.templateAction[data-template=]').show();
+$('.templateAction').first().show();
 $('.eqLogicDisplayCard').each(function(){
 	$('.templateAction[data-template='+$(this).attr('data-template')+']').show();
 });
