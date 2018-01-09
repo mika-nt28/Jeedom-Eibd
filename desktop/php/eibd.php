@@ -80,11 +80,13 @@ $eqLogics = eqLogic::byType('eibd');
 				<i class="fa fa-asterisk"></i> Tous
 			</a>
 			<?php
+			foreach (eibd::devicesParameters() as $id => $info) {
+				echo '<a class="btn btn-default btn-sm templateAction" data-template="'.$id.'"style="margin-bottom: 5px;margin-right: 3px;">';
+				echo  $info['name'];
+				echo '</a>';
+			}
 			if (count($eqLogics) != 0) {
 				foreach ($eqLogics as $eqLogic) {
-					echo '<a class="btn btn-default btn-sm templateAction" style="margin-bottom: 5px;margin-right: 3px;">';
-					echo $eqLogic->getConfiguration('typeTemplate');
-					echo '</a>';
 				}
 			} 
 			?>
