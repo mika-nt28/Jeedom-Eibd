@@ -76,19 +76,15 @@ $eqLogics = eqLogic::byType('eibd');
 		</div>
      	   	<legend>{{Mes Modules KNX}}</legend>
 		<div style="text-align : center;">
-			<a class="btn btn-primary btn-sm templateAction" style="margin-bottom: 5px;margin-right: 3px;">
+			<a class="btn btn-primary btn-sm templateAction" data-template="Tous" style="margin-bottom: 5px;margin-right: 3px;">
 				<i class="fa fa-asterisk"></i> Tous
 			</a>
 			<?php
 			foreach (eibd::devicesParameters() as $id => $info) {
-				echo '<a class="btn btn-default btn-sm templateAction" data-template="'.$id.'"style="margin-bottom: 5px;margin-right: 3px;">';
+				echo '<a class="btn btn-default btn-sm templateAction" data-template="'.$id.'" style="margin-bottom: 5px;margin-right: 3px;">';
 				echo  $info['name'];
 				echo '</a>';
 			}
-			if (count($eqLogics) != 0) {
-				foreach ($eqLogics as $eqLogic) {
-				}
-			} 
 			?>
 		</div>
 		<div class="eqLogicThumbnailContainer">
