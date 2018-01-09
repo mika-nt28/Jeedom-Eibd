@@ -2,6 +2,11 @@ var AllDpt=null;
 UpdateVar();
 var template;	
 var GadLevel=3;
+$('.templateAction').hide();
+$('.templateAction[data-template=]').show();
+$('.eqLogicDisplayCard').each(function(){
+	$('.templateAction[data-template='+$(this).attr('data-template')+']').show();
+});
 $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	//Creation du formulaire du template
 	var form=$(this).closest('form');
