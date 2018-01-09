@@ -50,7 +50,7 @@ $('.templateAction').on('click', function () {
 	$('.templateAction').removeClass('btn btn-primary');
 	$(this).addClass('btn btn-primary');
 	$('.eqLogicDisplayCard').hide();
-	if($(this).text() == 'Tous')
+	if($(this).attr('data-template') == '')
 		$('.eqLogicDisplayCard').show();
 	else
 		$('.eqLogicDisplayCard[data-template='+$(this).attr('data-template')+']').show();
