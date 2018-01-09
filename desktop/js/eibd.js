@@ -53,7 +53,7 @@ $('.templateAction').on('click', function () {
 	if($(this).text() == 'Tous')
 		$('.eqLogicDisplayCard').show();
 	else
-		$('.eqLogicDisplayCard[data-template='+$(this).text()+']').show();
+		$('.eqLogicDisplayCard[data-template='+$(this).attr('data-template')+']').show();
 });
 $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 	$.ajax({
