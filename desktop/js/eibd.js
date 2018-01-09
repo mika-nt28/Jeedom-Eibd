@@ -47,8 +47,13 @@ $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	form.append(cmds);
 });
 $('.templateAction').on('click', function () {
+	$('.templateAction').removeClass('btn btn-primary');
+	$(this).addClass('btn btn-primary');
 	$('.eqLogicDisplayCard').hide();
-	$('.eqLogicDisplayCard[data-template='+$(this).text()+']').show();
+	if($(this).text() == 'Tous')
+		$('.eqLogicDisplayCard').show();
+	else
+		$('.eqLogicDisplayCard[data-template='+$(this).text()+']').show();
 });
 $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 	$.ajax({
