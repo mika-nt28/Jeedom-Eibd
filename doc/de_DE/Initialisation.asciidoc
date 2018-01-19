@@ -1,4 +1,4 @@
-En validant cette option, Jeedom interrogera tous les équipements configurés avec une demande d'initialisation
+Durch die Validierung dieser Option fragt Jeedom alle konfigurierten Geräte mit einer Initialisierungsanforderung ab.
 
 Achtung :
-Il est important que toutes les Adresses de groupe initialisées aient un objet avec le Flag READ
+Es ist wichtig, dass alle initialisierten Gruppenadressen ein Objekt mit dem Flag READ haben

@@ -1,24 +1,24 @@
-Si vous avez activé l'ajout automatique ou l'import ETS4, les equipements et les commandes ont été créer, mais il reste certain parametre a configurer.
-La suite de ce paragraphe va vous etre utiles.
+Wenn Sie das automatische Hinzufügen oder Importieren der ETS4 aktiviert haben, wurden die Geräte und Befehle erstellt, es sind jedoch noch einige Parameter zu konfigurieren.
+Der nachfolgende Absatz wird Ihnen helfen.
 
-=== Équipement
+=== Gerät
 
-Dans un premier temps, il faut créer un nouvelle équipement et le nommé.
-Comme dans tous les plugins Jeedom vous avez un bouton ajouté un equipement sur la gauche de votre fenetre.
+Als ersten Schritt müssen Sie ein neues Gerät erstellen und benennen.
+Wie bei allen Jeedom Plugins haben Sie einen Schaltfläche zum hinzufügen, links neben Ihrem Fenster.
 
 image::../images/Configuration_equipement.jpg[]
 
-Ce nouvelle équipement a besoin d'être paramétré.
+Dieses neue Gerät muss parametriert werden.
 
-* Nom de l'équipement KNX : Le nom a déjà été paramétrée mais vous avez la possibilité de la changer
-* Adresse Physique de l'équipement : cette element n'est pas tres important et peut etre laissé vide
-* Objet parent : Ce paramétré permet d'ajouter l'équipement dans un objet Jeedom
-* Catégorie : Déclare l'équipement dans une catégorie
-* Visible : Permet de rendre l'équipement visible dans le Dashboard
-* Activer : Permet d'activer l'équipement
-* Délai max entre 2 messages: ce champs permet est utile pour les equipements qui fonctionne sur batterie, il indique a jeedom le delais qu'il doit laissé entre 2 messages avant de vous informé d'un risque de panne.
+* KNX Gerätename : Der Name wurde bereits vorgeschlagen, aber Sie haben die Option ihn zu ändern.
+* Physische Geräteadresse : Dieses Element ist nicht sehr wichtig und kann leer bleiben.
+* Eltern Objekt : Dieser Parameter ermöglicht das hinzufügen von Geräten in einem Jeedom-Objekt.
+* Kategorie : Ordnet das Gerät in eine Kategorie ein.
+* Sichtbar : Erlaubt das Gerät auf den Armaturenbrett sichtbar zu machen.
+* Aktivieren : Erlaubt das Gerät zu aktivieren.
+* Max Zeitraum zwischen 2 Nachrichten : Dieses Feld ermöglicht die Verwendung von Geräten, die mit Batterie betrieben werden, es legt den Zeitraum fest, den Jeedom zwischen 2 Nachrichten warten muss, bevor es Sie über ein Gefährdung einer Fehlfunktion informiert.
 
-=== Commande
+=== Befehle
 
 Maintenant que votre équipement est crée et configurée, on vas pouvoir y ajouter des commandes.
 
