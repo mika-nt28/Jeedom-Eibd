@@ -1,29 +1,29 @@
 === Abhängigkeiten Installation 
-Pour faciliter la mise en place des dépendances, jeedom vas gérer seul l'installation de la suite logiciele EIBD.
+Um die Einrichtung von Abhängigkeiten zu erleichtern, wird Jeedom nur die Installation der EIBD-Software-Suite verwalten.
 
 Dans la cadre réservé aux dépendances, vous allez avoir le statut de l'installation.
-Nous avons aussi la possibilité de consulter le log d'installation en temps réel
-L'installation d'EIBD peux être longue en fonction des performances de la machine qui l'exécute.
-Attention, la compilation est gourmande en ressource et peux entrainer des ralentissements dans votre jeedom
+Sie haben auch die Möglichkeit, das Installationprotokoll in Echtzeit anzuzeigen
+Die Installation von EIBD kann lange dauern, abhängig von der Leistung der Maschine, auf der sie ausgeführt wird.
+Achtung, die Zusammenstellung ist Ressourcen intensiv und kann Verlangsamungen in Ihrem Jeedom verursachen
 
 image::../images/Installation_dependance.jpg[]
 
 === Konfiguration des Plugins und seine Abhängigkeiten
 image::../images/eibd_screenshot_Configuration.jpg[]
 
-Pendant ou après l'installation des dépendances, nous pouvons configurer le plugin et la connexion EIBD à notre passerelle.
+Während oder nach der Installation von Abhängigkeiten können Sie das Plugin und EIBD Verbindung zu Ihrem Gateway konfigurieren.
 
-* Indiquez l'adresse IP de la machine sur lequel tourne EIBD (En local 127.0.0.1).
-* Indiquez le port de connexion EIBD (Par défaut 6720)
-* Indiquez le type de passerelle
-* Indiquez l'adresse de la passerelle
-* Personnalisez l'adresse physique du démon sur votre réseau KNX
-* Choisissez si vos GAD sont à 2 ou 3 niveaux
-* Vous avez le choix de laisser Jeedom détecter et ajouter vos équipements et commandes
+* Geben Sie die IP-Adresse des Geräts ein, auf dem EIBD ausgeführt wird (Local 127.0.0.1).
+* Geben Sie den EIBD-Verbindungsport an (Standard 6720)
+* Geben Sie den Typ des Gateways an
+* Geben Sie die Adresse des Gateways ein
+* Passen Sie die physikalische Adresse des Daemon in Ihrem KNX Netzwerk an
+* Wählen Sie, ob Ihre GADs 2 oder 3 Level haben
+* Sie haben die Wahl, ob Jeedom Ihre Geräte und Befehle suchen und hinzufügen soll
 * Vous avez le choix de laisser Jeedom interroger le bus pour initialiser les valeurs des informations
-* Enfin pensez à sauvegarder.
+* Schließlich, vergessen Sie nicht zu speichern.
 
-Nous pouvons voir le status de configuration et d'activation d'EIBD dans le cadre "Démon"
+Sie können den Konfigurations- und Aktivierungsstatus der EIBD im  "Demon" Rahmen sehen
 
 image::../images/Status_Demon.jpg[]
-Si tous les voyants sont au vert, nous pouvons passer a la suite
+Wenn alle Lichter grün sind, können Sie weitermachen

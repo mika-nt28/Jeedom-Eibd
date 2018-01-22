@@ -1,19 +1,19 @@
-Pour être au plus proche du KNX, le plugin peut se comporter comme un participant.
-On peut donc configurer le plugin pour qu'il réalise des actions automatiquement.
+Um näher am KNX zu sein, kann sich das Plugin wie ein Teilnehmer verhalten.
+Sie können das Plugin so konfigurieren, dass es automatisch Aktionen ausführt.
 
-=== Envoyer une valeur sur le bus. 
-Vous avez sur jeedom un capteur qui n'est pas KNX, mais vous souhaiteriez le lier directement à votre réseau ?
-Pour cela il suffit de configurer votre commande ainsi:
+=== Senden Sie einen Wert auf dem Bus. 
+Sie haben in Jeedom einen Sensor, der kein KNX ist, aber Sie möchten ihn direkt mit Ihrem Netzwerk verbinden?
+Konfigurieren Sie dazu einfach Ihren Befehl wie folgt:
 
-* Créer une commande de type "action"
-* Saisir le GAD qui correspond à l'objet KNX que vous souhaitez mettre à jour
-* Activer le Flag "Transmettre"
-* En retour d'état allez chercher la commande de votre capteur.
+* Erstellen Sie einen Befehl des Typs "Aktion"
+* Geben Sie die GAD ein, die dem KNX-Objekt entspricht, das Sie aktualisieren möchten
+* Aktivieren Sie das Flag "Übertragen"
+* Als Antwort auf den Status erhalten Sie den Befehl Ihres Sensors.
 
 === Exécuter des actions lors de la mise à jour.
 
 Vous avez un interrupteur KNX et vous voulez déclancher un scénario ou une commande jeedom ?
-Pour cela il suffit de configurer votre commande ainsi:
+Konfigurieren Sie dazu einfach Ihren Befehl wie folgt:
 
 * Créer une commande de type "info"
 * Saisir le GAD qui correspond à l'objet KNX que vous souhaitez surveiller.
@@ -24,7 +24,7 @@ Pour cela il suffit de configurer votre commande ainsi:
 === Répondre à une commande "Read" en provenance du bus
 
 Le plugin est capable de répondre à un interrogation du bus.
-Pour cela il suffit de configurer votre commande ainsi:
+Konfigurieren Sie dazu einfach Ihren Befehl wie folgt:
 
 * Créer une commande de type "info"
 * Saisir le GAD qui correspond à l'objet KNX que vous souhaitez surveiller

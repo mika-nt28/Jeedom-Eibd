@@ -20,16 +20,16 @@ Dieses neue Gerät muss parametriert werden.
 
 === Befehle
 
-Maintenant que votre équipement est crée et configurée, on vas pouvoir y ajouter des commandes.
+Nachdem Ihre Geräte erstellt und konfiguriert wurde, können Sie Befehle hinzufügen.
 
 Beispielkonfiguration
 
 image::../images/Configuration_commande.jpg[]
 
-==== Ajout des commandes par template
+==== Hinzufügen von Befehlen nach Vorlage
 
 include::cmdTemplate.asciidoc[]
 
-==== Ajout des commandes manuelement
+==== Befehle manuell hinzufügen
 
 include::cmdManual.asciidoc[]
