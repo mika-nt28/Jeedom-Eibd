@@ -2,7 +2,7 @@
 
 L'Adresse KNX ( elle doit être identique à votre actionneur dimmer )
 
-Etablieren einer Statusrückgabe 0/0/11 (Anpassung an Ihre Konfiguration)
+Etablir un retour Etat 0/0/11 ( A adapter à votre configuration)
 
 Attention au paramètre type "Numérique".
 

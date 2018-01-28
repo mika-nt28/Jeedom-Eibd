@@ -1,4 +1,4 @@
-==== Präsentation
+==== Présentation
 
 Ce DPT permet l'emission ou réception des informations "Choix de tarif" et "Energie réactive". Il est utiliser pour récupérer l'index du compteur ainsi que les états HP/HC ...
 
@@ -16,7 +16,7 @@ Il est sur 6 octets découpé comme suit :
 
 image::../images/presentation_dpt.PNG[]
 
-==== Befehls Konfiguration
+==== Confiugration des commandes
 
 Créer un équipement (Lien vers doc)
 

@@ -1,5 +1,5 @@
 [panel,primary]
-. How to create a command to turn on the light as I have no real switch?  
+.Comment créer une commande pour allumer la lumière alors que physiquement, je n'ai pas d’interrupteur ?  
 --
 Sous jeedom, nous pouvons créer des interrupteurs virtuels en configurant une commande de type action.
 Les éléments importants pour envoyer des informations sur le bus avec jeedom sont :

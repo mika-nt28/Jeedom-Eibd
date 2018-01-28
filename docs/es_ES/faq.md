@@ -1,11 +1,11 @@
 [panel,primary]
-.Wie wird ein Befehl erstellt, um das Licht anzuschalten, obwohl ich physisch keinen Schalter habe?  
+.Comment créer une commande pour allumer la lumière alors que physiquement, je n'ai pas d’interrupteur ?  
 --
-Unter Jeedom können wir virtuelle Schalter erstellen, indem Sie einen Befehl der Art Aktion konfigurieren.
-Die wichtigen Elemente, um Informationen über den Bus mit jeedom zu senden, sind :
+Sous jeedom, nous pouvons créer des interrupteurs virtuels en configurant une commande de type action.
+Les éléments importants pour envoyer des informations sur le bus avec jeedom sont :
 
-* Gruppen Adresse
-* Die TPD, für seine Codierung
+* Adresse de groupe
+* Le DPT pour son encodage
 On verra apparaitre sur le bus monitor la commande envoyée avec l'adresse physique d'eibd
 --
 [panel,primary]

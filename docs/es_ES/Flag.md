@@ -1,4 +1,4 @@
-==== Flag Kommunikation
+==== Flag Communication
 
 * Actif : Cet objet de communication peut interagir avec le bus (lire,
 écrire, etc ...), si un télégramme du bus correspond à cet objet (=

@@ -1,6 +1,6 @@
-==== Create equipment corresponding to your KNX actuator:
+==== Créer un équipement correspondant à votre actionneur KNX :
 
-The KNX address (it must be the same as your actuator)
+L'Adresse KNX ( elle doit être identique à votre actionneur )
 Notre retour d'état : La Groupe Adresse choisie dans l'exemple : 0/1/0 ( A adapter à votre configuration).
 
 image::../images/Eibd_Exemple_ListenerONOFF.jpg[]

@@ -45,7 +45,7 @@
         "Dupliquer": "Kopieren"
     },
     "plugins\/eibd\/desktop\/modal\/eibd.busmoniteur.php": {
-        "Pensez bien à activer l'écriture de tous les messages dans la configuration du plugin et à redémarrer le démon une fois cela fait (N'oubliez pas de tout désactiver une fois fini)": "Pensez bien à activer l'écriture de tous les messages dans la configuration du plugin et à redémarrer le démon une fois cela fait (N'oubliez pas de tout désactiver une fois fini)"
+        "Pensez bien à activer l'écriture de tous les messages dans la configuration du plugin et à redémarrer le démon une fois cela fait (N'oubliez pas de tout désactiver une fois fini)": "Vergessen Sie nicht, das Schreiben aller Nachrichten in der Plugin-Konfiguration zu aktivieren und den Daemon neu zu starten (Denken Sie daran, alles zu deaktivieren, sobald Sie fertig sind)"
     },
     "plugins\/eibd\/plugin_info\/info.xml": {
         "Connecte Jeedom avec votre installation domotique KNX.": "Verbinden Sie Jeedom mit Ihrer KNX Hausautomatisierung",

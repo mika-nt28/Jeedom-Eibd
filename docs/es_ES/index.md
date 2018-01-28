@@ -1,26 +1,26 @@
 = EIB - KNX
 
-== Beschreibung
-Dieses Plugin erlaubt es, unter Jeedom mit Ihrer KNX Installation zu kommunizieren.
-Jeedom wird also ein Gerät Ihrer Installation sein 
-Eine Funktion der Auto-Konfiguration (Auto-inklude, ETS4 Parser), ist implementiert worden, um eine schnelle Einführung zu erlauben
+== Description
+Ce plugin permet de communiquer entre Jeedom avec votre installation KNX.
+Jeedom deviendra donc un equipement de votre installation 
+Des fonction d'auto-configuration (auto-include, parser ETS4) ont été implémenté pour permettre une mise en place rapide
 
-== Installation und Konfiguration
+== Installation et configuration
 include::Installation.asciidoc[]
 
-== Verwendung des Bus Monitors
+== Utilisation du Bus Monitor
 include::BusMonitor.asciidoc[]
 
 == Utilisation du parser ETS
 include::ParserETS.asciidoc[]
 
-== Einrichten von Geräten und Befehlen
+== Paramétrage des equipements et des commandes
 include::Parametrage.asciidoc[]
 
 == Utilisation des Templates
 include::Templates.asciidoc[]
 
-== Verwendung des Jeedom/KNX Gateways   
+== Utilisation de la passerelle Jeedom/KNX
 include::Passerelle.asciidoc[]
 
 == Utilisation de dpt spécifique multi objet (235.000)

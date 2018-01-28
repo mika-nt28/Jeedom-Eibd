@@ -1,6 +1,6 @@
-==== Introduction
+==== Présentation
 
-This TPD allows the issuance or receipt of information "Option price" and "Energy" reactive. It is used to retrieve the index of the counter as well as the HP/HC...
+Ce DPT permet l'emission ou réception des informations "Choix de tarif" et "Energie réactive". Il est utiliser pour récupérer l'index du compteur ainsi que les états HP/HC ...
 
 Les valeurs renvoyé dans le tarif sont les suivantes :
 

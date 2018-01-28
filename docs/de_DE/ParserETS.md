@@ -1,2 +1,0 @@
-Indem Sie Ihre ETS-Projekte (.knxproj) herunterladen, erlauben Sie Jeedom, den gesamten Inhalt Ihrer Installation in den Cache zu laden.
-Il vous suffira par la suite de cree des equipements par template ou manellement en important les gad dans vos equipements

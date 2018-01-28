@@ -1,5 +1,5 @@
-If you have enabled the auto inclusion of equipment you quickly went to get such an equipment.
+Si vous avez activée l'auto inclusion des équipements vous allée rapidement obtenir un équipements de ce genre.
 
-Image:... /images/Eibd_Actionneurs_Parametre.jpg]
+image::../images/Eibd_Actionneurs_Parametre.jpg[]
 
 Il vous restera a le personnalisé, et lui donnée un type de donnée.
