@@ -962,7 +962,6 @@ class eibdCmd extends cmd {
 				$this->setCache('collectDate', date('Y-m-d H:i:s'));
 			break;
 		}
-		return $BusValue;
 	}
 }
 ?>
