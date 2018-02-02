@@ -6,31 +6,31 @@ Jeedom deviendra donc un equipement de votre installation
 Des fonction d'auto-configuration (auto-include, parser ETS4) ont été implémenté pour permettre une mise en place rapide
 
 == Installation et configuration
-include::Installation.asciidoc[]
+include::Installation.md[]
 
 == Utilisation du Bus Monitor
-include::BusMonitor.asciidoc[]
+include::BusMonitor.md[]
 
 == Utilisation du parser ETS
-include::ParserETS.asciidoc[]
+include::ParserETS.md[]
 
 == Paramétrage des equipements et des commandes
-include::Parametrage.asciidoc[]
+include::Parametrage.md[]
 
 == Utilisation des Templates
-include::Templates.asciidoc[]
+include::Templates.md[]
 
 == Utilisation de la passerelle Jeedom/KNX
-include::Passerelle.asciidoc[]
+include::Passerelle.md[]
 
 == Utilisation de dpt spécifique multi objet (235.000)
-include::DptSpecifique.asciidoc[]
+include::DptSpecifique.md[]
 
 == Exemple config actionneur ON/OFF :
-include::ActionneurONOFF.asciidoc[]
+include::ActionneurONOFF.md[]
 
 == Exemple config actionneur Dimmer :
-include::ActionneurDimmer.asciidoc[]
+include::ActionneurDimmer.md[]
 
 == FAQ
-include::faq.asciidoc[]
+include::faq.md[]
