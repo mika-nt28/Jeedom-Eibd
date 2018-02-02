@@ -6,10 +6,10 @@ Nous avons aussi la possibilité de consulter le log d'installation en temps ré
 L'installation d'EIBD peux être longue en fonction des performances de la machine qui l'exécute.
 Attention, la compilation est gourmande en ressource et peux entrainer des ralentissements dans votre jeedom
 
-image::../images/Installation_dependance.jpg[]
+![introduction01](../images/Installation_dependance.jpg)
 
 === Configuration du plugin et de ses dépendances
-image::../images/eibd_screenshot_Configuration.jpg[]
+![introduction01](../images/eibd_screenshot_Configuration.jpg)
 
 Pendant ou après l'installation des dépendances, nous pouvons configurer le plugin et la connexion EIBD à notre passerelle.
 
@@ -25,5 +25,5 @@ Pendant ou après l'installation des dépendances, nous pouvons configurer le pl
 
 Nous pouvons voir le status de configuration et d'activation d'EIBD dans le cadre "Démon"
 
-image::../images/Status_Demon.jpg[]
+![introduction01](../images/Status_Demon.jpg)
 Si tous les voyants sont au vert, nous pouvons passer a la suite
