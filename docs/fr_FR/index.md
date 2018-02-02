@@ -7,8 +7,8 @@ Des fonction d'auto-configuration (auto-include, parser ETS4) ont été impléme
 Installation et configuration
 ===========
 
-Installation des dépendanc
----
+Installation des dépendances
+==
 Pour faciliter la mise en place des dépendances, jeedom vas gérer seul l'installation de la suite logiciele EIBD.
 
 Dans la cadre réservé aux dépendances, vous allez avoir le statut de l'installation.
