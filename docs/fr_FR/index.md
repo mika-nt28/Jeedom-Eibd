@@ -8,7 +8,7 @@ Installation et configuration
 ===========
 
 Installation des dépendances
-==
+---
 Pour faciliter la mise en place des dépendances, jeedom vas gérer seul l'installation de la suite logiciele EIBD.
 
 Dans la cadre réservé aux dépendances, vous allez avoir le statut de l'installation.
@@ -62,15 +62,8 @@ Utilisation du parser ETS
 En téléchargeant votre projets ETS (.knxproj), vous allez permetre a jeedom de charger dans son cache, tout les gad de votre installation.
 Il vous suffira par la suite de cree des equipements par template ou manellement en important les gad dans vos equipements
 
-
-Paramétrage des equipements et des commandes
-===========
-Si vous avez activé l'ajout automatique ou l'import ETS4, les equipements et les commandes ont été créer, mais il reste certain parametre a configurer.
-La suite de ce paragraphe va vous etre utiles.
-
 Équipement
----
-
+===========
 Dans un premier temps, il faut créer un nouvelle équipement et le nommé.
 Comme dans tous les plugins Jeedom vous avez un bouton ajouté un equipement sur la gauche de votre fenetre.
 
@@ -87,7 +80,7 @@ Ce nouvelle équipement a besoin d'être paramétré.
 * Délai max entre 2 messages: ce champs permet est utile pour les equipements qui fonctionne sur batterie, il indique a jeedom le delais qu'il doit laissé entre 2 messages avant de vous informé d'un risque de panne.
 
 Commande
----
+===========
 
 Maintenant que votre équipement est crée et configurée, on vas pouvoir y ajouter des commandes.
 
@@ -95,20 +88,11 @@ Exemple de configuration
 
 ![introduction01](../images/Configuration_commande.jpg)
 
-Ajout des commandes par template
----
-![introduction01](../images/Configuration_commande_tempate.jpg)
 
-Selectionner une template et appliquez le.
-Le plugin ajoutera et configurera les commandes defini par le template, il vous restera plus qu'a configurer les GAD
-
-
-Ajout des commandes manuelement
----
 Nommée votre commande de manière a la retrouve facilement dans Jeedom
 
-==== Configuration KNX
-
+Configuration KNX
+---
 Ces champs de configuration sont important pour la communication 
 * Data Point Type : ce champs est important et indispensable pour l'encodage et décodage de la valeur.
 * Groupe d'addresse : ce champs identifi la commande sur le bus et sur jeedom
@@ -140,19 +124,21 @@ Utilisation des Templates
 Ils existes sur le plugin plusieur templates.
 Ceci vous permette de configurer rapidement un equipement.
 
-=== Creation d'un equipement par template
-
+Creation d'un equipement par template
+---
 ![introduction01](../images/Configuration_equipement_tempate.jpg)
 
 Sur la page principal, un bouton "Ajouter Par template" est présent.
 Il vous suffit de selectionné le template et de saisir les gad, ou d'allez chercher les gad importé par ETS ou inconnue.
 
-=== Creation de commandes par template
-
+Creation de commandes par template
+---
 ![introduction01](../images/Configuration_commande_tempate.jpg)
 
-Nous l'avons vue précédement, dans la page de configuration nous pouvons ajouté des templates.
-Ce mode est pratique si par exemple dans une meme equipement vous voulez ajouté plusieur template
+Selectionner une template et appliquez le.
+Le plugin ajoutera et configurera les commandes defini par le template, il vous restera plus qu'a configurer les GAD
+
+Ce mode est pratique si par exemple dans une meme equipement vous voulez ajouter plusieur template
 
 Flag
 ===========
