@@ -3,13 +3,12 @@
 L'Adresse KNX ( elle doit être identique à votre actionneur )
 Notre retour d'état : La Groupe Adresse choisie dans l'exemple : 0/1/0 ( A adapter à votre configuration).
 
-image::../images/Eibd_Exemple_ListenerONOFF.jpg[]
+![introduction01](../images/Eibd_Exemple_ListenerONOFF.jpg)
 
 Exemple de config ETS de l'actionneur :
 Objet status ( Retour d'Etat ) doit avoir au minimum les flags C R et T, comme ci-dessous.
 
-image::../images/Eibd_Exemple_ETS_actionneur_onoff.jpg[]
-
+![introduction01](../images/Eibd_Exemple_ETS_actionneur_onoff.jpg)
 
 ==== Créer un équipement qui se comportera comme un intérrupteur KNX :
 
@@ -25,4 +24,4 @@ Lumière ON/OFF est notre action qui fera la bascule (visible coché : sera affi
 
 Important : Ne pas oublier de choisir dans le champs Retour d'Etat la commande crée précédemment.
 
-image::../images/Eibd_Exemple_LumONOFF.jpg[]
+![introduction01](../images/Eibd_Exemple_LumONOFF.jpg)
