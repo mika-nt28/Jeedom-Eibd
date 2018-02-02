@@ -6,7 +6,7 @@ La suite de ce paragraphe va vous etre utiles.
 Dans un premier temps, il faut créer un nouvelle équipement et le nommé.
 Comme dans tous les plugins Jeedom vous avez un bouton ajouté un equipement sur la gauche de votre fenetre.
 
-image::../images/Configuration_equipement.jpg[]
+![introduction01](../images/Configuration_equipement.jpg)
 
 Ce nouvelle équipement a besoin d'être paramétré.
 
@@ -24,7 +24,7 @@ Maintenant que votre équipement est crée et configurée, on vas pouvoir y ajou
 
 Exemple de configuration
 
-image::../images/Configuration_commande.jpg[]
+![introduction01](../images/Configuration_commande.jpg)
 
 ==== Ajout des commandes par template
 
