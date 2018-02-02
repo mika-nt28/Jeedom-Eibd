@@ -28,9 +28,9 @@ Exemple de configuration
 
 ==== Ajout des commandes par template
 
-include::cmdTemplate.asciidoc[]
+include::cmdTemplate.md[]
 
 ==== Ajout des commandes manuelement
 
-include::cmdManual.asciidoc[]
+include::cmdManual.md[]
 
