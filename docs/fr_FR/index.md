@@ -1,5 +1,3 @@
-= EIB - KNX
-
 Description 
 ===========
 Ce plugin permet de communiquer entre Jeedom avec votre installation KNX.
@@ -9,7 +7,8 @@ Des fonction d'auto-configuration (auto-include, parser ETS4) ont été impléme
 Installation et configuration
 ===========
 
-> **Installation des dépendance**
+Installation des dépendanc
+---
 Pour faciliter la mise en place des dépendances, jeedom vas gérer seul l'installation de la suite logiciele EIBD.
 
 Dans la cadre réservé aux dépendances, vous allez avoir le statut de l'installation.
@@ -19,7 +18,8 @@ Attention, la compilation est gourmande en ressource et peux entrainer des ralen
 
 ![introduction01](../images/Installation_dependance.jpg)
 
-> **Configuration du plugin et de ses dépendances
+Configuration du plugin et de ses dépendances
+---
 ![introduction01](../images/eibd_screenshot_Configuration.jpg)
 
 Pendant ou après l'installation des dépendances, nous pouvons configurer le plugin et la connexion EIBD à notre passerelle.
@@ -68,7 +68,8 @@ Paramétrage des equipements et des commandes
 Si vous avez activé l'ajout automatique ou l'import ETS4, les equipements et les commandes ont été créer, mais il reste certain parametre a configurer.
 La suite de ce paragraphe va vous etre utiles.
 
-=== Équipement
+Équipement
+---
 
 Dans un premier temps, il faut créer un nouvelle équipement et le nommé.
 Comme dans tous les plugins Jeedom vous avez un bouton ajouté un equipement sur la gauche de votre fenetre.
@@ -85,7 +86,8 @@ Ce nouvelle équipement a besoin d'être paramétré.
 * Activer : Permet d'activer l'équipement
 * Délai max entre 2 messages: ce champs permet est utile pour les equipements qui fonctionne sur batterie, il indique a jeedom le delais qu'il doit laissé entre 2 messages avant de vous informé d'un risque de panne.
 
-=== Commande
+Commande
+---
 
 Maintenant que votre équipement est crée et configurée, on vas pouvoir y ajouter des commandes.
 
@@ -93,15 +95,16 @@ Exemple de configuration
 
 ![introduction01](../images/Configuration_commande.jpg)
 
-==== Ajout des commandes par template
-
+Ajout des commandes par template
+---
 ![introduction01](../images/Configuration_commande_tempate.jpg)
 
 Selectionner une template et appliquez le.
 Le plugin ajoutera et configurera les commandes defini par le template, il vous restera plus qu'a configurer les GAD
 
 
-==== Ajout des commandes manuelement
+Ajout des commandes manuelement
+---
 Nommée votre commande de manière a la retrouve facilement dans Jeedom
 
 ==== Configuration KNX
@@ -112,9 +115,50 @@ Ces champs de configuration sont important pour la communication
 
 ![introduction01](../images/Configuration_commande_knx.jpg)
 
-====== Flag
 
-==== Flag Communication
+Valeur
+---
+* Ajouter une Action: Permet de cree une liste d'action a mené lorsque le bus-monitor vois passer le gad (si le flag Ecrire est actif)
+* Retour d'état : Ce paramètre est visible pour une commande de type action, elle permet a jeedom de liée une info a une action
+* Valeur : Imposer une valeur a votre commande (lorsque l'on est en type action)
+* Inverser : Cette commande permet d'inverser la valeur 
+
+![introduction01](../images/Configuration_commande_valeur.jpg)
+
+Paramètre
+---
+* Type : Selectionez le type de commande
+* Sous type automatique : Laissez le plugin choisir le sous-type le plus adapté a votre DPT
+* Sous Type : Choisissez le sous type le plus adaptée a la valeur transmis ou a transmettre
+* Visible : Permet de rendre visible votre commande sur le dashboard
+* Historiser : Permet d'enregistrer la valeur
+
+Enfin pensez sauvegarder.
+
+Utilisation des Templates
+===========
+Ils existes sur le plugin plusieur templates.
+Ceci vous permette de configurer rapidement un equipement.
+
+=== Creation d'un equipement par template
+
+![introduction01](../images/Configuration_equipement_tempate.jpg)
+
+Sur la page principal, un bouton "Ajouter Par template" est présent.
+Il vous suffit de selectionné le template et de saisir les gad, ou d'allez chercher les gad importé par ETS ou inconnue.
+
+=== Creation de commandes par template
+
+![introduction01](../images/Configuration_commande_tempate.jpg)
+
+Nous l'avons vue précédement, dans la page de configuration nous pouvons ajouté des templates.
+Ce mode est pratique si par exemple dans une meme equipement vous voulez ajouté plusieur template
+
+Flag
+===========
+
+Flag Communication
+---
 
 * Actif : Cet objet de communication peut interagir avec le bus (lire,
 écrire, etc ...), si un télégramme du bus correspond à cet objet (=
@@ -136,8 +180,8 @@ le bus ; ce flag peut aussi être utile pour désactiver certain objets
 sans modifier toute leur config, dans le cadre d'une recherche
 d'erreur par exemple.
 
-
-==== Flag  Lecture / Read
+Flag  Lecture / Read
+---
 
 * Actif : Si le participant voit sur le bus un télégramme de type
 "Lecture de la valeur" qui correspond à cet objet (= l'objet est lié à
@@ -179,8 +223,8 @@ lampe, la valeur de l'objet de l'acteur a de bien plus grandes chances
 de réellement représenter l'état (allumé ou éteint) de la lampe,
 surtout après une panne de courent ou un problème sur le bus ...
 
-
-==== Flag  Ecriture / Write
+Flag  Ecriture / Write
+---
 
 * Actif : La valeur de cet objet sera modifiée si un participant
 envoie sur le bus un télégramme de type "Ecriture de la valeur" qui
@@ -210,9 +254,8 @@ généralement INACTIF :
 actuelle, température réelle mesurée, état (ouvert/fermé) d'un capteur
 du style reed-relais dans une porte ou une fenêtre, ...).
 
-
-
-==== Flag  Transmission/Transmit
+Flag  Transmission/Transmit
+---
 
 * Actif : Si pour une raison quelconque (sauf la réception d'un
 télégramme « Ecriture/Write » vers cet objet) la valeur de cet objet
@@ -250,8 +293,8 @@ groupes MAIS il ne pourra envoyer sa valeur (suite à un flag «
 transmit » actif) que vers UNE SEULE adresse de groupe (la première de
 la liste.
 
-
-==== Flag  Mise-à-jour/Update
+Flag  Mise-à-jour/Update
+---
 
 * Actif : Si un autre participant répond à un télégramme de type
 
@@ -285,7 +328,8 @@ Il existe encore un flag supplémentaire, il n'est pas présent dans
 beaucoup de participants aujourd'hui mais devrait tout doucement se
 généraliser je pense, au moins sur les modules de supervision.
 
-==== Flag Read-on-Init
+Flag Read-on-Init
+---
 
 * Actif : Au démarrage du participant, un télégramme de type "Lecture
 de la valeur" qui correspond à cet objet sera envoyé sur le bus de
@@ -325,49 +369,13 @@ lors d'un reset général du bus).
 
 ![introduction01](../images/Configuration_commande_flag.jpg)
 
-====== Valeur
-* Ajouter une Action: Permet de cree une liste d'action a mené lorsque le bus-monitor vois passer le gad (si le flag Ecrire est actif)
-* Retour d'état : Ce paramètre est visible pour une commande de type action, elle permet a jeedom de liée une info a une action
-* Valeur : Imposer une valeur a votre commande (lorsque l'on est en type action)
-* Inverser : Cette commande permet d'inverser la valeur 
-
-![introduction01](../images/Configuration_commande_valeur.jpg)
-
-====== Paramètre
-* Type : Selectionez le type de commande
-* Sous type automatique : Laissez le plugin choisir le sous-type le plus adapté a votre DPT
-* Sous Type : Choisissez le sous type le plus adaptée a la valeur transmis ou a transmettre
-* Visible : Permet de rendre visible votre commande sur le dashboard
-* Historiser : Permet d'enregistrer la valeur
-
-Enfin pensez sauvegarder.
-
-Utilisation des Templates
-===========
-Ils existes sur le plugin plusieur templates.
-Ceci vous permette de configurer rapidement un equipement.
-
-=== Creation d'un equipement par template
-
-![introduction01](../images/Configuration_equipement_tempate.jpg)
-
-Sur la page principal, un bouton "Ajouter Par template" est présent.
-Il vous suffit de selectionné le template et de saisir les gad, ou d'allez chercher les gad importé par ETS ou inconnue.
-
-=== Creation de commandes par template
-
-![introduction01](../images/Configuration_commande_tempate.jpg)
-
-Nous l'avons vue précédement, dans la page de configuration nous pouvons ajouté des templates.
-Ce mode est pratique si par exemple dans une meme equipement vous voulez ajouté plusieur template
-
-
 Utilisation de la passerelle Jeedom/KNX
 ===========
 Pour être au plus proche du KNX, le plugin peut se comporter comme un participant.
 On peut donc configurer le plugin pour qu'il réalise des actions automatiquement.
 
-=== Envoyer une valeur sur le bus. 
+Envoyer une valeur sur le bus. 
+---
 Vous avez sur jeedom un capteur qui n'est pas KNX, mais vous souhaiteriez le lier directement à votre réseau ?
 Pour cela il suffit de configurer votre commande ainsi:
 
@@ -376,7 +384,8 @@ Pour cela il suffit de configurer votre commande ainsi:
 * Activer le Flag "Transmettre"
 * En retour d'état allez chercher la commande de votre capteur.
 
-=== Exécuter des actions lors de la mise à jour.
+Exécuter des actions lors de la mise à jour.
+---
 
 Vous avez un interrupteur KNX et vous voulez déclancher un scénario ou une commande jeedom ?
 Pour cela il suffit de configurer votre commande ainsi:
@@ -387,7 +396,8 @@ Pour cela il suffit de configurer votre commande ainsi:
 * Saisir la liste des actions à mener.
 * Ajouter le tag #value# dans les options des actions, qui sera remplacé par la valeur recu
 
-=== Répondre à une commande "Read" en provenance du bus
+Répondre à une commande "Read" en provenance du bus
+---
 
 Le plugin est capable de répondre à un interrogation du bus.
 Pour cela il suffit de configurer votre commande ainsi:
@@ -399,7 +409,8 @@ Pour cela il suffit de configurer votre commande ainsi:
 
 Utilisation de dpt spécifique multi objet (235.000)
 ===========
-==== Présentation
+Présentation
+---
 
 Ce DPT permet l'emission ou réception des informations "Choix de tarif" et "Energie réactive". Il est utiliser pour récupérer l'index du compteur ainsi que les états HP/HC ...
 
@@ -407,7 +418,8 @@ Les valeurs renvoyé dans le tarif sont les suivantes :
 
 ![introduction01](../images/valeur_objet_tarif.PNG)
 
-==== Composition du DPT 235.001
+Composition du DPT 235.001
+---
 
 Il est sur 6 octets découpé comme suit :
 
@@ -417,18 +429,19 @@ Il est sur 6 octets découpé comme suit :
 
 ![introduction01](../images/presentation_dpt.PNG)
 
-==== Confiugration des commandes
+Confiugration des commandes
+---
 
 Créer un équipement (Lien vers doc)
 
 Cliquer sur "Ajouter un commande knx" et completer la commande comme ci dessous.
 
-image::../images/.[]
 ![introduction01](../images/Commande_jeedom.PNG)
 
 Exemple config actionneur ON/OFF :
 ===========
-==== Créer un équipement correspondant à votre actionneur KNX :
+Créer un équipement correspondant à votre actionneur KNX :
+---
 
 L'Adresse KNX ( elle doit être identique à votre actionneur )
 Notre retour d'état : La Groupe Adresse choisie dans l'exemple : 0/1/0 ( A adapter à votre configuration).
@@ -440,7 +453,8 @@ Objet status ( Retour d'Etat ) doit avoir au minimum les flags C R et T, comme c
 
 ![introduction01](../images/Eibd_Exemple_ETS_actionneur_onoff.jpg)
 
-==== Créer un équipement qui se comportera comme un intérrupteur KNX :
+Créer un équipement qui se comportera comme un intérrupteur KNX :
+---
 
 son Adresse KNX ( elle peut être identique à un vrai intérrupteur KNX qui remplira les même fonctions)
 
@@ -459,7 +473,8 @@ Important : Ne pas oublier de choisir dans le champs Retour d'Etat la commande c
 
 Exemple config actionneur Dimmer :
 ===========
-==== Créer un équipement correspondant à votre dimmer KNX :
+Créer un équipement correspondant à votre dimmer KNX :
+---
 
 L'Adresse KNX ( elle doit être identique à votre actionneur dimmer )
 
@@ -475,7 +490,8 @@ Objet 0/0/11 Status Brightness value ( Retour d'Etat ) doit avoir au minimum les
 
 ![introduction01](../images/Eibd_Exemple_ETS_dimmer.jpg)
 
-==== Créer la commande pour dimmer votre lumière :
+Créer la commande pour dimmer votre lumière :
+---
 
 La commande Write brightness 5.001 0/0/10 doit avoir le paramètre "Slider" et comme retour état la commande créée précédemment "brightness value"
 
