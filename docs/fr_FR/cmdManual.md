@@ -7,13 +7,13 @@ Ces champs de configuration sont important pour la communication
 * Data Point Type : ce champs est important et indispensable pour l'encodage et décodage de la valeur.
 * Groupe d'addresse : ce champs identifi la commande sur le bus et sur jeedom
 
-image::../images/Configuration_commande_knx.jpg[]
+![introduction01](../images/Configuration_commande_knx.jpg)
 
 ====== Flag
 
-include::Flag.asciidoc[]
+include::Flag.md[]
 
-image::../images/Configuration_commande_flag.jpg[]
+![introduction01](../images/Configuration_commande_flag.jpg)
 
 ====== Valeur
 * Ajouter une Action: Permet de cree une liste d'action a mené lorsque le bus-monitor vois passer le gad (si le flag Ecrire est actif)
@@ -21,7 +21,7 @@ image::../images/Configuration_commande_flag.jpg[]
 * Valeur : Imposer une valeur a votre commande (lorsque l'on est en type action)
 * Inverser : Cette commande permet d'inverser la valeur 
 
-image::../images/Configuration_commande_valeur.jpg[]
+![introduction01](../images/Configuration_commande_valeur.jpg)
 
 ====== Paramètre
 * Type : Selectionez le type de commande
