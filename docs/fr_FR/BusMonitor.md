@@ -10,4 +10,4 @@ Le bus monitor vas mettre en cache egalement tous les gad qu'il voit et qui sont
 Cette liste est disponible sur la page de configuration et il vous est possible d'importer le gad dans un equipement.
 Cette liste est egalment disponible si vous utilisez la creation d'equipement par template.
 
-image::../images/ListeGadInconnue.jpg[]
+![introduction01](../images/ListeGadInconnue.jpg)
