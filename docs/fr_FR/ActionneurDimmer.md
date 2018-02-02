@@ -6,13 +6,13 @@ Etablir un retour Etat 0/0/11 ( A adapter à votre configuration)
 
 Attention au paramètre type "Numérique".
 
-image::../images/Eibd_Exemple_Actionneur_dimmer.jpg[]
+![introduction01](../images/Eibd_Exemple_Actionneur_dimmer.jpg)
 
 Exemple de config ETS de l'actionneur dimmer :
 
 Objet 0/0/11 Status Brightness value ( Retour d'Etat ) doit avoir au minimum les flags C R et T, comme ci-dessous ( de longeur 1 byte).
 
-image::../images/Eibd_Exemple_ETS_dimmer.jpg[]
+![introduction01](../images/Eibd_Exemple_ETS_dimmer.jpg)
 
 ==== Créer la commande pour dimmer votre lumière :
 
@@ -20,4 +20,4 @@ La commande Write brightness 5.001 0/0/10 doit avoir le paramètre "Slider" et c
 
 La commande Diming 3.007 est uniquement là pour que jeedom reconnaissance des variations faites depuis des interrupteurs poussoir KNX.
 
-image::../images/Eibd_Exemple_dimmer.jpg[]
+![introduction01](../images/Eibd_Exemple_dimmer.jpg)
