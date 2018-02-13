@@ -1209,7 +1209,7 @@ class Dpt{
 				"max"=>65535,
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
-				"Unite"=>"lx")
+				"Unite"=>"lx"),
 			"7.600"=> array(
 				"Name"=>"Température de blanc",
 				"Valeurs"=>array(),
