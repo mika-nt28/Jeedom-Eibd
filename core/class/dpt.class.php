@@ -2498,7 +2498,7 @@ class Dpt{
 				"ActionType"=>'slider',
 				"GenericType"=>"DONT",
 				"Option" =>array("ValInfField","StatusCommande"),
-				"Unite" =>"")
+				"Unite" =>""),
 			"251.600"=> array(
 				"Name"=>"Colour RGBW",
 				"Valeurs"=>array(),
