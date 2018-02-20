@@ -107,12 +107,9 @@ Ces champs de configuration sont important pour la communication
 
 Valeur
 ---
-* Ajouter une Action: Permet de cree une liste d'action a mené lorsque le bus-monitor vois passer le gad (si le flag Ecrire est actif)
 * Retour d'état : Ce paramètre est visible pour une commande de type action, elle permet a jeedom de liée une info a une action
 * Valeur : Imposer une valeur a votre commande (lorsque l'on est en type action)
 * Inverser : Cette commande permet d'inverser la valeur 
-
-![introduction01](../images/Configuration_commande_valeur.jpg)
 
 Paramètre
 ---
