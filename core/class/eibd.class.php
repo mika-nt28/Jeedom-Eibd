@@ -145,7 +145,7 @@ class eibd extends eqLogic {
 	//                                                                                                                                               //
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static function SearchUsbGateway(){
-		$bus='0';
+		/*$bus='0';
 		$device='0';
 		$config='1';
 		$interface='0';
@@ -165,7 +165,10 @@ class eibd extends eqLogic {
 				return $bus.':'.$device.':'.$config.':'.$interface;
 			}
 		}
-		return false;
+		return false;*/
+		$cmd="findknxusb | /bin/sed -e '1 d' -e 's/device //' | /bin/cut -d':' -f1-2";
+		$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
+		return exec($cmd,$result);
 	}
 	public static function SearchBroadcastGateway(){	
 		$result=array();

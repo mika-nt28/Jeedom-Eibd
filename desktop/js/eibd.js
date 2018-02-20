@@ -53,6 +53,7 @@ $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	form.append(cmds);
 });
 $('.templateAction').on('click', function () {
+	$('.eqLogicThumbnailContainer').hide();
 	$('.templateAction').removeClass('btn btn-primary');
 	$(this).addClass('btn btn-primary');
 	$('.eqLogicDisplayCard').hide();
@@ -60,6 +61,7 @@ $('.templateAction').on('click', function () {
 		$('.eqLogicDisplayCard').show();
 	else
 		$('.eqLogicDisplayCard[data-template='+$(this).attr('data-template')+']').show();
+	$('.eqLogicThumbnailContainer').show();
 });
 $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 	$.ajax({
