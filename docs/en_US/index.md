@@ -7,6 +7,29 @@ Des fonction d'auto-configuration (auto-include, parser ETS4) ont été impléme
 Installation et configuration
 ===========
 
+Configuration du plugin et de ses dépendances
+---
+![introduction01](../images/eibd_screenshot_Configuration.jpg)
+
+* `Interface de communication` : Choisir l'interface par laquel nous allons nous connecter au bus
+  * `KNXd` : Remplacent d'eibd mais pas encore suffisamenent stable 
+  * `EIBD` : Recommandé
+  * `Manuel` : si EIBD est installer sur une autre machine
+
+### Manuel
+* `Adresse IP` : Indiquez l'adresse IP de la machine sur lequel tourne EIBD.
+* `Port` : Indiquez le port de connexion EIBD (Par défaut 6720)
+
+### KNXD ou EIBD
+* `Type de passerelle` : Indiquez le type de passerelle
+* `Adresse de la passerelle` : Indiquez l'adresse de la passerelle
+* `Adressage des connexions` : Personnalisez l'adresse physique du démon sur votre réseau KNX
+
+### Général
+* `Niveau de Gad` : Séléctioner le niveau de gad choisi lors de la programation des equipements
+
+> Pensez à sauvegarder.
+
 Installation des dépendances
 ---
 Pour faciliter la mise en place des dépendances, jeedom vas gérer seul l'installation de la suite logiciele EIBD.
@@ -17,24 +40,6 @@ L'installation d'EIBD peux être longue en fonction des performances de la machi
 Attention, la compilation est gourmande en ressource et peux entrainer des ralentissements dans votre jeedom
 
 ![introduction01](../images/Installation_dependance.jpg)
-
-Configuration du plugin et de ses dépendances
----
-![introduction01](../images/eibd_screenshot_Configuration.jpg)
-
-Pendant ou après l'installation des dépendances, nous pouvons configurer le plugin et la connexion EIBD à notre passerelle.
-
-* Indiquez l'adresse IP de la machine sur lequel tourne EIBD (En local 127.0.0.1).
-* Indiquez le port de connexion EIBD (Par défaut 6720)
-* Indiquez le type de passerelle
-* Indiquez l'adresse de la passerelle
-* Personnalisez l'adresse physique du démon sur votre réseau KNX
-* Choisissez si vos GAD sont à 2 ou 3 niveaux
-* Vous avez le choix de laisser Jeedom détecter et ajouter vos équipements et commandes
-* Vous avez le choix de laisser Jeedom interroger le bus pour initialiser les valeurs des informations
-* Enfin pensez à sauvegarder.
-
-Nous pouvons voir le status de configuration et d'activation d'EIBD dans le cadre "Démon"
 
 ![introduction01](../images/Status_Demon.jpg)
 Si tous les voyants sont au vert, nous pouvons passer a la suite
@@ -102,12 +107,9 @@ Ces champs de configuration sont important pour la communication
 
 Valeur
 ---
-* Ajouter une Action: Permet de cree une liste d'action a mené lorsque le bus-monitor vois passer le gad (si le flag Ecrire est actif)
 * Retour d'état : Ce paramètre est visible pour une commande de type action, elle permet a jeedom de liée une info a une action
 * Valeur : Imposer une valeur a votre commande (lorsque l'on est en type action)
 * Inverser : Cette commande permet d'inverser la valeur 
-
-![introduction01](../images/Configuration_commande_valeur.jpg)
 
 Paramètre
 ---
