@@ -9,7 +9,7 @@ $eqLogics = eibd::byType('eibd');
 	<thead>
 		<tr>
 			<th>{{ID}}</th>
-			<th>{{GAD}}</th>
+			<th>{{Adresse Physique}}</th>
 			<th>{{Statut}}</th>
 			<th>{{Batterie}}</th>
 			<th>{{Dernière communication}}</th>
