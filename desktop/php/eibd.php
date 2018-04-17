@@ -75,6 +75,7 @@ $eqLogics = eqLogic::byType('eibd');
 			</div>
 		</div>
      	   	<legend>{{Mes Modules KNX}}</legend>
+		<input class="form-control" placeholder="{{Rechercher}}" style="margin-bottom:4px;" id="in_searchEqlogic" />
 		<div style="text-align : center;">
 			<a class="btn btn-primary btn-sm templateAction" data-template="" style="margin-bottom: 5px;margin-right: 3px;">
 				<i class="fa fa-asterisk"></i> Tous
