@@ -76,31 +76,22 @@ $eqLogics = eqLogic::byType('eibd');
 		</div>
      	   	<legend>{{Mes Modules KNX}}</legend>
 		<input class="form-control" placeholder="{{Rechercher}}" style="margin-bottom:4px;" id="in_searchEqlogic" />
-		<div style="text-align : center;">
-			<a class="btn btn-primary btn-sm templateAction" data-template="" style="margin-bottom: 5px;margin-right: 3px;">
-				<i class="fa fa-asterisk"></i> Tous
-			</a>
-			<?php
-			foreach (eibd::devicesParameters() as $id => $info) {
-				echo '<a class="btn btn-default btn-sm templateAction" data-template="'.$id.'" style="margin-bottom: 5px;margin-right: 3px;">';
-				echo  $info['name'];
-				echo '</a>';
-			}
-			?>
-		</div>
 		<div class="eqLogicThumbnailContainer">
 			<?php
 			if (count($eqLogics) == 0) {
 				echo "<br/><br/><br/><center><span style='color:#767676;font-size:1.2em;font-weight: bold;'>{{Vous n'avez pas encore de module KNX, cliquez sur Ajouter pour commencer}}</span></center>";
 			} else {
 				foreach ($eqLogics as $eqLogic) {
-					echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" data-template="' . $eqLogic->getConfiguration('typeTemplate') . '" style="background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >';
+					$opacity = ($eqLogic->getIsEnable()) ? '' : jeedom::getConfiguration('eqLogic:style:noactive');
+					echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" style="background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;' . $opacity . '" >';
+					echo "<center>";
 					$file='plugins/eibd/core/config/devices/'.$eqLogic->getConfiguration('typeTemplate').'.png';
 					if(file_exists($file))
-						echo '<center><img src="'.$file.'" height="105" width="95" /></center>';
+						echo '<img src="'.$file.'" height="105" width="95" />';
 					else
-					   echo '<center><img src="plugins/eibd/plugin_info/eibd_icon.png" height="105" width="95" /></center>';
-					echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>' . $eqLogic->getHumanName(true, true) . '</center></span>';
+						echo '<img src="plugins/eibd/plugin_info/eibd_icon.png" height="105" width="95" />';
+					echo "</center>";
+					echo '<span class="name" style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>' . $eqLogic->getHumanName(true, true) . '</center></span>';
 					echo '</div>';
 				}
 			} 
