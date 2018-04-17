@@ -9,6 +9,7 @@ $eqLogics = eibd::byType('eibd');
 	<thead>
 		<tr>
 			<th>{{ID}}</th>
+			<th>{{Module}}</th>
 			<th>{{Adresse Physique}}</th>
 			<th>{{Statut}}</th>
 			<th>{{Batterie}}</th>
@@ -20,6 +21,7 @@ $eqLogics = eibd::byType('eibd');
 	 <?php
 foreach ($eqLogics as $eqLogic) {
 	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getId() . '</span></td>';
+	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getHumanName(true, true) . '</span></td>';
 	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getLogicalId() . '</span></td>';
 	$status = '<span class="label label-success" style="font-size : 1em;cursor:default;">{{OK}}</span>';
 	if ($eqLogic->getStatus('state') == 'nok') {
