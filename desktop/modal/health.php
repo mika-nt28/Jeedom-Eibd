@@ -8,6 +8,7 @@ $eqLogics = eibd::byType('eibd');
 <table class="table table-condensed tablesorter" id="table_healthopenenocean">
 	<thead>
 		<tr>
+			<th></th>
 			<th>{{ID}}</th>
 			<th>{{Module}}</th>
 			<th>{{Adresse Physique}}</th>
@@ -20,6 +21,11 @@ $eqLogics = eibd::byType('eibd');
 	<tbody>
 	 <?php
 foreach ($eqLogics as $eqLogic) {
+	$file='plugins/eibd/core/config/devices/'.$eqLogic->getConfiguration('typeTemplate').'.png';
+	if(file_exists($file))
+		echo '<td><img src="'.$file.'" height="55"  /></td>';
+	else
+		echo '<td><img src="plugins/eibd/plugin_info/eibd_icon.png" height="55" /></td>';
 	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getId() . '</span></td>';
 	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getHumanName(true, true) . '</span></td>';
 	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getLogicalId() . '</span></td>';
