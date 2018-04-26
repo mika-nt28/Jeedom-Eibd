@@ -655,6 +655,7 @@ class eibd extends eqLogic {
 			return;
 		}
 		log::remove('eibd_update');
+		config::save('lastDependancyInstallTime', date('Y-m-d H:i:s'),'eibd');
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
            			if(exec("command -v knxd") !='')
