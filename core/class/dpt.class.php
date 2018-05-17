@@ -88,15 +88,19 @@ class Dpt{
 				$data= array(($sign << 7) | (($exp & 0x0f)<<3)| (($value >> 8)&0x07), ($value& 0xff));
 				break;
 			case "10": 
-				$value   = new DateTime($value);
-				$wDay = $value->format('N');
-				$hour = $value->format('H');
-				$min = $value->format('i');
-				$sec = $value->format('s');
+				$value   = strtotime($value);
+				$date   = new DateTime(); 
+				$date->setTimestamp($value);
+				$wDay = $date->format('N');
+				$hour = $date->format('H');
+				$min = $date->format('i');
+				$sec = $date->format('s');
 				$data = array(($wDay << 5 )| $hour  , $min , $sec);
 				break;
 			case "11":
-				$value   = new DateTime($value);
+				$value   = strtotime($value);
+				$date   = new DateTime(); 
+				$date->setTimestamp($value);
 				$day = $value->format('d');
 				$month = $value->format('m');
 				$year = $value->format('y');
