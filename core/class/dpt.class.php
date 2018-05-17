@@ -96,8 +96,11 @@ class Dpt{
 				$data = array(($wDay << 5 )| $hour  , $min , $sec);
 				break;
 			case "11":
-				
-				$date   = new DateTime(str_replace('/', '-',$value)); 
+				$date = new DateTime(); 
+				if($value != ''){
+					$value = strtotime(str_replace('/', '-', $value)); 
+					$date->setTimestamp($value);
+				}
 				$day = $date->format('d');
 				$month = $date->format('m');
 				$year = $date->format('y');
