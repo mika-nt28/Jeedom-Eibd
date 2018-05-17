@@ -88,11 +88,7 @@ class Dpt{
 				$data= array(($sign << 7) | (($exp & 0x0f)<<3)| (($value >> 8)&0x07), ($value& 0xff));
 				break;
 			case "10": 
-				$date   = new DateTime(); 
-				if($value != ''){
-					$value = strtotime($value);
-					$date->setTimestamp($value);
-				}
+				$date   = new DateTime($value); 
 				$wDay = $date->format('N');
 				$hour = $date->format('H');
 				$min = $date->format('i');
@@ -100,11 +96,8 @@ class Dpt{
 				$data = array(($wDay << 5 )| $hour  , $min , $sec);
 				break;
 			case "11":
-				$date   = new DateTime(); 
-				if($value != ''){
-					$value = strtotime($value);
-					$date->setTimestamp($value);
-				}
+				
+				$date   = new DateTime(str_replace('/', '-',$value)); 
 				$day = $date->format('d');
 				$month = $date->format('m');
 				$year = $date->format('y');
