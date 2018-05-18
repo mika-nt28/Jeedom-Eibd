@@ -887,6 +887,8 @@ class eibd extends eqLogic {
   }
 class eibdCmd extends cmd {
 	public function preSave() { 
+		if($this->getId() == str_replace('#','',$this->getValue()))
+			throw new Exception(__('Le retour d\'etat ne peut pas etre lui meme', __FILE__));
 		if ($this->getConfiguration('KnxObjectType') == '') 
 			throw new Exception(__('Le type de commande ne peut etre vide', __FILE__));
 		$this->setLogicalId(trim($this->getLogicalId()));    
