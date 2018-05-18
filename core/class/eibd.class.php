@@ -169,7 +169,7 @@ class eibd extends eqLogic {
 		$cmd="findknxusb | /bin/sed -e '1 d' -e 's/device //' | /bin/cut -d':' -f1-2";
 		$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
 		return exec($cmd,$result);
-	}fa
+	}
 	public static function SearchBroadcastGateway(){	
 		$result=array();
 		$ServerPort=1024;
