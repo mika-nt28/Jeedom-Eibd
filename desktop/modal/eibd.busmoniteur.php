@@ -24,7 +24,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 </table>
 <script>
 initTableSorter();
-$('.BusMonitorActio[data-action=remove]').off().on('click', function () {
+$('.BusMonitorAction[data-action=remove]').off().on('click', function () {
 	$('#table_BusMonitor tbody tr').remove();
 });	
 $('body').off().on('eibd::monitor', function (_event,_options) {
