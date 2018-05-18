@@ -220,7 +220,7 @@ $('.Ets4Parser').on('click', function() {
 });
 $('body').on('click','.bt_selectCmdExpression',function() {
 	var el=$(this).closest('.input-group').find('.cmdAttr');
-	var type=$(this).attr('.data-type');
+	var type=$(this).attr('data-type');
 	$(this).value()
 	jeedom.cmd.getSelectModal({cmd: {type: type},eqLogic: {eqType_name : ''}}, function (result) {
 		var value=el.val();
