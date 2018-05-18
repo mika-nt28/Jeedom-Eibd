@@ -220,8 +220,9 @@ $('.Ets4Parser').on('click', function() {
 });
 $('body').on('click','.bt_selectCmdExpression',function() {
 	var el=$(this).closest('.input-group').find('.cmdAttr');
+	var type=$(this).attr('data-type');
 	$(this).value()
-	jeedom.cmd.getSelectModal({cmd: {type: ''},eqLogic: {eqType_name : ''}}, function (result) {
+	jeedom.cmd.getSelectModal({cmd: {type: type},eqLogic: {eqType_name : ''}}, function (result) {
 		var value=el.val();
 		if(value != '')
 			value= value+'|';
@@ -460,7 +461,7 @@ function DptOption(Dpt,div){
 						div.append($('<div class="input-group">')
 								.append($('<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="option" data-l3key="'+Optionvalue+'">'))
 								.append($('<span class="input-group-btn">')
-									.append($('<a class="btn btn-success btn-sm bt_selectCmdExpression">')
+									.append($('<a class="btn btn-success btn-sm bt_selectCmdExpression" data-type="">')
 										.append($('<i class="fa fa-list-alt">')))));
 					}
 				});
@@ -595,7 +596,7 @@ function addCmdToTable(_cmd) {
 			.append($('<div class="input-group">')
 				.append($('<input class="cmdAttr form-control input-sm" data-l1key="value">'))
 				.append($('<span class="input-group-btn">')
-					.append($('<a class="btn btn-success btn-sm bt_selectCmdExpression" id="value">')
+					.append($('<a class="btn btn-success btn-sm bt_selectCmdExpression" data-type="info" id="value">')
 						.append($('<i class="fa fa-list-alt">'))))))
 		  .append($('<div class="option">'))
 		.append($('<div class="ValeurMinMax">')
