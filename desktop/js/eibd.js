@@ -4,10 +4,6 @@ var template;
 var GadLevel=3;
 $('.templateAction').hide();
 $('.templateAction').first().show();
-$('.eqLogicDisplayCard').each(function(){
-	if($(this).attr('data-template') != "")
-		$('.templateAction[data-template='+$(this).attr('data-template')+']').show();
-});
 $('#bt_healthEibd').on('click', function () {
 	$('#md_modal').dialog({title: "{{Santé des équpements KNX}}"});
 	$('#md_modal').load('index.php?v=d&plugin=eibd&modal=health').dialog('open');
