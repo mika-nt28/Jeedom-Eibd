@@ -212,150 +212,6 @@ $('.Ets4Parser').on('click', function() {
 		height: 700,
 		width: 850});
 	$('#md_modal').load('index.php?v=d&modal=eibd.EtsParser&plugin=eibd&type=eibd').dialog('open');
-
-});
-$('body').on('click','.bt_selectCmdExpression',function() {
-	var el=$(this).closest('.input-group').find('.cmdAttr');
-	var type=$(this).attr('data-type');
-	$(this).value()
-	jeedom.cmd.getSelectModal({cmd: {type: type},eqLogic: {eqType_name : ''}}, function (result) {
-		var value=el.val();
-		if(value != '')
-			value= value+'|';
-		value=value+result.human;
-		el.val(value);
-	});  
-});  
-$('body').on( 'click','.bt_read', function() {
-	$.ajax({
-		type: 'POST',            
-		async: false,
-		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
-		data:
-			{
-			action: 'Read',
-			Gad:$(this).closest('.cmd').find('.cmdAttr[data-l1key=logicalId]').val(),
-			},
-		dataType: 'json',
-		global: false,
-		error: function(request, status, error) {},
-		success: function(data) {
-			if (!data.result)
-				$('#div_alert').showAlert({message: 'Aucun message recu', level: 'error'});
-			else
-				$('#div_alert').showAlert({message: 'Message recu', level: 'success'});
-			}
-	});
-});
-$('body').on('keyup','.cmdAttr[data-l1key=logicalId]', function() {
-	var valeur= $(this).val();
-	var Gad=valeur.split('/');
-	if(Gad.length < parseInt(GadLevel)){
-		if($.isNumeric(Gad[Gad.length - 1])){
-			if(Gad[Gad.length - 1]==0 || Gad[Gad.length - 1]+100>254)
-				valeur+='/';
-		}
-	}
-	if(valeur.substr(-2) =='//')
-		valeur.substring(0,-1);
-	if(valeur.substr(-1) =='//' && Gad.length == parseInt(data.result))
-		valeur.substring(0,-1);
-	$(this).val(valeur);
-}); 
-$('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]', function() {
-	DptOption($(this).val(),$(this).closest('.cmd').find('.option'));
-	if ($(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val() == '')
-		$(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val(DptUnit($(this).val()));
-	var valeur =$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').val();
-	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').empty();
-	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').append(DptValue($(this).val()));
-	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+valeur+'"]').prop('selected', true);
-	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
-}); 
-$('body').on('change','.cmdAttr[data-l1key=type]',function() {
-	switch ($(this).val()){
-		case "info":
-			$(this).closest('.cmd').find('.RetourEtat').hide();
-			$(this).closest('.cmd').find('.bt_read').show();
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').hide();
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().show();
-		break;
-		case "action":		
-			$(this).closest('.cmd').find('.RetourEtat').show();
-			$(this).closest('.cmd').find('.bt_read').hide();
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').show();
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().hide();
-		break;
-	}
-	setTimeout(function() {
-		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
-	}.bind(this), 500);
-});			
-$('body').on('change','.cmdAttr[data-l1key=subType]', function() {
-	var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
-	var type=$(this).closest('.cmd').find('.cmdAttr[data-l1key=type]').val();
-	var value=$(this).val();
-	if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').is(':checked')){
-		value=getDptSousType(Dpt,type);
-		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType] option[value="'+value+'"]').prop('selected', true);
-		$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
-	}
-	switch (value){
-		case "slider":
-		case "numeric":
-			$(this).closest('.cmd').find('.ValeurMinMax').show();
-			$(this).closest('.cmd').find('.ValeurUnite').show();
-			$(this).closest('.cmd').find('.ValeurDefaut').hide();
-			$(this).closest('.cmd').find('.listValue').hide();
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
-				.closest('.input-group').parent().show();
-			if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=minValue]').val() == "")
-				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=minValue]').val(DptMin(Dpt));
-			if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=maxValue]').val() == "")
-				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=maxValue]').val(DptMax(Dpt));
-		break;
-		case "other":
-			$(this).closest('.cmd').find('.ValeurDefaut').show();
-			$(this).closest('.cmd').find('.ValeurMinMax').hide();
-			$(this).closest('.cmd').find('.ValeurUnite').hide();
-			$(this).closest('.cmd').find('.listValue').hide();
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
-				.closest('.input-group').parent().hide();
-		break;	
-		case "binary":
-			$(this).closest('.cmd').find('.ValeurMinMax').hide();
-			$(this).closest('.cmd').find('.ValeurUnite').hide();
-			$(this).closest('.cmd').find('.ValeurDefaut').hide();
-			$(this).closest('.cmd').find('.listValue').hide();
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
-				.closest('.input-group').parent().show();
-		break;
-		case "select":
-			$(this).closest('.cmd').find('.ValeurMinMax').hide();
-			$(this).closest('.cmd').find('.ValeurUnite').hide();
-			$(this).closest('.cmd').find('.ValeurDefaut').hide();
-			$(this).closest('.cmd').find('.listValue').show();
-			if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=listValue]').val() == "")
-				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=listValue]').val(DptListSelect(Dpt));
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
-				.closest('.input-group').parent().hide();
-		break;
-		default:
-			$(this).closest('.cmd').find('.ValeurDefaut').hide();
-			$(this).closest('.cmd').find('.ValeurMinMax').hide();
-			$(this).closest('.cmd').find('.ValeurUnite').hide();
-			$(this).closest('.cmd').find('.listValue').hide();
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
-				.closest('.input-group').parent().hide();
-		break;
-	}
-});			
-$('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
-	if($(this).is(':checked')){
-		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',true);
-	}else
-		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',false);
-	
 });
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $(".eqLogicAttr[data-l1key=configuration][data-l2key=device]").html($(".eqLogicAttr[data-l1key=configuration][data-l2key=device] option").sort(function (a, b) {
@@ -682,10 +538,153 @@ function addCmdToTable(_cmd) {
 	tr.append(parmetre);
 	$('#table_cmd tbody').append(tr);
 	DptOption(_cmd.configuration.KnxObjectType,$('#table_cmd tbody tr:last').find('.option'));
+	$('.bt_selectCmdExpression').off().on('click',function() {
+		var el=$(this).closest('.input-group').find('.cmdAttr');
+		var type=$(this).attr('data-type');
+		$(this).value()
+		jeedom.cmd.getSelectModal({cmd: {type: type},eqLogic: {eqType_name : ''}}, function (result) {
+			var value=el.val();
+			if(value != '')
+				value= value+'|';
+			value=value+result.human;
+			el.val(value);
+		});  
+	});  
+	$('.bt_read').off().on( 'click', function() {
+		$.ajax({
+			type: 'POST',            
+			async: false,
+			url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+			data:
+				{
+				action: 'Read',
+				Gad:$(this).closest('.cmd').find('.cmdAttr[data-l1key=logicalId]').val(),
+				},
+			dataType: 'json',
+			global: false,
+			error: function(request, status, error) {},
+			success: function(data) {
+				if (!data.result)
+					$('#div_alert').showAlert({message: 'Aucun message recu', level: 'error'});
+				else
+					$('#div_alert').showAlert({message: 'Message recu', level: 'success'});
+				}
+		});
+	});
+	$('.cmdAttr[data-l1key=logicalId]').off().on('keyup', function() {
+		var valeur= $(this).val();
+		var Gad=valeur.split('/');
+		if(Gad.length < parseInt(GadLevel)){
+			if($.isNumeric(Gad[Gad.length - 1])){
+				if(Gad[Gad.length - 1]==0 || Gad[Gad.length - 1]+100>254)
+					valeur+='/';
+			}
+		}
+		if(valeur.substr(-2) =='//')
+			valeur.substring(0,-1);
+		if(valeur.substr(-1) =='//' && Gad.length == parseInt(data.result))
+			valeur.substring(0,-1);
+		$(this).val(valeur);
+	}); 
+	$('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').off().on('change', function() {
+		DptOption($(this).val(),$(this).closest('.cmd').find('.option'));
+		if ($(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val() == '')
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val(DptUnit($(this).val()));
+		var valeur =$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').val();
+		$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').empty();
+		$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').append(DptValue($(this).val()));
+		$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+valeur+'"]').prop('selected', true);
+		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
+	}); 
+	$('.cmdAttr[data-l1key=type]').off().on('change', function() {
+		switch ($(this).val()){
+			case "info":
+				$(this).closest('.cmd').find('.RetourEtat').hide();
+				$(this).closest('.cmd').find('.bt_read').show();
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').hide();
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().show();
+			break;
+			case "action":		
+				$(this).closest('.cmd').find('.RetourEtat').show();
+				$(this).closest('.cmd').find('.bt_read').hide();
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').show();
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().hide();
+			break;
+		}
+		setTimeout(function() {
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
+		}.bind(this), 500);
+	});			
+	$('.cmdAttr[data-l1key=subType]').off().on('change', function() {
+		var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
+		var type=$(this).closest('.cmd').find('.cmdAttr[data-l1key=type]').val();
+		var value=$(this).val();
+		if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').is(':checked')){
+			value=getDptSousType(Dpt,type);
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType] option[value="'+value+'"]').prop('selected', true);
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
+		}
+		switch (value){
+			case "slider":
+			case "numeric":
+				$(this).closest('.cmd').find('.ValeurMinMax').show();
+				$(this).closest('.cmd').find('.ValeurUnite').show();
+				$(this).closest('.cmd').find('.ValeurDefaut').hide();
+				$(this).closest('.cmd').find('.listValue').hide();
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
+					.closest('.input-group').parent().show();
+				if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=minValue]').val() == "")
+					$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=minValue]').val(DptMin(Dpt));
+				if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=maxValue]').val() == "")
+					$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=maxValue]').val(DptMax(Dpt));
+			break;
+			case "other":
+				$(this).closest('.cmd').find('.ValeurDefaut').show();
+				$(this).closest('.cmd').find('.ValeurMinMax').hide();
+				$(this).closest('.cmd').find('.ValeurUnite').hide();
+				$(this).closest('.cmd').find('.listValue').hide();
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
+					.closest('.input-group').parent().hide();
+			break;	
+			case "binary":
+				$(this).closest('.cmd').find('.ValeurMinMax').hide();
+				$(this).closest('.cmd').find('.ValeurUnite').hide();
+				$(this).closest('.cmd').find('.ValeurDefaut').hide();
+				$(this).closest('.cmd').find('.listValue').hide();
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
+					.closest('.input-group').parent().show();
+			break;
+			case "select":
+				$(this).closest('.cmd').find('.ValeurMinMax').hide();
+				$(this).closest('.cmd').find('.ValeurUnite').hide();
+				$(this).closest('.cmd').find('.ValeurDefaut').hide();
+				$(this).closest('.cmd').find('.listValue').show();
+				if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=listValue]').val() == "")
+					$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=listValue]').val(DptListSelect(Dpt));
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
+					.closest('.input-group').parent().hide();
+			break;
+			default:
+				$(this).closest('.cmd').find('.ValeurDefaut').hide();
+				$(this).closest('.cmd').find('.ValeurMinMax').hide();
+				$(this).closest('.cmd').find('.ValeurUnite').hide();
+				$(this).closest('.cmd').find('.listValue').hide();
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
+					.closest('.input-group').parent().hide();
+			break;
+		}
+	});			
+	$('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').off().on('change', function() {
+		if($(this).is(':checked')){
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',true);
+		}else
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',false);
+	});
 	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');
-	$('#table_cmd tbody tr:last .cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').trigger('change');
-	$('#table_cmd tbody tr:last .cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').trigger('change');
-	$('#table_cmd tbody tr:last').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+init(_cmd.configuration.KnxObjectValue)+'"]').prop('selected', true);		
-	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
-	$('#table_cmd tbody tr:last').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
+	//$('#table_cmd tbody tr:last .cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').trigger('change');
+	//$('#table_cmd tbody tr:last .cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').trigger('change');
+	//$('#table_cmd tbody tr:last').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+init(_cmd.configuration.KnxObjectValue)+'"]').prop('selected', true);		
+	//jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
+	//$('#table_cmd tbody tr:last').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
+	
 }
