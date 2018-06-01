@@ -9,6 +9,7 @@
 	"hasOwnDeamon" : true,
 	"hasDependency" : true,
 	"require" : "2.4",
+	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
 	"category" : "automation protocol",
 	"issue" : "https://github.com/mika-nt28/Jeedom-Eibd/issues",
  	"changelog" : "https://github.com/mika-nt28/Jeedom-Eibd/commits/master",
