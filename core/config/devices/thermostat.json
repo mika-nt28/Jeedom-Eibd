@@ -28,7 +28,7 @@
 				},
 				"display":{
 					"icon":"",
-					"generic_type":"THERMOSTAT_STATE"
+					"generic_type":"POWER"
 				},
 				"isVisible":"1"
 			},{
@@ -139,7 +139,7 @@
 				},
 				"display":{
 					"icon":"",
-					"generic_type":"THERMOSTAT_MODE"
+					"generic_type":""
 				},
 				"isVisible":"0"
 			},{
@@ -165,7 +165,7 @@
 				},
 				"display":{
 					"icon":"",
-					"generic_type":"THERMOSTAT_SET_MODE"
+					"generic_type":""
 				},
 				"value":"Mode de fonctionnement",
 				"isVisible":"1"
