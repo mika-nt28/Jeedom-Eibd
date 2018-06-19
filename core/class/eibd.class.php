@@ -443,7 +443,7 @@ class eibd extends eqLogic {
 					"AdrSource"=>$src->addr,
 					"AdrGroup"=>$dest->addr
 					);
-				self::BusMonitorTraitement($KnxFrameInfo);
+				new _BusMonitorTraitement($KnxFrameInfo);
 			}
 			else
 				break;
@@ -451,38 +451,7 @@ class eibd extends eqLogic {
 		$conBusMonitor->EIBClose();		
 		log::add('eibd', 'debug', 'Deconnexion a EIBD sur le serveur '.$host.':'.$port);	
 	}
-	public static function BusMonitorTraitement($data){
-		$monitor=array("Mode"=>$data["Mode"]);
-		$monitor['AdresseGroupe']= self::formatgaddr($data["AdrGroup"]);
-		$monitor['AdressePhysique']= self::formatiaddr($data["AdrSource"]);
-		if(is_array($data["Data"])){
-			$monitor['data']='0x ';
-			foreach ($data["Data"] as $Byte)
-				$monitor['data'].=sprintf(' %02x',$Byte);
-			}
-		else
-			$monitor['data']='0x '.$data["Data"];
-		$commandes=cmd::byLogicalId(trim($monitor['AdresseGroupe']));
-		if(count($commandes)>0){
-			foreach($commandes as $Commande){
-				$monitor['valeur']=trim(self::UpdateCommande($Commande,$data["Mode"],$data["Data"]));
-				$monitor['cmdJeedom']= $Commande->getHumanName();
-				$monitor['DataPointType']=$Commande->getConfiguration('KnxObjectType');
-			}
-		}else {
-			$dpt=Dpt::getDptFromData($data["Data"]);
-			if($dpt!=false){
-				$monitor['valeur']=Dpt::DptSelectDecode($dpt, $data["Data"]);
-				$monitor['DataPointType']=$dpt;
-				self::addCacheNoGad($monitor);
-			}else
-				$monitor['valeur']="Impossible de convertire la valeur";
-			$monitor['cmdJeedom']= "La commande n'exites pas";
-			log::add('eibd', 'debug', 'Aucune commande avec l\'adresse de groupe  '.$monitor['AdresseGroupe'].' n\'a pas été trouvée');
-		}
-		$monitor['datetime'] = date('d-m-Y H:i:s');
-		event::add('eibd::monitor', json_encode($monitor));
-	}
+	
 	public static function addCacheNoGad($_parameter) {
 		$cache = cache::byKey('eibd::CreateNewGad');
 		$value = json_decode($cache->getValue('[]'), true);
@@ -970,4 +939,40 @@ class eibdCmd extends cmd {
 		}
 	}
 }
+
+class _BusMonitorTraitement{
+	public static function __construct($data){
+		$monitor=array("Mode"=>$data["Mode"]);
+		$monitor['AdresseGroupe']= eibd::formatgaddr($data["AdrGroup"]);
+		$monitor['AdressePhysique']= eibd::formatiaddr($data["AdrSource"]);
+		if(is_array($data["Data"])){
+			$monitor['data']='0x ';
+			foreach ($data["Data"] as $Byte)
+				$monitor['data'].=sprintf(' %02x',$Byte);
+			}
+		else
+			$monitor['data']='0x '.$data["Data"];
+		$commandes=cmd::byLogicalId(trim($monitor['AdresseGroupe']));
+		if(count($commandes)>0){
+			foreach($commandes as $Commande){
+				$monitor['valeur']=trim(eibd::UpdateCommande($Commande,$data["Mode"],$data["Data"]));
+				$monitor['cmdJeedom']= $Commande->getHumanName();
+				$monitor['DataPointType']=$Commande->getConfiguration('KnxObjectType');
+			}
+		}else {
+			$dpt=Dpt::getDptFromData($data["Data"]);
+			if($dpt!=false){
+				$monitor['valeur']=Dpt::DptSelectDecode($dpt, $data["Data"]);
+				$monitor['DataPointType']=$dpt;
+				self::addCacheNoGad($monitor);
+			}else
+				$monitor['valeur']="Impossible de convertire la valeur";
+			$monitor['cmdJeedom']= "La commande n'exites pas";
+			log::add('eibd', 'debug', 'Aucune commande avec l\'adresse de groupe  '.$monitor['AdresseGroupe'].' n\'a pas été trouvée');
+		}
+		$monitor['datetime'] = date('d-m-Y H:i:s');
+		event::add('eibd::monitor', json_encode($monitor));
+	}
+}
+
 ?>
