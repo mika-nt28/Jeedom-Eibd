@@ -422,7 +422,7 @@ class eibd extends eqLogic {
 			if ($len != -1 && $len >= 2) {
 				$mon = self::parseread($len,$buf);
 				$Traitement=new _BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
-				//$Traitement->start(); 
+				$Traitement->run(); 
 			}
 			else
 				break;
