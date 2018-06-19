@@ -927,8 +927,7 @@ class _BusMonitorTraitement{
 			$monitor['data']='0x ';
 			foreach ($data["Data"] as $Byte)
 				$monitor['data'].=sprintf(' %02x',$Byte);
-			}
-		else
+		}else
 			$monitor['data']='0x '.$data["Data"];
 		$commandes=cmd::byLogicalId(trim($monitor['AdresseGroupe']));
 		if(count($commandes)>0){
@@ -938,6 +937,7 @@ class _BusMonitorTraitement{
 				$monitor['DataPointType']=$Commande->getConfiguration('KnxObjectType');
 			}
 		}else {
+			exit();
 			$dpt=Dpt::getDptFromData($data["Data"]);
 			if($dpt!=false){
 				$monitor['valeur']=Dpt::DptSelectDecode($dpt, $data["Data"]);
