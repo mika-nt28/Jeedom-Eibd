@@ -913,7 +913,7 @@ class eibdCmd extends cmd {
 		}
 	}
 }
-class _BusMonitorTraitement extends Thread{
+class _BusMonitorTraitement /*extends Thread*/{
 	
 	public function __construct($Mode,$Data,$AdrSource,$AdrGroup){
 		$this->Mode=$Mode;
