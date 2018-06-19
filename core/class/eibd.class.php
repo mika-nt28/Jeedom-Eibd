@@ -897,6 +897,7 @@ class _BusMonitorTraitement{
 		}
 		$monitor['datetime'] = date('d-m-Y H:i:s');
 		event::add('eibd::monitor', json_encode($monitor));
+		exit();
 	}
 	
 	public static function UpdateCommande($Commande,$Mode,$data){	
@@ -915,7 +916,7 @@ class _BusMonitorTraitement{
 						$valeur=$ActionValue->execCmd();
 						$data= Dpt::DptSelectEncode($dpt, $valeur, $inverse,$Option);
 						eibd::EibdReponse($Commande->getLogicalId(), $data);
-					log::add('eibd', 'debug', $Commande->getHumanName().' Réponse a la demande de valeur');
+						log::add('eibd', 'debug', $Commande->getHumanName().' Réponse a la demande de valeur');
 					}
 				}
 				if($Mode=="Write"  || $Mode=="Reponse"){
