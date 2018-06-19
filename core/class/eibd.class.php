@@ -421,13 +421,8 @@ class eibd extends eqLogic {
 			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);
 			if ($len != -1 && $len >= 2) {
 				$mon = self::parseread($len,$buf);
-				$KnxFrameInfo=array(
-					"Mode"=>$mon[0],
-					"Data"=>$mon[1],
-					"AdrSource"=>$src->addr,
-					"AdrGroup"=>$dest->addr
-					);
-				new _BusMonitorTraitement($KnxFrameInfo);
+				$Traitement=new _BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
+				$Traitement->start(); 
 			}
 			else
 				break;
@@ -918,29 +913,36 @@ class eibdCmd extends cmd {
 		}
 	}
 }
-class _BusMonitorTraitement{
-	public function __construct($data){
-		$monitor=array("Mode"=>$data["Mode"]);
-		$monitor['AdresseGroupe']= $this->formatgaddr($data["AdrGroup"]);
-		$monitor['AdressePhysique']= $this->formatiaddr($data["AdrSource"]);
-		if(is_array($data["Data"])){
+class _BusMonitorTraitement extends Thread{
+	
+	public function __construct($Mode,$Data,$AdrSource,$AdrGroup){
+		$this->Mode=$Mode;
+		$this->Data=$Data;
+		$this->AdrSource=$this->formatiaddr($AdrSource);
+		$this->AdrGroup=$this->formatgaddr($AdrGroup);
+	}
+	public function run(){
+		$monitor['Mode']= $this->Mode;
+		$monitor['AdresseGroupe']= $this->AdrGroup;
+		$monitor['AdressePhysique']= $this->AdrSource;
+		if(is_array($this->Data)){
 			$monitor['data']='0x ';
-			foreach ($data["Data"] as $Byte)
+			foreach ($this->Data as $Byte)
 				$monitor['data'].=sprintf(' %02x',$Byte);
 			}
 		else
-			$monitor['data']='0x '.$data["Data"];
-		$commandes=cmd::byLogicalId(trim($monitor['AdresseGroupe']));
+			$monitor['data']='0x '.$this->Data;
+		$commandes=cmd::byLogicalId($this->AdrGroup);
 		if(count($commandes)>0){
 			foreach($commandes as $Commande){
-				$monitor['valeur']=trim($Commande->UpdateCommande($data["Mode"],$data["Data"]));
+				$monitor['valeur']=trim($Commande->UpdateCommande($this->Mode,$this->Data));
 				$monitor['cmdJeedom']= $Commande->getHumanName();
 				$monitor['DataPointType']=$Commande->getConfiguration('KnxObjectType');
 			}
 		}else {
 			$dpt=Dpt::getDptFromData($data["Data"]);
 			if($dpt!=false){
-				$monitor['valeur']=Dpt::DptSelectDecode($dpt, $data["Data"]);
+				$monitor['valeur']=Dpt::DptSelectDecode($dpt, $this->Data);
 				$monitor['DataPointType']=$dpt;
 				eibd::addCacheNoGad($monitor);
 			}else
@@ -950,7 +952,7 @@ class _BusMonitorTraitement{
 		}
 		$monitor['datetime'] = date('d-m-Y H:i:s');
 		event::add('eibd::monitor', json_encode($monitor));
-		//exit();
+		exit();
 	}
 	private function formatiaddr ($addr){
 		return sprintf ("%d.%d.%d", ($addr >> 12) & 0x0f, ($addr >> 8) & 0x0f, $addr & 0xff);
