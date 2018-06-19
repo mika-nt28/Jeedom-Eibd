@@ -914,7 +914,7 @@ class _BusMonitorTraitement{
 					if(is_object($ActionValue)){
 						$valeur=$ActionValue->execCmd();
 						$data= Dpt::DptSelectEncode($dpt, $valeur, $inverse,$Option);
-						self::EibdReponse($Commande->getLogicalId(), $data);
+						eibd::EibdReponse($Commande->getLogicalId(), $data);
 					log::add('eibd', 'debug', $Commande->getHumanName().' Réponse a la demande de valeur');
 					}
 				}
