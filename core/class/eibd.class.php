@@ -941,7 +941,7 @@ class eibdCmd extends cmd {
 }
 
 class _BusMonitorTraitement{
-	public static function __construct($data){
+	public function __construct($data){
 		$monitor=array("Mode"=>$data["Mode"]);
 		$monitor['AdresseGroupe']= eibd::formatgaddr($data["AdrGroup"]);
 		$monitor['AdressePhysique']= eibd::formatiaddr($data["AdrSource"]);
