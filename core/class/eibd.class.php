@@ -921,8 +921,8 @@ class eibdCmd extends cmd {
 class _BusMonitorTraitement{
 	public function __construct($data){
 		$monitor=array("Mode"=>$data["Mode"]);
-		$monitor['AdresseGroupe']= $this->formatgaddr($data["AdrGroup"]);
-		$monitor['AdressePhysique']= $this->formatiaddr($data["AdrSource"]);
+		$monitor['AdresseGroupe']= self::formatgaddr($data["AdrGroup"]);
+		$monitor['AdressePhysique']= self::formatiaddr($data["AdrSource"]);
 		if(is_array($data["Data"])){
 			$monitor['data']='0x ';
 			foreach ($data["Data"] as $Byte)
@@ -952,10 +952,10 @@ class _BusMonitorTraitement{
 		event::add('eibd::monitor', json_encode($monitor));
 		exit();
 	}
-	private function formatiaddr ($addr){
+	private static function formatiaddr ($addr){
 		return sprintf ("%d.%d.%d", ($addr >> 12) & 0x0f, ($addr >> 8) & 0x0f, $addr & 0xff);
 	}
-	private function formatgaddr ($addr)	{
+	private static function formatgaddr ($addr)	{
 		switch(config::byKey('level', 'eibd')){
 			case '3':
 				return sprintf ("%d/%d/%d", ($addr >> 11) & 0x1f, ($addr >> 8) & 0x07,$addr & 0xff);
