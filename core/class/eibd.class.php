@@ -952,7 +952,7 @@ class _BusMonitorTraitement /*extends Thread*/{
 		}
 		$monitor['datetime'] = date('d-m-Y H:i:s');
 		event::add('eibd::monitor', json_encode($monitor));
-		exit();
+		//exit();
 	}
 	private function formatiaddr ($addr){
 		return sprintf ("%d.%d.%d", ($addr >> 12) & 0x0f, ($addr >> 8) & 0x0f, $addr & 0xff);
