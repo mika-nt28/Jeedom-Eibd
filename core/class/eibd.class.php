@@ -921,8 +921,8 @@ class eibdCmd extends cmd {
 class _BusMonitorTraitement{
 	public function __construct($data){
 		$monitor=array("Mode"=>$data["Mode"]);
-		$monitor['AdresseGroupe']= self::formatgaddr($data["AdrGroup"]);
-		$monitor['AdressePhysique']= self::formatiaddr($data["AdrSource"]);
+		$monitor['AdresseGroupe']= $this->formatgaddr($data["AdrGroup"]);
+		$monitor['AdressePhysique']= $this->formatiaddr($data["AdrSource"]);
 		if(is_array($data["Data"])){
 			$monitor['data']='0x ';
 			foreach ($data["Data"] as $Byte)
@@ -952,69 +952,10 @@ class _BusMonitorTraitement{
 		event::add('eibd::monitor', json_encode($monitor));
 		//exit();
 	}
-	/*public static function UpdateCommande($Commande,$Mode,$data){	
-		$valeur='';
-		$unite='';
-		if (is_object($Commande)) {		
-			$dpt=$Commande->getConfiguration('KnxObjectType');
-			$inverse=$Commande->getConfiguration('inverse');
-			$Option=$Commande->getConfiguration('option');
-			$Option["id"]=$Commande->getId();
-			if ($dpt!= 'aucun' && $dpt!= ''){
-				if($Mode=="Read" && $Commande->getConfiguration('FlagRead')){
-					$ActionData="";
-					$ActionValue=cmd::byId(str_replace('#','',$Commande->getValue()));
-					if(is_object($ActionValue)){
-						$valeur=$ActionValue->execCmd();
-						$data= Dpt::DptSelectEncode($dpt, $valeur, $inverse,$Option);
-						eibd::EibdReponse($Commande->getLogicalId(), $data);
-						log::add('eibd', 'debug', $Commande->getHumanName().' Réponse a la demande de valeur');
-					}
-				}
-				if($Mode=="Write"  || $Mode=="Reponse"){
-					log::add('eibd', 'debug',$Commande->getHumanName().' : Décodage de la valeur avec le DPT :'.$dpt);
-					$valeur=Dpt::DptSelectDecode($dpt, $data, $inverse, $Option);
-					$unite=Dpt::getDptUnite($dpt);
-					if($Commande->getConfiguration('noBatterieCheck')){
-						switch(explode('.',$dpt)[0]){
-							case 1 :
-								$valeur=$valeur*100;
-							break;
-						}
-						$Commande->getEqlogic()->batteryStatus($valeur,date('Y-m-d H:i:s'));
-					}
-					if($Commande->getType() == 'info'&& ($Commande->getConfiguration('FlagWrite') || $Commande->getConfiguration('FlagUpdate'))){
-						log::add('eibd', 'info',$Commande->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
-						$Commande->event($valeur);
-						$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
-					}
-				}
-			}else{
-				$valeur='Aucun DPT n\'est associé a cette adresse';
-			}
-		} 
-		return $valeur.$unite ;
-	}
-	public static function UpdateCmdOption($_options) { 
-		log::add('eibd', 'Info', 'Mise a jours d\'une commande par ses options');
-		$Commande=cmd::byId($_options["id"]);
-		if(!is_object($Commande))
-			return;
-		$dpt=$Commande->getConfiguration('KnxObjectType');
-		$inverse=$Commande->getConfiguration('inverse');
-		$Option=$Commande->getConfiguration('option');
-		$Option["id"]=$Commande->getId();
-		$valeur=Dpt::DptSelectDecode($dpt, null, $inverse, $Option);
-		if($Commande->getType() == 'info'&& ($Commande->getConfiguration('FlagWrite') || $Commande->getConfiguration('FlagUpdate'))){
-			log::add('eibd', 'info',$Commande->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
-			$Commande->event($valeur);
-			$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
-		}
-	}*/
-	private static function formatiaddr ($addr){
+	private function formatiaddr ($addr){
 		return sprintf ("%d.%d.%d", ($addr >> 12) & 0x0f, ($addr >> 8) & 0x0f, $addr & 0xff);
 	}
-	private static function formatgaddr ($addr)	{
+	private function formatgaddr ($addr)	{
 		switch(config::byKey('level', 'eibd')){
 			case '3':
 				return sprintf ("%d/%d/%d", ($addr >> 11) & 0x1f, ($addr >> 8) & 0x07,$addr & 0xff);
