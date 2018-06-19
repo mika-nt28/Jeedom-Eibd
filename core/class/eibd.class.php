@@ -933,7 +933,7 @@ class _BusMonitorTraitement{
 		$commandes=cmd::byLogicalId(trim($monitor['AdresseGroupe']));
 		if(count($commandes)>0){
 			foreach($commandes as $Commande){
-				$monitor['valeur']=trim(self::UpdateCommande($Commande,$data["Mode"],$data["Data"]));
+				$monitor['valeur']=trim($Commande->UpdateCommande($data["Mode"],$data["Data"]));
 				$monitor['cmdJeedom']= $Commande->getHumanName();
 				$monitor['DataPointType']=$Commande->getConfiguration('KnxObjectType');
 			}
@@ -952,7 +952,7 @@ class _BusMonitorTraitement{
 		event::add('eibd::monitor', json_encode($monitor));
 		//exit();
 	}
-	public static function UpdateCommande($Commande,$Mode,$data){	
+	/*public static function UpdateCommande($Commande,$Mode,$data){	
 		$valeur='';
 		$unite='';
 		if (is_object($Commande)) {		
@@ -1010,7 +1010,7 @@ class _BusMonitorTraitement{
 			$Commande->event($valeur);
 			$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
 		}
-	}
+	}*/
 	private static function formatiaddr ($addr){
 		return sprintf ("%d.%d.%d", ($addr >> 12) & 0x0f, ($addr >> 8) & 0x0f, $addr & 0xff);
 	}
