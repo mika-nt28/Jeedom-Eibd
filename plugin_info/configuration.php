@@ -93,6 +93,8 @@ $('.configKey[data-l1key=KnxSoft]').on('change',function(){
 	switch($(this).val()){
 		case 'knxd':
 		case 'eibd':
+			$('configKey[data-l1key=EibdHost]').val('127.0.0.1');
+			$('configKey[data-l1key=EibdPort]').v'l('6720');
 			$('.Soft').show();
 			$('.NoSoft').hide();
 		break;
