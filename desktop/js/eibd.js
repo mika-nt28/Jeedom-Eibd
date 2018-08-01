@@ -8,7 +8,7 @@ $('#bt_healthEibd').on('click', function () {
 	$('#md_modal').dialog({title: "{{Santé des équpements KNX}}"});
 	$('#md_modal').load('index.php?v=d&plugin=eibd&modal=health').dialog('open');
 });
-$('.Include').on('click', function () {
+$('body').on('click','.Include', function () {
 	$(this).removeClass('Include');
 	$(this).find('i').removeClass('fa-pulse');
 	$(this).find('i').removeClass('fa-spinner');
@@ -26,7 +26,7 @@ $('.Include').on('click', function () {
 		}
 	});
 });
-$('.NotInculde').on('click', function () {
+$('body').on('click','.NotInculde', function () {
 	$(this).removeClass('NotInculde');
 	$(this).find('i').removeClass('fa-bullseye');
 	$(this).addClass('Include');
