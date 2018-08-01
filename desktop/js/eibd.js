@@ -8,6 +8,41 @@ $('#bt_healthEibd').on('click', function () {
 	$('#md_modal').dialog({title: "{{Santé des équpements KNX}}"});
 	$('#md_modal').load('index.php?v=d&plugin=eibd&modal=health').dialog('open');
 });
+$('.Include').on('click', function () {
+	$(this).removeClass('Include');
+	$(this).find('i').removeClass('fa-pulse');
+	$(this).find('i').removeClass('fa-spinner');
+	$(this).addClass('NotInculde');
+	$(this).find('i').addClass('fa-bullseye');
+	jeedom.config.save({
+		configuration: {'isInclude':true},
+		plugin:'eibd',
+		error: function (error) {
+			$('#div_alert').showAlert({message: error.message, level: 'danger'});
+		},
+		success: function () {
+			$('#div_alert').showAlert({message: '{{Vous etes sortie du mode Inclusion}}', level: 'success'});
+		}
+	});
+});
+$('.NotInculde').on('click', function () {
+	$(this).removeClass('Include');
+	$(this).find('i').removeClass('fa-bullseye');
+	$(this).addClass('NotInculde');
+	$(this).find('i').addClass('fa-pulse');
+	$(this).find('i').addClass('fa-spinner');
+	jeedom.config.save({
+		configuration: {'isInclude':false},
+		plugin:'eibd',
+		error: function (error) {
+			$('#div_alert').showAlert({message: error.message, level: 'danger'});
+		},
+		success: function () {
+			$('#div_alert').showAlert({message: '{{Vous etes en mode Inclusion}}', level: 'success'});
+		}
+	});
+	
+});
 $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	//Creation du formulaire du template
 	var form=$(this).closest('form');
