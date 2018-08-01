@@ -48,18 +48,18 @@ $eqLogics = eqLogic::byType('eibd');
 			 ?>
 			<div class="cursor Include" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
 				<center>
-					<i class="fa fa-spinner fa-pulse" style="font-size : 5em;color:#767676;"></i>
+					<i class="fa fa-spinner fa-pulse" style="font-size : 5em;color:#406E88;"></i>
 				</center>
-				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Désactiver l'inculsion}}</center></span>
+				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#406E88"><center>{{Désactiver l'inculsion}}</center></span>
 			</div>
 			<?php
 				}else{
 			 ?>
 			<div class="cursor NotInculde" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
 				<center>
-					<i class="fa fa-bullseye" style="font-size : 5em;color:#767676;"></i>
+					<i class="fa fa-bullseye" style="font-size : 5em;color:#406E88;"></i>
 				</center>
-				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Activer l'inculsion}}</center></span>
+				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#406E88"><center>{{Activer l'inculsion}}</center></span>
 			</div>
 			<?php
 				}
