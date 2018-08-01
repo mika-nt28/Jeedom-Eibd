@@ -29,13 +29,3 @@ if (!isConnect('admin')) {
 		<strong class="valeur"></strong>
 	</center>
 </div>
-<script>
-	if (typeof(value.DeviceName) !== 'undefined') 
-		$('.equipement').text(value.DeviceName);
-	$('.source').text(value.AdressePhysique);
-	if (typeof(value.cmdName) !== 'undefined') 
-		$('.cmd').text(value.cmdName);
-	$('.destination').text(value.AdresseGroupe);
-	$('.dpt').text(value.DataPointType);
-	$('.valeur').text(value.valeur);
-</script>
