@@ -943,8 +943,10 @@ class _BusMonitorTraitement /*extends Thread*/{
 			if($dpt!=false){
 				$monitor['valeur']=Dpt::DptSelectDecode($dpt, $this->Data);
 				$monitor['DataPointType']=$dpt;
-				//eibd::addCacheNoGad($monitor);
-				event::add('eibd::GadInconnue', json_encode($monitor));
+				if(config::byKey('isInclude','eibd')
+					//eibd::addCacheNoGad($monitor);
+					event::add('eibd::GadInconnue', json_encode($monitor));
+				
 			}else
 				$monitor['valeur']="Impossible de convertire la valeur";
 			$monitor['cmdJeedom']= "La commande n'exites pas";
