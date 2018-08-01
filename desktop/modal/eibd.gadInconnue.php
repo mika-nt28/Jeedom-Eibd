@@ -29,3 +29,23 @@ if (!isConnect('admin')) {
 		<strong class="valeur"></strong>
 	</center>
 </div>
+<div>
+	<select class="actionIncludeGad">
+		<option value="template">{{Ajouter a un template}}</option>
+		<option value="equipement">{{Ajouter a un equipement}}</option>
+		<option value="save">{{Enregister pour plus tard}}</option>
+	</select>
+</div>
+<script>
+	$('body').off().on('change','.actionIncludeGad', function(){
+		switch($(this).val()){
+			case 'template':
+				//afficher un select avec les template deja configurer
+			break;
+			case 'equipement':
+				//afficher la liste des equipement dans un select (proposer un ajout)
+				//afficher la liste des commande de cette equipement dans un select (proposer un ajout)
+			break;
+		}
+	})
+</script>	
