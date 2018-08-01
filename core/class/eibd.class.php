@@ -914,7 +914,6 @@ class eibdCmd extends cmd {
 	}
 }
 class _BusMonitorTraitement /*extends Thread*/{
-	
 	public function __construct($Mode,$Data,$AdrSource,$AdrGroup){
 		$this->Mode=$Mode;
 		$this->Data=$Data;
@@ -944,7 +943,8 @@ class _BusMonitorTraitement /*extends Thread*/{
 			if($dpt!=false){
 				$monitor['valeur']=Dpt::DptSelectDecode($dpt, $this->Data);
 				$monitor['DataPointType']=$dpt;
-				eibd::addCacheNoGad($monitor);
+				//eibd::addCacheNoGad($monitor);
+				event::add('eibd::GadInconnue', json_encode($monitor));
 			}else
 				$monitor['valeur']="Impossible de convertire la valeur";
 			$monitor['cmdJeedom']= "La commande n'exites pas";
