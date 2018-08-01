@@ -9,11 +9,8 @@ $('#bt_healthEibd').on('click', function () {
 	$('#md_modal').load('index.php?v=d&plugin=eibd&modal=health').dialog('open');
 });
 $('.Include').on('click', function () {
-	$(this).removeClass('Include');
-	$(this).find('i').removeClass('fa-pulse');
-	$(this).find('i').removeClass('fa-spinner');
-	$(this).addClass('NotInculde');
-	$(this).find('i').addClass('fa-bullseye');
+	$(this).parent().append('<div class="cursor NotInculde" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" ><center><i class="fa fa-bullseye" style="font-size : 5em;color:#406E88;"></i></center><span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#406E88"><center>{{Activer l\'inculsion}}</center></span></div>');
+	$(this).remove();
 	jeedom.config.save({
 		configuration: {'isInclude':true},
 		plugin:'eibd',
@@ -26,11 +23,8 @@ $('.Include').on('click', function () {
 	});
 });
 $('.NotInculde').on('click', function () {
-	$(this).removeClass('Include');
-	$(this).find('i').removeClass('fa-bullseye');
-	$(this).addClass('NotInculde');
-	$(this).find('i').addClass('fa-pulse');
-	$(this).find('i').addClass('fa-spinner');
+	$(this).parent().append('<div class="cursor Include" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" ><center><i class="fa fa-spinner fa-pulse" style="font-size : 5em;color:#406E88;"></i></center><span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#406E88"><center>{{Désactiver l\'inculsion}}</center></span></div>');
+	$(this).remove();
 	jeedom.config.save({
 		configuration: {'isInclude':false},
 		plugin:'eibd',
