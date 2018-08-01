@@ -16,7 +16,7 @@ $('body').on('click','.Include', function () {
 	$(this).find('i').addClass('fa-bullseye');
 	$(this).find('span center').text('{{Activer  l\'inculsion}}');
 	jeedom.config.save({
-		configuration: {'isInclude':true},
+		configuration: {'isInclude':false},
 		plugin:'eibd',
 		error: function (error) {
 			$('#div_alert').showAlert({message: error.message, level: 'danger'});
@@ -34,7 +34,7 @@ $('body').on('click','.NotInculde', function () {
 	$(this).find('i').addClass('fa-spinner');;
 	$(this).find('span center').text('{{Désactiver l\'inculsion}}');
 	jeedom.config.save({
-		configuration: {'isInclude':false},
+		configuration: {'isInclude':true},
 		plugin:'eibd',
 		error: function (error) {
 			$('#div_alert').showAlert({message: error.message, level: 'danger'});
