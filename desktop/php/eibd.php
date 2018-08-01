@@ -44,7 +44,7 @@ $eqLogics = eqLogic::byType('eibd');
 				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#406E88"><center>{{Par template}}</center></span>
 			</div>
 			<?php
-				if(config::byKey('internalAddr','eibd') === true){
+				if(config::byKey('isInclude','eibd') == true){
 			 ?>
 			<div class="cursor Include" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
 				<center>
