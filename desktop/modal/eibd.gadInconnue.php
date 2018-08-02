@@ -43,6 +43,7 @@ sendVarToJS('template',eibd::devicesParameters());
 					<option value="save">{{Enregister pour plus tard}}</option>
 				</select>
 			</div>
+			<div class="parameter"></div>
 		</form>
 	</div>
 </div>
@@ -88,7 +89,7 @@ sendVarToJS('template',eibd::devicesParameters());
 						.append($('<option value="'+index+'">')
 							.text(value.name))
 				});
-				$(this).closest('.form-horizontal').append(addTemplate);
+				$(this).find('.parameter').html(addTemplate);
 				$('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 					$(this).closest('.form-horizontal').find('.EqLogicTemplateAttr[data-l1key=cmd]').html('');
 					$.each(template[$(this).value()].cmd,function(index, value){
@@ -103,4 +104,8 @@ sendVarToJS('template',eibd::devicesParameters());
 			break;
 		}
 	})
+function addGadWithTemplate(){
+}
+function addGadInEqLogic(){
+}
 </script>	
