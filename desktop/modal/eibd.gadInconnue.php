@@ -12,7 +12,7 @@ sendVarToJS('template',eibd::devicesParameters());
 		</center>
 		<center>
 			<span style="font-size : 12px;" >Source : </span> 
-			<strong class="source"></strong>
+			<strong class="source EqLogicTemplateAttr" data-l1key="logicalId"></strong>
 		</center>
 		<center>
 			<span style="font-size : 12px;" >Commande : </span> 
