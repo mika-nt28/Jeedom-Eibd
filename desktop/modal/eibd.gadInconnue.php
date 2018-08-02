@@ -47,7 +47,16 @@ sendVarToJS('template',eibd::devicesParameters());
 	</div>
 </div>
 <script>
-	var template;
+	alert(init('newGadOption'));
+	var value=jQuery.parseJSON(init('newGadOption'));
+	if (typeof(value.DeviceName) !== 'undefined') 
+		$('.equipement').text(value.DeviceName);
+	$('.source').text(value.AdressePhysique);
+	if (typeof(value.cmdName) !== 'undefined') 
+		$('.cmd').text(value.cmdName);
+	$('.destination').text(value.AdresseGroupe);
+	$('.dpt').text(value.DataPointType);
+	$('.valeur').text(value.valeur);
 	$('body').off().on('change','.actionIncludeGad', function(){
 		switch($(this).val()){
 			case 'template':
@@ -103,7 +112,7 @@ sendVarToJS('template',eibd::devicesParameters());
 				$(this).closest('.form-horizontal').append(addTemplate);
 				$('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 					$(this).closest('.form-horizontal').find('.EqLogicTemplateAttr[data-l1key=cmd]').html('');
-					$.each(template$(this).value()].cmd,function(index, value){
+					$.each(template[$(this).value()].cmd,function(index, value){
 						$('.EqLogicTemplateAttr[data-l1key=cmd]').append($('<option value="'+index+'">').text(value.name));
 					});
 				});
