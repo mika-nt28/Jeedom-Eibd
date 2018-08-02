@@ -1,5 +1,5 @@
 $('body').off().on('eibd::GadInconnue', function (_event,_options) {
-	var Html= $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd&newGadOption='+_options);
+	var Html= $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd');
 	bootbox.dialog({
 		title: "{{Gad inconnue détecté}}",
 		height: "800px",
