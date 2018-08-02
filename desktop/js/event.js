@@ -23,5 +23,5 @@ $('body').off().on('eibd::GadInconnue', function (_event,_options) {
 				},
 			}
 		});
-	}
+	});
 });
