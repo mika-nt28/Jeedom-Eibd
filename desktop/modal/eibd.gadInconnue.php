@@ -47,8 +47,6 @@ sendVarToJS('template',eibd::devicesParameters());
 	</div>
 </div>
 <script>
-	alert(init('newGadOption'));
-	var value=jQuery.parseJSON(init('newGadOption'));
 	if (typeof(value.DeviceName) !== 'undefined') 
 		$('.equipement').text(value.DeviceName);
 	$('.source').text(value.AdressePhysique);
@@ -60,25 +58,6 @@ sendVarToJS('template',eibd::devicesParameters());
 	$('body').off().on('change','.actionIncludeGad', function(){
 		switch($(this).val()){
 			case 'template':
-				$.ajax({
-					type: 'POST',            
-					async: false,
-					url: 'plugins/eibd/core/ajax/eibd.ajax.php',
-					data:
-						{
-						action: 'getTemplate',
-						},
-					dataType: 'json',
-					global: false,
-					error: function(request, status, error) {},
-					success: function(data) {
-						if (!data.result){
-							$('#div_alert').showAlert({message: 'Aucun message recu', level: 'error'});
-							return;
-						}
-						template=data.result;
-					}
-				});
 				var addTemplate=$('<div class="form-group">')
 						.append($('<label class="col-xs-5 control-label" >')
 							.text('{{Nom de votre équipement}}'))
