@@ -1,5 +1,5 @@
 $('body').off().on('eibd::GadInconnue', function (_event,_options) {
-	var value=jQuery.parseJSON(newGadOption);
+	var value=jQuery.parseJSON(_options);
   	$.load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd', function() {
 		bootbox.dialog({
 			title: "{{Gad inconnue détecté}}",
