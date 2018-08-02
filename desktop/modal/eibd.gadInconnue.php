@@ -2,6 +2,7 @@
 if (!isConnect('admin')) {
 	throw new Exception('401 Unauthorized');
 }
+sendVarToJS('template',eibd::devicesParameters());
 ?>
 <div class="row">
 	<div class="col-md-12">
