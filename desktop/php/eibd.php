@@ -3,6 +3,9 @@ if (!isConnect('admin')) {
     throw new Exception('{{401 - Accès non autorisé}}');
 }
 sendVarToJS('eqType', 'eibd');
+sendVarToJS('GadLevel',config::byKey('level','eibd'));
+sendVarToJS('template',eibd::devicesParameters());
+sendVarToJS('AllDpt',Dpt::All_DPT());
 $eqLogics = eqLogic::byType('eibd');
 ?>
 <div class="row row-overflow">
