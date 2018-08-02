@@ -1,6 +1,3 @@
-var AllDpt=null;
-UpdateVar();
-var template;	
 var GadLevel=3;
 $('.templateAction').hide();
 $('.templateAction').first().show();
@@ -100,25 +97,6 @@ $('.templateAction').on('click', function () {
 	$('.eqLogicThumbnailContainer').show();
 });
 $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
-	$.ajax({
-		type: 'POST',            
-		async: false,
-		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
-		data:
-			{
-			action: 'getTemplate',
-			},
-		dataType: 'json',
-		global: false,
-		error: function(request, status, error) {},
-		success: function(data) {
-			if (!data.result){
-				$('#div_alert').showAlert({message: 'Aucun message recu', level: 'error'});
-				return;
-			}
-			template=data.result;
-		}
-	});
 	var message = $('<div class="row">')
 		.append($('<div class="col-md-12">')
 			.append($('<form class="form-horizontal" onsubmit="return false;">')
@@ -209,13 +187,6 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 		}
 	});
 });
-jeedom.config.load({
-	plugin: 'eibd',
-	configuration: 'level',
-	success: function (data) {
-		GadLevel=data.result;
-	}
-});
 $('.log').on('click', function() {
 	$('#md_modal').dialog({
 		title: "{{log}}",
@@ -274,23 +245,6 @@ $('.Template[data-action=add]').on('click', function () {
 		});
 	}
 });
-function UpdateVar(){
-	$.ajax({
-		type: 'POST',            
-		async: false,
-		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
-		data:{
-			action: 'getAllDpt'
-		},
-		dataType: 'json',
-		global: false,
-		error: function(request, status, error) {},
-		success: function(data) {
-			AllDpt=jQuery.parseJSON(data.result);
-		}
-	});
-	while(AllDpt.length==0);
-}
 function DptUnit(Dpt)	{
 	var result;
 	$.each(AllDpt, function(DptKeyGroup, DptValueGroup){
