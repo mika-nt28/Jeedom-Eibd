@@ -931,7 +931,7 @@ class _BusMonitorTraitement /*extends Thread*/{
 			}
 		else
 			$monitor['data']='0x '.$this->Data;
-		$commandes=cmd::byLogicalId($this->AdrGroup);
+		$commandes=cmd::byLogicalId($this->AdrGroup,'eibdCmd');
 		if(count($commandes)>0){
 			foreach($commandes as $Commande){
 				$monitor['valeur']=trim($Commande->UpdateCommande($this->Mode,$this->Data));
