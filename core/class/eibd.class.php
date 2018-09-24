@@ -931,9 +931,11 @@ class _BusMonitorTraitement /*extends Thread*/{
 			}
 		else
 			$monitor['data']='0x '.$this->Data;
-		$commandes=cmd::byLogicalId($this->AdrGroup,'eibdCmd');
+		$commandes=cmd::byLogicalId($this->AdrGroup);
 		if(count($commandes)>0){
 			foreach($commandes as $Commande){
+				if($Commande->getEqType_name() !='eibdCmd')
+					continue;
 				$monitor['valeur']=trim($Commande->UpdateCommande($this->Mode,$this->Data));
 				$monitor['cmdJeedom']= $Commande->getHumanName();
 				$monitor['DataPointType']=$Commande->getConfiguration('KnxObjectType');
