@@ -1,12 +1,45 @@
-var AllDpt=null;
-UpdateVar();
-var template;	
 var GadLevel=3;
 $('.templateAction').hide();
 $('.templateAction').first().show();
 $('#bt_healthEibd').on('click', function () {
 	$('#md_modal').dialog({title: "{{Santé des équpements KNX}}"});
 	$('#md_modal').load('index.php?v=d&plugin=eibd&modal=health').dialog('open');
+});
+$('body').on('click','.Include', function () {
+	$(this).removeClass('Include');
+	$(this).find('i').removeClass('fa-pulse');
+	$(this).find('i').removeClass('fa-spinner');
+	$(this).addClass('NotInculde');
+	$(this).find('i').addClass('fa-bullseye');
+	$(this).find('span center').text('{{Activer  l\'inculsion}}');
+	jeedom.config.save({
+		configuration: {'isInclude':false},
+		plugin:'eibd',
+		error: function (error) {
+			$('#div_alert').showAlert({message: error.message, level: 'danger'});
+		},
+		success: function () {
+			$('#div_alert').showAlert({message: '{{Vous etes sortie du mode Inclusion}}', level: 'success'});
+		}
+	});
+});
+$('body').on('click','.NotInculde', function () {
+	$(this).removeClass('NotInculde');
+	$(this).find('i').removeClass('fa-bullseye');
+	$(this).addClass('Include');
+	$(this).find('i').addClass('fa-pulse');
+	$(this).find('i').addClass('fa-spinner');;
+	$(this).find('span center').text('{{Désactiver l\'inculsion}}');
+	jeedom.config.save({
+		configuration: {'isInclude':true},
+		plugin:'eibd',
+		error: function (error) {
+			$('#div_alert').showAlert({message: error.message, level: 'danger'});
+		},
+		success: function () {
+			$('#div_alert').showAlert({message: '{{Vous etes en mode Inclusion}}', level: 'success'});
+		}
+	});
 });
 $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	//Creation du formulaire du template
@@ -64,25 +97,6 @@ $('.templateAction').on('click', function () {
 	$('.eqLogicThumbnailContainer').show();
 });
 $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
-	$.ajax({
-		type: 'POST',            
-		async: false,
-		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
-		data:
-			{
-			action: 'getTemplate',
-			},
-		dataType: 'json',
-		global: false,
-		error: function(request, status, error) {},
-		success: function(data) {
-			if (!data.result){
-				$('#div_alert').showAlert({message: 'Aucun message recu', level: 'error'});
-				return;
-			}
-			template=data.result;
-		}
-	});
 	var message = $('<div class="row">')
 		.append($('<div class="col-md-12">')
 			.append($('<form class="form-horizontal" onsubmit="return false;">')
@@ -173,13 +187,6 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 		}
 	});
 });
-jeedom.config.load({
-	plugin: 'eibd',
-	configuration: 'level',
-	success: function (data) {
-		GadLevel=data.result;
-	}
-});
 $('.log').on('click', function() {
 	$('#md_modal').dialog({
 		title: "{{log}}",
@@ -238,23 +245,6 @@ $('.Template[data-action=add]').on('click', function () {
 		});
 	}
 });
-function UpdateVar(){
-	$.ajax({
-		type: 'POST',            
-		async: false,
-		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
-		data:{
-			action: 'getAllDpt'
-		},
-		dataType: 'json',
-		global: false,
-		error: function(request, status, error) {},
-		success: function(data) {
-			AllDpt=jQuery.parseJSON(data.result);
-		}
-	});
-	while(AllDpt.length==0);
-}
 function DptUnit(Dpt)	{
 	var result;
 	$.each(AllDpt, function(DptKeyGroup, DptValueGroup){
