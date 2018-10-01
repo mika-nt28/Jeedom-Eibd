@@ -950,9 +950,9 @@ class _BusMonitorTraitement /*extends Thread*/{
 					eibd::addCacheNoGad($monitor);
 				
 			}else
-				$monitor['valeur']="Impossible de convertire la valeur";
+				$monitor['valeur']="Impossible de convertir la valeur";
 			$monitor['cmdJeedom']= "La commande n'exites pas";
-			log::add('eibd', 'debug', 'Aucune commande avec l\'adresse de groupe  '.$monitor['AdresseGroupe'].' n\'a pas été trouvée');
+			log::add('eibd', 'debug', 'Aucune commande avec l\'adresse de groupe  '.$this->AdrGroup.' n\'a pas été trouvée');
 		}
 		$monitor['datetime'] = date('d-m-Y H:i:s');
 		event::add('eibd::monitor', json_encode($monitor));
