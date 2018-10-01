@@ -946,8 +946,8 @@ class _BusMonitorTraitement /*extends Thread*/{
 				$monitor['valeur']=Dpt::DptSelectDecode($dpt, $this->Data);
 				$monitor['DataPointType']=$dpt;
 				if(config::byKey('isInclude','eibd'))
-					event::add('eibd::GadInconnue', json_encode($monitor));
-					//eibd::addCacheNoGad($monitor);
+					//event::add('eibd::GadInconnue', json_encode($monitor));
+					eibd::addCacheNoGad($monitor);
 				
 			}else
 				$monitor['valeur']="Impossible de convertire la valeur";
