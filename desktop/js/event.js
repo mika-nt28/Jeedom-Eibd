@@ -1,7 +1,7 @@
 $('body').off().on('eibd::GadInconnue', function (_event,_options) {
 	if (typeof(_options) !== 'undefined') {
 		var value=jQuery.parseJSON(_options);
-		var Html=$('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd');
+		var Html=$('<div>').load('index.php?v=d&modal=eibd.gadDetected&plugin=eibd&type=eibd');
 		if (typeof(value.DeviceName) !== 'undefined') 
 			Html.find('.equipement').text(value.DeviceName);
 		Html.find('.source').text(value.AdressePhysique);
