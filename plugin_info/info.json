@@ -8,6 +8,7 @@
 	"maxDependancyInstallTime" : 130,
 	"hasOwnDeamon" : true,
 	"hasDependency" : true,
+	"eventjs" : "event",
 	"require" : "2.4",
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
 	"category" : "automation protocol",

@@ -10,10 +10,6 @@ try {
 	if (init('action') == 'getLog') {
 		ajax::success("<pre>".file_get_contents('/var/log/knx.log')."</pre>");
 	}
-	if (init('action') == 'getAllDpt') {		
- 		$All_DPT=Dpt::All_DPT();		
- 		 ajax::success(json_encode($All_DPT));		
- 	}
 	if (init('action') == 'SearchGatway') {
 		switch(init('type')){
 			case 'ip':
@@ -101,9 +97,6 @@ try {
 			eibd::ParserEtsFile($_FILES['Knxproj']['tmp_name']);
 			ajax::success(cache::byKey('eibd::CreateNewGad')->getValue('[]'));
 		}
-	}
-  	if (init('action') == 'getTemplate') {
-		ajax::success(eibd::devicesParameters());
 	}
   	if (init('action') == 'AppliTemplate') {
 		$EqLogic=eqLogic::byId(init('id'));

@@ -15,14 +15,14 @@
         "Visible": "Visible",
         "Activer": "Enable",
         "Commandes": "Commands",
-        "Ajouter une commande KNX": "Ajouter une commande KNX",
+        "Ajouter une commande KNX": "Add a KNX command",
         "Nom": "Nom",
         "Data Point": "Data Point",
         "GAD": "GAD",
         "Retours d'état": "Retours d'état",
         "Paramètre": "Paramètre",
-        "Supprimer": "Supprimer",
-        "Sauvegarder": "Sauvegarder"
+        "Supprimer": "Delete",
+        "Sauvegarder": "Save"
     },
     "plugins\/eibd\/desktop\/js\/eibd.js": {
         "Bus Moniteur": "Bus Moniteur",

@@ -1,12 +1,45 @@
-var AllDpt=null;
-UpdateVar();
-var template;	
 var GadLevel=3;
 $('.templateAction').hide();
 $('.templateAction').first().show();
 $('#bt_healthEibd').on('click', function () {
 	$('#md_modal').dialog({title: "{{Santé des équpements KNX}}"});
 	$('#md_modal').load('index.php?v=d&plugin=eibd&modal=health').dialog('open');
+});
+$('body').on('click','.Include', function () {
+	$(this).removeClass('Include');
+	$(this).find('i').removeClass('fa-pulse');
+	$(this).find('i').removeClass('fa-spinner');
+	$(this).addClass('NotInculde');
+	$(this).find('i').addClass('fa-bullseye');
+	$(this).find('span center').text('{{Activer  l\'inculsion}}');
+	jeedom.config.save({
+		configuration: {'isInclude':false},
+		plugin:'eibd',
+		error: function (error) {
+			$('#div_alert').showAlert({message: error.message, level: 'danger'});
+		},
+		success: function () {
+			$('#div_alert').showAlert({message: '{{Vous etes sortie du mode Inclusion}}', level: 'success'});
+		}
+	});
+});
+$('body').on('click','.NotInculde', function () {
+	$(this).removeClass('NotInculde');
+	$(this).find('i').removeClass('fa-bullseye');
+	$(this).addClass('Include');
+	$(this).find('i').addClass('fa-pulse');
+	$(this).find('i').addClass('fa-spinner');;
+	$(this).find('span center').text('{{Désactiver l\'inculsion}}');
+	jeedom.config.save({
+		configuration: {'isInclude':true},
+		plugin:'eibd',
+		error: function (error) {
+			$('#div_alert').showAlert({message: error.message, level: 'danger'});
+		},
+		success: function () {
+			$('#div_alert').showAlert({message: '{{Vous etes en mode Inclusion}}', level: 'success'});
+		}
+	});
 });
 $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	//Creation du formulaire du template
@@ -64,25 +97,6 @@ $('.templateAction').on('click', function () {
 	$('.eqLogicThumbnailContainer').show();
 });
 $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
-	$.ajax({
-		type: 'POST',            
-		async: false,
-		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
-		data:
-			{
-			action: 'getTemplate',
-			},
-		dataType: 'json',
-		global: false,
-		error: function(request, status, error) {},
-		success: function(data) {
-			if (!data.result){
-				$('#div_alert').showAlert({message: 'Aucun message recu', level: 'error'});
-				return;
-			}
-			template=data.result;
-		}
-	});
 	var message = $('<div class="row">')
 		.append($('<div class="col-md-12">')
 			.append($('<form class="form-horizontal" onsubmit="return false;">')
@@ -173,13 +187,6 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 		}
 	});
 });
-jeedom.config.load({
-	plugin: 'eibd',
-	configuration: 'level',
-	success: function (data) {
-		GadLevel=data.result;
-	}
-});
 $('.log').on('click', function() {
 	$('#md_modal').dialog({
 		title: "{{log}}",
@@ -238,23 +245,6 @@ $('.Template[data-action=add]').on('click', function () {
 		});
 	}
 });
-function UpdateVar(){
-	$.ajax({
-		type: 'POST',            
-		async: false,
-		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
-		data:{
-			action: 'getAllDpt'
-		},
-		dataType: 'json',
-		global: false,
-		error: function(request, status, error) {},
-		success: function(data) {
-			AllDpt=jQuery.parseJSON(data.result);
-		}
-	});
-	while(AllDpt.length==0);
-}
 function DptUnit(Dpt)	{
 	var result;
 	$.each(AllDpt, function(DptKeyGroup, DptValueGroup){
@@ -486,19 +476,17 @@ function addCmdToTable(_cmd) {
 				.append($('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectValue">')
 					.append(DptValue(init(_cmd.configuration.KnxObjectType)))))));
 	tr.append($('<td>')	
-		.append($('<div class="parametre">')
-			.append($('<span class="type" type="' + init(_cmd.type) + '">')
-				.append(jeedom.cmd.availableType()))
-		.append($('<div>')
-			.append($('<span class="expertModeVisible">')
-				.append($('<label class="checkbox-inline">')
-					.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Sous type automatique}}"  data-l1key="configuration"  data-l2key="subTypeAuto" checked/>'))
-					.append('{{Sous type automatique}}')
-					.append($('<sup>')
-						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-							.attr('title','Laissé Jeedom choisir le sous type'))))))
-			.append($('<span class="subType" subType="'+init(_cmd.subType)+'">'))));
-		var parmetre=$('<td>');
+		.append($('<span class="type" type="' + init(_cmd.type) + '">')
+			.append(jeedom.cmd.availableType()))
+		.append($('<span>')
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Sous type automatique}}"  data-l1key="configuration"  data-l2key="subTypeAuto" checked/>'))
+				.append('{{Sous type automatique}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+						.attr('title','Laissé Jeedom choisir le sous type')))))
+		.append($('<span class="subType" subType="'+init(_cmd.subType)+'">')));
+	var parmetre=$('<td>');
 	if (is_numeric(_cmd.id)) {
 		parmetre.append($('<a class="btn btn-default btn-xs cmdAction" data-action="test">')
 			.append($('<i class="fa fa-rss">')
@@ -511,30 +499,53 @@ function addCmdToTable(_cmd) {
 	parmetre.append($('<a class="btn btn-default btn-xs cmdAction tooltips bt_read">')
 		.append($('<i class="fa fa-rss">')
 			.text('{{Read}}')));
-		parmetre.append($('<div>')
-			.append($('<span>')
-				.append($('<label class="checkbox-inline">')
-					.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Historiser}}" data-l1key="isHistorized" checked/>'))
-					.append('{{Historiser}}')
-					.append($('<sup>')
-						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-						.attr('title','Souhaitez vous Historiser les changements de valeur'))))));
-		parmetre.append($('<div>')
-			.append($('<span>')
-				.append($('<label class="checkbox-inline">')
-					.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Afficher}}" data-l1key="isVisible" checked/>'))
-					.append('{{Afficher}}')
-					.append($('<sup>')
-						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-						.attr('title','Souhaitez vous afficher cette commande sur le dashboard'))))));
-		parmetre.append($('<div>')
-			.append($('<span>')
-				.append($('<label class="checkbox-inline">')
-					.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Niveau Batterie}}" data-l1key="configuration" data-l2key="noBatterieCheck"/>'))
-					.append('{{Niveau Batterie}}')
-					.append($('<sup>')
-						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-							.attr('title','Activer cette option uniquement si votre équipement est sur batterie. Ce groupe d\'adresse correspond au niveau de batterie'))))));
+	parmetre.append($('<div class="CycliqueSend">')
+		.append($('<span>')
+			.append($('<label>')
+				.append('{{Envoie Cyclique}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+						.attr('title','Activer cette option uniquement si vous souhaitez envoyer toutes les minutes votre commande')))
+			 .append($('<div class="input-group">')
+				 .append($('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="CycliqueSend"/>')
+					 .append($('<option value="">')
+						 .append('{{Non}}'))
+					 .append($('<option value="cron">')
+						 .append('{{Toutes les minutes}}'))
+					 .append($('<option value="cron5">')
+						 .append('{{Toutes les 5 minutes}}'))
+					 .append($('<option value="cron15">')
+						 .append('{{Toutes les 15 minutes}}'))
+					 .append($('<option value="cron30">')
+						 .append('{{Toutes les 30 minutes}}'))
+					 .append($('<option value="cronHourly">')
+						 .append('{{Toutes les heures}}'))
+					 .append($('<option value="cronDaily">')
+						 .append('{{Toutes les jours}}')))))));
+	parmetre.append($('<div>')
+		.append($('<span>')
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Historiser}}" data-l1key="isHistorized" checked/>'))
+				.append('{{Historiser}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+					.attr('title','Souhaitez vous Historiser les changements de valeur'))))));
+	parmetre.append($('<div>')
+		.append($('<span>')
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Afficher}}" data-l1key="isVisible" checked/>'))
+				.append('{{Afficher}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+					.attr('title','Souhaitez vous afficher cette commande sur le dashboard'))))));
+	parmetre.append($('<div>')
+		.append($('<span>')
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Niveau Batterie}}" data-l1key="configuration" data-l2key="noBatterieCheck"/>'))
+				.append('{{Niveau Batterie}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+						.attr('title','Activer cette option uniquement si votre équipement est sur batterie. Ce groupe d\'adresse correspond au niveau de batterie'))))));
 	tr.append(parmetre);
 	$('#table_cmd tbody').append(tr);
 	DptOption(_cmd.configuration.KnxObjectType,$('#table_cmd tbody tr:last').find('.option'));
@@ -586,105 +597,102 @@ function addCmdToTable(_cmd) {
 			valeur.substring(0,-1);
 		$(this).val(valeur);
 	}); 
-	$('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').off().on('change', function() {
-		DptOption($(this).val(),$(this).closest('.cmd').find('.option'));
-		if ($(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val() == '')
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val(DptUnit($(this).val()));
-		var valeur =$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').val();
-		$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').empty();
-		$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').append(DptValue($(this).val()));
-		$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+valeur+'"]').prop('selected', true);
-		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
-	}); 
-	$('.cmdAttr[data-l1key=type]').off().on('change', function() {
-		switch ($(this).val()){
-			case "info":
-				$(this).closest('.cmd').find('.RetourEtat').hide();
-				$(this).closest('.cmd').find('.bt_read').show();
-				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').hide();
-				$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().show();
-			break;
-			case "action":		
-				$(this).closest('.cmd').find('.RetourEtat').show();
-				$(this).closest('.cmd').find('.bt_read').hide();
-				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').show();
-				$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().hide();
-			break;
-		}
-		setTimeout(function() {
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
-		}.bind(this), 500);
-	});			
-	$('.cmdAttr[data-l1key=subType]').off().on('change', function() {
-		var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
-		var type=$(this).closest('.cmd').find('.cmdAttr[data-l1key=type]').val();
-		var value=$(this).val();
-		if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').is(':checked')){
-			value=getDptSousType(Dpt,type);
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType] option[value="'+value+'"]').prop('selected', true);
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
-		}
-		switch (value){
-			case "slider":
-			case "numeric":
-				$(this).closest('.cmd').find('.ValeurMinMax').show();
-				$(this).closest('.cmd').find('.ValeurUnite').show();
-				$(this).closest('.cmd').find('.ValeurDefaut').hide();
-				$(this).closest('.cmd').find('.listValue').hide();
-				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
-					.closest('.input-group').parent().show();
-				if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=minValue]').val() == "")
-					$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=minValue]').val(DptMin(Dpt));
-				if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=maxValue]').val() == "")
-					$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=maxValue]').val(DptMax(Dpt));
-			break;
-			case "other":
-				$(this).closest('.cmd').find('.ValeurDefaut').show();
-				$(this).closest('.cmd').find('.ValeurMinMax').hide();
-				$(this).closest('.cmd').find('.ValeurUnite').hide();
-				$(this).closest('.cmd').find('.listValue').hide();
-				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
-					.closest('.input-group').parent().hide();
-			break;	
-			case "binary":
-				$(this).closest('.cmd').find('.ValeurMinMax').hide();
-				$(this).closest('.cmd').find('.ValeurUnite').hide();
-				$(this).closest('.cmd').find('.ValeurDefaut').hide();
-				$(this).closest('.cmd').find('.listValue').hide();
-				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
-					.closest('.input-group').parent().show();
-			break;
-			case "select":
-				$(this).closest('.cmd').find('.ValeurMinMax').hide();
-				$(this).closest('.cmd').find('.ValeurUnite').hide();
-				$(this).closest('.cmd').find('.ValeurDefaut').hide();
-				$(this).closest('.cmd').find('.listValue').show();
-				if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=listValue]').val() == "")
-					$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=listValue]').val(DptListSelect(Dpt));
-				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
-					.closest('.input-group').parent().hide();
-			break;
-			default:
-				$(this).closest('.cmd').find('.ValeurDefaut').hide();
-				$(this).closest('.cmd').find('.ValeurMinMax').hide();
-				$(this).closest('.cmd').find('.ValeurUnite').hide();
-				$(this).closest('.cmd').find('.listValue').hide();
-				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
-					.closest('.input-group').parent().hide();
-			break;
-		}
-	});			
-	$('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').off().on('change', function() {
-		if($(this).is(':checked')){
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',true);
-		}else
-			$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',false);
-	});
-	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');
-	//$('#table_cmd tbody tr:last .cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').trigger('change');
-	//$('#table_cmd tbody tr:last .cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').trigger('change');
-	//$('#table_cmd tbody tr:last').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+init(_cmd.configuration.KnxObjectValue)+'"]').prop('selected', true);		
-	//jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
-	//$('#table_cmd tbody tr:last').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
-	
+	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');	
+	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
+$('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]', function() {
+	DptOption($(this).val(),$(this).closest('.cmd').find('.option'));
+	if ($(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val() == '')
+		$(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val(DptUnit($(this).val()));
+	var valeur =$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').val();
+	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').empty();
+	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').append(DptValue($(this).val()));
+	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+valeur+'"]').prop('selected', true);
+	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
+}); 
+$('body').on('change','.cmdAttr[data-l1key=type]', function() {
+	switch ($(this).val()){
+		case "info":
+			$(this).closest('.cmd').find('.RetourEtat').hide();
+			$(this).closest('.cmd').find('.bt_read').show();
+			$(this).closest('.cmd').find('.CycliqueSend').hide();
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').hide();
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().show();
+		break;
+		case "action":		
+			$(this).closest('.cmd').find('.RetourEtat').show();
+			$(this).closest('.cmd').find('.bt_read').hide();
+			$(this).closest('.cmd').find('.CycliqueSend').show();
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').show();
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().hide();
+		break;
+	}
+	setTimeout(function() {
+		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
+	}.bind(this), 500);
+});			
+$('body').on('change','.cmdAttr[data-l1key=subType]', function() {
+	var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
+	var type=$(this).closest('.cmd').find('.cmdAttr[data-l1key=type]').val();
+	var value=$(this).val();
+	if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').is(':checked')){
+		value=getDptSousType(Dpt,type);
+		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType] option[value="'+value+'"]').prop('selected', true);
+		$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
+	}
+	switch (value){
+		case "slider":
+		case "numeric":
+			$(this).closest('.cmd').find('.ValeurMinMax').show();
+			$(this).closest('.cmd').find('.ValeurUnite').show();
+			$(this).closest('.cmd').find('.ValeurDefaut').hide();
+			$(this).closest('.cmd').find('.listValue').hide();
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
+				.closest('.input-group').parent().show();
+			if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=minValue]').val() == "")
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=minValue]').val(DptMin(Dpt));
+			if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=maxValue]').val() == "")
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=maxValue]').val(DptMax(Dpt));
+		break;
+		case "other":
+			$(this).closest('.cmd').find('.ValeurDefaut').show();
+			$(this).closest('.cmd').find('.ValeurMinMax').hide();
+			$(this).closest('.cmd').find('.ValeurUnite').hide();
+			$(this).closest('.cmd').find('.listValue').hide();
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
+				.closest('.input-group').parent().hide();
+		break;	
+		case "binary":
+			$(this).closest('.cmd').find('.ValeurMinMax').hide();
+			$(this).closest('.cmd').find('.ValeurUnite').hide();
+			$(this).closest('.cmd').find('.ValeurDefaut').hide();
+			$(this).closest('.cmd').find('.listValue').hide();
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
+				.closest('.input-group').parent().show();
+		break;
+		case "select":
+			$(this).closest('.cmd').find('.ValeurMinMax').hide();
+			$(this).closest('.cmd').find('.ValeurUnite').hide();
+			$(this).closest('.cmd').find('.ValeurDefaut').hide();
+			$(this).closest('.cmd').find('.listValue').show();
+			if($(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=listValue]').val() == "")
+				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=listValue]').val(DptListSelect(Dpt));
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
+				.closest('.input-group').parent().hide();
+		break;
+		default:
+			$(this).closest('.cmd').find('.ValeurDefaut').hide();
+			$(this).closest('.cmd').find('.ValeurMinMax').hide();
+			$(this).closest('.cmd').find('.ValeurUnite').hide();
+			$(this).closest('.cmd').find('.listValue').hide();
+			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=inverse]')
+				.closest('.input-group').parent().hide();
+		break;
+	}
+});			
+$('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
+	if($(this).is(':checked')){
+		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',true);
+	}else
+		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',false);
+});
