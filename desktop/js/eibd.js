@@ -501,7 +501,7 @@ function addCmdToTable(_cmd) {
 	parmetre.append($('<a class="btn btn-default btn-xs cmdAction tooltips bt_read">')
 		.append($('<i class="fa fa-rss">')
 			.text('{{Read}}')));
-	parmetre.append($('<div class="Cyclique">')
+	parmetre.append($('<div class="CycliqueSend">')
 		.append($('<span>')
 			.append($('<label class="checkbox-inline">')
 				.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Envoie Cyclique}}" data-l1key="configuration" data-l2key="CycliqueSend"/>'))
