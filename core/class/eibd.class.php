@@ -503,7 +503,7 @@ class eibd extends eqLogic {
 		$Event = cmd::byId($_options['event_id']);
 		if(!is_object($Event)){
 			log::add('eibd','error','Impossible de touvée l\'objet '.$_options['event_id']);
-			return
+			return;
 		}
 		log::add('eibd','info',$Event->getHumanName().' est mise a jour: '.$_options['value']);
 		$Commande = cmd::byId($_options['eibdCmd_id']);
