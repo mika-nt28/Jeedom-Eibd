@@ -501,20 +501,24 @@ class eibd extends eqLogic {
 	}
 	public static function TransmitValue($_options) 	{
 		$Event = cmd::byId($_options['event_id']);
-		if(!is_object($Event))
+		if(!is_object($Event)){
 			log::add('eibd','error','Impossible de touvée l\'objet '.$_options['event_id']);
+			return
+		}
 		log::add('eibd','info',$Event->getHumanName().' est mise a jour: '.$_options['value']);
 		$Commande = cmd::byId($_options['eibdCmd_id']);
-		if (is_object($Commande) && $Commande->getIsEnable()) {
-			$ga=$Commande->getLogicalId();
-			$dpt=$Commande->getConfiguration('KnxObjectType');
-			$inverse=$Commande->getConfiguration('inverse');
-			$Option=$Commande->getConfiguration('option');
-			$Option["id"]=$Commande->getId();
-			$data= Dpt::DptSelectEncode($dpt, $_options['value'], $inverse,$Option);
-			$WriteBusValue=eibd::EibdWrite($ga, $data);
-			log::add('eibd','info',$Commande->getHumanName().': Envoie de la valeur '.$_options['value']);
+		if (is_object($Commande)){
+			log::add('eibd','error','Impossible de touvée la commande '.$_options['eibdCmd_id']);
+			return;
 		}
+		$ga=$Commande->getLogicalId();
+		$dpt=$Commande->getConfiguration('KnxObjectType');
+		$inverse=$Commande->getConfiguration('inverse');
+		$Option=$Commande->getConfiguration('option');
+		$Option["id"]=$Commande->getId();
+		$data= Dpt::DptSelectEncode($dpt, $_options['value'], $inverse,$Option);
+		$WriteBusValue=eibd::EibdWrite($ga, $data);
+		log::add('eibd','info',$Commande->getHumanName().': Envoie de la valeur '.$_options['value']);
 	}
 	public static function AddEquipement($Name,$_logicalId) 	{
 		$Equipement = self::byLogicalId($_logicalId, 'eibd');
