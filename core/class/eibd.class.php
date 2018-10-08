@@ -517,22 +517,22 @@ class eibd extends eqLogic {
 		}
 	}
 	public static function AddEquipement($Name,$_logicalId) 	{
-			$Equipement = self::byLogicalId($_logicalId, 'eibd');
-			if (is_object($Equipement)) {
-				$Equipement->setIsEnable(1);
-				$Equipement->save();
-			} else {
-				$Equipement = new eibd();
-				$Equipement->setName($Name);
-				$Equipement->setLogicalId($_logicalId);
-				$Equipement->setObject_id(null);
-				$Equipement->setEqType_name('eibd');
-				$Equipement->setIsEnable(1);
-				$Equipement->setIsVisible(1);
-				$Equipement->save();
-			}
-			return $Equipement;
+		$Equipement = self::byLogicalId($_logicalId, 'eibd');
+		if (is_object($Equipement)) {
+			$Equipement->setIsEnable(1);
+			$Equipement->save();
+		} else {
+			$Equipement = new eibd();
+			$Equipement->setName($Name);
+			$Equipement->setLogicalId($_logicalId);
+			$Equipement->setObject_id(null);
+			$Equipement->setEqType_name('eibd');
+			$Equipement->setIsEnable(1);
+			$Equipement->setIsVisible(1);
+			$Equipement->save();
 		}
+		return $Equipement;
+	}
 	public static function AddCommande($Equipement,$Name,$_logicalId,$Type="info", $Dpt='') {
 		$Commande = $Equipement->getCmd(null,$_logicalId);
 		if (!is_object($Commande))
