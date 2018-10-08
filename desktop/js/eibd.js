@@ -480,7 +480,7 @@ function addCmdToTable(_cmd) {
 			.append($('<span class="type" type="' + init(_cmd.type) + '">')
 				.append(jeedom.cmd.availableType()))
 		.append($('<div>')
-			.append($('<span class="expertModeVisible">')
+			.append($('<span>')
 				.append($('<label class="checkbox-inline">')
 					.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Sous type automatique}}"  data-l1key="configuration"  data-l2key="subTypeAuto" checked/>'))
 					.append('{{Sous type automatique}}')
@@ -501,30 +501,38 @@ function addCmdToTable(_cmd) {
 	parmetre.append($('<a class="btn btn-default btn-xs cmdAction tooltips bt_read">')
 		.append($('<i class="fa fa-rss">')
 			.text('{{Read}}')));
-		parmetre.append($('<div>')
-			.append($('<span>')
-				.append($('<label class="checkbox-inline">')
-					.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Historiser}}" data-l1key="isHistorized" checked/>'))
-					.append('{{Historiser}}')
-					.append($('<sup>')
-						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-						.attr('title','Souhaitez vous Historiser les changements de valeur'))))));
-		parmetre.append($('<div>')
-			.append($('<span>')
-				.append($('<label class="checkbox-inline">')
-					.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Afficher}}" data-l1key="isVisible" checked/>'))
-					.append('{{Afficher}}')
-					.append($('<sup>')
-						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-						.attr('title','Souhaitez vous afficher cette commande sur le dashboard'))))));
-		parmetre.append($('<div>')
-			.append($('<span>')
-				.append($('<label class="checkbox-inline">')
-					.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Niveau Batterie}}" data-l1key="configuration" data-l2key="noBatterieCheck"/>'))
-					.append('{{Niveau Batterie}}')
-					.append($('<sup>')
-						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-							.attr('title','Activer cette option uniquement si votre équipement est sur batterie. Ce groupe d\'adresse correspond au niveau de batterie'))))));
+	parmetre.append($('<div class="Cyclique">')
+		.append($('<span>')
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Envoie Cyclique}}" data-l1key="configuration" data-l2key="CycliqueSend"/>'))
+				.append('{{Envoie Cyclique}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+						.attr('title','Activer cette option uniquement si vous souhaitez envoyer toutes les minutes votre commande'))))));
+	parmetre.append($('<div>')
+		.append($('<span>')
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Historiser}}" data-l1key="isHistorized" checked/>'))
+				.append('{{Historiser}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+					.attr('title','Souhaitez vous Historiser les changements de valeur'))))));
+	parmetre.append($('<div>')
+		.append($('<span>')
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Afficher}}" data-l1key="isVisible" checked/>'))
+				.append('{{Afficher}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+					.attr('title','Souhaitez vous afficher cette commande sur le dashboard'))))));
+	parmetre.append($('<div>')
+		.append($('<span>')
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Niveau Batterie}}" data-l1key="configuration" data-l2key="noBatterieCheck"/>'))
+				.append('{{Niveau Batterie}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+						.attr('title','Activer cette option uniquement si votre équipement est sur batterie. Ce groupe d\'adresse correspond au niveau de batterie'))))));
 	tr.append(parmetre);
 	$('#table_cmd tbody').append(tr);
 	DptOption(_cmd.configuration.KnxObjectType,$('#table_cmd tbody tr:last').find('.option'));
@@ -591,12 +599,14 @@ function addCmdToTable(_cmd) {
 			case "info":
 				$(this).closest('.cmd').find('.RetourEtat').hide();
 				$(this).closest('.cmd').find('.bt_read').show();
+				$(this).closest('.cmd').find('.CycliqueSend').hide();
 				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').hide();
 				$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().show();
 			break;
 			case "action":		
 				$(this).closest('.cmd').find('.RetourEtat').show();
 				$(this).closest('.cmd').find('.bt_read').hide();
+				$(this).closest('.cmd').find('.CycliqueSend').show();
 				$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').show();
 				$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().hide();
 			break;
@@ -670,11 +680,5 @@ function addCmdToTable(_cmd) {
 		}else
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',false);
 	});
-	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');
-	//$('#table_cmd tbody tr:last .cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').trigger('change');
-	//$('#table_cmd tbody tr:last .cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').trigger('change');
-	//$('#table_cmd tbody tr:last').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+init(_cmd.configuration.KnxObjectValue)+'"]').prop('selected', true);		
-	//jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
-	//$('#table_cmd tbody tr:last').find('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').trigger('change');
-	
+	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');	
 }
