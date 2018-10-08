@@ -692,4 +692,5 @@ function addCmdToTable(_cmd) {
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',false);
 	});
 	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');	
+	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
