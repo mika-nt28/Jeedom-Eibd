@@ -6,31 +6,86 @@ class eibd extends eqLogic {
 	public static function cron() {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
-				foreach($Equipement->getCmd('info') as $Commande)	{
-					if (!$Commande->getConfiguration('FlagWrite') && $Commande->getConfiguration('FlagInit')){
-						$ga=$Commande->getLogicalId();
-						$dpt=$Commande->getConfiguration('KnxObjectType');
-						$inverse=$Commande->getConfiguration('inverse');
-						log::add('eibd', 'debug', $Commande->getHumanName().' Lecture de '. $Commande->getHumanName().' sur le GAD '.$ga);
-						$DataBus=self::EibdRead($ga);
-						if($DataBus === false){
-							$Commande->setConfiguration('FlagInit',false);
-							$Commande->save();
-							continue;
+				foreach($Equipement->getCmd() as $Commande){
+					if($Commande->getType == 'info'){
+						if (!$Commande->getConfiguration('FlagWrite') && $Commande->getConfiguration('FlagInit')){
+							$ga=$Commande->getLogicalId();
+							$dpt=$Commande->getConfiguration('KnxObjectType');
+							$inverse=$Commande->getConfiguration('inverse');
+							log::add('eibd', 'debug', $Commande->getHumanName().' Lecture de '. $Commande->getHumanName().' sur le GAD '.$ga);
+							$DataBus=self::EibdRead($ga);
+							if($DataBus === false){
+								$Commande->setConfiguration('FlagInit',false);
+								$Commande->save();
+								continue;
+							}
+							$Option=$Commande->getConfiguration('option');
+							$Option["id"]=$Commande->getId();
+							$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
+							log::add('eibd', 'debug', $Commande->getHumanName().' => '.$BusValue);
+							if ($Commande->execCmd() != $Commande->formatValue($BusValue)) {
+								$Commande->event($BusValue);
+							}
+							$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
 						}
-						$Option=$Commande->getConfiguration('option');
-						$Option["id"]=$Commande->getId();
-						$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
-						log::add('eibd', 'debug', $Commande->getHumanName().' => '.$BusValue);
-						if ($Commande->execCmd() != $Commande->formatValue($BusValue)) {
-							$Commande->event($BusValue);
-						}
-						$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
+					}else{
+						if ($Commande->getConfiguration('CycliqueSend') == "cron")
+							$Commande->execute();
 					}
 				}
 			}
 		}
-    }
+    	}
+	public static function cron5() {
+		foreach(eqLogic::byType('eibd') as $Equipement){		
+			if($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd('action') as $Commande){
+					if ($Commande->getConfiguration('CycliqueSend') == "cron5")
+						$Commande->execute();
+				}
+			}
+		}
+	}
+	public static function cron15() {
+		foreach(eqLogic::byType('eibd') as $Equipement){		
+			if($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd('action') as $Commande){
+					if ($Commande->getConfiguration('CycliqueSend') == "cron15")
+						$Commande->execute();
+				}
+			}
+		}
+	}
+	public static function cron30() {
+		foreach(eqLogic::byType('eibd') as $Equipement){		
+			if($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd('action') as $Commande){
+					if ($Commande->getConfiguration('CycliqueSend') == "cron30")
+						$Commande->execute();
+				}
+			}
+		}
+	}	
+	public static function cronHourly() {
+		foreach(eqLogic::byType('eibd') as $Equipement){		
+			if($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd('action') as $Commande){
+					if ($Commande->getConfiguration('CycliqueSend') == "cronHourly")
+						$Commande->execute();
+				}
+			}
+		}
+	}
+	public static function cronDaily() {
+		foreach(eqLogic::byType('eibd') as $Equipement){		
+			if($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd('action') as $Commande){
+					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily")
+						$Commande->execute();
+				}
+			}
+		}
+	}
 	public function preInsert() {
 		if (is_object(eqLogic::byLogicalId($this->getLogicalId(),'eibd')))     
 			$this->setLogicalId('');
@@ -950,9 +1005,9 @@ class _BusMonitorTraitement /*extends Thread*/{
 					eibd::addCacheNoGad($monitor);
 				
 			}else
-				$monitor['valeur']="Impossible de convertire la valeur";
+				$monitor['valeur']="Impossible de convertir la valeur";
 			$monitor['cmdJeedom']= "La commande n'exites pas";
-			log::add('eibd', 'debug', 'Aucune commande avec l\'adresse de groupe  '.$monitor['AdresseGroupe'].' n\'a pas été trouvée');
+			log::add('eibd', 'debug', 'Aucune commande avec l\'adresse de groupe  '.$this->AdrGroup.' n\'a pas été trouvée');
 		}
 		$monitor['datetime'] = date('d-m-Y H:i:s');
 		event::add('eibd::monitor', json_encode($monitor));
