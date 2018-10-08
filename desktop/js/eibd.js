@@ -598,7 +598,7 @@ function addCmdToTable(_cmd) {
 	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');	
 	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
-$('body').off().on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]', function() {
+$('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]', function() {
 	DptOption($(this).val(),$(this).closest('.cmd').find('.option'));
 	if ($(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val() == '')
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val(DptUnit($(this).val()));
@@ -608,7 +608,7 @@ $('body').off().on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxOb
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+valeur+'"]').prop('selected', true);
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
 }); 
-$('body').off().on('change','.cmdAttr[data-l1key=type]', function() {
+$('body').on('change','.cmdAttr[data-l1key=type]', function() {
 	switch ($(this).val()){
 		case "info":
 			$(this).closest('.cmd').find('.RetourEtat').hide();
@@ -629,7 +629,7 @@ $('body').off().on('change','.cmdAttr[data-l1key=type]', function() {
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
 	}.bind(this), 500);
 });			
-$('body').off().on('change','.cmdAttr[data-l1key=subType]', function() {
+$('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 	var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
 	var type=$(this).closest('.cmd').find('.cmdAttr[data-l1key=type]').val();
 	var value=$(this).val();
@@ -688,7 +688,7 @@ $('body').off().on('change','.cmdAttr[data-l1key=subType]', function() {
 		break;
 	}
 });			
-$('body').off().on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
+$('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
 	if($(this).is(':checked')){
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',true);
 	}else
