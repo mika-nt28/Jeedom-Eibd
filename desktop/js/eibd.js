@@ -508,6 +508,8 @@ function addCmdToTable(_cmd) {
 						.attr('title','Activer cette option uniquement si vous souhaitez envoyer toutes les minutes votre commande')))
 			 .append($('<div class="input-group">')
 				 .append($('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="CycliqueSend"/>')
+					 .append($('<option value="">')
+						 .append('{{Non}}'))
 					 .append($('<option value="cron">')
 						 .append('{{Toutes les minutes}}'))
 					 .append($('<option value="cron5">')
