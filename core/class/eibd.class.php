@@ -29,13 +29,63 @@ class eibd extends eqLogic {
 							$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
 						}
 					}else{
-						if ($Commande->getConfiguration('CycliqueSend'))
+						if ($Commande->getConfiguration('CycliqueSend') == "cron")
 							$Commande->execute();
 					}
 				}
 			}
 		}
-    }
+    	}
+	public static function cron5() {
+		foreach(eqLogic::byType('eibd') as $Equipement){		
+			if($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd('action') as $Commande){
+					if ($Commande->getConfiguration('CycliqueSend') == "cron5")
+						$Commande->execute();
+				}
+			}
+		}
+	}
+	public static function cron15() {
+		foreach(eqLogic::byType('eibd') as $Equipement){		
+			if($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd('action') as $Commande){
+					if ($Commande->getConfiguration('CycliqueSend') == "cron15")
+						$Commande->execute();
+				}
+			}
+		}
+	}
+	public static function cron30() {
+		foreach(eqLogic::byType('eibd') as $Equipement){		
+			if($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd('action') as $Commande){
+					if ($Commande->getConfiguration('CycliqueSend') == "cron30")
+						$Commande->execute();
+				}
+			}
+		}
+	}	
+	public static function cronHourly() {
+		foreach(eqLogic::byType('eibd') as $Equipement){		
+			if($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd('action') as $Commande){
+					if ($Commande->getConfiguration('CycliqueSend') == "cronHourly")
+						$Commande->execute();
+				}
+			}
+		}
+	}
+	public static function cronDaily() {
+		foreach(eqLogic::byType('eibd') as $Equipement){		
+			if($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd('action') as $Commande){
+					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily")
+						$Commande->execute();
+				}
+			}
+		}
+	}
 	public function preInsert() {
 		if (is_object(eqLogic::byLogicalId($this->getLogicalId(),'eibd')))     
 			$this->setLogicalId('');
