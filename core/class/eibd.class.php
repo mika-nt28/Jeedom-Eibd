@@ -6,26 +6,31 @@ class eibd extends eqLogic {
 	public static function cron() {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
-				foreach($Equipement->getCmd('info') as $Commande)	{
-					if (!$Commande->getConfiguration('FlagWrite') && $Commande->getConfiguration('FlagInit')){
-						$ga=$Commande->getLogicalId();
-						$dpt=$Commande->getConfiguration('KnxObjectType');
-						$inverse=$Commande->getConfiguration('inverse');
-						log::add('eibd', 'debug', $Commande->getHumanName().' Lecture de '. $Commande->getHumanName().' sur le GAD '.$ga);
-						$DataBus=self::EibdRead($ga);
-						if($DataBus === false){
-							$Commande->setConfiguration('FlagInit',false);
-							$Commande->save();
-							continue;
+				foreach($Equipement->getCmd() as $Commande){
+					if($Commande->getType == 'info'){
+						if (!$Commande->getConfiguration('FlagWrite') && $Commande->getConfiguration('FlagInit')){
+							$ga=$Commande->getLogicalId();
+							$dpt=$Commande->getConfiguration('KnxObjectType');
+							$inverse=$Commande->getConfiguration('inverse');
+							log::add('eibd', 'debug', $Commande->getHumanName().' Lecture de '. $Commande->getHumanName().' sur le GAD '.$ga);
+							$DataBus=self::EibdRead($ga);
+							if($DataBus === false){
+								$Commande->setConfiguration('FlagInit',false);
+								$Commande->save();
+								continue;
+							}
+							$Option=$Commande->getConfiguration('option');
+							$Option["id"]=$Commande->getId();
+							$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
+							log::add('eibd', 'debug', $Commande->getHumanName().' => '.$BusValue);
+							if ($Commande->execCmd() != $Commande->formatValue($BusValue)) {
+								$Commande->event($BusValue);
+							}
+							$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
 						}
-						$Option=$Commande->getConfiguration('option');
-						$Option["id"]=$Commande->getId();
-						$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
-						log::add('eibd', 'debug', $Commande->getHumanName().' => '.$BusValue);
-						if ($Commande->execCmd() != $Commande->formatValue($BusValue)) {
-							$Commande->event($BusValue);
-						}
-						$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
+					}else{
+						if ($Commande->getConfiguration('CycliqueSend'))
+							$Commande->execute();
 					}
 				}
 			}
