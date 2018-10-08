@@ -507,7 +507,7 @@ class eibd extends eqLogic {
 		}
 		log::add('eibd','info',$Event->getHumanName().' est mise a jour: '.$_options['value']);
 		$Commande = cmd::byId($_options['eibdCmd_id']);
-		if (is_object($Commande)){
+		if (!is_object($Commande)){
 			log::add('eibd','error','Impossible de touvée la commande '.$_options['eibdCmd_id']);
 			return;
 		}
