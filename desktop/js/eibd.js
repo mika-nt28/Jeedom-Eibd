@@ -476,19 +476,17 @@ function addCmdToTable(_cmd) {
 				.append($('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectValue">')
 					.append(DptValue(init(_cmd.configuration.KnxObjectType)))))));
 	tr.append($('<td>')	
-		.append($('<div class="parametre">')
-			.append($('<span class="type" type="' + init(_cmd.type) + '">')
-				.append(jeedom.cmd.availableType()))
-		.append($('<div>')
-			.append($('<span>')
-				.append($('<label class="checkbox-inline">')
-					.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Sous type automatique}}"  data-l1key="configuration"  data-l2key="subTypeAuto" checked/>'))
-					.append('{{Sous type automatique}}')
-					.append($('<sup>')
-						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-							.attr('title','Laissé Jeedom choisir le sous type'))))))
-			.append($('<span class="subType" subType="'+init(_cmd.subType)+'">'))));
-		var parmetre=$('<td>');
+		.append($('<span class="type" type="' + init(_cmd.type) + '">')
+			.append(jeedom.cmd.availableType()))
+		.append($('<span>')
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="cmdAttr checkbox-inline" data-size="mini" data-label-text="{{Sous type automatique}}"  data-l1key="configuration"  data-l2key="subTypeAuto" checked/>'))
+				.append('{{Sous type automatique}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+						.attr('title','Laissé Jeedom choisir le sous type')))))
+		.append($('<span class="subType" subType="'+init(_cmd.subType)+'">')));
+	var parmetre=$('<td>');
 	if (is_numeric(_cmd.id)) {
 		parmetre.append($('<a class="btn btn-default btn-xs cmdAction" data-action="test">')
 			.append($('<i class="fa fa-rss">')
