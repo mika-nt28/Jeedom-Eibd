@@ -7,7 +7,7 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd() as $Commande){
-					if($Commande->getType == 'info'){
+					if($Commande->getType() == 'info'){
 						if (!$Commande->getConfiguration('FlagWrite') && $Commande->getConfiguration('FlagInit')){
 							$ga=$Commande->getLogicalId();
 							$dpt=$Commande->getConfiguration('KnxObjectType');
