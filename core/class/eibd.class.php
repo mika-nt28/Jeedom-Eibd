@@ -7,12 +7,11 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd() as $Commande){
+					$ga=$Commande->getLogicalId();
 					if($Commande->getType() == 'info'){
 						if (!$Commande->getConfiguration('FlagWrite') && $Commande->getConfiguration('FlagInit')){
-							$ga=$Commande->getLogicalId();
 							$dpt=$Commande->getConfiguration('KnxObjectType');
 							$inverse=$Commande->getConfiguration('inverse');
-							log::add('eibd', 'debug', $Commande->getHumanName().' Lecture de '. $Commande->getHumanName().' sur le GAD '.$ga);
 							$DataBus=self::EibdRead($ga);
 							if($DataBus === false){
 								$Commande->setConfiguration('FlagInit',false);
@@ -22,15 +21,14 @@ class eibd extends eqLogic {
 							$Option=$Commande->getConfiguration('option');
 							$Option["id"]=$Commande->getId();
 							$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
-							log::add('eibd', 'debug', $Commande->getHumanName().' => '.$BusValue);
-							if ($Commande->execCmd() != $Commande->formatValue($BusValue)) {
-								$Commande->event($BusValue);
-							}
-							$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
+							$this->checkAndUpdateCmd($ga,$BusValue);
 						}
 					}else{
-						if ($Commande->getConfiguration('CycliqueSend') == "cron")
+						if ($Commande->getConfiguration('CycliqueSend') == "cron"){
 							$Commande->execute();
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 1 min] GAD: '.$ga);
+						}
 					}
 				}
 			}
@@ -40,8 +38,10 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
-					if ($Commande->getConfiguration('CycliqueSend') == "cron5")
+					if ($Commande->getConfiguration('CycliqueSend') == "cron5"){
 						$Commande->execute();
+						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 5 min] GAD: '.$Commande->getLogicalId());
+					}
 				}
 			}
 		}
@@ -50,8 +50,10 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
-					if ($Commande->getConfiguration('CycliqueSend') == "cron15")
+					if ($Commande->getConfiguration('CycliqueSend') == "cron15"){
 						$Commande->execute();
+						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 15 min] GAD: '.$Commande->getLogicalId());
+					}
 				}
 			}
 		}
@@ -60,8 +62,10 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
-					if ($Commande->getConfiguration('CycliqueSend') == "cron30")
+					if ($Commande->getConfiguration('CycliqueSend') == "cron30"){
 						$Commande->execute();
+						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 30 min] GAD: '.$Commande->getLogicalId());
+					}
 				}
 			}
 		}
@@ -70,8 +74,10 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
-					if ($Commande->getConfiguration('CycliqueSend') == "cronHourly")
+					if ($Commande->getConfiguration('CycliqueSend') == "cronHourly"){
 						$Commande->execute();
+						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique journalier] GAD: '.$Commande->getLogicalId());
+					}
 				}
 			}
 		}
@@ -81,7 +87,10 @@ class eibd extends eqLogic {
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily")
+					if ($Commande->getConfiguration('CycliqueSend') == "cron5"){
 						$Commande->execute();
+						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 5 min] GAD: '.$Commande->getLogicalId());
+					}
 				}
 			}
 		}
