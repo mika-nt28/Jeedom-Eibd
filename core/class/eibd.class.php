@@ -22,7 +22,7 @@ class eibd extends eqLogic {
 							$Option["id"]=$Commande->getId();
 							$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
-							$this->checkAndUpdateCmd($ga,$BusValue);
+							$Equipement->checkAndUpdateCmd($ga,$BusValue);
 						}
 					}else{
 						if ($Commande->getConfiguration('CycliqueSend') == "cron"){
