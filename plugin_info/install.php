@@ -4,12 +4,12 @@ function eibd_install() {
 	log::add('eibd','debug','Instalation'); 
 }
 function eibd_update() {
-	log::add('eibd','debug','Lancement du scripte de mise a  jours des Flags'); 
-	foreach(listener::byClassAndFunction('eibd', 'TransmitValue') as $listener)
-			$listener->remove();
+	log::add('eibd','debug','Lancement du scripte de mise a  jours'); 
+	while(is_object($listener=listener::byClassAndFunction('eibd', 'TransmitValue')))
+		$listener->remove();
 }
 function eibd_remove() {
-	foreach(listener::byClassAndFunction('eibd', 'TransmitValue') as $listener)
-			$listener->remove();
+	while(is_object($listener=listener::byClassAndFunction('eibd', 'TransmitValue')))
+		$listener->remove();
 }
 ?>
