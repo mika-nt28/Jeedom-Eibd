@@ -673,7 +673,7 @@ class eibd extends eqLogic {
 					$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $Commande->getId()));
 					if (is_object($listener))
 						$listener->remove();
-					if($this->getConfiguration('FlagTransmit')){
+					if($Commande->getConfiguration('FlagTransmit')){
 						$listener = new listener();
 						$listener->setClass('eibd');
 						$listener->setFunction('TransmitValue');
