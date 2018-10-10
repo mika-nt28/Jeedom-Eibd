@@ -667,6 +667,27 @@ class eibd extends eqLogic {
 			return;
 		log::remove('eibd');
 		self::deamon_stop();
+		foreach(eqLogic::byType('eibd') as $Equipement)	{
+			if ($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd('info') as $Commande){
+					$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $Commande->getId()));
+					if (is_object($listener))
+						$listener->remove();
+					if($Commande->getConfiguration('FlagTransmit')){
+						$listener = new listener();
+						$listener->setClass('eibd');
+						$listener->setFunction('TransmitValue');
+						$listener->setOption(array('eibdCmd_id' => $Commande->getId()));
+						$listener->emptyEvent();
+						$ActionValue=cmd::byId(str_replace('#','',$Commande->getValue()));
+						if(is_object($ActionValue)){
+							$listener->addEvent($ActionValue->getId());
+						}
+						$listener->save();	
+					}	
+				}
+			}
+		}
 		$cmd = '';
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
@@ -738,6 +759,8 @@ class eibd extends eqLogic {
 			$cron->stop();
 			$cron->remove();
 		}
+		foreach(listener::byClassAndFunction('eibd', 'TransmitValue') as $listener)
+			$listener->remove();
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                                                                                                                               //
@@ -849,20 +872,6 @@ class eibdCmd extends cmd {
 		$this->setLogicalId(trim($this->getLogicalId()));    
 	}
 	public function postSave() {	
-		if($this->getConfiguration('FlagTransmit')){
-			$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $this->getId()));
-			if (!is_object($listener))
-				$listener = new listener();
-			$listener->setClass('eibd');
-			$listener->setFunction('TransmitValue');
-			$listener->setOption(array('eibdCmd_id' => $this->getId()));
-			$listener->emptyEvent();
-			$ActionValue=cmd::byId(str_replace('#','',$this->getValue()));
-			if(is_object($ActionValue)){
-				$listener->addEvent($ActionValue->getId());
-			}
-			$listener->save();	
-		}		
 		$cache = cache::byKey('eibd::CreateNewGad');
 		$value = json_decode($cache->getValue('[]'), true);
 		$key = array_search($this->getLogicalId(), array_column($value, 'AdresseGroupe'));
@@ -871,7 +880,6 @@ class eibdCmd extends cmd {
 			array_shift($value);
 			cache::set('eibd::CreateNewGad', json_encode($value), 0);
 		}
-		
 	}
 	public function execute($_options = null){
 		$ga=$this->getLogicalId();
