@@ -684,20 +684,17 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement)	{
 			if ($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
-					$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $Commande->getId()));
-					if (is_object($listener))
-						$listener->remove();
-					if($Commande->getConfiguration('FlagTransmit')){
-						$listener = new listener();
-						$listener->setClass('eibd');
-						$listener->setFunction('TransmitValue');
-						$listener->setOption(array('eibdCmd_id' => $Commande->getId()));
-						$listener->emptyEvent();
+					if($Commande->getConfiguration('FlagTransmit') && $Commande->getValue() != ''){
 						$ActionValue=cmd::byId(str_replace('#','',$Commande->getValue()));
 						if(is_object($ActionValue)){
+							$listener = new listener();
+							$listener->setClass('eibd');
+							$listener->setFunction('TransmitValue');
+							$listener->setOption(array('eibdCmd_id' => $Commande->getId()));
+							$listener->emptyEvent();
 							$listener->addEvent($ActionValue->getId());
-						}
-						$listener->save();	
+							$listener->save();
+						}	
 					}	
 				}
 			}
@@ -879,13 +876,38 @@ class eibd extends eqLogic {
   }
 class eibdCmd extends cmd {
 	public function preSave() { 
-		if($this->getId() != '' && $this->getValue() != '' && $this->getId() == str_replace('#','',$this->getValue()))
-			throw new Exception(__('Le retour d\'etat ne peut pas etre lui meme', __FILE__));
+		if($this->getConfiguration('FlagTransmit') && $this->getValue() != ''){
+			$CmdState=cmd::byId(str_replace('#','',$this->getValue()));
+			if(is_object($CmdState) && $CmdState->getEqType_name() == 'eibd'){
+				if($CmdState->getLogicalId() == $this->getLogicalId())
+					throw new Exception(__('{{Il est impossible de transmetre retransmetre un etat sur le meme GAD}}', __FILE__));
+			}
+		}
 		if ($this->getConfiguration('KnxObjectType') == '') 
 			throw new Exception(__('Le type de commande ne peut etre vide', __FILE__));
 		$this->setLogicalId(trim($this->getLogicalId()));    
 	}
 	public function postSave() {	
+		$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $this->getId()));
+		if($this->getConfiguration('FlagTransmit') && $this->getValue() != ''){
+			if (!is_object($listener)){
+				$CmdState=cmd::byId(str_replace('#','',$this->getValue()));
+				if(is_object($CmdState) && $CmdState->getEqType_name() == 'eibd'){
+					if($CmdState->getLogicalId() != $this->getLogicalId()){
+						$listener = new listener();
+						$listener->setClass('eibd');
+						$listener->setFunction('TransmitValue');
+						$listener->setOption(array('eibdCmd_id' => $this->getId()));
+						$listener->emptyEvent();
+						$listener->addEvent($CmdState->getId());
+						$listener->save();
+					}
+				}
+			}
+		}else{
+			if (is_object($listener))
+				$listener->remove();
+		}
 		$cache = cache::byKey('eibd::CreateNewGad');
 		$value = json_decode($cache->getValue('[]'), true);
 		$key = array_search($this->getLogicalId(), array_column($value, 'AdresseGroupe'));
