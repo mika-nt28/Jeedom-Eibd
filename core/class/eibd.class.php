@@ -450,7 +450,6 @@ class eibd extends eqLogic {
 						$ga=$Commande->getLogicalId();
 						$dpt=$Commande->getConfiguration('KnxObjectType');
 						$inverse=$Commande->getConfiguration('inverse');
-						log::add('eibd', 'debug',  $Commande->getHumanName().' Lecture de '. $Commande->getHumanName().' sur le GAD '.$ga);
 						$DataBus=self::EibdRead($ga);
                       				if($DataBus === false){
 							$Commande->setConfiguration('FlagInit',false);
@@ -460,11 +459,8 @@ class eibd extends eqLogic {
 						$Option=$Commande->getConfiguration('option');
 						$Option["id"]=$Commande->getId();
 						$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
-						log::add('eibd', 'debug', $Commande->getHumanName().' => '.$BusValue);
-						if ($Commande->execCmd() != $Commande->formatValue($BusValue)) {
-							$Commande->event($BusValue);
-						}
-						$Commande->setCache('collectDate', date('Y-m-d H:i:s'));
+						log::add('eibd', 'debug',  $Commande->getHumanName().'[Initialisation] GAD '.$ga.' = '.$BusValue);
+						$Equipement->checkAndUpdateCmd($ga,$BusValue);
 					}
 				}
 			}
@@ -527,7 +523,7 @@ class eibd extends eqLogic {
 		$Option["id"]=$Commande->getId();
 		$data= Dpt::DptSelectEncode($dpt, $_options['value'], $inverse,$Option);
 		$WriteBusValue=eibd::EibdWrite($ga, $data);
-		log::add('eibd','info',$Commande->getHumanName().': Envoie de la valeur '.$_options['value']);
+		log::add('eibd','info',$Commande->getHumanName().'[Transmission]: Envoie de la valeur '.$_options['value'].' sur le GAD '.$ga);
 	}
 	public static function AddEquipement($Name,$_logicalId) 	{
 		$Equipement = self::byLogicalId($_logicalId, 'eibd');
