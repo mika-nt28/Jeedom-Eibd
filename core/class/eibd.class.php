@@ -632,17 +632,6 @@ class eibd extends eqLogic {
 		$return['log'] = 'eibd';	
 		$return['launchable'] = 'nok';
 		$return['state'] = 'nok';
-		foreach(eqLogic::byType('eibd') as $Equipement)	{
-			if ($Equipement->getIsEnable()){
-				foreach($Equipement->getCmd('action') as $Commande){
-					if($Commande->getConfiguration('FlagTransmit')){
-						$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $Commande->getId()));
-						if (!is_object($listener))
-							return $return;
-					}	
-				}
-			}
-		}
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
 				$result=exec("ps aux | grep knxd | grep -v grep | awk '{print $2}'",$result);	
@@ -670,6 +659,19 @@ class eibd extends eqLogic {
 				$return['state'] = 'ok';
 			else
 				$return['state'] = 'nok';
+		}
+		foreach(eqLogic::byType('eibd') as $Equipement)	{
+			if ($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd('action') as $Commande){
+					if($Commande->getConfiguration('FlagTransmit')){
+						$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $Commande->getId()));
+						if (!is_object($listener)){
+							$return['state'] = 'nok';
+							return $return;
+						}
+					}	
+				}
+			}
 		}
 		return $return;
 	}
