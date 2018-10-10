@@ -632,6 +632,17 @@ class eibd extends eqLogic {
 		$return['log'] = 'eibd';	
 		$return['launchable'] = 'nok';
 		$return['state'] = 'nok';
+		foreach(eqLogic::byType('eibd') as $Equipement)	{
+			if ($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd('info') as $Commande){
+					if($Commande->getConfiguration('FlagTransmit')){
+						$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $Commande->getId()));
+						if (!is_object($listener))
+							return $return;
+					}	
+				}
+			}
+		}
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
 				$result=exec("ps aux | grep knxd | grep -v grep | awk '{print $2}'",$result);	
@@ -652,6 +663,7 @@ class eibd extends eqLogic {
 				$return['launchable'] = 'ok';
 			break;
 		}
+		
 		if($return['state'] == 'ok'){
 			$cron = cron::byClassAndFunction('eibd', 'BusMonitor');
 			if(is_object($cron) && $cron->running())
@@ -759,7 +771,7 @@ class eibd extends eqLogic {
 			$cron->stop();
 			$cron->remove();
 		}
-		foreach(listener::byClassAndFunction('eibd', 'TransmitValue') as $listener)
+		while(is_object($listener=listener::byClassAndFunction('eibd', 'TransmitValue')))
 			$listener->remove();
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
