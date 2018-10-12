@@ -55,7 +55,12 @@ Avec le bus monitor vous allez pouvoir analyser ce qui se passe sur votre bus et
 
 Le bus monitor affiche l'adresse physique de l’équipement, l'adresse de groupe, la data en hexa et sa conversion
 
-Le bus monitor vas mettre en cache egalement tous les gad qu'il voit et qui sont inconnue a votre installation.
+Inclusion
+==========
+
+![introduction01](../images/eibd_screenshot_ConfigParameter.jpg)
+
+En activant l'inclusion, le bus monitor vas mettre en cache egalement tous les gad qu'il voit et qui sont inconnue a votre installation.
 Cette liste est disponible sur la page de configuration et il vous est possible d'importer le gad dans un equipement.
 Cette liste est egalment disponible si vous utilisez la creation d'equipement par template.
 
