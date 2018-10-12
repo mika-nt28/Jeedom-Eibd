@@ -1046,8 +1046,6 @@ class _BusMonitorTraitement /*extends Thread*/{
 			foreach($commandes as $Commande){
 				if($Commande->getEqType_name() != 'eibd')
 					continue;
-				if($Commande->getType() != 'info')
-					continue;
 				$monitor['valeur']=trim($Commande->UpdateCommande($this->Mode,$this->Data));
 				$monitor['cmdJeedom']= $Commande->getHumanName();
 				$monitor['DataPointType']=$Commande->getConfiguration('KnxObjectType');
