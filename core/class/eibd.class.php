@@ -981,9 +981,14 @@ class eibdCmd extends cmd {
 				$ActionValue=cmd::byId(str_replace('#','',$this->getValue()));
 				if(is_object($ActionValue)){
 					$valeur=$ActionValue->execCmd();
-					$data= Dpt::DptSelectEncode($dpt, $valeur, $inverse,$Option);
-					eibd::EibdReponse($this->getLogicalId(), $data);
-					log::add('eibd', 'debug', $this->getHumanName().' Réponse a la demande de valeur');
+					$unite=Dpt::getDptUnite($dpt);
+					if($ActionValue->getLogicalId() != $this->getLogicalId()){
+						$data= Dpt::DptSelectEncode($dpt, $valeur, $inverse,$Option);
+						eibd::EibdReponse($this->getLogicalId(), $data);
+						log::add('eibd', 'debug', $this->getHumanName().' Réponse a la demande de valeur');
+					}else{
+						log::add('eibd', 'debug', $this->getHumanName().' impossible de repondre avec le meme GAD');
+					}
 				}
 			}
 			if($Mode=="Write"  || $Mode=="Reponse"){
@@ -998,7 +1003,7 @@ class eibdCmd extends cmd {
 					}
 					$this->getEqlogic()->batteryStatus($valeur,date('Y-m-d H:i:s'));
 				}
-				if($this->getType() == 'info'&& ($this->getConfiguration('FlagWrite') || $this->getConfiguration('FlagUpdate'))){
+				if($this->getType() == 'info' && ($this->getConfiguration('FlagWrite') || $this->getConfiguration('FlagUpdate'))){
 					log::add('eibd', 'info',$this->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
 					$this->event($valeur);
 					$this->setCache('collectDate', date('Y-m-d H:i:s'));
@@ -1031,6 +1036,7 @@ class _BusMonitorTraitement /*extends Thread*/{
 		$this->AdrGroup=$this->formatgaddr($AdrGroup);
 	}
 	public function run(){
+		$monitor=array();
 		$monitor['Mode']= $this->Mode;
 		$monitor['AdresseGroupe']= $this->AdrGroup;
 		$monitor['AdressePhysique']= $this->AdrSource;
@@ -1046,6 +1052,8 @@ class _BusMonitorTraitement /*extends Thread*/{
 			foreach($commandes as $Commande){
 				if($Commande->getEqType_name() != 'eibd')
 					continue;
+				//if($Commande->getType() != 'info')
+					//continue;
 				$monitor['valeur']=trim($Commande->UpdateCommande($this->Mode,$this->Data));
 				$monitor['cmdJeedom']= $Commande->getHumanName();
 				$monitor['DataPointType']=$Commande->getConfiguration('KnxObjectType');
