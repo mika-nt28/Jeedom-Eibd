@@ -917,6 +917,12 @@ class eibdCmd extends cmd {
 			cache::set('eibd::CreateNewGad', json_encode($value), 0);
 		}
 	}
+	public function getOtherActionValue(){
+		$ActionValue = jeedom::evaluateExpression($this->getConfiguration('KnxObjectValue'));
+		if ($this->getConfiguration('KnxObjectValue') == "") 
+			$ActionValue = Dpt::OtherValue($this->getConfiguration('KnxObjectType'),jeedom::evaluateExpression($this->getValue()));
+		return $ActionValue;
+	}
 	public function execute($_options = null){
 		$ga=$this->getLogicalId();
 		$dpt=$this->getConfiguration('KnxObjectType');
@@ -942,9 +948,7 @@ class eibdCmd extends cmd {
 						$ActionValue = $_options['select'];
 					break;
 					case 'other':
-						$ActionValue =$this->getConfiguration('KnxObjectValue');
-						if (isset($Listener) && is_object($Listener) && $this->getConfiguration('KnxObjectValue') == "") 
-							$ActionValue =Dpt::OtherValue($dpt,$Listener->execCmd());
+						$ActionValue = $this->getOtherActionValue();
 					break;
 				}
 				log::add('eibd','debug',$this->getHumanName().' Valeur a envoyer '.$ActionValue);
@@ -968,46 +972,59 @@ class eibdCmd extends cmd {
 			break;
 		}
 	}
-	public function UpdateCommande($Mode,$data){	
+	public function SendReply(){
+		log::add('eibd', 'info',$this->getHumanName().'[Lecture]: Demande de valeur sur l\adresse de groupe : '.$this->getLogicalId());			
 		$valeur='';
-		$unite='';		
+		$unite='';
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
 		$Option["id"]=$this->getId();
-		if ($dpt!= 'aucun' && $dpt!= ''){
-			if($Mode=="Read" && $this->getConfiguration('FlagRead')){
-				$ActionData="";
-				$ActionValue=cmd::byId(str_replace('#','',$this->getValue()));
-				if(is_object($ActionValue)){
-					$valeur=$ActionValue->execCmd();
-					$unite=Dpt::getDptUnite($dpt);
-					if($ActionValue->getLogicalId() != $this->getLogicalId()){
-						$data= Dpt::DptSelectEncode($dpt, $valeur, $inverse,$Option);
-						eibd::EibdReponse($this->getLogicalId(), $data);
-						log::add('eibd', 'debug', $this->getHumanName().' Réponse a la demande de valeur');
-					}else{
-						log::add('eibd', 'debug', $this->getHumanName().' impossible de repondre avec le meme GAD');
-					}
+		if ($dpt != 'aucun' && $dpt!= ''){
+			$unite=Dpt::getDptUnite($dpt);
+			$Listener=cmd::byId(str_replace('#','',$this->getValue()));
+			if(is_object($Listener)) {
+				$inverse=$Listener->getConfiguration('inverse');
+				if($Listener->getLogicalId() == $this->getLogicalId()){
+					log::add('eibd', 'debug', $this->getHumanName().'[Lecture]: Impossible de repondre avec le meme GAD');
+					return false;
 				}
 			}
-			if($Mode=="Write"  || $Mode=="Reponse"){
-				log::add('eibd', 'debug',$this->getHumanName().' : Décodage de la valeur avec le DPT :'.$dpt);
-				$valeur=Dpt::DptSelectDecode($dpt, $data, $inverse, $Option);
-				$unite=Dpt::getDptUnite($dpt);
-				if($this->getConfiguration('noBatterieCheck')){
-					switch(explode('.',$dpt)[0]){
-						case 1 :
-							$valeur=$valeur*100;
-						break;
-					}
-					$this->getEqlogic()->batteryStatus($valeur,date('Y-m-d H:i:s'));
+			$valeur = $this->getOtherActionValue();
+			if($valeur != false && $valeur != ''){
+				$data= Dpt::DptSelectEncode($dpt, $valeur, $inverse,$Option);
+				if($data != false && $data != ''){
+					log::add('eibd', 'info',$this->getHumanName().'[Reponse]: Reponse avec la valeur : '.$valeur.$unite);
+					eibd::EibdReponse($this->getLogicalId(), $data);
 				}
-				if($this->getType() == 'info' && ($this->getConfiguration('FlagWrite') || $this->getConfiguration('FlagUpdate'))){
-					log::add('eibd', 'info',$this->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
-					$this->event($valeur);
-					$this->setCache('collectDate', date('Y-m-d H:i:s'));
+			}
+		}else{
+			$valeur='Aucun DPT n\'est associé a cette adresse';
+		}
+		return $valeur.$unite ;
+	}
+	public function UpdateCommande($data){	
+		$valeur='';		
+		$dpt=$this->getConfiguration('KnxObjectType');
+		$inverse=$this->getConfiguration('inverse');
+		$Option=$this->getConfiguration('option');
+		$Option["id"]=$this->getId();
+		if ($dpt != 'aucun' && $dpt!= ''){
+			$unite=Dpt::getDptUnite($dpt);
+			log::add('eibd', 'debug',$this->getHumanName().' : Décodage de la valeur avec le DPT :'.$dpt);
+			$valeur=Dpt::DptSelectDecode($dpt, $data, $inverse, $Option);
+			if($this->getConfiguration('noBatterieCheck')){
+				switch(explode('.',$dpt)[0]){
+					case 1 :
+						$valeur=$valeur*100;
+					break;
 				}
+				$this->getEqlogic()->batteryStatus($valeur,date('Y-m-d H:i:s'));
+			}
+			if($this->getType() == 'info' && ($this->getConfiguration('FlagWrite') || $this->getConfiguration('FlagUpdate'))){
+				log::add('eibd', 'info',$this->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
+				$this->event($valeur);
+				$this->setCache('collectDate', date('Y-m-d H:i:s'));
 			}
 		}else{
 			$valeur='Aucun DPT n\'est associé a cette adresse';
@@ -1021,7 +1038,7 @@ class eibdCmd extends cmd {
 		$Option=$this->getConfiguration('option');
 		$Option["id"]=$this->getId();
 		$valeur=Dpt::DptSelectDecode($dpt, null, $inverse, $Option);
-		if($this->getType() == 'info'&& ($this->getConfiguration('FlagWrite') || $this->getConfiguration('FlagUpdate'))){
+		if($this->getType() == 'info' && ($this->getConfiguration('FlagWrite') || $this->getConfiguration('FlagUpdate'))){
 			log::add('eibd', 'info',$this->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
 			$this->event($valeur);
 			$this->setCache('collectDate', date('Y-m-d H:i:s'));
@@ -1052,9 +1069,10 @@ class _BusMonitorTraitement /*extends Thread*/{
 			foreach($commandes as $Commande){
 				if($Commande->getEqType_name() != 'eibd')
 					continue;
-				//if($Commande->getType() != 'info')
-					//continue;
-				$monitor['valeur']=trim($Commande->UpdateCommande($this->Mode,$this->Data));
+				if($this->Mode =="Read" && $this->getConfiguration('FlagRead'))
+					$monitor['valeur']=$Commande->SendReply();
+				elseif($this->Mode == "Write"  || $this->Mode == "Reponse"){
+					$monitor['valeur']=$Commande->UpdateCommande($this->Data));
 				$monitor['cmdJeedom']= $Commande->getHumanName();
 				$monitor['DataPointType']=$Commande->getConfiguration('KnxObjectType');
 			}
