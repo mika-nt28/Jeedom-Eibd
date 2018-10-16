@@ -1069,18 +1069,18 @@ class _BusMonitorTraitement /*extends Thread*/{
 			foreach($commandes as $Commande){
 				if($Commande->getEqType_name() != 'eibd')
 					continue;
-				if($this->Mode =="Read" && $this->getConfiguration('FlagRead'))
-					$monitor['valeur']=$Commande->SendReply();
-				elseif($this->Mode == "Write"  || $this->Mode == "Reponse"){
-					$monitor['valeur']=$Commande->UpdateCommande($this->Data);
-				$monitor['cmdJeedom']= $Commande->getHumanName();
-				$monitor['DataPointType']=$Commande->getConfiguration('KnxObjectType');
+				if($this->Mode == "Read" && $this->getConfiguration('FlagRead'))
+					$monitor['valeur'] = $Commande->SendReply();
+				elseif($this->Mode == "Write"  || $this->Mode == "Reponse")
+					$monitor['valeur'] = $Commande->UpdateCommande($this->Data);
+				$monitor['cmdJeedom'] = $Commande->getHumanName();
+				$monitor['DataPointType'] = $Commande->getConfiguration('KnxObjectType');
 			}
 		}else {
 			$dpt=Dpt::getDptFromData($data["Data"]);
 			if($dpt!=false){
-				$monitor['valeur']=Dpt::DptSelectDecode($dpt, $this->Data);
-				$monitor['DataPointType']=$dpt;
+				$monitor['valeur'] = Dpt::DptSelectDecode($dpt, $this->Data);
+				$monitor['DataPointType']= $dpt;
 				if(config::byKey('isInclude','eibd'))
 					//event::add('eibd::GadInconnue', json_encode($monitor));
 					eibd::addCacheNoGad($monitor);
