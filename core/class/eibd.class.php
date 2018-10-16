@@ -1072,7 +1072,7 @@ class _BusMonitorTraitement /*extends Thread*/{
 				if($this->Mode =="Read" && $this->getConfiguration('FlagRead'))
 					$monitor['valeur']=$Commande->SendReply();
 				elseif($this->Mode == "Write"  || $this->Mode == "Reponse"){
-					$monitor['valeur']=$Commande->UpdateCommande($this->Data));
+					$monitor['valeur']=$Commande->UpdateCommande($this->Data);
 				$monitor['cmdJeedom']= $Commande->getHumanName();
 				$monitor['DataPointType']=$Commande->getConfiguration('KnxObjectType');
 			}
