@@ -1069,7 +1069,7 @@ class _BusMonitorTraitement /*extends Thread*/{
 			foreach($commandes as $Commande){
 				if($Commande->getEqType_name() != 'eibd')
 					continue;
-				if($this->Mode == "Read" && $this->getConfiguration('FlagRead'))
+				if($this->Mode == "Read" && $Commande->getConfiguration('FlagRead'))
 					$monitor['valeur'] = $Commande->SendReply();
 				elseif($this->Mode == "Write"  || $this->Mode == "Reponse")
 					$monitor['valeur'] = $Commande->UpdateCommande($this->Data);
