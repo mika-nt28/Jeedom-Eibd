@@ -993,10 +993,8 @@ class eibdCmd extends cmd {
 			$valeur = $this->getOtherActionValue();
 			if($valeur != false && $valeur != ''){
 				$data= Dpt::DptSelectEncode($dpt, $valeur, $inverse,$Option);
-				if($data != false && $data != ''){
-					log::add('eibd', 'info',$this->getHumanName().'[Reponse]: Reponse avec la valeur : '.$valeur.$unite);
-					eibd::EibdReponse($this->getLogicalId(), $data);
-				}
+				log::add('eibd', 'info',$this->getHumanName().'[Reponse]: Reponse avec la valeur : '.$valeur.$unite);
+				eibd::EibdReponse($this->getLogicalId(), $data);
 			}
 		}else{
 			$valeur='Aucun DPT n\'est associé a cette adresse';
