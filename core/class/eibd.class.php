@@ -1019,7 +1019,7 @@ class eibdCmd extends cmd {
 				}
 				$this->getEqlogic()->batteryStatus($valeur,date('Y-m-d H:i:s'));
 			}
-			if($this->getType() == 'info' && ($this->getConfiguration('FlagWrite') || $this->getConfiguration('FlagUpdate'))){
+			if($this->getType() == 'info'){
 				log::add('eibd', 'info',$this->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
 				$this->event($valeur);
 				$this->setCache('collectDate', date('Y-m-d H:i:s'));
@@ -1036,7 +1036,7 @@ class eibdCmd extends cmd {
 		$Option=$this->getConfiguration('option');
 		$Option["id"]=$this->getId();
 		$valeur=Dpt::DptSelectDecode($dpt, null, $inverse, $Option);
-		if($this->getType() == 'info' && ($this->getConfiguration('FlagWrite') || $this->getConfiguration('FlagUpdate'))){
+		if($this->getType() == 'info'){
 			log::add('eibd', 'info',$this->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
 			$this->event($valeur);
 			$this->setCache('collectDate', date('Y-m-d H:i:s'));
@@ -1069,7 +1069,9 @@ class _BusMonitorTraitement /*extends Thread*/{
 					continue;
 				if($this->Mode == "Read" && $Commande->getConfiguration('FlagRead'))
 					$monitor['valeur'] = $Commande->SendReply();
-				elseif($this->Mode == "Write"  || $this->Mode == "Reponse")
+				elseif($this->Mode == "Write" && $Commande->getConfiguration('FlagWrite'))
+					$monitor['valeur'] = $Commande->UpdateCommande($this->Data);
+				elseif($this->Mode == "Reponse" && $Commande->getConfiguration('FlagUpdate'))
 					$monitor['valeur'] = $Commande->UpdateCommande($this->Data);
 				$monitor['cmdJeedom'] = $Commande->getHumanName();
 				$monitor['DataPointType'] = $Commande->getConfiguration('KnxObjectType');
