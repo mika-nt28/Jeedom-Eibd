@@ -1,4 +1,3 @@
-var GadLevel=3;
 $('.templateAction').hide();
 $('.templateAction').first().show();
 $('#bt_healthEibd').on('click', function () {
