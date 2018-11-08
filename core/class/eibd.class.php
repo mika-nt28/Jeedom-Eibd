@@ -1064,15 +1064,19 @@ class _BusMonitorTraitement /*extends Thread*/{
 			$monitor['data']='0x '.$this->Data;
 		$commandes=cmd::byLogicalId($this->AdrGroup);
 		if(count($commandes)>0){
+			$Message='';
 			foreach($commandes as $Commande){
 				if($Commande->getEqType_name() != 'eibd')
 					continue;
+				if($Message != '' && $Commande->getType() == 'action')
+					continue;
 				if($this->Mode == "Read" && $Commande->getConfiguration('FlagRead'))
-					$monitor['valeur'] = $Commande->SendReply();
+					$Message = $Commande->SendReply();
 				elseif($this->Mode == "Write" && $Commande->getConfiguration('FlagWrite'))
-					$monitor['valeur'] = $Commande->UpdateCommande($this->Data);
+					$Message = $Commande->UpdateCommande($this->Data);
 				elseif($this->Mode == "Reponse" && $Commande->getConfiguration('FlagUpdate'))
-					$monitor['valeur'] = $Commande->UpdateCommande($this->Data);
+					$Message = $Commande->UpdateCommande($this->Data);
+				$monitor['valeur'] = $Message;
 				$monitor['cmdJeedom'] = $Commande->getHumanName();
 				$monitor['DataPointType'] = $Commande->getConfiguration('KnxObjectType');
 			}
