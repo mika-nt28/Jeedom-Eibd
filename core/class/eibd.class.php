@@ -77,7 +77,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronHourly"){
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique journalier] GAD: '.$Commande->getLogicalId());
+						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 1H] GAD: '.$Commande->getLogicalId());
 					}
 				}
 			}
@@ -89,7 +89,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily"){
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 5 min] GAD: '.$Commande->getLogicalId());
+						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique journalier] GAD: '.$Commande->getLogicalId());
 					}
 				}
 			}
