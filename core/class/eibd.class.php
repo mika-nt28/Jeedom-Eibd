@@ -87,8 +87,7 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
-					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily")
-					if ($Commande->getConfiguration('CycliqueSend') == "cron5"){
+					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily"){
 						$Commande->execute();
 						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 5 min] GAD: '.$Commande->getLogicalId());
 					}
