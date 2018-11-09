@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 include_file('core', 'eibclient', 'class', 'eibd');
+include_file('core', 'BusMonitor', 'class', 'eibd');
 include_file('core', 'dpt', 'class', 'eibd');
 class eibd extends eqLogic {
 	public static function cron() {
@@ -76,7 +77,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronHourly"){
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique journalier] GAD: '.$Commande->getLogicalId());
+						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 1H] GAD: '.$Commande->getLogicalId());
 					}
 				}
 			}
@@ -86,10 +87,9 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
-					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily")
-					if ($Commande->getConfiguration('CycliqueSend') == "cron5"){
+					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily"){
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 5 min] GAD: '.$Commande->getLogicalId());
+						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique journalier] GAD: '.$Commande->getLogicalId());
 					}
 				}
 			}
@@ -481,7 +481,7 @@ class eibd extends eqLogic {
 			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);
 			if ($len != -1 && $len >= 2) {
 				$mon = self::parseread($len,$buf);
-				$Traitement=new _BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
+				$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
 				$Traitement->run(); 
 			}
 			else
@@ -1019,7 +1019,7 @@ class eibdCmd extends cmd {
 				}
 				$this->getEqlogic()->batteryStatus($valeur,date('Y-m-d H:i:s'));
 			}
-			if($this->getType() == 'info' && ($this->getConfiguration('FlagWrite') || $this->getConfiguration('FlagUpdate'))){
+			if($this->getType() == 'info'){
 				log::add('eibd', 'info',$this->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
 				$this->event($valeur);
 				$this->setCache('collectDate', date('Y-m-d H:i:s'));
@@ -1036,77 +1036,10 @@ class eibdCmd extends cmd {
 		$Option=$this->getConfiguration('option');
 		$Option["id"]=$this->getId();
 		$valeur=Dpt::DptSelectDecode($dpt, null, $inverse, $Option);
-		if($this->getType() == 'info' && ($this->getConfiguration('FlagWrite') || $this->getConfiguration('FlagUpdate'))){
+		if($this->getType() == 'info'){
 			log::add('eibd', 'info',$this->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
 			$this->event($valeur);
 			$this->setCache('collectDate', date('Y-m-d H:i:s'));
-		}
-	}
-}
-class _BusMonitorTraitement /*extends Thread*/{
-	public function __construct($Mode,$Data,$AdrSource,$AdrGroup){
-		$this->Mode=$Mode;
-		$this->Data=$Data;
-		$this->AdrSource=$this->formatiaddr($AdrSource);
-		$this->AdrGroup=$this->formatgaddr($AdrGroup);
-	}
-	public function run(){
-		$monitor=array();
-		$monitor['Mode']= $this->Mode;
-		$monitor['AdresseGroupe']= $this->AdrGroup;
-		$monitor['AdressePhysique']= $this->AdrSource;
-		if(is_array($this->Data)){
-			$monitor['data']='0x ';
-			foreach ($this->Data as $Byte)
-				$monitor['data'].=sprintf(' %02x',$Byte);
-			}
-		else
-			$monitor['data']='0x '.$this->Data;
-		$commandes=cmd::byLogicalId($this->AdrGroup);
-		if(count($commandes)>0){
-			foreach($commandes as $Commande){
-				if($Commande->getEqType_name() != 'eibd')
-					continue;
-				if($this->Mode == "Read" && $Commande->getConfiguration('FlagRead'))
-					$monitor['valeur'] = $Commande->SendReply();
-				elseif($this->Mode == "Write"  || $this->Mode == "Reponse")
-					$monitor['valeur'] = $Commande->UpdateCommande($this->Data);
-				$monitor['cmdJeedom'] = $Commande->getHumanName();
-				$monitor['DataPointType'] = $Commande->getConfiguration('KnxObjectType');
-			}
-		}else {
-			$dpt=Dpt::getDptFromData($data["Data"]);
-			if($dpt!=false){
-				$monitor['valeur'] = Dpt::DptSelectDecode($dpt, $this->Data);
-				$monitor['DataPointType']= $dpt;
-				if(config::byKey('isInclude','eibd'))
-					//event::add('eibd::GadInconnue', json_encode($monitor));
-					eibd::addCacheNoGad($monitor);
-				
-			}else
-				$monitor['valeur']="Impossible de convertir la valeur";
-			$monitor['cmdJeedom']= "La commande n'exites pas";
-			log::add('eibd', 'debug', 'Aucune commande avec l\'adresse de groupe  '.$this->AdrGroup.' n\'a pas été trouvée');
-		}
-		$monitor['datetime'] = date('d-m-Y H:i:s');
-		event::add('eibd::monitor', json_encode($monitor));
-		unset($this);
-		//exit();
-	}
-	private function formatiaddr ($addr){
-		return sprintf ("%d.%d.%d", ($addr >> 12) & 0x0f, ($addr >> 8) & 0x0f, $addr & 0xff);
-	}
-	private function formatgaddr ($addr)	{
-		switch(config::byKey('level', 'eibd')){
-			case '3':
-				return sprintf ("%d/%d/%d", ($addr >> 11) & 0x1f, ($addr >> 8) & 0x07,$addr & 0xff);
-			break;
-			case '2':
-				return sprintf ("%d/%d", ($addr >> 11) & 0x1f,$addr & 0x7ff);
-			break;
-			case '1':
-				return sprintf ("%d", $addr);
-			break;
 		}
 	}
 }
