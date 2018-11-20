@@ -12,20 +12,19 @@ $eqLogics = eqLogic::byType('eibd');
     <div class="col-lg-2 col-md-3 col-sm-4">
         <div class="bs-sidebar">
             <ul id="ul_eqLogic" class="nav nav-list bs-sidenav">
-                <a class="btn btn-default btn-sm tooltips BusMoniteur" title="Bus Moniteur" style="width : 50%">
-			<i class="fa fa-archive"> {{Moniteur}}</i>
+                <a class="btn btn-default btn-sm tooltips BusMoniteur" title="Bus Moniteur" style="width : 45%">
+			<i class="fa fa-archive"></i>
 		</a>
-                <a class="btn btn-default btn-sm tooltips GadInconue" title="Bus Moniteur" style="width : 50%">
-			<i class="icon techno-fleches"> {{Inconnu}}</i>
+                <a class="btn btn-default btn-sm tooltips GadInconue" title="Bus Moniteur" style="width : 45%">
+			<i class="icon techno-fleches"></i>
 		</a>
-                <!--a class="btn btn-default btn-sm tooltips Ets4Parser " title="Export ETS4" style="width : 30%">
+                <!--a class="btn btn-default btn-sm tooltips Ets4Parser " title="Export ETS4" style="width : 45%">
 			<i class="fa fa-spinner"></i>
 		</a-->
                 <a class="btn btn-default eqLogicAction" style="width : 50%;margin-top : 5px;margin-bottom: 5px;" data-action="add">
-			<i class="fa fa-plus-circle"></i> {{Ajouter un équipement}}</a>
-                <li class="filter" style="margin-bottom: 5px;">
+			<i class="fa fa-plus-circle"></i></a>
                 <a class="btn btn-default eqLogicAction" style="width : 50%;margin-top : 5px;margin-bottom: 5px;" data-action="addByTemplate">
-			<i class="fa fa-plus-circle"></i> {{Ajouter un Template}}</a>
+			<i class="fa fa-plus"></i></a>
                 <li class="filter" style="margin-bottom: 5px;">
 			<input class="filter form-control input-sm" placeholder="{{Rechercher}}" style="width: 100%"/>
 		</li>
@@ -48,7 +47,7 @@ $eqLogics = eqLogic::byType('eibd');
 			</div>
 			<div class="cursor eqLogicAction" data-action="addByTemplate" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
 				<center>
-					<i class="fa fa-plus-circle" style="font-size : 5em;color:#406E88;"></i>
+					<i class="fa fa-plus" style="font-size : 5em;color:#406E88;"></i>
 				</center>
 				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#406E88"><center>{{Par template}}</center></span>
 			</div>
