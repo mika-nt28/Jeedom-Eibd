@@ -55,7 +55,12 @@ Avec le bus monitor vous allez pouvoir analyser ce qui se passe sur votre bus et
 
 Le bus monitor affiche l'adresse physique de l’équipement, l'adresse de groupe, la data en hexa et sa conversion
 
-Le bus monitor vas mettre en cache egalement tous les gad qu'il voit et qui sont inconnue a votre installation.
+Inclusion
+==========
+
+![introduction01](../images/eibd_screenshot_ConfigParameter.jpg)
+
+En activant l'inclusion, le bus monitor vas mettre en cache egalement tous les gad qu'il voit et qui sont inconnue a votre installation.
 Cette liste est disponible sur la page de configuration et il vous est possible d'importer le gad dans un equipement.
 Cette liste est egalment disponible si vous utilisez la creation d'equipement par template.
 
@@ -88,6 +93,7 @@ Commande
 ===========
 
 Maintenant que votre équipement est crée et configurée, on vas pouvoir y ajouter des commandes.
+Pour une bonne integration, il est recommandé d'utilisté les template qui crerra automatiquement toute les commandes necessaire configurer avec le bon Flag
 
 Exemple de configuration
 
@@ -143,217 +149,78 @@ Le plugin ajoutera et configurera les commandes defini par le template, il vous 
 Ce mode est pratique si par exemple dans une meme equipement vous voulez ajouter plusieur template
 
 Flag
-===========
-
-Flag Communication
----
-
-* Actif : Cet objet de communication peut interagir avec le bus (lire,
-écrire, etc ...), si un télégramme du bus correspond à cet objet (=
-l'objet est lié à l'adresse de groupe de destination du télégramme),
-le participant répondra sur le bus avec ACK, NACK ou BUSY selon ce
-qu'il convient.
-* Inactif : Si un télégramme du bus correspond à cet objet (= l'objet
-est lié à l'adresse de groupe de destination du télégramme), le
-participant répondra sur le bus avec ACK, NACK ou BUSY selon ce qu'il
-convient, MAIS la valeur de l'objet n'est pas modifiée ni transmise,
-quoi qu'il arrive.
-
-Ce flag est quasiment toujours "Actif", sinon l'objet ne sert à
-rien ...
-Ce flag est néanmoins utile durant la phase d'installation /
-configuration d'une installation, quand on veut préparer la config de
-certain participants mais qu'ils ne doivent pas encore interagir avec
-le bus ; ce flag peut aussi être utile pour désactiver certain objets
-sans modifier toute leur config, dans le cadre d'une recherche
-d'erreur par exemple.
+=====
 
 Flag  Lecture / Read
----
+--------------------
 
-* Actif : Si le participant voit sur le bus un télégramme de type
-"Lecture de la valeur" qui correspond à cet objet (= l'objet est lié à
-l'adresse de groupe de destination du télégramme) alors le participant
-va répondre en envoyant sur le bus la valeur actuelle de l'objet.
-* Inactif : Le participant ne réagira à aucun télégramme de type
-"Lecture de la valeur" qui correspond à cet objet.
+* Actif : Si le participant voit sur le bus un télégramme de type "Lecture / Read" qui correspond à cet objet (= l'objet est lié à l'adresse de groupe de destination du télégramme) alors le participant va répondre en envoyant sur le bus la valeur actuelle de l'objet.
+* Inactif : Le participant ne réagira à aucun télégramme de type "Lecture / Read" qui correspond à cet objet.
 
-Pour chaque adresse de groupe, au maximum UN seul objet doit avoir son
-flag "Lecture/Read" actif, tous les autre objet de cette même adresse
-de groupe doivent être inactifs, sinon une interrogation de la valeur
-donnerait plus d'une réponse et on pourrait même obtenir des réponses
-discordantes.
+Pour chaque adresse de groupe, au maximum UN seul objet doit avoir son flag "Lecture/Read" actif, tous les autre objet de cette même adresse de groupe doivent être inactifs, sinon une interrogation de la valeur donnerait plus d'une réponse et on pourrait même obtenir des réponses discordantes.
 
-Exemples d'objets pour lesquels le flag "Lecture/Read" est
-généralement actif :
-* L'objet de commande d'une sortie Tout-ou-Rien (sur un bloc 4
-sorties, par exemple).
-* L'éventuel objet de "feed-back" de la ligne précédente.
-* Tous les objets de "feed-back" en général.
-* Les objets représentant la valeur mesurée par un capteur (luminosité
-actuelle, température réelle mesurée, état (ouvert/fermé) d'un capteur
-du style reed-relais dans une porte ou une fenêtre, ...)
-
-Exemples d'objets pour lesquels le flag "Lecture/Read" est
-généralement INACTIF :
-* L'objet (ON/OFF) d'un bouton poussoir.
-
-En général, la valeur stockée ou utilisée par les objets faisant
-partie d'une même adresse de groupe représente une information
-correspondant à quelque chose de réel / physique / mesurable dans
-votre maison.
-Pour déterminer lequel de tous les objets faisant partie de la même
-adresse de groupe doit être celui qui aura son flag "Lecture/Read"
-actif, il faut vous demander lequel de tous ces objets a le plus de
-chance d'être en phase avec la réalité.
-Cas simple : 3 boutons poussoirs et un acteur qui allume ou éteint un
-lampe, la valeur de l'objet de l'acteur a de bien plus grandes chances
-de réellement représenter l'état (allumé ou éteint) de la lampe,
-surtout après une panne de courent ou un problème sur le bus ...
+En général, la valeur stockée ou utilisée par les objets faisant partie d'une même adresse de groupe représente une information correspondant à quelque chose de réel / physique / mesurable dans votre maison.
+Pour déterminer lequel de tous les objets faisant partie de la même adresse de groupe doit être celui qui aura son flag "Lecture/Read" actif, il faut vous demander lequel de tous ces objets a le plus de  chance d'être en phase avec la réalité.
+Cas simple : 3 boutons poussoirs et un acteur qui allume ou éteint un lampe, la valeur de l'objet de l'acteur a de bien plus grandes chances de réellement représenter l'état (allumé ou éteint) de la lampe, surtout après une panne de courent ou un problème sur le bus ...
 
 Flag  Ecriture / Write
----
+----------------------
 
-* Actif : La valeur de cet objet sera modifiée si un participant
-envoie sur le bus un télégramme de type "Ecriture de la valeur" qui
-correspond à cet objet (= l'objet est lié à l'adresse de groupe de
-destination du télégramme).
-* Inactif : La valeur de cet objet NE sera PAS modifiée, même si un
-participant envoie sur le bus un télégramme de type "Ecriture de la
-valeur" qui correspond à cet objet.
+* Actif : La valeur de cette commande sera modifiée si un participant envoie sur le bus un télégramme de type "Ecriture/Write" qui
+correspond à cet objet (= l'objet est lié à l'adresse de groupe de destination du télégramme).
+* Inactif : La valeur de cet objet NE sera PAS modifiée, même si un participant envoie sur le bus un télégramme de type "Ecriture/Writer" qui correspond à cet objet.
 
+Pour une valeur d'adresse de groupe, plusieurs objets peuvent avoir leur flag "Ecriture/Write" actif.
+N'importe quel objet dont la valeur doit pouvoir être modifiée par un autre doit avoir sun flag "Ecriture/Write" actif.
 
-Pour une valeur d'adresse de groupe, plusieurs objets peuvent avoir
-leur flag "Ecriture/Write" actif.
-N'importe quel objet dont la valeur doit pouvoir être modifiée par un
-autre doit avoir sun flag "Ecriture/Write" actif.
+Exemples d'objets pour lesquels le flag "Ecriture/Write" est généralement actif :
+* En général, tous les commande de type info.
 
-Exemples d'objets pour lesquels le flag "Ecriture/Write" est
-généralement actif :
-* L'objet de commande d'une sortie Tout-ou-Rien (sur un bloc 4
-sorties, par exemple).
-* L'objet (ON/OFF) d'un bouton poussoir.
-* En général, tous les objets d'une supervision.
-
-Exemples d'objets pour lesquels le flag "Ecriture/Write" est
-généralement INACTIF :
-* Tous les objets de "feed-back" (d'acteurs) en général.
-* Les objets représentant la valeur mesurée par un capteur (luminosité
-actuelle, température réelle mesurée, état (ouvert/fermé) d'un capteur
-du style reed-relais dans une porte ou une fenêtre, ...).
+Exemples d'objets pour lesquels le flag "Ecriture/Write" est généralement INACTIF :
+* En général, tous les commande de type action.
 
 Flag  Transmission/Transmit
----
+---------------------------
 
-* Actif : Si pour une raison quelconque (sauf la réception d'un
-télégramme « Ecriture/Write » vers cet objet) la valeur de cet objet
-venait à être modifiée, le participant va envoyer sur le bus un
-télégramme de type "Ecriture de la valeur" contenant la nouvelle
-valeur de l'objet, vers la première adresse de groupe liée à cet
-objet.
-* Inactif : Le participant n'envoie aucun télégramme sur le bus quand
-la valeur de l'objet est modifiée.
+* Actif : Si pour une raison quelconque (sauf la réception d'un télégramme « Ecriture/Write » vers cet objet) la valeur de cette commande venait à être modifiée, le participant va envoyer sur le bus un télégramme de type "Ecriture/Write" contenant la nouvelle valeur, vers la première adresse de groupe liée à cet objet.
+* Inactif : Le participant n'envoie aucun télégramme sur le bus quand le retour d'etat est modifiée.
 
-Exemples d'objets pour lesquels le flag "Transmission/Transmit" est
-généralement actif.
-Ce flag est généralement actif pour tous les objets ayant une
-information à envoyer sur le bus, c-à-d :
-* Tous les capteurs de grandeurs physiques (température, luminosité,
-voltage, wattage, courent, humidité, ...) doivent envoyer sur le bus un
-télégramme chaque fois que la valeur qu'ils mesurent s'écarte de la
-mesure précédente.
-* L'objet ON/OFF des boutons poussoirs (quand on pousse dessus, ils
-doivent bien envoyer l'info sur le bus ...).
+Exemples d'objets pour lesquels le flag "Transmission/Transmit" est généralement actif.
+* Si la commande est de type action
+* Si le retour d'etat de la commande n'est pas un capteur knx
 
-* Tous les objets de "feed-back" (d'acteurs) en général.
-
-Exemples d'objets pour lesquels le flag "Transmission/Transmit" est
-généralement inactif.
-
-* L'objet de commande d'une sortie Tout-ou-Rien (sur un bloc 4
-sorties, par exemple).
-* En général, tous les objets d'une supervision.
-
-
-Pour rappel : Un objet peut être lié à plusieurs adresses de groupe,
-il « recevra » les télégrammes destinés à ces diverses adresses de
-groupes MAIS il ne pourra envoyer sa valeur (suite à un flag «
-transmit » actif) que vers UNE SEULE adresse de groupe (la première de
-la liste.
+Exemples d'objets pour lesquels le flag "Transmission/Transmit" est généralement inactif.
+* Si le retour d'etat port la meme adresse de groupe.
 
 Flag  Mise-à-jour/Update
----
+------------------------
 
-* Actif : Si un autre participant répond à un télégramme de type
+* Actif : Si un autre participant répond à un télégramme de type "Lecture de la valeur" qui correspond à cet objet (= l'objet est lié à l'adresse de groupe de destination du télégramme) en envoyant une valeur différente de celle actuellement stockée dans l'objet, la valeur de l'objet est remplacée par celle lue sur le bus dans le télégramme de réponse. (= Les télégrammes de réponse de valeur sont interprétés comme instruction d'écriture).
+* Inactif : Le participant ne modifie pas la valeur de son objet tant qu'il ne reçoit pas un télégramme "Ecriture/Write".
 
-"Lecture de la valeur" qui correspond à cet objet (= l'objet est lié à
-l'adresse de groupe de destination du télégramme) en envoyant une
-valeur différente de celle actuellement stockée dans l'objet, la
-valeur de l'objet est remplacée par celle lue sur le bus dans le
-télégramme de réponse. (= Les télégrammes de réponse de valeur sont
-interprétés comme instruction d'écriture).
-* Inactif : Le participant ne modifie pas la valeur de son objet tant
-qu'il ne reçoit pas un télégramme "Ecriture/Write".
+En théorie, ce flag ne semble pas très utile, mais en pratique, si il est actif il permet de "re-synchroniser" plus rapidement tous les participants d'un bus quand certains ont été redémarrés ou qu'une coupure est survenue sur le bus (arrêt temporaire d'une liaison entre 2 étages ou 2 bâtiments par exemple), dans ce cas, il suffit de lancer un script qui lit touts les groupes et hop tout est resynchronisé.
 
-En théorie, ce flag ne semble pas très utile, mais en pratique, si il
-est actif il permet de "re-synchroniser" plus rapidement tous les
-participants d'un bus quand certains ont été redémarrés ou qu'une
-coupure est survenue sur le bus (arrêt temporaire d'une liaison entre
-2 étages ou 2 bâtiments par exemple), dans ce cas, il suffit de lancer
-un script qui lit touts les groupes et hop tout est resynchronisé.
+Exemples d'objets pour lesquels le flag "Mise-à-jour/Update" est généralement actif :
+* Si la commande est de type info
+* Si le flag "Ecriture/Write" actif.
 
-Exemples d'objets pour lesquels le flag "Mise-à-jour/Update" est
-généralement actif :
-* Tous les objets qui ont le flag "Lecture/Read" inactif.
+Exemples d'objets pour lesquels le flag "Mise-à-jour/Update" est généralement inactif :
+* Tous les commande qui ont le flag "Lecture/Read" actif.
+* Tous les commande qui ont un type action
 
-* En général, tous les objets d'une supervision.
+Flag Initialisation
+-------------------
 
-Exemples d'objets pour lesquels le flag "Mise-à-jour/Update" est
-généralement inactif :
-* Tous les objets qui ont le flag "Lecture/Read" actif.
+* Actif : Au démarrage du busMonitor, un télégramme de type "Lecture de la valeur" qui correspond à cet objet sera envoyé sur le bus qui mettera a jour Jeedom
+* Inactif : Pas de mise a jours.
 
-Il existe encore un flag supplémentaire, il n'est pas présent dans
-beaucoup de participants aujourd'hui mais devrait tout doucement se
-généraliser je pense, au moins sur les modules de supervision.
+Exemples d'objets pour lesquels le flag "Initialisation" est généralement actif :
+* Si la commande est de type info
+* Si le flag "Ecriture/Write" actif.
 
-Flag Read-on-Init
----
-
-* Actif : Au démarrage du participant, un télégramme de type "Lecture
-de la valeur" qui correspond à cet objet sera envoyé sur le bus de
-donner à cet objet une valeur initial correcte.
-* Inactif : Au démarrage du participant, cet objet recevra une valeur
-par défaut.
-
-
-Exemples d'objets pour lesquels le flag "Read-on-Init" est
-généralement actif :
-* Tous les objets qui ont le flag "Lecture/Read" inactif.
-
-* En général, tous les objets d'une supervision.
-
-Exemples d'objets pour lesquels le flag "Read-on-Init" est
-généralement inactif :
-* Tous les objets qui ont le flag "Lecture/Read" actif.
-
-Etude d'un cas particulier : L'objet "Décalage de la consigne de base"
-sur un thermostat de type Gira SmartSensor.
-
-Sur cet objet, faut-il activer les flags suivants ?
-
-* COMMUNICATION : oui, c'est évident si on veut que cela marche.
-* READ : oui, car le lieu principal de stockage de l'information est
-le thermostat lui-même, donc le SmartSensor.
-* WRITE : oui, car le but est de pouvoir modifier le décalage à partir
-du bus (un Gira HomeServer 3 par ex.)
-* TRANSMIT : non, cet objet ne se modifie pas "de lui-même".
-Attention, pour "transmit", ce serait le contraire si on utilisait un
-Theben RAM713 qui possède lui une molette de décalage manuel.
-* UPDATE : non, "read" est actif, donc cet objet est la source
-d'information la plus fiable.
-(Car c'est le SmartSensor qui contient la valeur par défaut à utiliser
-lors d'un reset général du bus).
-* READ-ON-INIT : non, pour les mêmes raisons que "Update".
+Exemples d'objets pour lesquels le flag "Read-on-Init" est généralement inactif :
+* Tous les commande qui ont le flag "Lecture/Read" actif.
+* Tous les commande qui ont un type action
 
 ![introduction01](../images/Configuration_commande_flag.jpg)
 
@@ -363,7 +230,8 @@ Pour être au plus proche du KNX, le plugin peut se comporter comme un participa
 On peut donc configurer le plugin pour qu'il réalise des actions automatiquement.
 
 Envoyer une valeur sur le bus. 
----
+-----------------------------
+
 Vous avez sur jeedom un capteur qui n'est pas KNX, mais vous souhaiteriez le lier directement à votre réseau ?
 Pour cela il suffit de configurer votre commande ainsi:
 
@@ -372,20 +240,8 @@ Pour cela il suffit de configurer votre commande ainsi:
 * Activer le Flag "Transmettre"
 * En retour d'état allez chercher la commande de votre capteur.
 
-Exécuter des actions lors de la mise à jour.
----
-
-Vous avez un interrupteur KNX et vous voulez déclancher un scénario ou une commande jeedom ?
-Pour cela il suffit de configurer votre commande ainsi:
-
-* Créer une commande de type "info"
-* Saisir le GAD qui correspond à l'objet KNX que vous souhaitez surveiller.
-* Activer le flag "Ecriture"
-* Saisir la liste des actions à mener.
-* Ajouter le tag #value# dans les options des actions, qui sera remplacé par la valeur recu
-
 Répondre à une commande "Read" en provenance du bus
----
+----------------------------------------------------
 
 Le plugin est capable de répondre à un interrogation du bus.
 Pour cela il suffit de configurer votre commande ainsi:
@@ -394,11 +250,29 @@ Pour cela il suffit de configurer votre commande ainsi:
 * Saisir le GAD qui correspond à l'objet KNX que vous souhaitez surveiller
 * Activer le flag "Lecture"
 
+Envoie cyclique d'une valeur
+--------------------------
 
-Utilisation de dpt spécifique multi objet (235.000)
-===========
-Présentation
----
+Vous avez besoin d'envoyer une commande sur le bus de maniere cyclique (comme un horloge ou un etat a la vanne thermostatique)
+Rien de plus simple, il suffit de choisir sur votre commande de type action une base de temps, le plugin fait le reste.
+
+Exemple de configuration :
+==========================
+
+L'horloge KNX
+--------------
+
+Une horloge knx cout relativement cher et nous pouvons facilement nous en passé grace a jeedom
+L'integration est hyper simple, soit en creant les commande comme ceci
+
+![introduction01](../images/Configuration_commande.jpg)
+
+Ou tous simplement en utilisant le template NTP
+Le mise a jours de l'heure peut etre demandé par un actionneur, dans ce cas il faut activé le flag "Lecture"
+La mise a jours cyclique est recommandé 
+
+Téléinfo (DPT : 235.000)
+-----------------------------------------------------
 
 Ce DPT permet l'emission ou réception des informations "Choix de tarif" et "Energie réactive". Il est utiliser pour récupérer l'index du compteur ainsi que les états HP/HC ...
 
@@ -406,8 +280,8 @@ Les valeurs renvoyé dans le tarif sont les suivantes :
 
 ![introduction01](../images/valeur_objet_tarif.PNG)
 
-Composition du DPT 235.001
----
+## Composition du DPT 235.001
+
 
 Il est sur 6 octets découpé comme suit :
 
@@ -417,8 +291,8 @@ Il est sur 6 octets découpé comme suit :
 
 ![introduction01](../images/presentation_dpt.PNG)
 
-Confiugration des commandes
----
+## Confiugration des commandes
+
 
 Créer un équipement (Lien vers doc)
 
@@ -426,10 +300,10 @@ Cliquer sur "Ajouter un commande knx" et completer la commande comme ci dessous.
 
 ![introduction01](../images/Commande_jeedom.PNG)
 
-Exemple config actionneur ON/OFF :
-===========
-Créer un équipement correspondant à votre actionneur KNX :
----
+
+Actionneur ON/OFF :
+-------------------
+## Créer un équipement correspondant à votre actionneur KNX :
 
 L'Adresse KNX ( elle doit être identique à votre actionneur )
 Notre retour d'état : La Groupe Adresse choisie dans l'exemple : 0/1/0 ( A adapter à votre configuration).
@@ -441,8 +315,7 @@ Objet status ( Retour d'Etat ) doit avoir au minimum les flags C R et T, comme c
 
 ![introduction01](../images/Eibd_Exemple_ETS_actionneur_onoff.jpg)
 
-Créer un équipement qui se comportera comme un intérrupteur KNX :
----
+## Créer un équipement qui se comportera comme un intérrupteur KNX :
 
 son Adresse KNX ( elle peut être identique à un vrai intérrupteur KNX qui remplira les même fonctions)
 
@@ -459,10 +332,10 @@ Important : Ne pas oublier de choisir dans le champs Retour d'Etat la commande c
 ![introduction01](../images/Eibd_Exemple_LumONOFF.jpg)
 
 
-Exemple config actionneur Dimmer :
-===========
-Créer un équipement correspondant à votre dimmer KNX :
----
+Actionneur Dimmer :
+----------------------------------
+## Créer un équipement correspondant à votre dimmer KNX :
+
 
 L'Adresse KNX ( elle doit être identique à votre actionneur dimmer )
 
@@ -478,8 +351,7 @@ Objet 0/0/11 Status Brightness value ( Retour d'Etat ) doit avoir au minimum les
 
 ![introduction01](../images/Eibd_Exemple_ETS_dimmer.jpg)
 
-Créer la commande pour dimmer votre lumière :
----
+## Créer la commande pour dimmer votre lumière :
 
 La commande Write brightness 5.001 0/0/10 doit avoir le paramètre "Slider" et comme retour état la commande créée précédemment "brightness value"
 
@@ -490,24 +362,20 @@ La commande Diming 3.007 est uniquement là pour que jeedom reconnaissance des v
 
 FAQ
 ===========
-[panel,primary]
-.Comment créer une commande pour allumer la lumière alors que physiquement, je n'ai pas d’interrupteur ?  
---
+
+Comment créer une commande pour allumer la lumière alors que physiquement, je n'ai pas d’interrupteur ?  
+-------------------------------------------------------------------------------------------------------
 Sous jeedom, nous pouvons créer des interrupteurs virtuels en configurant une commande de type action.
 Les éléments importants pour envoyer des informations sur le bus avec jeedom sont :
 
 * Adresse de groupe
 * Le DPT pour son encodage
 On verra apparaitre sur le bus monitor la commande envoyée avec l'adresse physique d'eibd
---
-[panel,primary]
-.Je n'arrive pas a émetre une information avec ma passerelle Hager th102 ?
---
+
+
+Je n'arrive pas a émetre une information avec ma passerelle Hager th102 ?
+---------------------------------------------------------------------------
 Le script de démarage fonctionne mal avec cette passerelle.
 Il faut utiliser cette ligne pour lancer eibd
-[source,]
-----
-eibd -D -S -T -t1023 -i usb:1:6:1:0:0 -e 1.1.128 -R -u
-----
---
 
+> eibd -D -S -T -t1023 -i usb:1:6:1:0:0 -e 1.1.128 -R -u
