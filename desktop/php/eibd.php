@@ -21,9 +21,9 @@ $eqLogics = eqLogic::byType('eibd');
                 <!--a class="btn btn-default btn-sm tooltips Ets4Parser " title="Export ETS4" style="width : 45%">
 			<i class="fa fa-spinner"></i>
 		</a-->
-                <a class="btn btn-default eqLogicAction" style="width : 50%;margin-top : 5px;margin-bottom: 5px;" data-action="add">
+                <a class="btn btn-default eqLogicAction" style="width : 45%;margin-top : 5px;margin-bottom: 5px;" data-action="add">
 			<i class="fa fa-plus-circle"></i></a>
-                <a class="btn btn-default eqLogicAction" style="width : 50%;margin-top : 5px;margin-bottom: 5px;" data-action="addByTemplate">
+                <a class="btn btn-default eqLogicAction" style="width : 45%;margin-top : 5px;margin-bottom: 5px;" data-action="addByTemplate">
 			<i class="fa fa-plus"></i></a>
                 <li class="filter" style="margin-bottom: 5px;">
 			<input class="filter form-control input-sm" placeholder="{{Rechercher}}" style="width: 100%"/>
