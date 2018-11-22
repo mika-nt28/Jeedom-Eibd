@@ -6,7 +6,7 @@ class knxproj {
 		if (file_exists($filename)) 
 			exec('sudo rm '.$filename);
 		$file=fopen($filename,"a+");
-		fwrite($file,$this->proj);
+		fwrite($file,json_encode($this->proj));
 		fclose($file);	
 	}
 	private function Clean($dir){
