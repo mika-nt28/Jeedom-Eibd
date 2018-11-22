@@ -91,7 +91,7 @@ class knxproj {
 									$DataPointType=explode('-',$ComObjectInstanceRef->getAttribute('DatapointType'));
 									if ($DataPointType[1] >0){
 										$DPT=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
-										if(!is_array($this->proj[$AdressePhysique]['Cmd'])
+										if(!is_array($this->proj[$AdressePhysique]['Cmd']))
 											$this->proj[$AdressePhysique]['Cmd']=array();
 										array_push($this->proj[$AdressePhysique]['Cmd'],$this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Receive',$DPT));
 										array_push($this->proj[$AdressePhysique]['Cmd'],$this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Send',$DPT));
