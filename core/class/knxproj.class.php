@@ -35,7 +35,7 @@ class knxproj {
 			closedir($dh);
 		}	
 	}
-	private function AddCommandeETSParse($Projet,$ComObjectInstanceRef,$type,$DPT){
+	private function AddCommandeETSParse($Projet,$ComObjectInstanceRef,$type,$AdressePhysique,$DPT){
 		foreach($ComObjectInstanceRef->getElementsByTagName($type) as $Commande){
 			$GroupAddressRefId=$Commande->getAttribute('GroupAddressRefId');
 			foreach($Projet->getElementsByTagName('GroupRange') as $GroupRange){
@@ -45,19 +45,18 @@ class knxproj {
 						if ($GroupAddressId == $GroupAddressRefId){
 							$addr=$GroupAddress->getAttribute('Address');
 							$AdresseGroupe=sprintf( "%d/%d/%d", ($addr >> 11) & 0xf, ($addr >> 8) & 0x7, $addr & 0xff);
-							$NewGad[$AdresseGroupe]['cmdName']=$GroupAddress->getAttribute('Name');
-							$NewGad[$AdresseGroupe]['groupName']=$GroupRange->getAttribute('Name');
-							$NewGad[$AdresseGroupe]['DataPointType']=$DPT;	
+							$this->proj[$AdressePhysique]['Cmd'][$AdresseGroupe]['cmdName']=$GroupAddress->getAttribute('Name');
+							$this->proj[$AdressePhysique]['Cmd'][$AdresseGroupe]['groupName']=$GroupRange->getAttribute('Name');
+							$this->proj[$AdressePhysique]['Cmd'][$AdresseGroupe]['DataPointType']=$DPT;	
 							if($type == 'send')
-								$NewGad[$AdresseGroupe]['cmdType']='action';
+								$this->proj[$AdressePhysique]['Cmd'][$AdresseGroupe]['cmdType']='action';
 							else
-								$NewGad[$AdresseGroupe]['cmdType']='info';
+								$this->proj[$AdressePhysique]['Cmd'][$AdresseGroupe]['cmdType']='info';
 						}
 					}
 				}
 			}
 		}
-		return $NewGad;
 	}
 	public function ParserEtsFile($File){
 		$dir=dirname(__FILE__) . '/../config/knxproj/';
@@ -91,14 +90,8 @@ class knxproj {
 									$DataPointType=explode('-',$ComObjectInstanceRef->getAttribute('DatapointType'));
 									if ($DataPointType[1] >0){
 										$DPT=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
-										if(!is_array($this->proj[$AdressePhysique]['Cmd']))
-											$this->proj[$AdressePhysique]['Cmd']=array();
-										$ReceiveCmd = $this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Receive',$DPT);
-										if($ReceiveCmd != null)
-											array_push($this->proj[$AdressePhysique]['Cmd'],$ReceiveCmd);
-										$SendCmd = $this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Send',$DPT);
-										if($SendCmd != null)
-											array_push($this->proj[$AdressePhysique]['Cmd'],$SendCmd);
+										$this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Receive',$AdressePhysique,$DPT);
+										$this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Send',$AdressePhysique,$DPT);
 									}
 								}
 							}
