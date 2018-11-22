@@ -163,6 +163,8 @@ function getEtsProj () {
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
 			}
+			if (data.result == false) 
+				return;
 			$('#table_GadETS tbody').html('');
 			jQuery.each(jQuery.parseJSON(data.result),function(key, value) {
 				var tr=$("<tr>");
