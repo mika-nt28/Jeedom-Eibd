@@ -65,7 +65,6 @@ $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 $('body').on('click','.bt_selectGadInconnue', function () {
 	var SelectAddr=$(this).closest('body').find('.form-control[data-l1key=logicalId]').val();	
 	var SelectDpt=$(this).closest('.form-group').parent().find('.form-control[data-l2key=KnxObjectType]').val();	
-	var =$(this).attr('data-dpt');
 	var input=$(this).closest('.input-group').find('.CmdEqLogicTemplateAttr');
 	bootbox.dialog({
 		title: "{{Choisir un Gad}}",
