@@ -63,11 +63,6 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 					<th>{{Commande}}</th>
 					<th>{{Destination}}</th>
 					<th>{{Data Point Type}}</th>
-					<th>{{Derniere valeur}}</th>
-					<?php
-						if(!isset($_REQUEST['param']))
-							echo '<th>{{Action sur cette adresse de groupe}}</th>';
-					?>
 				</tr>
 			</thead>
 			<tbody></tbody>
@@ -151,9 +146,7 @@ function getEtsProj () {
 				return;
 			$('#table_GadETS tbody').html('');
 			jQuery.each(data.result,function(AdressePhysique, Equipement) {
-				alert(AdressePhysique);
 				jQuery.each(Equipement.Cmd,function(AdresseGroupe, Cmd) {
-					alert(AdresseGroupe);
 					var tr=$("<tr>");
 					if (typeof(Cmd.DeviceName) !== 'undefined') 
 						tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
