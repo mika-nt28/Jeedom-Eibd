@@ -39,24 +39,24 @@ class knxproj {
 		foreach($ComObjectInstanceRef->getElementsByTagName($type) as $Commande){
 			$GroupAddressRefId=$Commande->getAttribute('GroupAddressRefId');
 			foreach($Projet->getElementsByTagName('GroupRange') as $GroupRange){
-				$NewGad['groupName']=$GroupRange->getAttribute('Name');
 				foreach($GroupRange->getElementsByTagName('GroupAddress') as $GroupAddress){
-					$NewGad['cmdName']=$GroupAddress->getAttribute('Name');
 					$GroupAddressId=$GroupAddress->getAttribute('Id');
 					if ($GroupAddressId!=""){
 						if ($GroupAddressId == $GroupAddressRefId){
 							$addr=$GroupAddress->getAttribute('Address');
-							$NewGad['AdresseGroupe']=sprintf( "%d/%d/%d", ($addr >> 11) & 0xf, ($addr >> 8) & 0x7, $addr & 0xff);
+							$AdresseGroupe=sprintf( "%d/%d/%d", ($addr >> 11) & 0xf, ($addr >> 8) & 0x7, $addr & 0xff);
+							$NewGad[$AdresseGroupe]['cmdName']=$GroupAddress->getAttribute('Name');
+							$NewGad[$AdresseGroupe]['groupName']=$GroupRange->getAttribute('Name');
+							$NewGad[$AdresseGroupe]['DataPointType']=$DPT;	
 							if($type == 'send')
-								$NewGad['cmdType']='action';
+								$NewGad[$AdresseGroupe]['cmdType']='action';
 							else
-								$NewGad['cmdType']='info';
+								$NewGad[$AdresseGroupe]['cmdType']='info';
 						}
 					}
 				}
 			}
 		}
-		$NewGad['DataPointType']=$DPT;
 		return $NewGad;
 	}
 	public function ParserEtsFile($File){
