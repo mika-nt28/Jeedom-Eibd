@@ -3,6 +3,7 @@ try {
 	require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
     	include_file('core', 'authentification', 'php');
 	include_file('core', 'dpt', 'class', 'eibd');
+	include_file('core', 'knxproj', 'class', 'eibd');
 
     	if (!isConnect('admin')) {
         	throw new Exception(__('401 - Accès non autorisé', __FILE__));
@@ -93,10 +94,13 @@ try {
 		ajax::success($return);
 	}
 	if (init('action') == 'EtsParser') {
-		if (isset($_FILES['Knxproj'])){
-			eibd::ParserEtsFile($_FILES['Knxproj']['tmp_name']);
-			ajax::success(cache::byKey('eibd::CreateNewGad')->getValue('[]'));
-		}
+		if (isset($_FILES['Knxproj']))
+			ajax::success(knxproj::ParserEtsFile($_FILES['Knxproj']['tmp_name']));
+	}
+	if (init('action') == 'getEtsProj') {
+		$filename=dirname(__FILE__) . '/../config/EtsProj.json';
+		if (file_exists($filename))
+			ajax::success(file_get_contents($filename));
 	}
   	if (init('action') == 'AppliTemplate') {
 		$EqLogic=eqLogic::byId(init('id'));
