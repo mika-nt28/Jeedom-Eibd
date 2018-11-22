@@ -93,8 +93,12 @@ class knxproj {
 										$DPT=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
 										if(!is_array($this->proj[$AdressePhysique]['Cmd']))
 											$this->proj[$AdressePhysique]['Cmd']=array();
-										array_push($this->proj[$AdressePhysique]['Cmd'],$this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Receive',$DPT));
-										array_push($this->proj[$AdressePhysique]['Cmd'],$this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Send',$DPT));
+										$ReceiveCmd = $this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Receive',$DPT);
+										if($ReceiveCmd != null)
+											array_push($this->proj[$AdressePhysique]['Cmd'],$ReceiveCmd);
+										$SendCmd = $this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Send',$DPT);
+										if($SendCmd != null)
+											array_push($this->proj[$AdressePhysique]['Cmd'],$SendCmd);
 									}
 								}
 							}
