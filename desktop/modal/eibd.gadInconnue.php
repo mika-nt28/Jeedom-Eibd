@@ -148,7 +148,7 @@ function getEtsProj () {
 			jQuery.each(data.result,function(AdressePhysique, Equipement) {
 				jQuery.each(Equipement.Cmd,function(AdresseGroupe, Cmd) {
 					var tr=$("<tr>");
-					if (typeof(Cmd.DeviceName) !== 'undefined') 
+					if (typeof(Equipement.DeviceName) !== 'undefined') 
 						tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
 					else
 						tr.append($("<td class='DeviceName'>"));
