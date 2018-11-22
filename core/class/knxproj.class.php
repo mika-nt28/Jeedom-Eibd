@@ -1,5 +1,18 @@
 <?php
 class knxproj {
+	private proj=array();
+	private function WriteJsonProj(){
+		$filename=dirname(__FILE__) . '/../../core/config/EtsProj.json';
+		if (file_exists($filename)) 
+			exec('sudo rm '.$filename);
+		$file=fopen($filename,"a+");
+		fwrite($file,$this->proj);
+		fclose($file);	
+	}
+	private function Clean($dir){
+		if (file_exists($filename)) 
+			exec('sudo rm -R '.$dir);
+	}
 	private function unzipKnxProj($dir,$File){
 		if (!is_dir($dir)) 
 			mkdir($dir);
@@ -25,7 +38,7 @@ class knxproj {
 			closedir($dh);
 		}	
 	}
-	private function AddCommandeETSParse($Projet,$ComObjectInstanceRef,$NewGad,$type){
+	private function AddCommandeETSParse($Projet,$ComObjectInstanceRef,$type,$DPT){
 		foreach($ComObjectInstanceRef->getElementsByTagName($type) as $Commande){
 			$GroupAddressRefId=$Commande->getAttribute('GroupAddressRefId');
 			foreach($Projet->getElementsByTagName('GroupRange') as $GroupRange){
@@ -41,18 +54,18 @@ class knxproj {
 								$NewGad['cmdType']='action';
 							else
 								$NewGad['cmdType']='info';
-							if(count(cmd::byLogicalId($NewGad['AdresseGroupe']))<=0)
-								self::addCacheNoGad($NewGad);
 						}
 					}
 				}
 			}
 		}
+		$NewGad['DataPointType']=$DPT;
+		return $NewGad;
 	}
 	public static function ParserEtsFile($File){
-		$dir='/tmp/knxproj/';
-		self::unzipKnxProj($dir,$File);
-		$ProjetFile=self::SearchFolder($dir,"P-").'/0.xml';
+		$dir=dirname(__FILE__) . '/../../core/config/knxproj/';
+		$this->unzipKnxProj($dir,$File);
+		$ProjetFile=$this->SearchFolder($dir,"P-").'/0.xml';
 		$Projet = new DomDocument();
 		if ($Projet->load($ProjetFile)){ // XML décrivant le projet
 			foreach($Projet->getElementsByTagName('Area') as $Area){
@@ -64,25 +77,26 @@ class knxproj {
 						$DeviceProductRefId=$Device->getAttribute('ProductRefId');
 						if ($DeviceProductRefId != ''){
 							$DeviceAddress=$Device->getAttribute('Address');
-							$Equipement['AdressePhysique']=$AreaAddress.'.'.$LineAddress.'.'.$DeviceAddress;
+							$AdressePhysique=$AreaAddress.'.'.$LineAddress.'.'.$DeviceAddress;
 							$DossierCataloge=$dir . substr($DeviceProductRefId,0,6).'/Catalog.xml';
 							$Cataloge = new DomDocument();
 							if ($Cataloge->load($DossierCataloge)) {//XMl décrivant les équipements
 								foreach($Cataloge->getElementsByTagName('CatalogItem') as $CatalogItem){
 									if ($DeviceProductRefId==$CatalogItem->getAttribute('ProductRefId'))
-										$Equipement['DeviceName']=$CatalogItem->getAttribute('Name'). " - ".$PhysicalAdress;
+										$this->proj[$AdressePhysique]['DeviceName']=$CatalogItem->getAttribute('Name'). " - ".$AdressePhysique;
 								}
 							}
 							else{
-								$Equipement['DeviceName']= "No name - ".$PhysicalAdress;
+								$this->proj[$AdressePhysique]['DeviceName']= "No name - ".$AdressePhysique;
 							}
 							foreach($Device->getElementsByTagName('ComObjectInstanceRefs') as $ComObjectInstanceRefs){
 								foreach($ComObjectInstanceRefs->getElementsByTagName('ComObjectInstanceRef') as $ComObjectInstanceRef){
 									$DataPointType=explode('-',$ComObjectInstanceRef->getAttribute('DatapointType'));
-									if ($DataPointType[1] >0)
-										$Equipement['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
-									self::AddCommandeETSParse($Projet,$ComObjectInstanceRef,$Equipement,'Receive');
-									self::AddCommandeETSParse($Projet,$ComObjectInstanceRef,$Equipement,'Send');
+									if ($DataPointType[1] >0){
+										$DPT=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
+										$this->proj[$AdressePhysique]['Cmd'][] = $this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Receive',$DPT);
+										$this->proj[$AdressePhysique]['Cmd'][] = $this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Send',$DPT);
+									}
 								}
 							}
 						}
@@ -94,6 +108,8 @@ class knxproj {
 		{
 			throw new Exception(__( 'Impossible d\'analyser le document '.$ProjetFile, __FILE__));
 		}
+		$this->WriteJsonProj();
+		$this->Clean($dir);
 	}
 }
 ?>
