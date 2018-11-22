@@ -59,7 +59,7 @@ class knxproj {
 		$NewGad['DataPointType']=$DPT;
 		return $NewGad;
 	}
-	public static function ParserEtsFile($File){
+	public function ParserEtsFile($File){
 		$dir=dirname(__FILE__) . '/../config/knxproj/';
 		$this->unzipKnxProj($dir,$File);
 		$ProjetFile=$this->SearchFolder($dir,"P-");
