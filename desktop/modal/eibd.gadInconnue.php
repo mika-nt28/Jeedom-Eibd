@@ -123,7 +123,7 @@ function getKnxGadInconue () {
 			if ($('#md_modal').dialog('isOpen') === true) {
 				setTimeout(function() {
 					getKnxGadInconue()
-				}, 1000);
+				}, 10000);
 			}
 		}
 	});
@@ -140,9 +140,7 @@ function getEtsProj () {
 		dataType: 'json',
 		global: false,
 		error: function(request, status, error) {
-			setTimeout(function() {
-				getEtsProj()
-			}, 100);
+			getEtsProj()
 		},
 		success: function(data) {
 			if (data.state != 'ok') {
@@ -173,11 +171,6 @@ function getEtsProj () {
 			$('#table_GadETS .AdresseGroupe').trigger('keyup');
 			$('#table_GadETS .DataPointType').val(SelectDpt);
 			$('#table_GadETS .DataPointType').trigger('keyup');
-			if ($('#md_modal').dialog('isOpen') === true) {
-				setTimeout(function() {
-					getEtsProj()
-				}, 1000);
-			}
 		}
 	});
 }
