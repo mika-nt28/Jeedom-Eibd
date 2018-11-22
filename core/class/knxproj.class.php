@@ -19,22 +19,18 @@ class knxproj {
 		exec('sudo chmod -R 777 '.$dir);
 		$zip = new ZipArchive(); 
 		// On ouvre l’archive.
-		if($zip->open($File) == TRUE)
-		{
+		if($zip->open($File) == TRUE){
 			$zip->extractTo($dir);
 			$zip->close();
 		}
 	}
 	private function SearchFolder($dir,$Folder){
-		if ($dh = opendir($dir)) 
-		{
-			while (($file = readdir($dh)) !== false)
-			{
-				if (substr($file,0,2) == $Folder)
-				{
+		if ($dh = opendir($dir)){
+			while (($file = readdir($dh)) !== false){
+				if (substr($file,0,2) == $Folder){
 					if (opendir($dir.$file)) 
 						return $dir . $file;
-					}
+				}
 			}
 			closedir($dh);
 		}	
@@ -64,11 +60,11 @@ class knxproj {
 		return $NewGad;
 	}
 	public static function ParserEtsFile($File){
-		$dir=dirname(__FILE__) . '/../../core/config/knxproj/';
+		$dir=dirname(__FILE__) . '/../config/knxproj/';
 		$this->unzipKnxProj($dir,$File);
-		$ProjetFile=$this->SearchFolder($dir,"P-").'/0.xml';
+		$ProjetFile=$this->SearchFolder($dir,"P-");
 		$Projet = new DomDocument();
-		if ($Projet->load($ProjetFile)){ // XML décrivant le projet
+		if ($Projet->load($ProjetFile.'/0.xml')){ // XML décrivant le projet
 			foreach($Projet->getElementsByTagName('Area') as $Area){
 				$AreaAddress=$Area->getAttribute('Address');
 				foreach($Area->getElementsByTagName('Line') as $Line){
@@ -107,7 +103,7 @@ class knxproj {
 		}
 		else
 		{
-			throw new Exception(__( 'Impossible d\'analyser le document '.$ProjetFile, __FILE__));
+			throw new Exception(__( 'Impossible d\'analyser le document '.$ProjetFile.'/0.xml', __FILE__));
 		}
 		$this->WriteJsonProj();
 		$this->Clean($dir);
