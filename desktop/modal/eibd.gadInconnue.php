@@ -38,12 +38,10 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 </ul>
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
-		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter">
+		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
-					<th>{{Equipement}}</th>
 					<th>{{Source}}</th>
-					<th>{{Commande}}</th>
 					<th>{{Destination}}</th>
 					<th>{{Data Point Type}}</th>
 					<th>{{Derniere valeur}}</th>
@@ -57,7 +55,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 		</table>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="EtsTab">
-		<table id="table_GadETS" class="table table-bordered table-condensed tablesorter">
+		<table id="table_GadETS" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
 					<th>{{Equipement}}</th>
@@ -104,19 +102,11 @@ function getKnxGadInconue () {
 			$('#table_GadInconue tbody').html('');
 			jQuery.each(jQuery.parseJSON(data.result),function(key, value) {
 				var tr=$("<tr>");
-				if (typeof(value.DeviceName) !== 'undefined') 
-					tr.append($("<td>").text(value.DeviceName));
-				else
-					tr.append($("<td>"));
 				tr.append($("<td>").text(value.AdressePhysique));
-				if (typeof(value.cmdName) !== 'undefined') 
-					tr.append($("<td>").text(value.cmdName));
-				else
-					tr.append($("<td>"));
 				tr.append($("<td>").text(value.AdresseGroupe));
 				tr.append($("<td>").text(value.DataPointType));
 				tr.append($("<td>").text(value.valeur));
-             			if($('#table_GadInconue thead th').length == 7){
+             			//if($('#table_GadInconue thead th').length == 7){
 					tr.append($("<td>")
 						.append($('<a class="btn btn-danger btn-xs Gad pull-right" data-action="remove">')
 							.append($('<i class="fa fa-minus-circle">'))
@@ -124,7 +114,7 @@ function getKnxGadInconue () {
 						.append($('<a class="btn btn-primary btn-xs Gad pull-right" data-action="addEqLogic">')
 							.append($('<i class="fa fa-check-circle">'))
 							.text('{{Ajouter a un equipement}}')));
-				}
+				//}
 			      	$('#table_GadInconue tbody').append(tr);
 			});				
 			$('#table_GadInconue').trigger('update');
@@ -180,15 +170,6 @@ function getEtsProj () {
 				tr.append($("<td>").text(value.AdresseGroupe));
 				tr.append($("<td>").text(value.DataPointType));
 				tr.append($("<td>").text(value.valeur));
-             			if($('#table_GadETS thead th').length == 7){
-					tr.append($("<td>")
-						.append($('<a class="btn btn-danger btn-xs Gad pull-right" data-action="remove">')
-							.append($('<i class="fa fa-minus-circle">'))
-							.text('{{Supprimer}}'))
-						.append($('<a class="btn btn-primary btn-xs Gad pull-right" data-action="addEqLogic">')
-							.append($('<i class="fa fa-check-circle">'))
-							.text('{{Ajouter a un equipement}}')));
-				}
 			      	$('#table_GadETS tbody').append(tr);
 			});				
 			$('#table_GadETS').trigger('update');
@@ -218,14 +199,10 @@ $('body').on('click', '.Gad[data-action=remove]', function(){
 	removeInCache(gad, false);
 	$(this).closest('tr').remove();
 });	
-$('body').on('click', '#table_GadInconue tbody tr', function(){
+$('body').on('click', '.GadInsert tbody tr', function(){
 	SelectGad=$(this).closest('tr').find('td:eq(3)').text();
 	SelectAddr=$(this).closest('tr').find('td:eq(1)').text();
-});	
-$('body').on('click', '#table_GadETS tbody tr', function(){
-	SelectGad=$(this).closest('tr').find('td:eq(3)').text();
-	SelectAddr=$(this).closest('tr').find('td:eq(1)').text();
-});	
+});
 function removeInCache(gad, destination){
 	$.ajax({
 		type: 'POST',
