@@ -490,20 +490,6 @@ class eibd extends eqLogic {
 		$conBusMonitor->EIBClose();		
 		log::add('eibd', 'debug', 'Deconnexion a EIBD sur le serveur '.$host.':'.$port);	
 	}
-	
-	public static function addCacheNoGad($_parameter) {
-		$cache = cache::byKey('eibd::CreateNewGad');
-		$value = json_decode($cache->getValue('[]'), true);
-		if($key = array_search($_parameter['AdresseGroupe'], array_column($value, 'AdresseGroupe')) === false)
-			$value[] = $_parameter;
-		else
-			$value[$key] = $_parameter;
-		if(count($value) >=255){			
-			unset($value[0]);
-			array_shift($value);
-		}
-		cache::set('eibd::CreateNewGad', json_encode($value), 0);
-	}
 	public static function TransmitValue($_options) 	{
 		$Event = cmd::byId($_options['event_id']);
 		if(!is_object($Event)){

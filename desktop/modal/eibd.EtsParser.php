@@ -16,6 +16,7 @@ if (!isConnect('admin')) {
 				<div class="col-md-4"></div> 
 			</div> 
 		</form> 
+		<pre class="EtsImportData"></pre>
 	</div>  
 </div>
 <script>
@@ -29,7 +30,7 @@ if (!isConnect('admin')) {
 				return;
 			}
 			$('#div_alert').showAlert({message: "Import ETS complet.</br>Vous pouvez commancer la configuration des equipements", level: 'success'});
-			$('.eqLogicAction[data-action=addByTemplate]').trigger('click');
+			$('.EtsImportData').append(data.result);
 		}
 	});
 </script>

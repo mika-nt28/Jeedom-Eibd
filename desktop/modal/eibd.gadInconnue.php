@@ -38,12 +38,10 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 </ul>
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
-		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter">
+		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
-					<th>{{Equipement}}</th>
 					<th>{{Source}}</th>
-					<th>{{Commande}}</th>
 					<th>{{Destination}}</th>
 					<th>{{Data Point Type}}</th>
 					<th>{{Derniere valeur}}</th>
@@ -57,7 +55,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 		</table>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="EtsTab">
-		<table id="table_GadETS" class="table table-bordered table-condensed tablesorter">
+		<table id="table_GadETS" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
 					<th>{{Equipement}}</th>
@@ -65,11 +63,6 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 					<th>{{Commande}}</th>
 					<th>{{Destination}}</th>
 					<th>{{Data Point Type}}</th>
-					<th>{{Derniere valeur}}</th>
-					<?php
-						if(!isset($_REQUEST['param']))
-							echo '<th>{{Action sur cette adresse de groupe}}</th>';
-					?>
 				</tr>
 			</thead>
 			<tbody></tbody>
@@ -104,40 +97,28 @@ function getKnxGadInconue () {
 			$('#table_GadInconue tbody').html('');
 			jQuery.each(jQuery.parseJSON(data.result),function(key, value) {
 				var tr=$("<tr>");
-				if (typeof(value.DeviceName) !== 'undefined') 
-					tr.append($("<td>").text(value.DeviceName));
-				else
-					tr.append($("<td>"));
-				tr.append($("<td>").text(value.AdressePhysique));
-				if (typeof(value.cmdName) !== 'undefined') 
-					tr.append($("<td>").text(value.cmdName));
-				else
-					tr.append($("<td>"));
-				tr.append($("<td>").text(value.AdresseGroupe));
-				tr.append($("<td>").text(value.DataPointType));
-				tr.append($("<td>").text(value.valeur));
-             			if($('#table_GadInconue thead th').length == 7){
-					tr.append($("<td>")
-						.append($('<a class="btn btn-danger btn-xs Gad pull-right" data-action="remove">')
-							.append($('<i class="fa fa-minus-circle">'))
-							.text('{{Supprimer}}'))
-						.append($('<a class="btn btn-primary btn-xs Gad pull-right" data-action="addEqLogic">')
-							.append($('<i class="fa fa-check-circle">'))
-							.text('{{Ajouter a un equipement}}')));
-				}
+				tr.append($("<td class='AdressePhysique'>").text(value.AdressePhysique));
+				tr.append($("<td class='AdresseGroupe'>").text(value.AdresseGroupe));
+				tr.append($("<td class='DataPointType'>").text(value.DataPointType));
+				tr.append($("<td class='valeur'>").text(value.valeur));
+				tr.append($("<td>")
+					.append($('<a class="btn btn-danger btn-xs Gad pull-right" data-action="remove">')
+						.append($('<i class="fa fa-minus-circle">'))
+						.text('{{Supprimer}}'))
+					.append($('<a class="btn btn-primary btn-xs Gad pull-right" data-action="addEqLogic">')
+						.append($('<i class="fa fa-check-circle">'))
+						.text('{{Ajouter a un equipement}}')));
 			      	$('#table_GadInconue tbody').append(tr);
 			});				
 			$('#table_GadInconue').trigger('update');
-			if($('#table_GadInconue thead th').length == 6){
-				$(".tablesorter-filter[data-column=1]").val(SelectAddr);
-				$(".tablesorter-filter[data-column=1]").trigger('keyup');
-				$(".tablesorter-filter[data-column=4]").val(SelectDpt);
-				$(".tablesorter-filter[data-column=4]").trigger('keyup');
-			}
+			$('#table_GadInconue .AdresseGroupe').val(SelectAddr);
+			$('#table_GadInconue .AdresseGroupe').trigger('keyup');
+			$('#table_GadInconue .DataPointType').val(SelectDpt);
+			$('#table_GadInconue .DataPointType').trigger('keyup');
 			if ($('#md_modal').dialog('isOpen') === true) {
 				setTimeout(function() {
 					getKnxGadInconue()
-				}, 1000);
+				}, 10000);
 			}
 		}
 	});
@@ -154,9 +135,7 @@ function getEtsProj () {
 		dataType: 'json',
 		global: false,
 		error: function(request, status, error) {
-			setTimeout(function() {
-				getEtsProj()
-			}, 100);
+			getEtsProj()
 		},
 		success: function(data) {
 			if (data.state != 'ok') {
@@ -166,43 +145,28 @@ function getEtsProj () {
 			if (data.result == false) 
 				return;
 			$('#table_GadETS tbody').html('');
-			jQuery.each(jQuery.parseJSON(data.result),function(key, value) {
-				var tr=$("<tr>");
-				if (typeof(value.DeviceName) !== 'undefined') 
-					tr.append($("<td>").text(value.DeviceName));
-				else
-					tr.append($("<td>"));
-				tr.append($("<td>").text(value.AdressePhysique));
-				if (typeof(value.cmdName) !== 'undefined') 
-					tr.append($("<td>").text(value.cmdName));
-				else
-					tr.append($("<td>"));
-				tr.append($("<td>").text(value.AdresseGroupe));
-				tr.append($("<td>").text(value.DataPointType));
-				tr.append($("<td>").text(value.valeur));
-             			if($('#table_GadETS thead th').length == 7){
-					tr.append($("<td>")
-						.append($('<a class="btn btn-danger btn-xs Gad pull-right" data-action="remove">')
-							.append($('<i class="fa fa-minus-circle">'))
-							.text('{{Supprimer}}'))
-						.append($('<a class="btn btn-primary btn-xs Gad pull-right" data-action="addEqLogic">')
-							.append($('<i class="fa fa-check-circle">'))
-							.text('{{Ajouter a un equipement}}')));
-				}
-			      	$('#table_GadETS tbody').append(tr);
+			jQuery.each(data.result,function(AdressePhysique, Equipement) {
+				jQuery.each(Equipement.Cmd,function(AdresseGroupe, Cmd) {
+					var tr=$("<tr>");
+					if (typeof(Equipement.DeviceName) !== 'undefined') 
+						tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
+					else
+						tr.append($("<td class='DeviceName'>"));
+					tr.append($("<td>").text(AdressePhysique));
+					if (typeof(Cmd.cmdName) !== 'undefined') 
+						tr.append($("<td class='cmdName'>").text(Cmd.cmdName));
+					else
+						tr.append($("<td class='cmdName'>"));
+					tr.append($("<td class='AdresseGroupe'>").text(AdresseGroupe));
+					tr.append($("<td class='DataPointType'>").text(Cmd.DataPointType));
+					$('#table_GadETS tbody').append(tr);
+				});				
 			});				
 			$('#table_GadETS').trigger('update');
-			if($('#table_GadETS thead th').length == 6){
-				$(".tablesorter-filter[data-column=1]").val(SelectAddr);
-				$(".tablesorter-filter[data-column=1]").trigger('keyup');
-				$(".tablesorter-filter[data-column=4]").val(SelectDpt);
-				$(".tablesorter-filter[data-column=4]").trigger('keyup');
-			}
-			if ($('#md_modal').dialog('isOpen') === true) {
-				setTimeout(function() {
-					getEtsProj()
-				}, 1000);
-			}
+			$('#table_GadETS .AdresseGroupe').val(SelectAddr);
+			$('#table_GadETS .AdresseGroupe').trigger('keyup');
+			$('#table_GadETS .DataPointType').val(SelectDpt);
+			$('#table_GadETS .DataPointType').trigger('keyup');
 		}
 	});
 }
@@ -214,18 +178,14 @@ $('body').on('click', '.Gad[data-action=addEqLogic]', function(){
 	$(this).closest('tr').remove();
 });
 $('body').on('click', '.Gad[data-action=remove]', function(){
-	var gad=$(this).closest('tr').find('td:eq(3)').text();
+	var gad=$(this).closest('tr').find('.AdresseGroupe').text();
 	removeInCache(gad, false);
 	$(this).closest('tr').remove();
 });	
-$('body').on('click', '#table_GadInconue tbody tr', function(){
-	SelectGad=$(this).closest('tr').find('td:eq(3)').text();
-	SelectAddr=$(this).closest('tr').find('td:eq(1)').text();
-});	
-$('body').on('click', '#table_GadETS tbody tr', function(){
-	SelectGad=$(this).closest('tr').find('td:eq(3)').text();
-	SelectAddr=$(this).closest('tr').find('td:eq(1)').text();
-});	
+$('body').on('click', '.GadInsert tbody tr', function(){
+	SelectGad=$(this).closest('tr').find('.AdresseGroupe').text();
+	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
+});
 function removeInCache(gad, destination){
 	$.ajax({
 		type: 'POST',

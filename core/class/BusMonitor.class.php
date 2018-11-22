@@ -41,13 +41,12 @@ class BusMonitorTraitement /*extends Thread*/{
 			if($dpt!=false){
 				$monitor['valeur'] = Dpt::DptSelectDecode($dpt, $this->Data);
 				$monitor['DataPointType']= $dpt;
-				if(config::byKey('isInclude','eibd'))
+				if(config::byKey('isInclude','eibd',false))					
+					$this->addCache($monitor);
 					//event::add('eibd::GadInconnue', json_encode($monitor));
-					eibd::addCacheNoGad($monitor);
-				
 			}else
 				$monitor['valeur']="Impossible de convertir la valeur";
-			$monitor['cmdJeedom']= "La commande n'exites pas";
+			$monitor['cmdJeedom']= "La commande n’existes pas";
 			log::add('eibd', 'debug', 'Aucune commande avec l\'adresse de groupe  '.$this->AdrGroup.' n\'a pas été trouvée');
 		}
 		$monitor['datetime'] = date('d-m-Y H:i:s');
@@ -70,6 +69,28 @@ class BusMonitorTraitement /*extends Thread*/{
 				return sprintf ("%d", $addr);
 			break;
 		}
+	}
+	
+	public function addCache($_parameter) {
+		$cache = cache::byKey('eibd::CreateNewGad');
+		$value = json_decode($cache->getValue('[]'), true);
+		if($key = $this->recursive_array_search($_parameter['AdresseGroupe'],$value) === false)
+			$value[] = $_parameter;
+		else
+			$value[$key] = $_parameter;
+		if(count($value) >=255){			
+			unset($value[0]);
+			array_shift($value);
+		}
+		cache::set('eibd::CreateNewGad', json_encode($value), 0);
+	}
+	private function recursive_array_search($needle,$haystack) {
+		foreach($haystack as $key=>$value) {
+			$current_key=$key;
+			if($needle===$value OR (is_array($value) && $this->recursive_array_search($needle,$value) !== false)) 
+				return $current_key;
+		}
+		return false;
 	}
 }
 ?>

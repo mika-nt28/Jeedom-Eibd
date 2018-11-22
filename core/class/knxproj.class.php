@@ -2,11 +2,11 @@
 class knxproj {
 	private $proj=array();
 	private function WriteJsonProj(){
-		$filename=dirname(__FILE__) . '/../../core/config/EtsProj.json';
+		$filename=dirname(__FILE__) . '/../config/EtsProj.json';
 		if (file_exists($filename)) 
 			exec('sudo rm '.$filename);
 		$file=fopen($filename,"a+");
-		fwrite($file,$this->proj);
+		fwrite($file,json_encode($this->proj));
 		fclose($file);	
 	}
 	private function Clean($dir){
@@ -16,58 +16,54 @@ class knxproj {
 	private function unzipKnxProj($dir,$File){
 		if (!is_dir($dir)) 
 			mkdir($dir);
+		exec('sudo chmod -R 777 '.$dir);
 		$zip = new ZipArchive(); 
 		// On ouvre l’archive.
-		if($zip->open($File) == TRUE)
-		{
+		if($zip->open($File) == TRUE){
 			$zip->extractTo($dir);
 			$zip->close();
 		}
 	}
 	private function SearchFolder($dir,$Folder){
-		if ($dh = opendir($dir)) 
-		{
-			while (($file = readdir($dh)) !== false)
-			{
-				if (substr($file,0,2) == $Folder)
-				{
+		if ($dh = opendir($dir)){
+			while (($file = readdir($dh)) !== false){
+				if (substr($file,0,2) == $Folder){
 					if (opendir($dir.$file)) 
 						return $dir . $file;
-					}
+				}
 			}
 			closedir($dh);
 		}	
 	}
-	private function AddCommandeETSParse($Projet,$ComObjectInstanceRef,$type,$DPT){
+	private function AddCommandeETSParse($Projet,$ComObjectInstanceRef,$type,$AdressePhysique,$DPT){
 		foreach($ComObjectInstanceRef->getElementsByTagName($type) as $Commande){
 			$GroupAddressRefId=$Commande->getAttribute('GroupAddressRefId');
 			foreach($Projet->getElementsByTagName('GroupRange') as $GroupRange){
-				$NewGad['groupName']=$GroupRange->getAttribute('Name');
 				foreach($GroupRange->getElementsByTagName('GroupAddress') as $GroupAddress){
-					$NewGad['cmdName']=$GroupAddress->getAttribute('Name');
 					$GroupAddressId=$GroupAddress->getAttribute('Id');
 					if ($GroupAddressId!=""){
 						if ($GroupAddressId == $GroupAddressRefId){
 							$addr=$GroupAddress->getAttribute('Address');
-							$NewGad['AdresseGroupe']=sprintf( "%d/%d/%d", ($addr >> 11) & 0xf, ($addr >> 8) & 0x7, $addr & 0xff);
+							$AdresseGroupe=sprintf( "%d/%d/%d", ($addr >> 11) & 0xf, ($addr >> 8) & 0x7, $addr & 0xff);
+							$this->proj[$AdressePhysique]['Cmd'][$AdresseGroupe]['cmdName']=$GroupAddress->getAttribute('Name');
+							$this->proj[$AdressePhysique]['Cmd'][$AdresseGroupe]['groupName']=$GroupRange->getAttribute('Name');
+							$this->proj[$AdressePhysique]['Cmd'][$AdresseGroupe]['DataPointType']=$DPT;	
 							if($type == 'send')
-								$NewGad['cmdType']='action';
+								$this->proj[$AdressePhysique]['Cmd'][$AdresseGroupe]['cmdType']='action';
 							else
-								$NewGad['cmdType']='info';
+								$this->proj[$AdressePhysique]['Cmd'][$AdresseGroupe]['cmdType']='info';
 						}
 					}
 				}
 			}
 		}
-		$NewGad['DataPointType']=$DPT;
-		return $NewGad;
 	}
-	public static function ParserEtsFile($File){
-		$dir=dirname(__FILE__) . '/../../core/config/knxproj/';
+	public function ParserEtsFile($File){
+		$dir=dirname(__FILE__) . '/../config/knxproj/';
 		$this->unzipKnxProj($dir,$File);
-		$ProjetFile=$this->SearchFolder($dir,"P-").'/0.xml';
+		$ProjetFile=$this->SearchFolder($dir,"P-");
 		$Projet = new DomDocument();
-		if ($Projet->load($ProjetFile)){ // XML décrivant le projet
+		if ($Projet->load($ProjetFile.'/0.xml')){ // XML décrivant le projet
 			foreach($Projet->getElementsByTagName('Area') as $Area){
 				$AreaAddress=$Area->getAttribute('Address');
 				foreach($Area->getElementsByTagName('Line') as $Line){
@@ -94,8 +90,8 @@ class knxproj {
 									$DataPointType=explode('-',$ComObjectInstanceRef->getAttribute('DatapointType'));
 									if ($DataPointType[1] >0){
 										$DPT=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
-										$this->proj[$AdressePhysique]['Cmd'][] = $this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Receive',$DPT);
-										$this->proj[$AdressePhysique]['Cmd'][] = $this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Send',$DPT);
+										$this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Receive',$AdressePhysique,$DPT);
+										$this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Send',$AdressePhysique,$DPT);
 									}
 								}
 							}
@@ -106,10 +102,11 @@ class knxproj {
 		}
 		else
 		{
-			throw new Exception(__( 'Impossible d\'analyser le document '.$ProjetFile, __FILE__));
+			throw new Exception(__( 'Impossible d\'analyser le document '.$ProjetFile.'/0.xml', __FILE__));
 		}
 		$this->WriteJsonProj();
 		$this->Clean($dir);
+		return json_encode($this->proj);
 	}
 }
 ?>
