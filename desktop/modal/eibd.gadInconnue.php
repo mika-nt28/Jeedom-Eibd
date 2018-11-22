@@ -151,9 +151,11 @@ function getEtsProj () {
 				return;
 			$('#table_GadETS tbody').html('');
 			jQuery.each(data.result,function(AdressePhysique, Equipement) {
+				alert(AdressePhysique);
 				jQuery.each(Equipement.Cmd,function(AdresseGroupe, Cmd) {
+					alert(AdresseGroupe);
 					var tr=$("<tr>");
-					if (typeof(value.DeviceName) !== 'undefined') 
+					if (typeof(Cmd.DeviceName) !== 'undefined') 
 						tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
 					else
 						tr.append($("<td class='DeviceName'>"));
