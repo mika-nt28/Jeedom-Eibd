@@ -41,7 +41,7 @@ class BusMonitorTraitement /*extends Thread*/{
 			if($dpt!=false){
 				$monitor['valeur'] = Dpt::DptSelectDecode($dpt, $this->Data);
 				$monitor['DataPointType']= $dpt;
-				if(config::byKey('isInclude','eibd'))					
+				if(config::byKey('isInclude','eibd',false))					
 					$this->addCache($monitor);
 					//event::add('eibd::GadInconnue', json_encode($monitor));
 			}else
