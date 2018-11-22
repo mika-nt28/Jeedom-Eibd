@@ -107,7 +107,7 @@ class knxproj {
 		}
 		$this->WriteJsonProj();
 		$this->Clean($dir);
-		return $this->proj;
+		return json_encode($this->proj);
 	}
 }
 ?>
