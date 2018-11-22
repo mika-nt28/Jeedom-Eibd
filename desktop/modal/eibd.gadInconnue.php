@@ -150,21 +150,23 @@ function getEtsProj () {
 			if (data.result == false) 
 				return;
 			$('#table_GadETS tbody').html('');
-			jQuery.each(jQuery.parseJSON(data.result),function(key, value) {
-				var tr=$("<tr>");
-				if (typeof(value.DeviceName) !== 'undefined') 
-					tr.append($("<td class='DeviceName'>").text(value.DeviceName));
-				else
-					tr.append($("<td class='DeviceName'>"));
-				tr.append($("<td>").text(value.AdressePhysique));
-				if (typeof(value.cmdName) !== 'undefined') 
-					tr.append($("<td class='cmdName'>").text(value.cmdName));
-				else
-					tr.append($("<td class='cmdName'>"));
-				tr.append($("<td class='AdresseGroupe'>").text(value.AdresseGroupe));
-				tr.append($("<td class='DataPointType'>").text(value.DataPointType));
-				tr.append($("<td class='valeur'>").text(value.valeur));
-			      	$('#table_GadETS tbody').append(tr);
+			jQuery.each(data.result,function(AdressePhysique, Equipement) {
+				jQuery.each(Equipement.Cmd,function(AdresseGroupe, Cmd) {
+					var tr=$("<tr>");
+					if (typeof(value.DeviceName) !== 'undefined') 
+						tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
+					else
+						tr.append($("<td class='DeviceName'>"));
+					tr.append($("<td>").text(AdressePhysique));
+					if (typeof(Cmd.cmdName) !== 'undefined') 
+						tr.append($("<td class='cmdName'>").text(Cmd.cmdName));
+					else
+						tr.append($("<td class='cmdName'>"));
+					tr.append($("<td class='AdresseGroupe'>").text(AdresseGroupe));
+					tr.append($("<td class='DataPointType'>").text(Cmd.DataPointType));
+					tr.append($("<td class='valeur'>").text(Cmd.valeur));
+					$('#table_GadETS tbody').append(tr);
+				});				
 			});				
 			$('#table_GadETS').trigger('update');
 			$('#table_GadETS .AdresseGroupe').val(SelectAddr);
