@@ -102,7 +102,7 @@ try {
 	if (init('action') == 'getEtsProj') {
 		$filename=dirname(__FILE__) . '/../config/EtsProj.json';
 		if (file_exists($filename))
-			ajax::success(file_get_contents($filename));
+			ajax::success(json_decode(file_get_contents($filename),true));
 		ajax::success(false);
 	}
   	if (init('action') == 'AppliTemplate') {
