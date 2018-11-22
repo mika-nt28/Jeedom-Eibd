@@ -2,7 +2,7 @@
 class knxproj {
 	private $proj=array();
 	private function WriteJsonProj(){
-		$filename=dirname(__FILE__) . '/../../core/config/EtsProj.json';
+		$filename=dirname(__FILE__) . '/../config/EtsProj.json';
 		if (file_exists($filename)) 
 			exec('sudo rm '.$filename);
 		$file=fopen($filename,"a+");
