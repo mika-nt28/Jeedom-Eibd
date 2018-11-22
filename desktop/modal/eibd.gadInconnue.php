@@ -102,28 +102,24 @@ function getKnxGadInconue () {
 			$('#table_GadInconue tbody').html('');
 			jQuery.each(jQuery.parseJSON(data.result),function(key, value) {
 				var tr=$("<tr>");
-				tr.append($("<td>").text(value.AdressePhysique));
-				tr.append($("<td>").text(value.AdresseGroupe));
-				tr.append($("<td>").text(value.DataPointType));
-				tr.append($("<td>").text(value.valeur));
-             			//if($('#table_GadInconue thead th').length == 7){
-					tr.append($("<td>")
-						.append($('<a class="btn btn-danger btn-xs Gad pull-right" data-action="remove">')
-							.append($('<i class="fa fa-minus-circle">'))
-							.text('{{Supprimer}}'))
-						.append($('<a class="btn btn-primary btn-xs Gad pull-right" data-action="addEqLogic">')
-							.append($('<i class="fa fa-check-circle">'))
-							.text('{{Ajouter a un equipement}}')));
-				//}
+				tr.append($("<td class='AdressePhysique'>").text(value.AdressePhysique));
+				tr.append($("<td class='AdresseGroupe'>").text(value.AdresseGroupe));
+				tr.append($("<td class='DataPointType'>").text(value.DataPointType));
+				tr.append($("<td class='valeur'>").text(value.valeur));
+				tr.append($("<td>")
+					.append($('<a class="btn btn-danger btn-xs Gad pull-right" data-action="remove">')
+						.append($('<i class="fa fa-minus-circle">'))
+						.text('{{Supprimer}}'))
+					.append($('<a class="btn btn-primary btn-xs Gad pull-right" data-action="addEqLogic">')
+						.append($('<i class="fa fa-check-circle">'))
+						.text('{{Ajouter a un equipement}}')));
 			      	$('#table_GadInconue tbody').append(tr);
 			});				
 			$('#table_GadInconue').trigger('update');
-			if($('#table_GadInconue thead th').length == 6){
-				$(".tablesorter-filter[data-column=1]").val(SelectAddr);
-				$(".tablesorter-filter[data-column=1]").trigger('keyup');
-				$(".tablesorter-filter[data-column=4]").val(SelectDpt);
-				$(".tablesorter-filter[data-column=4]").trigger('keyup');
-			}
+			$('#table_GadInconue .AdresseGroupe').val(SelectAddr);
+			$('#table_GadInconue .AdresseGroupe').trigger('keyup');
+			$('#table_GadInconue .DataPointType').val(SelectDpt);
+			$('#table_GadInconue .DataPointType').trigger('keyup');
 			if ($('#md_modal').dialog('isOpen') === true) {
 				setTimeout(function() {
 					getKnxGadInconue()
@@ -159,26 +155,24 @@ function getEtsProj () {
 			jQuery.each(jQuery.parseJSON(data.result),function(key, value) {
 				var tr=$("<tr>");
 				if (typeof(value.DeviceName) !== 'undefined') 
-					tr.append($("<td>").text(value.DeviceName));
+					tr.append($("<td class='DeviceName'>").text(value.DeviceName));
 				else
-					tr.append($("<td>"));
+					tr.append($("<td class='DeviceName'>"));
 				tr.append($("<td>").text(value.AdressePhysique));
 				if (typeof(value.cmdName) !== 'undefined') 
-					tr.append($("<td>").text(value.cmdName));
+					tr.append($("<td class='cmdName'>").text(value.cmdName));
 				else
-					tr.append($("<td>"));
-				tr.append($("<td>").text(value.AdresseGroupe));
-				tr.append($("<td>").text(value.DataPointType));
-				tr.append($("<td>").text(value.valeur));
+					tr.append($("<td class='cmdName'>"));
+				tr.append($("<td class='AdresseGroupe'>").text(value.AdresseGroupe));
+				tr.append($("<td class='DataPointType'>").text(value.DataPointType));
+				tr.append($("<td class='valeur'>").text(value.valeur));
 			      	$('#table_GadETS tbody').append(tr);
 			});				
 			$('#table_GadETS').trigger('update');
-			if($('#table_GadETS thead th').length == 6){
-				$(".tablesorter-filter[data-column=1]").val(SelectAddr);
-				$(".tablesorter-filter[data-column=1]").trigger('keyup');
-				$(".tablesorter-filter[data-column=4]").val(SelectDpt);
-				$(".tablesorter-filter[data-column=4]").trigger('keyup');
-			}
+			$('#table_GadETS .AdresseGroupe').val(SelectAddr);
+			$('#table_GadETS .AdresseGroupe').trigger('keyup');
+			$('#table_GadETS .DataPointType').val(SelectDpt);
+			$('#table_GadETS .DataPointType').trigger('keyup');
 			if ($('#md_modal').dialog('isOpen') === true) {
 				setTimeout(function() {
 					getEtsProj()
@@ -195,13 +189,13 @@ $('body').on('click', '.Gad[data-action=addEqLogic]', function(){
 	$(this).closest('tr').remove();
 });
 $('body').on('click', '.Gad[data-action=remove]', function(){
-	var gad=$(this).closest('tr').find('td:eq(3)').text();
+	var gad=$(this).closest('tr').find('.AdresseGroupe').text();
 	removeInCache(gad, false);
 	$(this).closest('tr').remove();
 });	
 $('body').on('click', '.GadInsert tbody tr', function(){
-	SelectGad=$(this).closest('tr').find('td:eq(3)').text();
-	SelectAddr=$(this).closest('tr').find('td:eq(1)').text();
+	SelectGad=$(this).closest('tr').find('.AdresseGroupe').text();
+	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
 });
 function removeInCache(gad, destination){
 	$.ajax({
