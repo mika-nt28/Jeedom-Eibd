@@ -41,9 +41,9 @@ class BusMonitorTraitement /*extends Thread*/{
 			if($dpt!=false){
 				$monitor['valeur'] = Dpt::DptSelectDecode($dpt, $this->Data);
 				$monitor['DataPointType']= $dpt;
-				if(config::byKey('isInclude','eibd'))
+				if(config::byKey('isInclude','eibd'))					
+					$this->addCache($monitor);
 					//event::add('eibd::GadInconnue', json_encode($monitor));
-					eibd::addCacheNoGad($monitor);
 			}else
 				$monitor['valeur']="Impossible de convertir la valeur";
 			$monitor['cmdJeedom']= "La commande n’existes pas";
@@ -69,6 +69,20 @@ class BusMonitorTraitement /*extends Thread*/{
 				return sprintf ("%d", $addr);
 			break;
 		}
+	}
+	
+	public function addCache($_parameter) {
+		$cache = cache::byKey('eibd::CreateNewGad');
+		$value = json_decode($cache->getValue('[]'), true);
+		if($key = array_search($_parameter['AdresseGroupe'], array_column($value, 'AdresseGroupe')) === false)
+			$value[] = $_parameter;
+		else
+			$value[$key] = $_parameter;
+		if(count($value) >=255){			
+			unset($value[0]);
+			array_shift($value);
+		}
+		cache::set('eibd::CreateNewGad', json_encode($value), 0);
 	}
 }
 ?>
