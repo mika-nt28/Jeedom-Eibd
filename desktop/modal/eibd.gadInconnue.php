@@ -159,7 +159,6 @@ function getEtsProj () {
 						tr.append($("<td class='cmdName'>"));
 					tr.append($("<td class='AdresseGroupe'>").text(AdresseGroupe));
 					tr.append($("<td class='DataPointType'>").text(Cmd.DataPointType));
-					tr.append($("<td class='valeur'>").text(Cmd.valeur));
 					$('#table_GadETS tbody').append(tr);
 				});				
 			});				
