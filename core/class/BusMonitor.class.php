@@ -44,10 +44,9 @@ class BusMonitorTraitement /*extends Thread*/{
 				if(config::byKey('isInclude','eibd'))
 					//event::add('eibd::GadInconnue', json_encode($monitor));
 					eibd::addCacheNoGad($monitor);
-				
 			}else
 				$monitor['valeur']="Impossible de convertir la valeur";
-			$monitor['cmdJeedom']= "La commande n'exites pas";
+			$monitor['cmdJeedom']= "La commande n’existes pas";
 			log::add('eibd', 'debug', 'Aucune commande avec l\'adresse de groupe  '.$this->AdrGroup.' n\'a pas été trouvée');
 		}
 		$monitor['datetime'] = date('d-m-Y H:i:s');
