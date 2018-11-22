@@ -16,6 +16,7 @@ class knxproj {
 	private function unzipKnxProj($dir,$File){
 		if (!is_dir($dir)) 
 			mkdir($dir);
+		exec('sudo chmod -R 777 '.$dir);
 		$zip = new ZipArchive(); 
 		// On ouvre l’archive.
 		if($zip->open($File) == TRUE)
