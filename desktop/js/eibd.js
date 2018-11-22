@@ -46,6 +46,9 @@ $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	var cmds=$('<div class="form-horizontal CmdsTempates">');
 	$.each(template[$(this).value()].cmd,function(index, value){
 		cmds.append($('<div class="form-group">')
+			    .append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l2key="KnxObjectType">')
+				    .val(value.configuration.KnxObjectType)));
+		cmds.append($('<div class="form-group">')
 			.append($('<label class="col-xs-6 control-label" >')
 				.text(value.name))
 			.append($('<div class="col-xs-5">')
@@ -53,15 +56,16 @@ $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 					.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'">'))
 					.append($('<span class="input-group-btn">')
 						.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
-							.append($('<i class="fa fa-list-alt">')).attr('data-dpt',value.configuration.KnxObjectType))))));
+							.append($('<i class="fa fa-list-alt">')))))));
 	});
 	form.find('.CmdsTempates').remove();
 	form.append(cmds);
 });
 
 $('body').on('click','.bt_selectGadInconnue', function () {
-	var SelectAddr=$(this).closest('.modal-body').find('.EqLogicTemplateAttr[data-l1key=logicalId]').val();	
-	var SelectDpt=$(this).attr('data-dpt');
+	var SelectAddr=$(this).closest('body').find('.form-control[data-l1key=logicalId]').val();	
+	var SelectDpt=$(this).closest('.form-group').parent().find('.form-control[data-l2key=KnxObjectType]').val();	
+	var =$(this).attr('data-dpt');
 	var input=$(this).closest('.input-group').find('.CmdEqLogicTemplateAttr');
 	bootbox.dialog({
 		title: "{{Choisir un Gad}}",
@@ -366,24 +370,27 @@ function addCmdToTable(_cmd) {
 			.append($('<input type="hidden" class="cmdAttr form-control input-sm" data-l1key="id">'))
 			.append($('<input class="cmdAttr form-control input-sm" data-l1key="name" value="' + init(_cmd.name) + '" placeholder="{{Name}}" title="Name">')));
 	tr.append($('<td>')
-		.append($('<label>')
-			.text('{{Data Point Type}}')
-			.append($('<sup>')
-				.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-					.attr('title','Selectionner le type de data KNX'))))
-		.append($('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectType">')
-			.append(OptionSelectDpt()))/*
-		  .append($('<div class="input-group">')
-					.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'">'))
+		.append($('<div class="form-group">')
+			.append($('<label>')
+				.text('{{Data Point Type}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+						.attr('title','Selectionner le type de data KNX'))))
+			.append($('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectType">')
+				.append(OptionSelectDpt())))
+		.append($('<div class="form-group">')
+			.append($('<label>')
+				.text('{{Groupe d\'adresse}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+						.attr('title','Saisisez l\'adresse de groupe de votre commande KNX'))))
+			.append($('<div class="input-group">')
+				.append($('<input class=" form-control input-sm" data-l1key="logicalId" placeholder="{{GAD}}" title="GAD">'))
 					.append($('<span class="input-group-btn">')
 						.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
-							.append($('<i class="fa fa-list-alt">')).attr('data-dpt',value.configuration.KnxObjectType))))));*/
-		.append($('<label>')
-			.text('{{Groupe d\'adresse}}')
-			.append($('<sup>')
-				.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-					.attr('title','Saisisez l\'adresse de groupe de votre commande KNX'))))
-		.append($('<input class="cmdAttr form-control input-sm" data-l1key="logicalId" placeholder="{{GAD}}" title="GAD">')));
+							.append($('<i class="fa fa-list-alt">')))))));
+		
+		
 	tr.append($('<td>')
 		  .append($('<div>')
 			.append($('<span>')
