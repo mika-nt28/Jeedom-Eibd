@@ -74,7 +74,7 @@ class BusMonitorTraitement /*extends Thread*/{
 	public function addCache($_parameter) {
 		$cache = cache::byKey('eibd::CreateNewGad');
 		$value = json_decode($cache->getValue('[]'), true);
-		if($key = array_search($_parameter['AdresseGroupe'], array_column($value, 'AdresseGroupe')) === false)
+		if($key = $this->recursive_array_search($_parameter['AdresseGroupe'],$value) === false)
 			$value[] = $_parameter;
 		else
 			$value[$key] = $_parameter;
@@ -83,6 +83,14 @@ class BusMonitorTraitement /*extends Thread*/{
 			array_shift($value);
 		}
 		cache::set('eibd::CreateNewGad', json_encode($value), 0);
+	}
+	private function recursive_array_search($needle,$haystack) {
+		foreach($haystack as $key=>$value) {
+			$current_key=$key;
+			if($needle===$value OR (is_array($value) && recursive_array_search($needle,$value) !== false)) 
+				return $current_key;
+		}
+		return false;
 	}
 }
 ?>
