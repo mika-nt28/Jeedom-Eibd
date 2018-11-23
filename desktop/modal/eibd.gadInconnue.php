@@ -6,9 +6,9 @@ include_file('3rdparty', 'jquery.tablesorter/theme.bootstrap', 'css');
 include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.min', 'js');
 include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'js');
 //if(!isset($_REQUEST['SelectAddr']))
-	echo '<script>var SelectAddr="'.$_REQUEST['SelectAddr'].'";</script>';
+	echo '<script>var SelectAddr="'.preg_match("[0-9]+.",$_REQUEST['SelectAddr']).'";</script>';
 //if(!isset($_REQUEST['SelectDpt']))
-	echo '<script>var SelectDpt="'.$_REQUEST['SelectDpt'].'";</script>';
+	echo '<script>var SelectDpt="'.preg_match("[0-9]+.",$_REQUEST['SelectDpt']).'";</script>';
 ?>
 <style>
 	table #table_GadInconue {
