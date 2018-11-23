@@ -144,19 +144,19 @@ function getEtsProj () {
 			if (data.result == false) 
 				return;
 			$('#table_GadETS tbody').html('');
-			jQuery.each(data.result,function(AdressePhysique, Equipement) {
+			jQuery.each(data.result,function(Id, Equipement) {
 				jQuery.each(Equipement.Cmd,function(AdresseGroupe, Cmd) {
 					var tr=$("<tr>");
 					if (typeof(Equipement.DeviceName) !== 'undefined') 
 						tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
 					else
 						tr.append($("<td class='DeviceName'>"));
-					tr.append($("<td>").text(AdressePhysique));
+					tr.append($("<td class='AdressePhysique'>").text(Equipement.AdressePhysique));
 					if (typeof(Cmd.cmdName) !== 'undefined') 
 						tr.append($("<td class='cmdName'>").text(Cmd.cmdName));
 					else
 						tr.append($("<td class='cmdName'>"));
-					tr.append($("<td class='AdresseGroupe'>").text(AdresseGroupe));
+					tr.append($("<td class='AdresseGroupe'>").text(Cmd.AdresseGroupe));
 					tr.append($("<td class='DataPointType'>").text(Cmd.DataPointType));
 					$('#table_GadETS tbody').append(tr);
 				});				
