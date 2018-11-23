@@ -49,7 +49,7 @@ class knxproj {
 	}
 	private function AddCommandeETSParse($Projet,$ComObjectInstanceRef,$type,$DeviceProductRefId){
 		$DataPointType=explode('-',$ComObjectInstanceRef->getAttribute('DatapointType'));
-		if ($DataPointType[1] >0){
+		//if ($DataPointType[1] >0){
 			$DPT=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
 			foreach($ComObjectInstanceRef->getElementsByTagName($type) as $Commande){
 				$GroupAddressRefId=$Commande->getAttribute('GroupAddressRefId');
@@ -69,7 +69,7 @@ class knxproj {
 					}
 				}
 			}
-		}
+		//}
 	}
 	public function getCatalogue(){	
 		foreach($this->Devices as $Device => $Parameter){
