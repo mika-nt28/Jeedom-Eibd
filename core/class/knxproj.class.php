@@ -2,7 +2,7 @@
 class knxproj {
 	private $path;
 	private $Devices=array();
-	private $GAD=array();
+	private $GroupAddresses=array();
  	public function __construct(){
 		$this->path = dirname(__FILE__) . '/../config/';
 	}
@@ -18,7 +18,7 @@ class knxproj {
 	}
 	private function getAll(){
 		$myKNX['Devices']=$this->Devices;
-		$myKNX['GAD']=$this->GAD;
+		$myKNX['GAD']=$this->GroupAddresses;
 		return json_encode($myKNX,JSON_PRETTY_PRINT);
 	}
 	private function Clean(){
@@ -85,11 +85,25 @@ class knxproj {
 			}
 		}
 	}
+	public function ParserGroupAddresses($Projet){
+		$GroupRanges=$Projet->getElementsByTagName('GroupRanges');
+		foreach ($GroupRanges->childNodes as $GroupRange) {
+			foreach($GroupRange->childNodes as $Group2){
+				foreach($Group2->childNodes as $GroupAddress){
+					$addr=$GroupAddress->getAttribute('Address');
+					$AdresseGroupe=sprintf( "%d/%d/%d", ($addr >> 11) & 0xf, ($addr >> 8) & 0x7, $addr & 0xff);
+								
+					$this->GroupAddresses[$GroupRanges->getAttribute('Name')][$Group2->getAttribute('Name')][$GroupAddress->getAttribute('Name')]=$AdresseGroupe;
+				}
+			}
+		}
+	}
 	public function ParserEtsFile($File){
 		$this->unzipKnxProj($File);
 		$ProjetFile=$this->SearchFolder("P-");
 		$Projet = new DomDocument();
 		if ($Projet->load($ProjetFile.'/0.xml')){ // XML décrivant le projet
+			$this->ParserGroupAddresses($Projet);
 			foreach($Projet->getElementsByTagName('Area') as $Area){
 				$AreaAddress=$Area->getAttribute('Address');
 				foreach($Area->getElementsByTagName('Line') as $Line){
