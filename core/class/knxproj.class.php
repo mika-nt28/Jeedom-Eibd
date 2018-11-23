@@ -1,8 +1,11 @@
 <?php
 class knxproj {
-	private $path =dirname(__FILE__) . '/../config/';
+	private $path;
 	private $Devices=array();
 	private $GAD=array();
+ 	public function __construct(){
+		$this->path = dirname(__FILE__) . '/../config/';
+	}
 	private function WriteJsonProj(){
 		$filename=$this->path.'EtsProj.json';
 		if (file_exists($filename)) 
@@ -20,7 +23,7 @@ class knxproj {
 	}
 	private function Clean(){
 		if (file_exists($this->path)) 
-			exec('sudo rm -R '.$this->path);
+			exec('sudo rm -R '.$this->path . 'knxproj/');
 	}
 	private function unzipKnxProj($File){
 		if (!is_dir($this->path . 'knxproj/')) 
@@ -44,12 +47,11 @@ class knxproj {
 			closedir($dh);
 		}	
 	}
-	private function AddCommandeETSParse($Projet,$ComObjectInstanceRef){
-		$Cmds=array();
+	private function AddCommandeETSParse($Projet,$ComObjectInstanceRef,$type,$DeviceProductRefId){
 		$DataPointType=explode('-',$ComObjectInstanceRef->getAttribute('DatapointType'));
 		if ($DataPointType[1] >0){
 			$DPT=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
-			foreach($ComObjectInstanceRef->getElementsByTagName('send') as $Commande){
+			foreach($ComObjectInstanceRef->getElementsByTagName($type) as $Commande){
 				$GroupAddressRefId=$Commande->getAttribute('GroupAddressRefId');
 				foreach($Projet->getElementsByTagName('GroupRange') as $GroupRange){
 					foreach($GroupRange->getElementsByTagName('GroupAddress') as $GroupAddress){
@@ -58,20 +60,19 @@ class knxproj {
 							if ($GroupAddressId == $GroupAddressRefId){
 								$addr=$GroupAddress->getAttribute('Address');
 								$AdresseGroupe=sprintf( "%d/%d/%d", ($addr >> 11) & 0xf, ($addr >> 8) & 0x7, $addr & 0xff);
-								$Cmd['cmdName']=$GroupAddress->getAttribute('Name');
-								$Cmd['groupName']=$GroupRange->getAttribute('Name');
-								$Cmd['DataPointType']=$DPT;	
-								array_push($Cmds,$Cmd);
+								$this->Devices[$DeviceProductRefId]['Cmd'][$AdresseGroupe]['AdresseGroupe']=$AdresseGroupe;
+								$this->Devices[$DeviceProductRefId]['Cmd'][$AdresseGroupe]['cmdName']=$GroupAddress->getAttribute('Name');
+								$this->Devices[$DeviceProductRefId]['Cmd'][$AdresseGroupe]['groupName']=$GroupRange->getAttribute('Name');
+								$this->Devices[$DeviceProductRefId]['Cmd'][$AdresseGroupe]['DataPointType']=$DPT;	
 							}
 						}
 					}
 				}
 			}
 		}
-		return $Cmds;
 	}
 	public function getCatalogue(){	
-		foreach($this->Devices as $Device){
+		foreach($this->Devices as $Device => $Parameter){
 			$Catalogue = new DomDocument();
 			if ($Catalogue->load($this->path . 'knxproj/'.substr($Device,0,6).'/Catalog.xml')) {//XMl décrivant les équipements
 				foreach($Catalogue->getElementsByTagName('CatalogItem') as $CatalogItem){
@@ -84,16 +85,9 @@ class knxproj {
 			}
 		}
 	}
-	public function getObject($Device){	
-		foreach($Device->getElementsByTagName('ComObjectInstanceRefs') as $ComObjectInstanceRefs){
-			foreach($ComObjectInstanceRefs->getElementsByTagName('ComObjectInstanceRef') as $ComObjectInstanceRef){
-					$this->Devices[$Device]['Cmd']=$this->AddCommandeETSParse($Projet,$ComObjectInstanceRef);
-			}
-		}
-	}
 	public function ParserEtsFile($File){
 		$this->unzipKnxProj($File);
-		$ProjetFile=$this->SearchFolder($this->path . 'knxproj/',"P-");
+		$ProjetFile=$this->SearchFolder("P-");
 		$Projet = new DomDocument();
 		if ($Projet->load($ProjetFile.'/0.xml')){ // XML décrivant le projet
 			foreach($Projet->getElementsByTagName('Area') as $Area){
@@ -108,7 +102,12 @@ class knxproj {
 							$DeviceAddress=$Device->getAttribute('Address');
 							$this->Devices[$DeviceProductRefId]['AdressePhysique']=$AreaAddress.'.'.$LineAddress.'.'.$DeviceAddress;
 							$this->getCatalogue();
-							$this->getObject($Device);
+							foreach($Device->getElementsByTagName('ComObjectInstanceRefs') as $ComObjectInstanceRefs){
+								foreach($ComObjectInstanceRefs->getElementsByTagName('ComObjectInstanceRef') as $ComObjectInstanceRef){
+									$this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Receive',$DeviceProductRefId);	
+									$this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Send',$DeviceProductRefId);
+								}
+							}
 						}
 					}
 				}
