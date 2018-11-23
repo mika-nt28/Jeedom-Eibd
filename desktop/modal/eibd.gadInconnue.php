@@ -8,7 +8,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 //if(!isset($_REQUEST['SelectAddr']))
 	echo '<script>var SelectAddr="'.$_REQUEST['SelectAddr'].'";</script>';
 //if(!isset($_REQUEST['SelectDpt']))
-	echo '<script>var SelectDpt="'.$_REQUEST['SelectDpt'].'";</script>';
+	echo '<script>var SelectDpt="'.preg_replace('/.[0-9]+/', '.', $_REQUEST['SelectDpt']).'";</script>';
 ?>
 <style>
 	table #table_GadInconue {
@@ -45,10 +45,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 					<th>{{Destination}}</th>
 					<th>{{Data Point Type}}</th>
 					<th>{{Derniere valeur}}</th>
-					<?php
-						if(!isset($_REQUEST['param']))
-							echo '<th>{{Action sur cette adresse de groupe}}</th>';
-					?>
+					<th>{{Action sur cette adresse de groupe}}</th>
 				</tr>
 			</thead>
 			<tbody></tbody>
@@ -111,10 +108,12 @@ function getKnxGadInconue () {
 			      	$('#table_GadInconue tbody').append(tr);
 			});				
 			$('#table_GadInconue').trigger('update');
-			$('#table_GadInconue .AdresseGroupe').val(SelectAddr);
-			$('#table_GadInconue .AdresseGroupe').trigger('keyup');
-			$('#table_GadInconue .DataPointType').val(SelectDpt);
-			$('#table_GadInconue .DataPointType').trigger('keyup');
+			$(".tablesorter-filter[data-column=0]").val(SelectAddr);
+			$(".tablesorter-filter[data-column=0]").trigger('keyup');
+			$(".tablesorter-filter[data-column=1]").val(SelectDpt);
+			$(".tablesorter-filter[data-column=1]").trigger('keyup');
+			$(".tablesorter-filter[data-column=4]").val('');
+			$(".tablesorter-filter[data-column=4]").trigger('keyup');
 			if ($('#md_modal').dialog('isOpen') === true) {
 				setTimeout(function() {
 					getKnxGadInconue()
@@ -163,10 +162,12 @@ function getEtsProj () {
 				});				
 			});				
 			$('#table_GadETS').trigger('update');
-			$('#table_GadETS .AdresseGroupe').val(SelectAddr);
-			$('#table_GadETS .AdresseGroupe').trigger('keyup');
-			$('#table_GadETS .DataPointType').val(SelectDpt);
-			$('#table_GadETS .DataPointType').trigger('keyup');
+			$(".tablesorter-filter[data-column=0]").val('');
+			$(".tablesorter-filter[data-column=0]").trigger('keyup');
+			$(".tablesorter-filter[data-column=1]").val(SelectAddr);
+			$(".tablesorter-filter[data-column=1]").trigger('keyup');
+			$(".tablesorter-filter[data-column=4]").val(SelectDpt);
+			$(".tablesorter-filter[data-column=4]").trigger('keyup');
 		}
 	});
 }
