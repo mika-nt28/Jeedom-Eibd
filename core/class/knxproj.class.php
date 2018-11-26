@@ -20,6 +20,8 @@ class knxproj {
 		return json_encode($myKNX,JSON_PRETTY_PRINT);
 	}
 	private function Clean(){
+		if (file_exists('/tmp/knxproj.knxproj')) 
+			exec('sudo rm  /tmp/knxproj.knxproj');
 		if (file_exists($this->path)) 
 			exec('sudo rm -R '.$this->path . 'knxproj/');
 	}
@@ -103,8 +105,12 @@ class knxproj {
 			}
 		}
 	}
-	public function ParserEtsFile($File){
-		$this->unzipKnxProj($File);
+	public function ParserEtsFile($_options){
+		log::add('eibd','debug','[Import ETS]'.json_encode($_options));
+		$filename=$this->path.'EtsProj.json';
+		if (file_exists($filename)) 
+			exec('sudo rm '.$filename);
+		$this->unzipKnxProj('/tmp/knxproj.knxproj');
 		$ProjetFile=$this->SearchFolder("P-");
 		$Projet = new DomDocument();
 		if ($Projet->load($ProjetFile.'/0.xml')){ // XML décrivant le projet
