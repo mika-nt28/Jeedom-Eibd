@@ -32,8 +32,12 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			<i class="fa fa-tachometer"></i> {{Inconnue}}</a>
 	</li>
 	<li role="presentation" class="">
-		<a href="#EtsTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-			<i class="fa fa-list-alt"></i> {{ETS}}</a>
+		<a href="#DeviceTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+			<i class="fa fa-list-alt"></i> {{Equipement}}</a>
+	</li>
+	<li role="presentation" class="">
+		<a href="#AdressTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+			<i class="fa fa-list-alt"></i> {{Adresse de groupes}}</a>
 	</li>
 </ul>
 <div class="tab-content">
@@ -64,6 +68,23 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			</thead>
 			<tbody></tbody>
 		</table>
+	</div>
+	<div role="tabpanel" class="tab-pane" id="DeviceTab">
+		<table id="table_GadETS" class="table table-bordered table-condensed tablesorter GadInsert">
+			<thead>
+				<tr>
+					<th>{{Equipement}}</th>
+					<th>{{Source}}</th>
+					<th>{{Commande}}</th>
+					<th>{{Destination}}</th>
+					<th>{{Data Point Type}}</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<div role="tabpanel" class="tab-pane" id="AdressTab">
+		<ul class="GadSortable ui-sortable"></ul>
 	</div>
 </div>
 
@@ -213,5 +234,28 @@ function removeInCache(gad, destination){
 			}
 		}
 	});
+}
+function addArboElement(){
+/*<li class="alert alert-info eqLogic cursor ui-sortable-handle" data-type="openvpn" data-id="28" data-name="DNS Jeedom" data-enable="1">
+	<input class="cb_selEqLogic" type="checkbox">
+		DNS Jeedom 
+		<i style="font-size: 0.9em;">(openvpn)</i> 
+		<i title="Non visible" class="fa fa-eye-slash"></i> 
+		<i title="Voir les commandes" class="fa pull-right showCmd fa-chevron-down"></i> 
+		<i title="Configuration avancée" class="fa fa-cog pull-right configureEqLogic"></i>
+		<a title="Aller sur la configuration de l'équipement" class="pull-right" href="index.php?v=d&amp;p=openvpn&amp;m=openvpn&amp;id=28" target="_blank">
+			<i class="fa fa-external-link"></i>
+		</a>
+		<ul class="cmdSortable ui-sortable">
+			<li class="alert alert-warning cmd cursor ui-sortable-handle" data-id="352" data-name="Actif">
+				Actif
+				<i class="fa fa-cog pull-right configureCmd"></i>
+				</li>
+			<li class="alert alert-warning cmd cursor ui-sortable-handle" data-id="354" data-name="Arrêter">
+				Arrêter
+				<i class="fa fa-cog pull-right configureCmd"></i>
+			</li>
+		</ul>
+	</li>	*/
 }
 </script>
