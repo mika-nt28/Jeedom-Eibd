@@ -55,22 +55,8 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			<tbody></tbody>
 		</table>
 	</div>
-	<div role="tabpanel" class="tab-pane" id="EtsTab">
-		<table id="table_GadETS" class="table table-bordered table-condensed tablesorter GadInsert">
-			<thead>
-				<tr>
-					<th>{{Equipement}}</th>
-					<th>{{Source}}</th>
-					<th>{{Commande}}</th>
-					<th>{{Destination}}</th>
-					<th>{{Data Point Type}}</th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-		</table>
-	</div>
 	<div role="tabpanel" class="tab-pane" id="DeviceTab">
-		<table id="table_GadETS" class="table table-bordered table-condensed tablesorter GadInsert">
+		<table id="table_Devices" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
 					<th>{{Equipement}}</th>
@@ -129,12 +115,12 @@ function getKnxGadInconue () {
 			      	$('#table_GadInconue tbody').append(tr);
 			});				
 			$('#table_GadInconue').trigger('update');
-			$(".tablesorter-filter[data-column=0]").val(SelectAddr);
-			$(".tablesorter-filter[data-column=0]").trigger('keyup');
-			$(".tablesorter-filter[data-column=1]").val(SelectDpt);
-			$(".tablesorter-filter[data-column=1]").trigger('keyup');
-			$(".tablesorter-filter[data-column=4]").val('');
-			$(".tablesorter-filter[data-column=4]").trigger('keyup');
+			$("#table_GadInconue .tablesorter-filter[data-column=0]").val(SelectAddr);
+			$("#table_GadInconue .tablesorter-filter[data-column=0]").trigger('keyup');
+			$("#table_GadInconue .tablesorter-filter[data-column=1]").val(SelectDpt);
+			$("#table_GadInconue .tablesorter-filter[data-column=1]").trigger('keyup');
+			$("#table_GadInconue .tablesorter-filter[data-column=4]").val('');
+			$("#table_GadInconue .tablesorter-filter[data-column=4]").trigger('keyup');
 			if ($('#md_modal').dialog('isOpen') === true) {
 				setTimeout(function() {
 					getKnxGadInconue()
@@ -164,31 +150,8 @@ function getEtsProj () {
 			}
 			if (data.result == false) 
 				return;
-			$('#table_GadETS tbody').html('');
-			jQuery.each(data.result,function(Id, Equipement) {
-				jQuery.each(Equipement.Cmd,function(AdresseGroupe, Cmd) {
-					var tr=$("<tr>");
-					if (typeof(Equipement.DeviceName) !== 'undefined') 
-						tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
-					else
-						tr.append($("<td class='DeviceName'>"));
-					tr.append($("<td class='AdressePhysique'>").text(Equipement.AdressePhysique));
-					if (typeof(Cmd.cmdName) !== 'undefined') 
-						tr.append($("<td class='cmdName'>").text(Cmd.cmdName));
-					else
-						tr.append($("<td class='cmdName'>"));
-					tr.append($("<td class='AdresseGroupe'>").text(Cmd.AdresseGroupe));
-					tr.append($("<td class='DataPointType'>").text(Cmd.DataPointType));
-					$('#table_GadETS tbody').append(tr);
-				});				
-			});				
-			$('#table_GadETS').trigger('update');
-			$(".tablesorter-filter[data-column=0]").val('');
-			$(".tablesorter-filter[data-column=0]").trigger('keyup');
-			$(".tablesorter-filter[data-column=1]").val(SelectAddr);
-			$(".tablesorter-filter[data-column=1]").trigger('keyup');
-			$(".tablesorter-filter[data-column=4]").val(SelectDpt);
-			$(".tablesorter-filter[data-column=4]").trigger('keyup');
+			UpdateDeviceTable(data.result.Devices);
+			UpdateGadArbo(data.result.GAD);
 		}
 	});
 }
@@ -235,6 +198,39 @@ function removeInCache(gad, destination){
 		}
 	});
 }
+
+function UpdateDeviceTable(Devices){	
+	$('#table_Devices tbody').html('');
+	jQuery.each(Devices,function(Id, Equipement) {
+		jQuery.each(Equipement.Cmd,function(AdresseGroupe, Cmd) {
+			var tr=$("<tr>");
+			if (typeof(Equipement.DeviceName) !== 'undefined') 
+				tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
+			else
+				tr.append($("<td class='DeviceName'>"));
+			tr.append($("<td class='AdressePhysique'>").text(Equipement.AdressePhysique));
+			if (typeof(Cmd.cmdName) !== 'undefined') 
+				tr.append($("<td class='cmdName'>").text(Cmd.cmdName));
+			else
+				tr.append($("<td class='cmdName'>"));
+			tr.append($("<td class='AdresseGroupe'>").text(Cmd.AdresseGroupe));
+			tr.append($("<td class='DataPointType'>").text(Cmd.DataPointType));
+			$('#table_Devices tbody').append(tr);
+		});				
+	});				
+	$('#table_Devices').trigger('update');
+	$("#table_Devices .tablesorter-filter[data-column=0]").val('');
+	$("#table_Devices .tablesorter-filter[data-column=0]").trigger('keyup');
+	$("#table_Devices .tablesorter-filter[data-column=1]").val(SelectAddr);
+	$("#table_Devices .tablesorter-filter[data-column=1]").trigger('keyup');
+	$("#table_Devices .tablesorter-filter[data-column=4]").val(SelectDpt);
+	$("#table_Devices .tablesorter-filter[data-column=4]").trigger('keyup');
+}
+function UpdateGadArbo(GAD){	
+	$('.GadSortable').html('');
+	jQuery.each(GAD,function(Id, Equipement) {
+	});				
+}
 function addArboElement(){
 /*<li class="alert alert-info eqLogic cursor ui-sortable-handle" data-type="openvpn" data-id="28" data-name="DNS Jeedom" data-enable="1">
 	<input class="cb_selEqLogic" type="checkbox">
@@ -258,4 +254,5 @@ function addArboElement(){
 		</ul>
 	</li>	*/
 }
+	
 </script>
