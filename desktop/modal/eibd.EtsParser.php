@@ -13,7 +13,7 @@ if (!isConnect('admin')) {
 			<div class="form-group"> 
 				<label class="col-md-4 control-label">{{Créer les equipements repondant a la typo}}</label> 
 				<input type="checkbox" class="form-control EtsParseParameter" data-l1key="createEqLogic"/>
-				<?
+				<?php
 				for($loop = 0; $loop < config::byKey('level','eibd'); $loop++){
 					echo '<select class="form-control EtsParseParameter" data-l1key="'.$loop.'">';
 					echo '	<option value="object">{{Objet}}</option>';
@@ -30,6 +30,7 @@ if (!isConnect('admin')) {
 			<div class="form-group"> 
 				<label class="col-md-4 control-label">{{Importer votre projet}}</label> 
 				<input type="file" name="Knxproj" id="Knxproj" data-url="plugins/eibd/core/ajax/eibd.ajax.php?action=EtsParser" placeholder="{{Ficher export ETS}}" class="form-control input-md"/>
+				<input type="file" name="Knxproj" id="Knxproj" data-url="plugins/eibd/core/ajax/eibd.ajax.php?action=EtsParser" placeholder="{{Ficher export ETS}}" class="form-control input-md"/>
 				<div class="col-md-4"></div> 
 			</div> 
 		</form> 
@@ -38,9 +39,6 @@ if (!isConnect('admin')) {
 </div>
 <script>
 	$('#Knxproj').fileupload({
-		data:{
-			option: $('body .EtsParserDiv').getValues('.EtsParseParameter'),
-		},
 		dataType: 'json',
 		replaceFileInput: false,
 		//done: function (data) {
