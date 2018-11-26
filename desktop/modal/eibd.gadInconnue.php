@@ -32,8 +32,12 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			<i class="fa fa-tachometer"></i> {{Inconnue}}</a>
 	</li>
 	<li role="presentation" class="">
-		<a href="#EtsTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-			<i class="fa fa-list-alt"></i> {{ETS}}</a>
+		<a href="#DeviceTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+			<i class="fa fa-list-alt"></i> {{Equipement}}</a>
+	</li>
+	<li role="presentation" class="">
+		<a href="#AdressTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+			<i class="fa fa-list-alt"></i> {{Adresse de groupes}}</a>
 	</li>
 </ul>
 <div class="tab-content">
@@ -51,8 +55,8 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			<tbody></tbody>
 		</table>
 	</div>
-	<div role="tabpanel" class="tab-pane" id="EtsTab">
-		<table id="table_GadETS" class="table table-bordered table-condensed tablesorter GadInsert">
+	<div role="tabpanel" class="tab-pane" id="DeviceTab">
+		<table id="table_Devices" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
 					<th>{{Equipement}}</th>
@@ -64,6 +68,9 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			</thead>
 			<tbody></tbody>
 		</table>
+	</div>
+	<div role="tabpanel" class="tab-pane" id="AdressTab">
+		<ul class="GadSortable ui-sortable"></ul>
 	</div>
 </div>
 
@@ -108,12 +115,12 @@ function getKnxGadInconue () {
 			      	$('#table_GadInconue tbody').append(tr);
 			});				
 			$('#table_GadInconue').trigger('update');
-			$(".tablesorter-filter[data-column=0]").val(SelectAddr);
-			$(".tablesorter-filter[data-column=0]").trigger('keyup');
-			$(".tablesorter-filter[data-column=1]").val(SelectDpt);
-			$(".tablesorter-filter[data-column=1]").trigger('keyup');
-			$(".tablesorter-filter[data-column=4]").val('');
-			$(".tablesorter-filter[data-column=4]").trigger('keyup');
+			$("#table_GadInconue .tablesorter-filter[data-column=0]").val(SelectAddr);
+			$("#table_GadInconue .tablesorter-filter[data-column=0]").trigger('keyup');
+			$("#table_GadInconue .tablesorter-filter[data-column=1]").val(SelectDpt);
+			$("#table_GadInconue .tablesorter-filter[data-column=1]").trigger('keyup');
+			$("#table_GadInconue .tablesorter-filter[data-column=4]").val('');
+			$("#table_GadInconue .tablesorter-filter[data-column=4]").trigger('keyup');
 			if ($('#md_modal').dialog('isOpen') === true) {
 				setTimeout(function() {
 					getKnxGadInconue()
@@ -143,31 +150,8 @@ function getEtsProj () {
 			}
 			if (data.result == false) 
 				return;
-			$('#table_GadETS tbody').html('');
-			jQuery.each(data.result,function(AdressePhysique, Equipement) {
-				jQuery.each(Equipement.Cmd,function(AdresseGroupe, Cmd) {
-					var tr=$("<tr>");
-					if (typeof(Equipement.DeviceName) !== 'undefined') 
-						tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
-					else
-						tr.append($("<td class='DeviceName'>"));
-					tr.append($("<td>").text(AdressePhysique));
-					if (typeof(Cmd.cmdName) !== 'undefined') 
-						tr.append($("<td class='cmdName'>").text(Cmd.cmdName));
-					else
-						tr.append($("<td class='cmdName'>"));
-					tr.append($("<td class='AdresseGroupe'>").text(AdresseGroupe));
-					tr.append($("<td class='DataPointType'>").text(Cmd.DataPointType));
-					$('#table_GadETS tbody').append(tr);
-				});				
-			});				
-			$('#table_GadETS').trigger('update');
-			$(".tablesorter-filter[data-column=0]").val('');
-			$(".tablesorter-filter[data-column=0]").trigger('keyup');
-			$(".tablesorter-filter[data-column=1]").val(SelectAddr);
-			$(".tablesorter-filter[data-column=1]").trigger('keyup');
-			$(".tablesorter-filter[data-column=4]").val(SelectDpt);
-			$(".tablesorter-filter[data-column=4]").trigger('keyup');
+			UpdateDeviceTable(data.result.Devices);
+			UpdateGadArbo(data.result.GAD);
 		}
 	});
 }
@@ -186,6 +170,9 @@ $('body').on('click', '.Gad[data-action=remove]', function(){
 $('body').on('click', '.GadInsert tbody tr', function(){
 	SelectGad=$(this).closest('tr').find('.AdresseGroupe').text();
 	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
+});
+$('body').on('click', '.GadSortable gad', function(){
+	SelectGad=$(this).attr('data-AdresseGroupe');
 });
 function removeInCache(gad, destination){
 	$.ajax({
@@ -214,4 +201,50 @@ function removeInCache(gad, destination){
 		}
 	});
 }
+
+function UpdateDeviceTable(Devices){	
+	$('#table_Devices tbody').html('');
+	jQuery.each(Devices,function(Id, Equipement) {
+		jQuery.each(Equipement.Cmd,function(AdresseGroupe, Cmd) {
+			var tr=$("<tr>");
+			if (typeof(Equipement.DeviceName) !== 'undefined') 
+				tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
+			else
+				tr.append($("<td class='DeviceName'>"));
+			tr.append($("<td class='AdressePhysique'>").text(Equipement.AdressePhysique));
+			if (typeof(Cmd.cmdName) !== 'undefined') 
+				tr.append($("<td class='cmdName'>").text(Cmd.cmdName));
+			else
+				tr.append($("<td class='cmdName'>"));
+			tr.append($("<td class='AdresseGroupe'>").text(Cmd.AdresseGroupe));
+			tr.append($("<td class='DataPointType'>").text(Cmd.DataPointType));
+			$('#table_Devices tbody').append(tr);
+		});				
+	});				
+	$('#table_Devices').trigger('update');
+	$("#table_Devices .tablesorter-filter[data-column=0]").val('');
+	$("#table_Devices .tablesorter-filter[data-column=0]").trigger('keyup');
+	$("#table_Devices .tablesorter-filter[data-column=1]").val(SelectAddr);
+	$("#table_Devices .tablesorter-filter[data-column=1]").trigger('keyup');
+	$("#table_Devices .tablesorter-filter[data-column=4]").val(SelectDpt);
+	$("#table_Devices .tablesorter-filter[data-column=4]").trigger('keyup');
+}
+function UpdateGadArbo(GAD){	
+	$('.GadSortable').html('');
+	jQuery.each(GAD,function(Niveau1, Groups1) {
+		var n1 =$('<ul class="cmdSortable ui-sortable">');
+		if(typeof(Groups1) == 'object'){
+			jQuery.each(Groups1,function(Niveau2, Groups2) {
+				var n2 =$('<ul class="cmdSortable ui-sortable">');
+				if(typeof(Groups2) == 'object'){
+					jQuery.each(Groups2,function(Niveau3, gad) {
+						n2.append($('<li class="cursor ui-sortable-handle gad" data-AdresseGroupe="'+gad+'">').text(Niveau3 + ' (' + gad + ')'));
+					});	
+				}
+				n1.append($('<li class="cursor ui-sortable-handle">').text(Niveau2).append(n2));
+			});	
+		}
+		$('.GadSortable').append($('<li class="cursor ui-sortable-handle">').text(Niveau1).append(n1));
+	});	
+}	
 </script>

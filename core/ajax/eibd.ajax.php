@@ -96,7 +96,7 @@ try {
 	if (init('action') == 'EtsParser') {
 		$knxproj=new knxproj();
 		if (isset($_FILES['Knxproj']))
-			ajax::success(json_decode($knxproj->ParserEtsFile($_FILES['Knxproj']['tmp_name'])));
+			ajax::success($knxproj->ParserEtsFile($_FILES['Knxproj']['tmp_name']));
 		ajax::success(false);
 	}
 	if (init('action') == 'getEtsProj') {
