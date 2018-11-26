@@ -1,10 +1,13 @@
 <?php
 class knxproj {
 	private $path;
+	private $options;
 	private $Devices=array();
 	private $GroupAddresses=array();
+	private $Templates=array();
  	public function __construct(){
 		$this->path = dirname(__FILE__) . '/../config/';
+		$this->Templates=eibd::devicesParameters();
 	}
 	private function WriteJsonProj(){
 		$filename=$this->path.'EtsProj.json';
@@ -93,7 +96,7 @@ class knxproj {
 		$ProjetFile=$this->SearchFolder("P-");
 		$Projet=simplexml_load_file($ProjetFile.'/0.xml');
 		$GroupRanges =$Projet->Project->Installations->Installation->GroupAddresses->GroupRanges->GroupRange;
-		foreach ($GroupRanges as $j=>$GroupRange) {
+		foreach ($GroupRanges as $GroupRange) {
 			$this->GroupAddresses[$this->xml_attribute($GroupRange, 'Name')]='';
 			foreach ($GroupRange->children() as $GroupRange2)  {
 				$this->GroupAddresses[$this->xml_attribute($GroupRange, 'Name')][$this->xml_attribute($GroupRange2, 'Name')]='';
@@ -106,6 +109,7 @@ class knxproj {
 		}
 	}
 	public function ParserEtsFile($_options){
+		$this->options=$_options;
 		log::add('eibd','debug','[Import ETS]'.json_encode($_options));
 		$filename=$this->path.'EtsProj.json';
 		if (file_exists($filename)) 
@@ -145,6 +149,68 @@ class knxproj {
 		$this->WriteJsonProj();
 		$this->Clean();
 		return $this->getAll();
+	}
+	private function CheckOptions(){
+		$ObjetLevel= $this->checkLevel('object');
+		$TemplateLevel= $this->checkLevel('function');
+		$CommandeLevel= $this->checkLevel('cmd');
+		//[{"0":"object","1":"function","2":"cmd","createEqLogic":"1","createObjet":"1"}]
+		foreach($this->GroupAddresses as $Name1 => $Level1){
+			if($ObjetLevel == 0)
+				$Object=$Name1
+			elseif($TemplateLevel == 0)
+				$Template=$Name1
+			elseif($CommandeLevel == 0)
+				$CmdName=$Name1;
+				$Cmds[]=array('name'=>$Name1);
+			foreach($Level1 as $Name2 => $Level2){
+				if($ObjetLevel == 1)
+					$Object=$Name2;
+				elseif($TemplateLevel == 1)
+					$Template=$Name2;
+				elseif($CommandeLevel == 1)
+					$CmdName=$Name2;
+				foreach($Level2 as $Name3 => $Gad){
+					if($ObjetLevel == 2)
+						$Object=$Name3;
+					elseif($TemplateLevel == 2)
+						$Template=$Name3;
+					elseif($CommandeLevel == 2)
+						$CmdName=$Name3;
+					$Cmds[]=array('name'=>$CmdName,'addr'=>$Gad);
+				}
+			}
+			$this->createObject($Object);
+			$this->createEqLogic($Object,$Template,$Cmds);
+		}
+		
+	}
+	private function checkLevel($search){
+		foreach($this->options as $level =>$options){
+			if($options == $search)
+				return $level;
+		}
+	}
+	private function createObject(){
+		if($this->options['createObjet']){
+				//Script pour cree un objet
+		}
+	}
+	private function createEqLogic($Object,$Template,$Cmds){
+		if($this->options['createEqLogic']){
+			if(isset($this->Templates[$Template])){
+				$MyTemplate=$this->Templates[$Template];
+				foreach($Cmds as $Cmd){
+ 					if(isset($MyTemplate['cmd'][$Cmd['name']]))
+						$MyTemplate['cmd'][$Cmd['name']]['logicalId']=$Cmd['addr'];
+					else
+					   return false;
+				}
+				$EqLogic=eibd::AddEquipement($Template,'');
+				$EqLogic->applyModuleConfiguration($MyTemplate);
+			}
+		}
+		
 	}
 }
 ?>
