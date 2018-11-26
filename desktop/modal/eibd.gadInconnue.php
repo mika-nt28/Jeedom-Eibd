@@ -42,6 +42,27 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 </ul>
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
+		<?php
+		if(config::byKey('isInclude','eibd')){
+		?>
+		<span class="pull-right">
+			<a class="btn btn-warning btn-xs Include" >
+				<i class="fa fa-spinner fa-pulse"></i>
+				{{Désactiver l'inculsion}}
+			</a> 
+		</span>
+		<?php
+			}else{
+		 ?>
+		<span class="pull-right">
+			<a class="btn btn-warning btn-xs Include" >
+				<i class="fa fa-bullseye"></i>
+				{{Activer l'inculsion}}
+			</a> 
+		</span>
+		<?php
+			}
+		 ?>
 		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
@@ -56,6 +77,12 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 		</table>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="DeviceTab">
+		<span class="pull-right">
+			<a class="btn btn-warning btn-xs Ets4Parser" >
+				<i class="fa fa-cloud-upload"></i>
+				{{Importer projet KNX}}
+			</a> 
+		</span>
 		<table id="table_Devices" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
