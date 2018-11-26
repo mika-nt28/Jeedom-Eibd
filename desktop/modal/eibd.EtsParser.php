@@ -14,7 +14,7 @@ if (!isConnect('admin')) {
 				<label class="col-md-4 control-label">{{Créer les equipements repondant a la typo}}</label> 
 				<input type="checkbox" class="EtsParseParameter" data-l1key="createEqLogic"/>
 				<?php
-				for($loop = 1; $loop <= config::byKey('level','eibd'); $loop++){
+				for($loop = 0; $loop < config::byKey('level','eibd'); $loop++){
 					echo '<select class=" EtsParseParameter" data-l1key="'.$loop.'">';
 					echo '	<option value="object">{{Objet}}</option>';
 					echo '	<option value="function">{{Fonction}}</option>';
