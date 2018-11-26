@@ -103,7 +103,8 @@ try {
 	}
 	if (init('action') == 'AnalyseEtsProj') {
 		$knxproj=new knxproj();
-		if (isset('/tmp/knxproj.knxproj'))
+		$filename='/tmp/knxproj.knxproj';
+		if (file_exists($filename)) 
 			ajax::success($knxproj->ParserEtsFile(init('option')));
 		ajax::success(false);
 	}
