@@ -11,8 +11,6 @@ class knxproj {
 		if (file_exists($filename)) 
 			exec('sudo rm '.$filename);
 		$file=fopen($filename,"a+");
-		$myKNX['Devices']=$this->Devices;
-		$myKNX['GAD']=$this->GAD;
 		fwrite($file,$this->getAll());
 		fclose($file);	
 	}
