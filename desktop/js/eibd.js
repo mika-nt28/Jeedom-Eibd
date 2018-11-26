@@ -217,12 +217,41 @@ $('.BusMoniteur').on('click', function() {
 	$('#md_modal').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd').dialog('open');
 });
 $('.Ets4Parser').on('click', function() {
-	$('#md_modal').dialog({
-		title: "{{Ajout de vos équipement par ETS}}",
-		resizable: true,
-		height: 700,
-		width: 850});
-	$('#md_modal').load('index.php?v=d&modal=eibd.EtsParser&plugin=eibd&type=eibd').dialog('open');
+	bootbox.dialog({
+		title: "{{Importer votre projet KNX}}",
+		height: "800px",
+		width: "auto",
+		message: $('<div>').load('index.php?v=d&modal=eibd.EtsParser&plugin=eibd&type=eibd'),
+		buttons: {
+			"Annuler": {
+				className: "btn-default",
+				callback: function () {
+					//el.atCaret('insert', result.human);
+				}
+			},
+			success: {
+				label: "Valider",
+				className: "btn-primary",
+				callback: function () {
+					$.ajax({
+						type: 'POST',   
+						url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+						data:
+						{
+							action: 'AnalyseEtsProj',
+							option: $('body .EtsParserDiv').getValues('.EtsParseParameter')
+						},
+						dataType: 'json',
+						global: true,
+						error: function(request, status, error) {},
+						success: function(data) {
+							window.location.reload();
+						}
+					});
+				}
+			},
+		}
+	});
 });
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $(".eqLogicAttr[data-l1key=configuration][data-l2key=device]").html($(".eqLogicAttr[data-l1key=configuration][data-l2key=device] option").sort(function (a, b) {
