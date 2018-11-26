@@ -94,9 +94,18 @@ try {
 		ajax::success($return);
 	}
 	if (init('action') == 'EtsParser') {
+		if(isset($_FILES['Knxproj'])){ 
+			if(move_uploaded_file($_FILES['Knxproj']['tmp_name'],'/tmp/knxproj.knxproj'))
+				ajax::success(true);
+			else
+				ajax::success(false);
+		}
+	}
+	if (init('action') == 'AnalyseEtsProj') {
 		$knxproj=new knxproj();
-		if (isset($_FILES['Knxproj']))
-			ajax::success($knxproj->ParserEtsFile($_FILES['Knxproj']['tmp_name']));
+		$filename='/tmp/knxproj.knxproj';
+		if (file_exists($filename)) 
+			ajax::success($knxproj->ParserEtsFile(init('option')));
 		ajax::success(false);
 	}
 	if (init('action') == 'getEtsProj') {

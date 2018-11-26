@@ -42,6 +42,27 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 </ul>
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
+		<?php
+		if(config::byKey('isInclude','eibd')){
+		?>
+		<span class="pull-right">
+			<a class="btn btn-warning btn-xs Include" >
+				<i class="fa fa-spinner fa-pulse"></i>
+				{{Désactiver l'inculsion}}
+			</a> 
+		</span>
+		<?php
+			}else{
+		 ?>
+		<span class="pull-right">
+			<a class="btn btn-warning btn-xs Include" >
+				<i class="fa fa-bullseye"></i>
+				{{Activer l'inculsion}}
+			</a> 
+		</span>
+		<?php
+			}
+		 ?>
 		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
@@ -56,6 +77,12 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 		</table>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="DeviceTab">
+		<span class="pull-right">
+			<a class="btn btn-warning btn-xs Ets4Parser" >
+				<i class="fa fa-cloud-upload"></i>
+				{{Importer projet KNX}}
+			</a> 
+		</span>
 		<table id="table_Devices" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
@@ -70,11 +97,90 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 		</table>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="AdressTab">
+		<span class="pull-right">
+			<a class="btn btn-warning btn-xs Ets4Parser" >
+				<i class="fa fa-cloud-upload"></i>
+				{{Importer projet KNX}}
+			</a> 
+		</span>
 		<ul class="GadSortable ui-sortable"></ul>
 	</div>
 </div>
 
 <script>
+$('body').on('click','.Include', function () {
+	$(this).removeClass('Include');
+	$(this).find('i').removeClass('fa-pulse');
+	$(this).find('i').removeClass('fa-spinner');
+	$(this).addClass('NotInculde');
+	$(this).find('i').addClass('fa-bullseye');
+	$(this).find('span center').text('{{Activer  l\'inculsion}}');
+	jeedom.config.save({
+		configuration: {'isInclude':false},
+		plugin:'eibd',
+		error: function (error) {
+			$('#div_alert').showAlert({message: error.message, level: 'danger'});
+		},
+		success: function () {
+			$('#div_alert').showAlert({message: '{{Vous etes sortie du mode Inclusion}}', level: 'success'});
+		}
+	});
+});
+$('body').on('click','.NotInculde', function () {
+	$(this).removeClass('NotInculde');
+	$(this).find('i').removeClass('fa-bullseye');
+	$(this).addClass('Include');
+	$(this).find('i').addClass('fa-pulse');
+	$(this).find('i').addClass('fa-spinner');;
+	$(this).find('span center').text('{{Désactiver l\'inculsion}}');
+	jeedom.config.save({
+		configuration: {'isInclude':true},
+		plugin:'eibd',
+		error: function (error) {
+			$('#div_alert').showAlert({message: error.message, level: 'danger'});
+		},
+		success: function () {
+			$('#div_alert').showAlert({message: '{{Vous etes en mode Inclusion}}', level: 'success'});
+		}
+	});
+});
+$('.Ets4Parser').on('click', function() {
+	bootbox.dialog({
+		title: "{{Importer votre projet KNX}}",
+		height: "800px",
+		width: "auto",
+		message: $('<div>').load('index.php?v=d&modal=eibd.EtsParser&plugin=eibd&type=eibd'),
+		buttons: {
+			"Annuler": {
+				className: "btn-default",
+				callback: function () {
+					//el.atCaret('insert', result.human);
+				}
+			},
+			success: {
+				label: "Valider",
+				className: "btn-primary",
+				callback: function () {
+					$.ajax({
+						type: 'POST',   
+						url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+						data:
+						{
+							action: 'AnalyseEtsProj',
+							option: $('body .EtsParserDiv').getValues('.EtsParseParameter')
+						},
+						dataType: 'json',
+						global: true,
+						error: function(request, status, error) {},
+						success: function(data) {
+							window.location.reload();
+						}
+					});
+				}
+			},
+		}
+	});
+});
 var SelectGad='';
 initTableSorter();
 getKnxGadInconue();

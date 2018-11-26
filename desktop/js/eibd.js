@@ -4,42 +4,6 @@ $('#bt_healthEibd').on('click', function () {
 	$('#md_modal').dialog({title: "{{Santé des équpements KNX}}"});
 	$('#md_modal').load('index.php?v=d&plugin=eibd&modal=health').dialog('open');
 });
-$('body').on('click','.Include', function () {
-	$(this).removeClass('Include');
-	$(this).find('i').removeClass('fa-pulse');
-	$(this).find('i').removeClass('fa-spinner');
-	$(this).addClass('NotInculde');
-	$(this).find('i').addClass('fa-bullseye');
-	$(this).find('span center').text('{{Activer  l\'inculsion}}');
-	jeedom.config.save({
-		configuration: {'isInclude':false},
-		plugin:'eibd',
-		error: function (error) {
-			$('#div_alert').showAlert({message: error.message, level: 'danger'});
-		},
-		success: function () {
-			$('#div_alert').showAlert({message: '{{Vous etes sortie du mode Inclusion}}', level: 'success'});
-		}
-	});
-});
-$('body').on('click','.NotInculde', function () {
-	$(this).removeClass('NotInculde');
-	$(this).find('i').removeClass('fa-bullseye');
-	$(this).addClass('Include');
-	$(this).find('i').addClass('fa-pulse');
-	$(this).find('i').addClass('fa-spinner');;
-	$(this).find('span center').text('{{Désactiver l\'inculsion}}');
-	jeedom.config.save({
-		configuration: {'isInclude':true},
-		plugin:'eibd',
-		error: function (error) {
-			$('#div_alert').showAlert({message: error.message, level: 'danger'});
-		},
-		success: function () {
-			$('#div_alert').showAlert({message: '{{Vous etes en mode Inclusion}}', level: 'success'});
-		}
-	});
-});
 $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	//Creation du formulaire du template
 	var form=$(this).closest('form');
@@ -215,14 +179,6 @@ $('.BusMoniteur').on('click', function() {
 		height: 700,
 		width: 850});
 	$('#md_modal').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd').dialog('open');
-});
-$('.Ets4Parser').on('click', function() {
-	$('#md_modal').dialog({
-		title: "{{Ajout de vos équipement par ETS}}",
-		resizable: true,
-		height: 700,
-		width: 850});
-	$('#md_modal').load('index.php?v=d&modal=eibd.EtsParser&plugin=eibd&type=eibd').dialog('open');
 });
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $(".eqLogicAttr[data-l1key=configuration][data-l2key=device]").html($(".eqLogicAttr[data-l1key=configuration][data-l2key=device] option").sort(function (a, b) {
