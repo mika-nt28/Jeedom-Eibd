@@ -171,6 +171,9 @@ $('body').on('click', '.GadInsert tbody tr', function(){
 	SelectGad=$(this).closest('tr').find('.AdresseGroupe').text();
 	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
 });
+$('body').on('click', '.GadSortable gad', function(){
+	SelectGad=$(this).attr('data-AdresseGroupe');
+});
 function removeInCache(gad, destination){
 	$.ajax({
 		type: 'POST',
@@ -228,31 +231,17 @@ function UpdateDeviceTable(Devices){
 }
 function UpdateGadArbo(GAD){	
 	$('.GadSortable').html('');
-	jQuery.each(GAD,function(Id, Equipement) {
-	});				
-}
-function addArboElement(){
-/*<li class="alert alert-info eqLogic cursor ui-sortable-handle" data-type="openvpn" data-id="28" data-name="DNS Jeedom" data-enable="1">
-	<input class="cb_selEqLogic" type="checkbox">
-		DNS Jeedom 
-		<i style="font-size: 0.9em;">(openvpn)</i> 
-		<i title="Non visible" class="fa fa-eye-slash"></i> 
-		<i title="Voir les commandes" class="fa pull-right showCmd fa-chevron-down"></i> 
-		<i title="Configuration avancée" class="fa fa-cog pull-right configureEqLogic"></i>
-		<a title="Aller sur la configuration de l'équipement" class="pull-right" href="index.php?v=d&amp;p=openvpn&amp;m=openvpn&amp;id=28" target="_blank">
-			<i class="fa fa-external-link"></i>
-		</a>
-		<ul class="cmdSortable ui-sortable">
-			<li class="alert alert-warning cmd cursor ui-sortable-handle" data-id="352" data-name="Actif">
-				Actif
-				<i class="fa fa-cog pull-right configureCmd"></i>
-				</li>
-			<li class="alert alert-warning cmd cursor ui-sortable-handle" data-id="354" data-name="Arrêter">
-				Arrêter
-				<i class="fa fa-cog pull-right configureCmd"></i>
-			</li>
-		</ul>
-	</li>	*/
-}
-	
+	jQuery.each(GAD,function(Niveau1, Groups1) {
+		var n1 =$('<ul class="cmdSortable ui-sortable">');
+		jQuery.each(Groups1,function(Niveau2, Groups2) {
+			var n2 =$('<ul class="cmdSortable ui-sortable">');
+			jQuery.each(Groups2,function(Niveau3, gad) {
+				n2.append($('<li class="cursor ui-sortable-handle gad" data-AdresseGroupe="'+gad+'">').text(Niveau3 + ' (' + gad + ')'));
+			});	
+			n1.append($('<li class="cursor ui-sortable-handle">').text(Niveau2).append(n2));
+		});	
+		$('.GadSortable').append($('<li class="cursor ui-sortable-handle">').text(Niveau1).append(n1));
+	});	
+	$('.GadSortable').append(n1);
+}	
 </script>
