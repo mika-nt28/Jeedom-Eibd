@@ -94,8 +94,8 @@ try {
 		ajax::success($return);
 	}
 	if (init('action') == 'EtsParser') {
-		if(isset($_FILES['avatar'])){ 
-			if(move_uploaded_file($_FILES['avatar']['tmp_name'],'/tmp/knxproj.knxproj'))
+		if(isset($_FILES['Knxproj'])){ 
+			if(move_uploaded_file($_FILES['Knxproj']['tmp_name'],'/tmp/knxproj.knxproj'))
 				ajax::success(true);
 			else
 				ajax::success(false);
@@ -104,7 +104,7 @@ try {
 	if (init('action') == 'AnalyseEtsProj') {
 		$knxproj=new knxproj();
 		if (isset('/tmp/knxproj.knxproj'))
-			ajax::success($knxproj->ParserEtsFile(init('option')));*/
+			ajax::success($knxproj->ParserEtsFile(init('option')));
 		ajax::success(false);
 	}
 	if (init('action') == 'getEtsProj') {
