@@ -83,15 +83,22 @@ class knxproj {
 			}
 		}
 	}
+	private function xml_attribute($object, $attribute){
+		if(isset($object[$attribute]))
+			return (string) $object[$attribute];
+	}
 	public function ParserGroupAddresses($Projet){
-		$GroupRanges=$Projet->getElementsByTagName('GroupRanges');
-		foreach ($GroupRanges->childNodes as $GroupRange) {
-			foreach($GroupRange->childNodes as $Group2){
-				foreach($Group2->childNodes as $GroupAddress){
-					$addr=$GroupAddress->getAttribute('Address');
+		$ProjetFile=$this->SearchFolder("P-");
+		$Projet=simplexml_load_file($ProjetFile.'/0.xml');
+		$GroupRanges =$Projet->Project->Installations->Installation->GroupAddresses->GroupRanges->GroupRange;
+		foreach ($GroupRanges as $j=>$GroupRange) {
+			$this->GroupAddresses[$this->xml_attribute($GroupRange, 'Name')]='';
+			foreach ($GroupRange->children() as $GroupRange2)  {
+				$this->GroupAddresses[$this->xml_attribute($GroupRange, 'Name')][$this->xml_attribute($GroupRange2, 'Name')]='';
+				foreach ($GroupRange2->children() as $GroupAddress)  {
+					$addr=$this->xml_attribute($GroupAddress, 'Address');
 					$AdresseGroupe=sprintf( "%d/%d/%d", ($addr >> 11) & 0xf, ($addr >> 8) & 0x7, $addr & 0xff);
-								
-					$this->GroupAddresses[$GroupRanges->getAttribute('Name')][$Group2->getAttribute('Name')][$GroupAddress->getAttribute('Name')]=$AdresseGroupe;
+					$this->GroupAddresses[$this->xml_attribute($GroupRange, 'Name')][$this->xml_attribute($GroupRange2, 'Name')][$this->xml_attribute($GroupAddress, 'Name')]=$AdresseGroupe;	
 				}
 			}
 		}
