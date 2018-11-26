@@ -157,9 +157,9 @@ class knxproj {
 		//[{"0":"object","1":"function","2":"cmd","createEqLogic":"1","createObjet":"1"}]
 		foreach($this->GroupAddresses as $Name1 => $Level1){
 			if($ObjetLevel == 0)
-				$Object=$Name1
+				$Object=$Name1;
 			elseif($TemplateLevel == 0)
-				$Template=$Name1
+				$Template=$Name1;
 			elseif($CommandeLevel == 0)
 				$CmdName=$Name1;
 				$Cmds[]=array('name'=>$Name1);
