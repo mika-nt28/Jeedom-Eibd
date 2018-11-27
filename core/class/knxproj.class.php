@@ -191,23 +191,32 @@ class knxproj {
 				return $level;
 		}
 	}
-	private function createObject(){
+	private function createObject($Name){
+		$Object = object::byName($Name);
 		if($this->options['createObjet']){
 				//Script pour cree un objet
+			if (!is_object($Object)) {
+				$Object = new object();
+				$Object->setName($Name);
+				$Object->setIsVisible(true);
+				$Object->save();
+			}
+			return $Object;
 		}
 	}
-	private function createEqLogic($Object,$Template,$Cmds){
+	private function createEqLogic($ObjectName,$TemplateName,$Cmds){
 		if($this->options['createEqLogic']){
-			if(isset($this->Templates[$Template])){
-				$MyTemplate=$this->Templates[$Template];
+			if(isset($this->Templates[$TemplateName])){
+				$Template=$this->Templates[$TemplateName];
 				foreach($Cmds as $Cmd){
- 					if(isset($MyTemplate['cmd'][$Cmd['name']]))
-						$MyTemplate['cmd'][$Cmd['name']]['logicalId']=$Cmd['addr'];
+ 					if(isset($Template['cmd'][$Cmd['name']]))
+						$Template['cmd'][$Cmd['name']]['logicalId']=$Cmd['addr'];
 					else
 					   return false;
 				}
-				$EqLogic=eibd::AddEquipement($Template,'');
-				$EqLogic->applyModuleConfiguration($MyTemplate);
+				$Object=$this->createObject($ObjectName);
+				$EqLogic=eibd::AddEquipement($Template,'',$Object->getId());
+				$EqLogic->applyModuleConfiguration($Template);
 			}
 		}
 		
