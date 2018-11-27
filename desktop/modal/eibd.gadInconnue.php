@@ -127,7 +127,7 @@ $('body').on('click','.Include', function () {
 $('body').on('click','.NotInculde', function () {
 	$(this).removeClass('NotInculde');
 	$(this).addClass('Include');
-	$(this).html($('<i class="<i class="fa fa-spinner fa-pulse">'))
+	$(this).html($('<i class="fa fa-spinner fa-pulse">'))
 		.append(' {{Désactiver l\'inculsion}}');
 	jeedom.config.save({
 		configuration: {'isInclude':true},
