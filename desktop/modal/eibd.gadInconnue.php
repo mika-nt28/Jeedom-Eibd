@@ -110,11 +110,9 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 <script>
 $('body').on('click','.Include', function () {
 	$(this).removeClass('Include');
-	$(this).find('i').removeClass('fa-pulse');
-	$(this).find('i').removeClass('fa-spinner');
 	$(this).addClass('NotInculde');
-	$(this).find('i').addClass('fa-bullseye');
-	$(this).find('span a').text('{{Activer  l\'inculsion}}');
+	$(this).html($('<i class="fa fa-bullseye">'))
+		.append(' {{Activer  l\'inculsion}}');
 	jeedom.config.save({
 		configuration: {'isInclude':false},
 		plugin:'eibd',
@@ -128,11 +126,9 @@ $('body').on('click','.Include', function () {
 });
 $('body').on('click','.NotInculde', function () {
 	$(this).removeClass('NotInculde');
-	$(this).find('i').removeClass('fa-bullseye');
 	$(this).addClass('Include');
-	$(this).find('i').addClass('fa-pulse');
-	$(this).find('i').addClass('fa-spinner');;
-	$(this).find('span a').text('{{Désactiver l\'inculsion}}');
+	$(this).html($('<i class="fa fa-spinner fa-pulse">'))
+		.append(' {{Désactiver l\'inculsion}}');
 	jeedom.config.save({
 		configuration: {'isInclude':true},
 		plugin:'eibd',
