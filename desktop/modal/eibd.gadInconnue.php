@@ -112,7 +112,7 @@ $('body').on('click','.Include', function () {
 	$(this).removeClass('Include');
 	$(this).addClass('NotInculde');
 	$(this).html($('<i class="fa fa-bullseye">'))
-		.text('{{Activer  l\'inculsion}}');
+		.append('{{Activer  l\'inculsion}}');
 	jeedom.config.save({
 		configuration: {'isInclude':false},
 		plugin:'eibd',
@@ -128,7 +128,7 @@ $('body').on('click','.NotInculde', function () {
 	$(this).removeClass('NotInculde');
 	$(this).addClass('Include');
 	$(this).html($('<i class="<i class="fa fa-spinner fa-pulse">">'))
-		.text('{{Désactiver l\'inculsion}}');
+		.append('{{Désactiver l\'inculsion}}');
 	jeedom.config.save({
 		configuration: {'isInclude':true},
 		plugin:'eibd',
