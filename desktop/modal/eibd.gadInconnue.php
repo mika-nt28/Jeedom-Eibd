@@ -114,7 +114,7 @@ $('body').on('click','.Include', function () {
 	$(this).find('i').removeClass('fa-spinner');
 	$(this).addClass('NotInculde');
 	$(this).find('i').addClass('fa-bullseye');
-	$(this).find('span center').text('{{Activer  l\'inculsion}}');
+	$(this).find('span a').text('{{Activer  l\'inculsion}}');
 	jeedom.config.save({
 		configuration: {'isInclude':false},
 		plugin:'eibd',
@@ -132,7 +132,7 @@ $('body').on('click','.NotInculde', function () {
 	$(this).addClass('Include');
 	$(this).find('i').addClass('fa-pulse');
 	$(this).find('i').addClass('fa-spinner');;
-	$(this).find('span center').text('{{Désactiver l\'inculsion}}');
+	$(this).find('span a').text('{{Désactiver l\'inculsion}}');
 	jeedom.config.save({
 		configuration: {'isInclude':true},
 		plugin:'eibd',
@@ -262,7 +262,6 @@ function getEtsProj () {
 	});
 }
 $('body').on('click', '.Gad[data-action=addEqLogic]', function(){
-	var gad=$(this).closest('tr').find('td:eq(3)').text();
 	jeedom.eqLogic.getSelectModal({},function (result) {
 		removeInCache(gad,result.id);
 	}); 
@@ -274,10 +273,18 @@ $('body').on('click', '.Gad[data-action=remove]', function(){
 	$(this).closest('tr').remove();
 });	
 $('body').on('click', '.GadInsert tbody tr', function(){
-	SelectGad=$(this).closest('tr').find('.AdresseGroupe').text();
+	$('.table_GadInconue').removeClass('btn-primary');
+	$('.table_Devices').removeClass('btn-primary');
+	$('.GadSortable').removeClass('btn-primary');
+	$(this).closest('tr').addClass('btn-primary');
+	SelectGad = $(this).closest('tr').find('.AdresseGroupe').text();
 	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
 });
-$('body').on('click', '.GadSortable gad', function(){
+$('body').on('click', '.cmdSortable', function(){
+	$('.table_GadInconue').removeClass('btn-primary');
+	$('.table_Devices').removeClass('btn-primary');
+	$('.GadSortable').removeClass('btn-primary');
+	$(this).addClass('btn-primary');
 	SelectGad=$(this).attr('data-AdresseGroupe');
 });
 function removeInCache(gad, destination){
