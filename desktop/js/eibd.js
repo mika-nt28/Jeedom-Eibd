@@ -470,7 +470,7 @@ function addCmdToTable(_cmd) {
 	parmetre.append($('<div class="CycliqueSend">')
 		.append($('<span>')
 			.append($('<label>')
-				.append('{{Envoie Cyclique}}')
+				.append('{{Lecture/Ecriture Cyclique}}')
 				.append($('<sup>')
 					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
 						.attr('title','Activer cette option uniquement si vous souhaitez envoyer toutes les minutes votre commande')))
@@ -583,14 +583,12 @@ $('body').on('change','.cmdAttr[data-l1key=type]', function() {
 		case "info":
 			$(this).closest('.cmd').find('.RetourEtat').hide();
 			$(this).closest('.cmd').find('.bt_read').show();
-			$(this).closest('.cmd').find('.CycliqueSend').hide();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').hide();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().show();
 		break;
 		case "action":		
 			$(this).closest('.cmd').find('.RetourEtat').show();
 			$(this).closest('.cmd').find('.bt_read').hide();
-			$(this).closest('.cmd').find('.CycliqueSend').show();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').show();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().hide();
 		break;
