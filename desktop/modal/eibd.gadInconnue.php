@@ -280,7 +280,7 @@ $('body').on('click', '.GadInsert tbody tr', function(){
 	SelectGad = $(this).closest('tr').find('.AdresseGroupe').text();
 	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
 });
-$('body').on('click', '.cmdSortable', function(){
+$('body').on('click', '.cmdSortable .gad', function(){
 	$('.table_GadInconue').removeClass('btn-primary');
 	$('.table_Devices').removeClass('btn-primary');
 	$('.GadSortable').removeClass('btn-primary');
