@@ -29,7 +29,7 @@ $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 $('body').on('click','.bt_selectGadInconnue', function () {
 	var SelectAddr=$(this).closest('body').find('.form-control[data-l1key=logicalId]').val();	
 	var SelectDpt=$(this).closest('.form-group').parent().find('.form-control[data-l2key=KnxObjectType]').val();	
-	var input=$(this).closest('.input-group').find('.CmdEqLogicTemplateAttr');
+	var input=$(this).closest('.input-group').find('input');
 	bootbox.dialog({
 		title: "{{Choisir un Gad}}",
 		height: "800px",
@@ -46,7 +46,7 @@ $('body').on('click','.bt_selectGadInconnue', function () {
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
-					input.closest('.modal-body').find('.EqLogicTemplateAttr[data-l1key=logicalId]').val(SelectAddr);	
+					//input.closest('.modal-body').find('.form-control[data-l1key=logicalId]').val(SelectAddr);	
 					input.val(SelectGad);
 				}
 			},
