@@ -511,7 +511,7 @@ class eibd extends eqLogic {
 		$WriteBusValue=eibd::EibdWrite($ga, $data);
 		log::add('eibd','info',$Commande->getHumanName().'[Transmission]: Envoie de la valeur '.$_options['value'].' sur le GAD '.$ga);
 	}
-	public static function AddEquipement($Name,$_logicalId) 	{
+	public static function AddEquipement($Name,$_logicalId,$_objectId=null) 	{
 		$Equipement = self::byLogicalId($_logicalId, 'eibd');
 		if (is_object($Equipement)) {
 			$Equipement->setIsEnable(1);
@@ -520,7 +520,7 @@ class eibd extends eqLogic {
 			$Equipement = new eibd();
 			$Equipement->setName($Name);
 			$Equipement->setLogicalId($_logicalId);
-			$Equipement->setObject_id(null);
+			$Equipement->setObject_id($_objectId);
 			$Equipement->setEqType_name('eibd');
 			$Equipement->setIsEnable(1);
 			$Equipement->setIsVisible(1);
