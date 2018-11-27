@@ -29,7 +29,7 @@ $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 $('body').on('click','.bt_selectGadInconnue', function () {
 	var SelectAddr=$(this).closest('body').find('.form-control[data-l1key=logicalId]').val();	
 	var SelectDpt=$(this).closest('.form-group').parent().find('.form-control[data-l2key=KnxObjectType]').val();	
-	var input=$(this).closest('.input-group').find('.CmdEqLogicTemplateAttr');
+	var input=$(this).closest('.input-group').find('input');
 	bootbox.dialog({
 		title: "{{Choisir un Gad}}",
 		height: "800px",
@@ -46,7 +46,7 @@ $('body').on('click','.bt_selectGadInconnue', function () {
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
-					input.closest('.modal-body').find('.EqLogicTemplateAttr[data-l1key=logicalId]').val(SelectAddr);	
+					//input.closest('.modal-body').find('.form-control[data-l1key=logicalId]').val(SelectAddr);	
 					input.val(SelectGad);
 				}
 			},
@@ -470,7 +470,7 @@ function addCmdToTable(_cmd) {
 	parmetre.append($('<div class="CycliqueSend">')
 		.append($('<span>')
 			.append($('<label>')
-				.append('{{Envoie Cyclique}}')
+				.append('{{Lecture/Ecriture Cyclique}}')
 				.append($('<sup>')
 					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
 						.attr('title','Activer cette option uniquement si vous souhaitez envoyer toutes les minutes votre commande')))
@@ -583,14 +583,12 @@ $('body').on('change','.cmdAttr[data-l1key=type]', function() {
 		case "info":
 			$(this).closest('.cmd').find('.RetourEtat').hide();
 			$(this).closest('.cmd').find('.bt_read').show();
-			$(this).closest('.cmd').find('.CycliqueSend').hide();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').hide();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().show();
 		break;
 		case "action":		
 			$(this).closest('.cmd').find('.RetourEtat').show();
 			$(this).closest('.cmd').find('.bt_read').hide();
-			$(this).closest('.cmd').find('.CycliqueSend').show();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').show();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().hide();
 		break;

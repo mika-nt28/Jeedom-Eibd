@@ -8,28 +8,8 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd() as $Commande){
-					$ga=$Commande->getLogicalId();
-					if($Commande->getType() == 'info'){
-						if (!$Commande->getConfiguration('FlagWrite') && $Commande->getConfiguration('FlagInit')){
-							$dpt=$Commande->getConfiguration('KnxObjectType');
-							$inverse=$Commande->getConfiguration('inverse');
-							$DataBus=self::EibdRead($ga);
-							if($DataBus === false){
-								$Commande->setConfiguration('FlagInit',false);
-								$Commande->save();
-								continue;
-							}
-							$Option=$Commande->getConfiguration('option');
-							$Option["id"]=$Commande->getId();
-							$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
-							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
-							$Equipement->checkAndUpdateCmd($ga,$BusValue);
-						}
-					}else{
-						if ($Commande->getConfiguration('CycliqueSend') == "cron"){
-							$Commande->execute();
-							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 1 min] GAD: '.$ga);
-						}
+					if ($Commande->getConfiguration('CycliqueSend') == "cron"){
+						$Commande->Cylcique();
 					}
 				}
 			}
@@ -40,8 +20,12 @@ class eibd extends eqLogic {
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron5"){
+						$ga=$Commande->getLogicalId();
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 5 min] GAD: '.$Commande->getLogicalId());
+						if($this->getType() == 'info')			
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
+						else
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique] GAD: '.$ga);
 					}
 				}
 			}
@@ -52,8 +36,12 @@ class eibd extends eqLogic {
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron15"){
+						$ga=$Commande->getLogicalId();
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 15 min] GAD: '.$Commande->getLogicalId());
+						if($this->getType() == 'info')			
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
+						else
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique] GAD: '.$ga);
 					}
 				}
 			}
@@ -64,8 +52,12 @@ class eibd extends eqLogic {
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron30"){
+						$ga=$Commande->getLogicalId();
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 30 min] GAD: '.$Commande->getLogicalId());
+						if($this->getType() == 'info')			
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
+						else
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique] GAD: '.$ga);
 					}
 				}
 			}
@@ -76,8 +68,12 @@ class eibd extends eqLogic {
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronHourly"){
+						$ga=$Commande->getLogicalId();
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 1H] GAD: '.$Commande->getLogicalId());
+						if($this->getType() == 'info')			
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
+						else
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique] GAD: '.$ga);
 					}
 				}
 			}
@@ -88,8 +84,12 @@ class eibd extends eqLogic {
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily"){
+						$ga=$Commande->getLogicalId();
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique journalier] GAD: '.$Commande->getLogicalId());
+						if($this->getType() == 'info')			
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
+						else
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique] GAD: '.$ga);
 					}
 				}
 			}
@@ -849,13 +849,14 @@ class eibdCmd extends cmd {
 				}
 			break;
 			case 'info':
-				$inverse=$this->getConfiguration('inverse');
-				log::add('eibd', 'debug',$this->getHumanName().' Lecture sur le bus de l\'adresse de groupe : '. $ga);
-				$DataBus=eibd::EibdRead($ga);	
+				$DataBus=self::EibdRead($ga);
+				if($DataBus === false){
+					$this->setConfiguration('FlagInit',false);
+					$this->save();
+					return;
+				}
 				$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
-				$this->setCollectDate(date('Y-m-d H:i:s'));
-				$this->event($BusValue);
-				$this->setCache('collectDate', date('Y-m-d H:i:s'));
+				$this->getLogicalId()->checkAndUpdateCmd($ga,$BusValue);
 			break;
 		}
 	}
