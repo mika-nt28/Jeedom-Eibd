@@ -260,13 +260,16 @@ $('body').on('click', '.Gad[data-action=remove]', function(){
 	$(this).closest('tr').remove();
 });	
 $('body').on('click', '.GadInsert tbody tr', function(){
+	$('.cmdSortable .gad').css('font-weight','unset');
+	$('.GadInsert tr').css('font-weight','unset');
 	$(this).closest('tr').css('font-weight','bold');
 	SelectGad = $(this).closest('tr').find('.AdresseGroupe').text();
 	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
 });
 $('body').on('click', '.cmdSortable .gad', function(){
-	$('.cmdSortable .gad').removeClass('btn-primary');
-	$(this).addClass('btn-primary');
+	$('.cmdSortable .gad').css('font-weight','unset');
+	$('.GadInsert tr').css('font-weight','unset');
+	$(this).closest('tr')..css('font-weight','bold');
 	SelectGad=$(this).attr('data-AdresseGroupe');
 });
 function removeInCache(gad, destination){
