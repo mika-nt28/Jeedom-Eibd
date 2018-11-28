@@ -8,7 +8,7 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd() as $Commande){
-					if ($Commande->getConfiguration('CycliqueSend') == "cron")
+					if ($Commande->getConfiguration('CycliqueSend') == "cron"){
 						$ga=$Commande->getLogicalId();
 						$Commande->execute();
 						if($Commande->getType() == 'info')			
