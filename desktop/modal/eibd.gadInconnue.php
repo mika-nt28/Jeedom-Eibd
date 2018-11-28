@@ -269,16 +269,11 @@ $('body').on('click', '.Gad[data-action=remove]', function(){
 	$(this).closest('tr').remove();
 });	
 $('body').on('click', '.GadInsert tbody tr', function(){
-	$('.table_GadInconue').removeClass('btn-primary');
-	$('.table_Devices').removeClass('btn-primary');
-	$('.GadSortable').removeClass('btn-primary');
-	$(this).closest('tr').addClass('btn-primary');
+	$(this).closest('tr').css('font-weight','bold');
 	SelectGad = $(this).closest('tr').find('.AdresseGroupe').text();
 	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
 });
 $('body').on('click', '.cmdSortable .gad', function(){
-	$('.table_GadInconue').removeClass('btn-primary');
-	$('.table_Devices').removeClass('btn-primary');
 	$('.GadSortable').removeClass('btn-primary');
 	$(this).addClass('btn-primary');
 	SelectGad=$(this).attr('data-AdresseGroupe');
