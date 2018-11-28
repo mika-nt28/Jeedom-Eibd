@@ -216,10 +216,8 @@ function getKnxGadInconue () {
 			$('#table_GadInconue').trigger('update');
 			$("#table_GadInconue .tablesorter-filter[data-column=0]").val(SelectAddr);
 			$("#table_GadInconue .tablesorter-filter[data-column=0]").trigger('keyup');
-			$("#table_GadInconue .tablesorter-filter[data-column=1]").val(SelectDpt);
-			$("#table_GadInconue .tablesorter-filter[data-column=1]").trigger('keyup');
-			$("#table_GadInconue .tablesorter-filter[data-column=4]").val('');
-			$("#table_GadInconue .tablesorter-filter[data-column=4]").trigger('keyup');
+			$("#table_GadInconue .tablesorter-filter[data-column=2]").val(SelectDpt);
+			$("#table_GadInconue .tablesorter-filter[data-column=2]").trigger('keyup');
 			if ($('#md_modal').dialog('isOpen') === true) {
 				setTimeout(function() {
 					getKnxGadInconue()
@@ -317,8 +315,6 @@ function UpdateDeviceTable(Devices){
 		});				
 	});				
 	$('#table_Devices').trigger('update');
-	$("#table_Devices .tablesorter-filter[data-column=0]").val('');
-	$("#table_Devices .tablesorter-filter[data-column=0]").trigger('keyup');
 	$("#table_Devices .tablesorter-filter[data-column=1]").val(SelectAddr);
 	$("#table_Devices .tablesorter-filter[data-column=1]").trigger('keyup');
 	$("#table_Devices .tablesorter-filter[data-column=4]").val(SelectDpt);
