@@ -179,6 +179,8 @@ $('.Ets4Parser').on('click', function() {
 });
 var SelectGad='';
 initTableSorter();
+$("#table_GadInconue .tablesorter-filter[data-column=2]").val(SelectDpt);
+$("#table_GadInconue .tablesorter-filter[data-column=0]").val(SelectAddr);
 getKnxGadInconue();
 function getKnxGadInconue () {
 	$.ajax({
@@ -210,19 +212,12 @@ function getKnxGadInconue () {
 				tr.append($("<td>")
 					.append($('<a class="btn btn-danger btn-xs Gad pull-right" data-action="remove">')
 						.append($('<i class="fa fa-minus-circle">'))
-						.text('{{Supprimer}}'))
-					.append($('<a class="btn btn-primary btn-xs Gad pull-right" data-action="addEqLogic">')
-						.append($('<i class="fa fa-check-circle">'))
-						.text('{{Ajouter a un equipement}}')));
+						.text('{{Supprimer}}')));
 			      	$('#table_GadInconue tbody').append(tr);
 			});				
 			$('#table_GadInconue').trigger('update');
-			$("#table_GadInconue .tablesorter-filter[data-column=0]").val(SelectAddr);
 			$("#table_GadInconue .tablesorter-filter[data-column=0]").trigger('keyup');
-			$("#table_GadInconue .tablesorter-filter[data-column=1]").val(SelectDpt);
-			$("#table_GadInconue .tablesorter-filter[data-column=1]").trigger('keyup');
-			$("#table_GadInconue .tablesorter-filter[data-column=4]").val('');
-			$("#table_GadInconue .tablesorter-filter[data-column=4]").trigger('keyup');
+			$("#table_GadInconue .tablesorter-filter[data-column=2]").trigger('keyup');
 			if ($('#md_modal').dialog('isOpen') === true) {
 				setTimeout(function() {
 					getKnxGadInconue()
@@ -231,6 +226,8 @@ function getKnxGadInconue () {
 		}
 	});
 }
+$("#table_Devices .tablesorter-filter[data-column=1]").val(SelectAddr);
+$("#table_Devices .tablesorter-filter[data-column=4]").val(SelectDpt);
 getEtsProj();
 function getEtsProj () {
 	$.ajax({
@@ -257,29 +254,18 @@ function getEtsProj () {
 		}
 	});
 }
-$('body').on('click', '.Gad[data-action=addEqLogic]', function(){
-	jeedom.eqLogic.getSelectModal({},function (result) {
-		removeInCache(gad,result.id);
-	}); 
-	$(this).closest('tr').remove();
-});
 $('body').on('click', '.Gad[data-action=remove]', function(){
 	var gad=$(this).closest('tr').find('.AdresseGroupe').text();
 	removeInCache(gad, false);
 	$(this).closest('tr').remove();
 });	
 $('body').on('click', '.GadInsert tbody tr', function(){
-	$('.table_GadInconue').removeClass('btn-primary');
-	$('.table_Devices').removeClass('btn-primary');
-	$('.GadSortable').removeClass('btn-primary');
-	$(this).closest('tr').addClass('btn-primary');
+	$(this).closest('tr').css('font-weight','bold');
 	SelectGad = $(this).closest('tr').find('.AdresseGroupe').text();
 	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
 });
 $('body').on('click', '.cmdSortable .gad', function(){
-	$('.table_GadInconue').removeClass('btn-primary');
-	$('.table_Devices').removeClass('btn-primary');
-	$('.GadSortable').removeClass('btn-primary');
+	$('.cmdSortable .gad').removeClass('btn-primary');
 	$(this).addClass('btn-primary');
 	SelectGad=$(this).attr('data-AdresseGroupe');
 });
@@ -331,11 +317,7 @@ function UpdateDeviceTable(Devices){
 		});				
 	});				
 	$('#table_Devices').trigger('update');
-	$("#table_Devices .tablesorter-filter[data-column=0]").val('');
-	$("#table_Devices .tablesorter-filter[data-column=0]").trigger('keyup');
-	$("#table_Devices .tablesorter-filter[data-column=1]").val(SelectAddr);
 	$("#table_Devices .tablesorter-filter[data-column=1]").trigger('keyup');
-	$("#table_Devices .tablesorter-filter[data-column=4]").val(SelectDpt);
 	$("#table_Devices .tablesorter-filter[data-column=4]").trigger('keyup');
 }
 function UpdateGadArbo(GAD){	
