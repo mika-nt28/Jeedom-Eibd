@@ -263,7 +263,7 @@ $('body').on('click', '.GadInsert tbody tr', function(){
 	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
 });
 $('body').on('click', '.cmdSortable .gad', function(){
-	$('.GadSortable').removeClass('btn-primary');
+	$('.cmdSortable .gad').removeClass('btn-primary');
 	$(this).addClass('btn-primary');
 	SelectGad=$(this).attr('data-AdresseGroupe');
 });
