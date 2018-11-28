@@ -179,6 +179,8 @@ $('.Ets4Parser').on('click', function() {
 });
 var SelectGad='';
 initTableSorter();
+$("#table_GadInconue .tablesorter-filter[data-column=2]").val(SelectDpt);
+$("#table_GadInconue .tablesorter-filter[data-column=0]").val(SelectAddr);
 getKnxGadInconue();
 function getKnxGadInconue () {
 	$.ajax({
@@ -214,9 +216,7 @@ function getKnxGadInconue () {
 			      	$('#table_GadInconue tbody').append(tr);
 			});				
 			$('#table_GadInconue').trigger('update');
-			$("#table_GadInconue .tablesorter-filter[data-column=0]").val(SelectAddr);
 			$("#table_GadInconue .tablesorter-filter[data-column=0]").trigger('keyup');
-			$("#table_GadInconue .tablesorter-filter[data-column=2]").val(SelectDpt);
 			$("#table_GadInconue .tablesorter-filter[data-column=2]").trigger('keyup');
 			if ($('#md_modal').dialog('isOpen') === true) {
 				setTimeout(function() {
@@ -226,6 +226,8 @@ function getKnxGadInconue () {
 		}
 	});
 }
+$("#table_Devices .tablesorter-filter[data-column=1]").val(SelectAddr);
+$("#table_Devices .tablesorter-filter[data-column=4]").val(SelectDpt);
 getEtsProj();
 function getEtsProj () {
 	$.ajax({
@@ -315,9 +317,7 @@ function UpdateDeviceTable(Devices){
 		});				
 	});				
 	$('#table_Devices').trigger('update');
-	$("#table_Devices .tablesorter-filter[data-column=1]").val(SelectAddr);
 	$("#table_Devices .tablesorter-filter[data-column=1]").trigger('keyup');
-	$("#table_Devices .tablesorter-filter[data-column=4]").val(SelectDpt);
 	$("#table_Devices .tablesorter-filter[data-column=4]").trigger('keyup');
 }
 function UpdateGadArbo(GAD){	
