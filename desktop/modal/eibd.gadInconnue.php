@@ -269,7 +269,7 @@ $('body').on('click', '.GadInsert tbody tr', function(){
 $('body').on('click', '.cmdSortable .gad', function(){
 	$('.cmdSortable .gad').css('font-weight','unset');
 	$('.GadInsert tr').css('font-weight','unset');
-	$(this).closest('tr').css('font-weight','bold');
+	$(this).css('font-weight','bold');
 	SelectGad=$(this).attr('data-AdresseGroupe');
 });
 function removeInCache(gad, destination){
