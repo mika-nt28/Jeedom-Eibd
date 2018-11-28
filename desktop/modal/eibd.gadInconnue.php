@@ -210,10 +210,7 @@ function getKnxGadInconue () {
 				tr.append($("<td>")
 					.append($('<a class="btn btn-danger btn-xs Gad pull-right" data-action="remove">')
 						.append($('<i class="fa fa-minus-circle">'))
-						.text('{{Supprimer}}'))
-					.append($('<a class="btn btn-primary btn-xs Gad pull-right" data-action="addEqLogic">')
-						.append($('<i class="fa fa-check-circle">'))
-						.text('{{Ajouter a un equipement}}')));
+						.text('{{Supprimer}}')));
 			      	$('#table_GadInconue tbody').append(tr);
 			});				
 			$('#table_GadInconue').trigger('update');
@@ -257,12 +254,6 @@ function getEtsProj () {
 		}
 	});
 }
-$('body').on('click', '.Gad[data-action=addEqLogic]', function(){
-	jeedom.eqLogic.getSelectModal({},function (result) {
-		removeInCache(gad,result.id);
-	}); 
-	$(this).closest('tr').remove();
-});
 $('body').on('click', '.Gad[data-action=remove]', function(){
 	var gad=$(this).closest('tr').find('.AdresseGroupe').text();
 	removeInCache(gad, false);
