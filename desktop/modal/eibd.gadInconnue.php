@@ -303,8 +303,8 @@ function removeInCache(gad, destination){
 
 function UpdateDeviceTable(Devices){	
 	$('#table_Devices tbody').html('');
-	jQuery.each(Devices,function(Id, Equipement) {
-		jQuery.each(Equipement.Cmd,function(AdresseGroupe, Cmd) {
+	jQuery.each(Devices,function(EquipementId, Equipement) {
+		jQuery.each(Equipement.Cmd,function(CmdId, Cmd) {
 			var tr=$("<tr>");
 			if (typeof(Equipement.DeviceName) !== 'undefined') 
 				tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
