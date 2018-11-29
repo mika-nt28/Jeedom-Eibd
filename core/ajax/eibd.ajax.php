@@ -102,10 +102,13 @@ try {
 		}
 	}
 	if (init('action') == 'AnalyseEtsProj') {
-		$knxproj=new knxproj();
 		$filename='/tmp/knxproj.knxproj';
-		if (file_exists($filename)) 
-			ajax::success($knxproj->ParserEtsFile(init('option')));
+		if (file_exists($filename)) {
+			$knxproj=new knxproj(init('option'));
+			$knxproj->ParserGroupAddresses();
+			$knxproj->ParserDevice();
+			ajax::success($knxproj->getAll());
+		}
 		ajax::success(false);
 	}
 	if (init('action') == 'getEtsProj') {
