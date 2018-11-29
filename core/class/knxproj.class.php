@@ -100,15 +100,17 @@ class knxproj {
 		}
 	}
 	private function updateDeviceGad($id,$name,$addr){
+		$this->Devices[$DeviceProductRefId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
+									
 		foreach($this->Devices as $DeviceProductRefId => $Device){
-			foreach($Device['Cmd'] as $Cmd){
+			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
 				if($Cmd['Send'] == $id){
-					$this->Devices[$DeviceProductRefId]['Cmd']['cmdName']=$name;
-					$this->Devices[$DeviceProductRefId]['Cmd']['AdresseGroupe']=$addr;
+					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
+					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
 				}
 				if($Cmd['Receive'] == $id){
-					$this->Devices[$DeviceProductRefId]['Cmd']['cmdName']=$name;
-					$this->Devices[$DeviceProductRefId]['Cmd']['AdresseGroupe']=$addr;
+					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
+					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
 				}
 			}
 		}
@@ -127,15 +129,16 @@ class knxproj {
 						$DeviceAddress=$this->xml_attribute($Device, 'Address');
 						$this->Devices[$DeviceProductRefId]['AdressePhysique']=$AreaAddress.'.'.$LineAddress.'.'.$DeviceAddress;
 						$this->getCatalogue();
-						foreach($Device->children('ComObjectInstanceRefs',true) as $ComObjectInstanceRefs){
-							foreach($ComObjectInstanceRefs->children() as $ComObjectInstanceRef){
-								$DataPointType=explode('-',$this->xml_attribute($ComObjectInstanceRef, 'DatapointType'));
-								if ($DataPointType[1] >0)
-									$this->Devices[$DeviceProductRefId]['Cmd']['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
-								foreach($ComObjectInstanceRef->children('Receive') as $Commande)
-									$this->Devices[$DeviceProductRefId]['Cmd']['Receive']=$this->xml_attribute($Commande, 'GroupAddressRefId');
-								foreach($ComObjectInstanceRef->children('Send') as $Commande)
-									$this->Devices[$DeviceProductRefId]['Cmd']['Send']=$this->xml_attribute($Commande, 'GroupAddressRefId');
+						foreach($Device->children() as $ComObjectInstanceRefs){
+							if($ComObjectInstanceRefs->getName() == 'ComObjectInstanceRefs'){
+								foreach($ComObjectInstanceRefs->children() as $ComObjectInstanceRef){
+									$DataPointType=explode('-',$this->xml_attribute($ComObjectInstanceRef, 'DatapointType'));
+									if ($DataPointType[1] >0)
+									foreach($ComObjectInstanceRef->children() as $Connector){
+										foreach($Connector->children() as $Commande)
+											$this->Devices[$DeviceProductRefId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
+									}
+								}
 							}
 						}
 					}
