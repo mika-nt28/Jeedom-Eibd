@@ -105,8 +105,7 @@ try {
 		$filename='/tmp/knxproj.knxproj';
 		if (file_exists($filename)) {
 			$knxproj=new knxproj(init('option'));
-			$knxproj->ParserGroupAddresses();
-			$knxproj->ParserDevice();
+			$knxproj->WriteJsonProj();
 			ajax::success($knxproj->getAll());
 		}
 		ajax::success(false);
