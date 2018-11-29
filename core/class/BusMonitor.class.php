@@ -74,11 +74,16 @@ class BusMonitorTraitement /*extends Thread*/{
 	public function addCache($_parameter) {
 		$cache = cache::byKey('eibd::CreateNewGad');
 		$value = json_decode($cache->getValue('[]'), true);
-		if($key = $this->CheckIsExist($_parameter['AdresseGroupe'],$value) === false)
+		if(count($value) == 0)
 			$value[] = $_parameter;
-		else
-			$value[$key] = $_parameter;
-		if(count($value) >=255){			
+		else{
+			$key = $this->CheckIsExist($_parameter['AdresseGroupe'],$value);
+			if($key == false || count($value) == 0)
+				$value[] = $_parameter;
+			else
+				$value[$key] = $_parameter;
+		}
+		if(count($value) >= 255){			
 			unset($value[0]);
 			array_shift($value);
 		}
