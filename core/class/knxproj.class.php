@@ -20,8 +20,8 @@ class knxproj {
 		$this->myProject=simplexml_load_file($ProjetFile.'/0.xml');
 		
 		$this->ParserDevice();
-		$this->CheckOptions();
 		$this->ParserGroupAddresses();
+		$this->CheckOptions();
 	}
  	public function __destruct(){
 		if (file_exists('/tmp/knxproj.knxproj')) 
@@ -190,7 +190,7 @@ class knxproj {
 	private function createObject($Name){
 		$Object = object::byName($Name);
 		if($this->options['createObjet']){
-				//Script pour cree un objet
+			log::add('eibd','info','[Import ETS] Nous allons cree l\'objet : '.$Name);
 			if (!is_object($Object)) {
 				$Object = new object();
 				$Object->setName($Name);
@@ -212,7 +212,7 @@ class knxproj {
 					   return false;
 				}
 				$Object=$this->createObject($ObjectName);
-				$EqLogic=eibd::AddEquipement($Template,'',$Object->getId());
+				$EqLogic=eibd::AddEquipement($TemplateName,'',$Object->getId());
 				$EqLogic->applyModuleConfiguration($Template);
 			}
 		}
