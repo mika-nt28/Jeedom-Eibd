@@ -106,7 +106,7 @@ try {
 		if (file_exists($filename)) {
 			$knxproj=new knxproj(init('option'));
 			$knxproj->WriteJsonProj();
-			ajax::success($knxproj->getAll());
+			ajax::success(json_decode($knxproj->getAll(),true));
 		}
 		ajax::success(false);
 	}
