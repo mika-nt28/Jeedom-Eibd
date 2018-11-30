@@ -66,7 +66,7 @@ class knxproj {
 		return false;
 	}
 	private function getCatalogue(){	
-		log::add('eibd','debug','[Import ETS] Rechecher des nom de module dans le catalogue');
+		//log::add('eibd','debug','[Import ETS] Rechecher des nom de module dans le catalogue');
 		foreach($this->Devices as $Device => $Parameter){
 			$Catalogue = new DomDocument();
 			if ($Catalogue->load($this->path . 'knxproj/'.substr($Device,0,6).'/Catalog.xml')) {//XMl décrivant les équipements
@@ -201,10 +201,11 @@ class knxproj {
 	}
 	private function createEqLogic($ObjectName,$TemplateName,$Cmds){
 		if($this->options['createEqLogic']){
-			if(isset($this->Templates[$TemplateName])){
-				$Template=$this->Templates[$TemplateName];
+			$Template=$this->getTemplateName($TemplateName);
+			if($Template != false){
+				log::add('eibd','info','[Import ETS] Le template ' .$TemplateName.' existe, nous créons un equipement');
 				foreach($Cmds as $Cmd){
- 					if(isset($Template['cmd'][$Cmd['name']]))
+					if(isset($Template['cmd'][$Cmd['name']]))
 						$Template['cmd'][$Cmd['name']]['logicalId']=$Cmd['addr'];
 					else
 					   return false;
@@ -216,7 +217,14 @@ class knxproj {
 		}
 		
 	}
-	private function formatgaddr($addr)	{
+	private function getTemplateName($TemplateName){
+		foreach($this->Templates as $Template){
+			if($Template['name'] == $TemplateName)
+				return $Template;
+		}
+		return false
+	}
+	private function formatgaddr($addr){
 		switch(config::byKey('level', 'eibd')){
 			case '3':
 				return sprintf ("%d/%d/%d", ($addr >> 11) & 0x1f, ($addr >> 8) & 0x07,$addr & 0xff);
