@@ -51,6 +51,7 @@ class knxproj {
 			$zip->extractTo($this->path . 'knxproj/');
 			$zip->close();
 		}
+		log::add('eibd','debug','[Import ETS] Extraction des fichiers de projets');
 	}
 	private function SearchFolder($Folder){
 		if ($dh = opendir($this->path . 'knxproj/')){
@@ -65,6 +66,7 @@ class knxproj {
 		return false;
 	}
 	private function getCatalogue(){	
+		log::add('eibd','debug','[Import ETS] Rechecher des nom de module dans le catalogue');
 		foreach($this->Devices as $Device => $Parameter){
 			$Catalogue = new DomDocument();
 			if ($Catalogue->load($this->path . 'knxproj/'.substr($Device,0,6).'/Catalog.xml')) {//XMl décrivant les équipements
@@ -83,6 +85,7 @@ class knxproj {
 			return (string) $object[$attribute];
 	}
 	private function ParserGroupAddresses(){
+		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de gad');
 		$GroupRanges = $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges->GroupRange;
 		foreach ($GroupRanges as $GroupRange) {
 			$this->GroupAddresses[$this->xml_attribute($GroupRange, 'Name')]='';
@@ -100,15 +103,10 @@ class knxproj {
 		}
 	}
 	private function updateDeviceGad($id,$name,$addr){
-		$this->Devices[$DeviceProductRefId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
-									
+		$this->Devices[$DeviceProductRefId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);							
 		foreach($this->Devices as $DeviceProductRefId => $Device){
 			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
-				if($Cmd['Send'] == $id){
-					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
-					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
-				}
-				if($Cmd['Receive'] == $id){
+				if($GroupAddressRefId == $id){
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
 				}
@@ -116,6 +114,7 @@ class knxproj {
 		}
 	}
 	private function ParserDevice(){
+		log::add('eibd','debug','[Import ETS] Recherche de device');
 		$Topology = $this->myProject->Project->Installations->Installation->Topology->Area;
 		foreach($Topology as $Area){
 			$AreaAddress=$this->xml_attribute($Area, 'Address');
