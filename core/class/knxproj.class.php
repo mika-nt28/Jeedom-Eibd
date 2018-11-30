@@ -9,7 +9,7 @@ class knxproj {
  	public function __construct($_options){
 		$this->path = dirname(__FILE__) . '/../config/';
 		$this->Templates=eibd::devicesParameters();
-		$this->options=$_options;
+		$this->options=$_options[0];
 		
 		log::add('eibd','debug','[Import ETS]'.json_encode($_options));
 		$filename=$this->path.'EtsProj.json';
