@@ -5,11 +5,31 @@ class knxproj {
 	private $Devices=array();
 	private $GroupAddresses=array();
 	private $Templates=array();
- 	public function __construct(){
+	private $myProject=array();
+ 	public function __construct($_options){
 		$this->path = dirname(__FILE__) . '/../config/';
 		$this->Templates=eibd::devicesParameters();
+		$this->options=$_options[0];
+		
+		log::add('eibd','debug','[Import ETS]'.json_encode($_options));
+		$filename=$this->path.'EtsProj.json';
+		if (file_exists($filename)) 
+			exec('sudo rm '.$filename);
+		$this->unzipKnxProj('/tmp/knxproj.knxproj');
+		$ProjetFile=$this->SearchFolder("P-");
+		$this->myProject=simplexml_load_file($ProjetFile.'/0.xml');
+		
+		$this->ParserDevice();
+		$this->ParserGroupAddresses();
+		$this->CheckOptions();
 	}
-	private function WriteJsonProj(){
+ 	public function __destruct(){
+		if (file_exists('/tmp/knxproj.knxproj')) 
+			exec('sudo rm  /tmp/knxproj.knxproj');
+		if (file_exists($this->path)) 
+			exec('sudo rm -R '.$this->path . 'knxproj/');
+	}
+	public function WriteJsonProj(){
 		$filename=$this->path.'EtsProj.json';
 		if (file_exists($filename)) 
 			exec('sudo rm '.$filename);
@@ -17,16 +37,10 @@ class knxproj {
 		fwrite($file,$this->getAll());
 		fclose($file);	
 	}
-	private function getAll(){
+	public function getAll(){
 		$myKNX['Devices']=$this->Devices;
 		$myKNX['GAD']=$this->GroupAddresses;
 		return json_encode($myKNX,JSON_PRETTY_PRINT);
-	}
-	private function Clean(){
-		if (file_exists('/tmp/knxproj.knxproj')) 
-			exec('sudo rm  /tmp/knxproj.knxproj');
-		if (file_exists($this->path)) 
-			exec('sudo rm -R '.$this->path . 'knxproj/');
 	}
 	private function unzipKnxProj($File){
 		if (!is_dir($this->path . 'knxproj/')) 
@@ -38,6 +52,7 @@ class knxproj {
 			$zip->extractTo($this->path . 'knxproj/');
 			$zip->close();
 		}
+		log::add('eibd','debug','[Import ETS] Extraction des fichiers de projets');
 	}
 	private function SearchFolder($Folder){
 		if ($dh = opendir($this->path . 'knxproj/')){
@@ -49,32 +64,10 @@ class knxproj {
 			}
 			closedir($dh);
 		}	
+		return false;
 	}
-	private function AddCommandeETSParse($Projet,$ComObjectInstanceRef,$type,$DeviceProductRefId){
-		$DataPointType=explode('-',$ComObjectInstanceRef->getAttribute('DatapointType'));
-		//if ($DataPointType[1] >0){
-			$DPT=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
-			foreach($ComObjectInstanceRef->getElementsByTagName($type) as $Commande){
-				$GroupAddressRefId=$Commande->getAttribute('GroupAddressRefId');
-				foreach($Projet->getElementsByTagName('GroupRange') as $GroupRange){
-					foreach($GroupRange->getElementsByTagName('GroupAddress') as $GroupAddress){
-						$GroupAddressId=$GroupAddress->getAttribute('Id');
-						if ($GroupAddressId!=""){
-							if ($GroupAddressId == $GroupAddressRefId){
-								$addr=$GroupAddress->getAttribute('Address');
-								$AdresseGroupe=sprintf( "%d/%d/%d", ($addr >> 11) & 0xf, ($addr >> 8) & 0x7, $addr & 0xff);
-								$this->Devices[$DeviceProductRefId]['Cmd'][$AdresseGroupe]['AdresseGroupe']=$AdresseGroupe;
-								$this->Devices[$DeviceProductRefId]['Cmd'][$AdresseGroupe]['cmdName']=$GroupAddress->getAttribute('Name');
-								$this->Devices[$DeviceProductRefId]['Cmd'][$AdresseGroupe]['groupName']=$GroupRange->getAttribute('Name');
-								$this->Devices[$DeviceProductRefId]['Cmd'][$AdresseGroupe]['DataPointType']=$DPT;	
-							}
-						}
-					}
-				}
-			}
-		//}
-	}
-	public function getCatalogue(){	
+	private function getCatalogue(){	
+		//log::add('eibd','debug','[Import ETS] Rechecher des nom de module dans le catalogue');
 		foreach($this->Devices as $Device => $Parameter){
 			$Catalogue = new DomDocument();
 			if ($Catalogue->load($this->path . 'knxproj/'.substr($Device,0,6).'/Catalog.xml')) {//XMl décrivant les équipements
@@ -92,49 +85,59 @@ class knxproj {
 		if(isset($object[$attribute]))
 			return (string) $object[$attribute];
 	}
-	public function ParserGroupAddresses($Projet){
-		$ProjetFile=$this->SearchFolder("P-");
-		$Projet=simplexml_load_file($ProjetFile.'/0.xml');
-		$GroupRanges =$Projet->Project->Installations->Installation->GroupAddresses->GroupRanges->GroupRange;
+	private function ParserGroupAddresses(){
+		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de gad');
+		$GroupRanges = $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges->GroupRange;
 		foreach ($GroupRanges as $GroupRange) {
 			$this->GroupAddresses[$this->xml_attribute($GroupRange, 'Name')]='';
 			foreach ($GroupRange->children() as $GroupRange2)  {
 				$this->GroupAddresses[$this->xml_attribute($GroupRange, 'Name')][$this->xml_attribute($GroupRange2, 'Name')]='';
 				foreach ($GroupRange2->children() as $GroupAddress)  {
+					$GroupId=$this->xml_attribute($GroupAddress, 'Id');
 					$addr=$this->xml_attribute($GroupAddress, 'Address');
-					$AdresseGroupe=sprintf( "%d/%d/%d", ($addr >> 11) & 0xf, ($addr >> 8) & 0x7, $addr & 0xff);
-					$this->GroupAddresses[$this->xml_attribute($GroupRange, 'Name')][$this->xml_attribute($GroupRange2, 'Name')][$this->xml_attribute($GroupAddress, 'Name')]=$AdresseGroupe;	
+					$AdresseGroupe=$this->formatgaddr($addr);
+					$GroupName = $this->xml_attribute($GroupAddress, 'Name');
+					$this->GroupAddresses[$this->xml_attribute($GroupRange, 'Name')][$this->xml_attribute($GroupRange2, 'Name')][$GroupName]=$AdresseGroupe;
+					$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
 				}
 			}
 		}
 	}
-	public function ParserEtsFile($_options){
-		$this->options=$_options;
-		log::add('eibd','debug','[Import ETS]'.json_encode($_options));
-		$filename=$this->path.'EtsProj.json';
-		if (file_exists($filename)) 
-			exec('sudo rm '.$filename);
-		$this->unzipKnxProj('/tmp/knxproj.knxproj');
-		$ProjetFile=$this->SearchFolder("P-");
-		$Projet = new DomDocument();
-		if ($Projet->load($ProjetFile.'/0.xml')){ // XML décrivant le projet
-			$this->ParserGroupAddresses($Projet);
-			foreach($Projet->getElementsByTagName('Area') as $Area){
-				$AreaAddress=$Area->getAttribute('Address');
-				foreach($Area->getElementsByTagName('Line') as $Line){
-					$LineAddress=$Line->getAttribute('Address');
-					foreach($Line->getElementsByTagName('DeviceInstance') as $Device){
-						$DeviceId=$Device->getAttribute('Id');
-						$DeviceProductRefId=$Device->getAttribute('ProductRefId');
-						if ($DeviceProductRefId != ''){
-							$this->Devices[$DeviceProductRefId]=array();
-							$DeviceAddress=$Device->getAttribute('Address');
-							$this->Devices[$DeviceProductRefId]['AdressePhysique']=$AreaAddress.'.'.$LineAddress.'.'.$DeviceAddress;
-							$this->getCatalogue();
-							foreach($Device->getElementsByTagName('ComObjectInstanceRefs') as $ComObjectInstanceRefs){
-								foreach($ComObjectInstanceRefs->getElementsByTagName('ComObjectInstanceRef') as $ComObjectInstanceRef){
-									$this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Receive',$DeviceProductRefId);	
-									$this->AddCommandeETSParse($Projet,$ComObjectInstanceRef,'Send',$DeviceProductRefId);
+	private function updateDeviceGad($id,$name,$addr){
+		$this->Devices[$DeviceProductRefId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);							
+		foreach($this->Devices as $DeviceProductRefId => $Device){
+			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
+				if($GroupAddressRefId == $id){
+					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
+					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
+				}
+			}
+		}
+	}
+	private function ParserDevice(){
+		log::add('eibd','debug','[Import ETS] Recherche de device');
+		$Topology = $this->myProject->Project->Installations->Installation->Topology->Area;
+		foreach($Topology as $Area){
+			$AreaAddress=$this->xml_attribute($Area, 'Address');
+			foreach ($Area->children() as $Line)  {
+				$LineAddress=$this->xml_attribute($Line, 'Address');
+				foreach ($Line->children() as $Device)  {
+					$DeviceId=$this->xml_attribute($Device, 'Id');
+					$DeviceProductRefId=$this->xml_attribute($Device, 'ProductRefId');
+					if ($DeviceProductRefId != ''){
+						$this->Devices[$DeviceProductRefId]=array();
+						$DeviceAddress=$this->xml_attribute($Device, 'Address');
+						$this->Devices[$DeviceProductRefId]['AdressePhysique']=$AreaAddress.'.'.$LineAddress.'.'.$DeviceAddress;
+						$this->getCatalogue();
+						foreach($Device->children() as $ComObjectInstanceRefs){
+							if($ComObjectInstanceRefs->getName() == 'ComObjectInstanceRefs'){
+								foreach($ComObjectInstanceRefs->children() as $ComObjectInstanceRef){
+									$DataPointType=explode('-',$this->xml_attribute($ComObjectInstanceRef, 'DatapointType'));
+									if ($DataPointType[1] >0)
+									foreach($ComObjectInstanceRef->children() as $Connector){
+										foreach($Connector->children() as $Commande)
+											$this->Devices[$DeviceProductRefId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
+									}
 								}
 							}
 						}
@@ -142,13 +145,6 @@ class knxproj {
 				}
 			}
 		}
-		else
-		{
-			throw new Exception(__( 'Impossible d\'analyser le document '.$ProjetFile.'/0.xml', __FILE__));
-		}
-		$this->WriteJsonProj();
-		$this->Clean();
-		return $this->getAll();
 	}
 	private function CheckOptions(){
 		$ObjetLevel= $this->checkLevel('object');
@@ -194,7 +190,7 @@ class knxproj {
 	private function createObject($Name){
 		$Object = object::byName($Name);
 		if($this->options['createObjet']){
-				//Script pour cree un objet
+			log::add('eibd','info','[Import ETS] Nous allons cree l\'objet : '.$Name);
 			if (!is_object($Object)) {
 				$Object = new object();
 				$Object->setName($Name);
@@ -206,20 +202,41 @@ class knxproj {
 	}
 	private function createEqLogic($ObjectName,$TemplateName,$Cmds){
 		if($this->options['createEqLogic']){
-			if(isset($this->Templates[$TemplateName])){
-				$Template=$this->Templates[$TemplateName];
+			$Template=$this->getTemplateName($TemplateName);
+			if($Template != false){
+				log::add('eibd','info','[Import ETS] Le template ' .$TemplateName.' existe, nous créons un equipement');
 				foreach($Cmds as $Cmd){
- 					if(isset($Template['cmd'][$Cmd['name']]))
+					if(isset($Template['cmd'][$Cmd['name']]))
 						$Template['cmd'][$Cmd['name']]['logicalId']=$Cmd['addr'];
 					else
 					   return false;
 				}
 				$Object=$this->createObject($ObjectName);
-				$EqLogic=eibd::AddEquipement($Template,'',$Object->getId());
+				$EqLogic=eibd::AddEquipement($TemplateName,'',$Object->getId());
 				$EqLogic->applyModuleConfiguration($Template);
 			}
 		}
 		
+	}
+	private function getTemplateName($TemplateName){
+		foreach($this->Templates as $Template){
+			if($Template['name'] == $TemplateName)
+				return $Template;
+		}
+		return false;
+	}
+	private function formatgaddr($addr){
+		switch(config::byKey('level', 'eibd')){
+			case '3':
+				return sprintf ("%d/%d/%d", ($addr >> 11) & 0x1f, ($addr >> 8) & 0x07,$addr & 0xff);
+			break;
+			case '2':
+				return sprintf ("%d/%d", ($addr >> 11) & 0x1f,$addr & 0x7ff);
+			break;
+			case '1':
+				return sprintf ("%d", $addr);
+			break;
+		}
 	}
 }
 ?>

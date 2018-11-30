@@ -169,7 +169,8 @@ $('.Ets4Parser').on('click', function() {
 						global: true,
 						error: function(request, status, error) {},
 						success: function(data) {
-							window.location.reload();
+							UpdateDeviceTable(data.result.Devices)
+							UpdateGadArbo(data.result.GAD)
 						}
 					});
 				}
@@ -292,8 +293,8 @@ function removeInCache(gad, destination){
 			}
 			if(data.result != false){
 				bootbox.confirm('{{Souhaitez vous aller a la page de configuration de l\'équipement}}', function (result) {
-					if (result)
-						$(location).attr('href',$(location).attr('href')+'&id='+data.result)
+					//if (result)
+						//$(location).attr('href',$(location).attr('href')+'&id='+data.result)
 				});
 			}
 		}
@@ -302,8 +303,8 @@ function removeInCache(gad, destination){
 
 function UpdateDeviceTable(Devices){	
 	$('#table_Devices tbody').html('');
-	jQuery.each(Devices,function(Id, Equipement) {
-		jQuery.each(Equipement.Cmd,function(AdresseGroupe, Cmd) {
+	jQuery.each(Devices,function(EquipementId, Equipement) {
+		jQuery.each(Equipement.Cmd,function(CmdId, Cmd) {
 			var tr=$("<tr>");
 			if (typeof(Equipement.DeviceName) !== 'undefined') 
 				tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
