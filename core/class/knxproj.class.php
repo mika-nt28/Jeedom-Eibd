@@ -20,9 +20,10 @@ class knxproj {
 		$this->myProject=simplexml_load_file($ProjetFile.'/0.xml');
 		
 		$this->ParserDevice();
+		$this->CheckOptions();
 		$this->ParserGroupAddresses();
 	}
- 	public function __destroy(){
+ 	public function __destruct(){
 		if (file_exists('/tmp/knxproj.knxproj')) 
 			exec('sudo rm  /tmp/knxproj.knxproj');
 		if (file_exists($this->path)) 
@@ -222,7 +223,7 @@ class knxproj {
 			if($Template['name'] == $TemplateName)
 				return $Template;
 		}
-		return false
+		return false;
 	}
 	private function formatgaddr($addr){
 		switch(config::byKey('level', 'eibd')){
