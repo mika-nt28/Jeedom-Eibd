@@ -520,15 +520,15 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement){
 			if($Equipement->getName() == $Name && $Equipement->getObject_id() == $_objectId)
 				return $Equipement;
-			$Equipement = new eibd();
-			$Equipement->setName($Name);
-			$Equipement->setLogicalId($_logicalId);
-			$Equipement->setObject_id($_objectId);
-			$Equipement->setEqType_name('eibd');
-			$Equipement->setIsEnable(1);
-			$Equipement->setIsVisible(1);
-			$Equipement->save();
 		}
+		$Equipement = new eibd();
+		$Equipement->setName($Name);
+		$Equipement->setLogicalId($_logicalId);
+		$Equipement->setObject_id($_objectId);
+		$Equipement->setEqType_name('eibd');
+		$Equipement->setIsEnable(1);
+		$Equipement->setIsVisible(1);
+		$Equipement->save();
 		return $Equipement;
 	}
 	public static function AddCommande($Equipement,$Name,$_logicalId,$Type="info", $Dpt='') {
