@@ -516,12 +516,10 @@ class eibd extends eqLogic {
 		$WriteBusValue=eibd::EibdWrite($ga, $data);
 		log::add('eibd','info',$Commande->getHumanName().'[Transmission]: Envoie de la valeur '.$_options['value'].' sur le GAD '.$ga);
 	}
-	public static function AddEquipement($Name,$_logicalId,$_objectId=null) 	{
-		$Equipement = self::byLogicalId($_logicalId, 'eibd');
-		if (is_object($Equipement)) {
-			$Equipement->setIsEnable(1);
-			$Equipement->save();
-		} else {
+	public static function AddEquipement($Name,$_logicalId,$_objectId=null) {
+		foreach(eqLogic::byType('eibd') as $Equipement){
+			if($Equipement->getName() == $Name && $Equipement->getObject_id() == $_objectId)
+				return $Equipement;
 			$Equipement = new eibd();
 			$Equipement->setName($Name);
 			$Equipement->setLogicalId($_logicalId);
