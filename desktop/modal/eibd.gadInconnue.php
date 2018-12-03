@@ -115,17 +115,17 @@ jeedom.config.load({
 	}
 });
 $('body').on('click','.Include', function () {
-	if(!$('.Include').attr('data-validation')){
-		$('.Include').attr('data-validation',true);
-		$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
-			.append(' {{Désactiver l\'inculsion}}');
-	}else{
-		$('.Include').attr('data-validation',false);
-		$('.Include').html($('<i class="fa fa-bullseye">'))
+	if($(this).attr('data-validation')){
+		$(this).attr('data-validation',false);
+		$(this).html($('<i class="fa fa-bullseye">'))
 			.append(' {{Activer  l\'inculsion}}');
+	}else{
+		$(this).attr('data-validation',true);
+		$(this).html($('<i class="fa fa-spinner fa-pulse">'))
+			.append(' {{Désactiver l\'inculsion}}');
 	}
 	jeedom.config.save({
-		configuration: {'isInclude':$('.Include').attr('data-validation')},
+		configuration: {'isInclude':$(this).attr('data-validation')},
 		plugin:'eibd',
 		error: function (error) {
 			$('#div_alert').showAlert({message: error.message, level: 'danger'});
