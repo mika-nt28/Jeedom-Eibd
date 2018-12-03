@@ -42,27 +42,12 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 </ul>
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
-		<?php
-		if(config::byKey('isInclude','eibd')){
-		?>
 		<span class="pull-right">
-			<a class="btn btn-warning btn-xs Include" >
+			<a class="btn btn-warning btn-xs Include" data-validation="true" >
 				<i class="fa fa-spinner fa-pulse"></i>
 				{{Désactiver l'inculsion}}
 			</a> 
 		</span>
-		<?php
-			}else{
-		 ?>
-		<span class="pull-right">
-			<a class="btn btn-warning btn-xs Include" >
-				<i class="fa fa-bullseye"></i>
-				{{Activer l'inculsion}}
-			</a> 
-		</span>
-		<?php
-			}
-		 ?>
 		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
@@ -108,35 +93,40 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 </div>
 
 <script>
-$('body').on('click','.Include', function () {
-	$(this).removeClass('Include');
-	$(this).addClass('NotInculde');
-	$(this).html($('<i class="fa fa-bullseye">'))
-		.append(' {{Activer  l\'inculsion}}');
-	jeedom.config.save({
-		configuration: {'isInclude':false},
-		plugin:'eibd',
-		error: function (error) {
-			$('#div_alert').showAlert({message: error.message, level: 'danger'});
-		},
-		success: function () {
-			$('#div_alert').showAlert({message: '{{Vous etes sortie du mode Inclusion}}', level: 'success'});
+jeedom.config.load({
+	configuration: 'isInclude',
+	plugin:'eibd',
+	error: function (error) {
+		$('#div_alert').showAlert({message: error.message, level: 'danger'});
+	},
+	success: function (data) {
+		$('.Include').attr('data-validation',data);
+		if(data == "true"){
+			$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
+				.append(' {{Désactiver l\'inculsion}}');
+		}else{
+			$('.Include').html($('<i class="fa fa-bullseye">'))
+				.append(' {{Activer  l\'inculsion}}');
 		}
-	});
+	}
 });
-$('body').on('click','.NotInculde', function () {
-	$(this).removeClass('NotInculde');
-	$(this).addClass('Include');
-	$(this).html($('<i class="fa fa-spinner fa-pulse">'))
-		.append(' {{Désactiver l\'inculsion}}');
+$('body').off().on('click','.Include', function () {
+	if($(this).attr('data-validation') == "true"){
+		$(this).attr('data-validation',false);
+		$(this).html($('<i class="fa fa-bullseye">'))
+			.append(' {{Activer  l\'inculsion}}');
+	}else{
+		$(this).attr('data-validation',true);
+		$(this).html($('<i class="fa fa-spinner fa-pulse">'))
+			.append(' {{Désactiver l\'inculsion}}');
+	}
 	jeedom.config.save({
-		configuration: {'isInclude':true},
+		configuration: {'isInclude':$(this).attr('data-validation')},
 		plugin:'eibd',
 		error: function (error) {
 			$('#div_alert').showAlert({message: error.message, level: 'danger'});
 		},
 		success: function () {
-			$('#div_alert').showAlert({message: '{{Vous etes en mode Inclusion}}', level: 'success'});
 		}
 	});
 });

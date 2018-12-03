@@ -104,7 +104,6 @@ class knxproj {
 		}
 	}
 	private function updateDeviceGad($id,$name,$addr){
-		$this->Devices[$DeviceProductRefId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);							
 		foreach($this->Devices as $DeviceProductRefId => $Device){
 			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
 				if($GroupAddressRefId == $id){
