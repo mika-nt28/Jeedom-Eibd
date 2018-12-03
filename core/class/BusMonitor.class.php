@@ -37,7 +37,7 @@ class BusMonitorTraitement /*extends Thread*/{
 				$monitor['DataPointType'] = $Commande->getConfiguration('KnxObjectType');
 			}
 		}else {
-			$dpt=Dpt::getDptFromData($data["Data"]);
+			$dpt=Dpt::getDptFromData($this->Data);
 			if($dpt!=false){
 				$monitor['valeur'] = Dpt::DptSelectDecode($dpt, $this->Data);
 				$monitor['DataPointType']= $dpt;
@@ -74,15 +74,11 @@ class BusMonitorTraitement /*extends Thread*/{
 	public function addCache($_parameter) {
 		$cache = cache::byKey('eibd::CreateNewGad');
 		$value = json_decode($cache->getValue('[]'), true);
-		if(count($value) == 0)
+		$key = $this->CheckIsExist($_parameter['AdresseGroupe'],$value);
+		if($key == false)
 			$value[] = $_parameter;
-		else{
-			$key = $this->CheckIsExist($_parameter['AdresseGroupe'],$value);
-			if($key == false || count($value) == 0)
-				$value[] = $_parameter;
-			else
-				$value[$key] = $_parameter;
-		}
+		else
+			$value[$key] = $_parameter;
 		if(count($value) >= 255){			
 			unset($value[0]);
 			array_shift($value);
