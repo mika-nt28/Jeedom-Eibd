@@ -149,36 +149,40 @@ class knxproj {
 		$ObjetLevel= $this->checkLevel('object');
 		$TemplateLevel= $this->checkLevel('function');
 		$CommandeLevel= $this->checkLevel('cmd');
-		//[{"0":"object","1":"function","2":"cmd","createEqLogic":"1","createObjet":"1"}]
+		
+		$Architecture=array();
+		
 		foreach($this->GroupAddresses as $Name1 => $Level1){
 			if($ObjetLevel == 0)
-				$Object=$Name1;
+				$ObjectName=$Name1;
 			elseif($TemplateLevel == 0)
-				$Template=$Name1;
+				$TemplateName=$Name1;
 			elseif($CommandeLevel == 0)
 				$CmdName=$Name1;
-				$Cmds[]=array('name'=>$Name1);
 			foreach($Level1 as $Name2 => $Level2){
 				if($ObjetLevel == 1)
 					$Object=$Name2;
 				elseif($TemplateLevel == 1)
-					$Template=$Name2;
+					$TemplateName=$Name2;
 				elseif($CommandeLevel == 1)
 					$CmdName=$Name2;
 				foreach($Level2 as $Name3 => $Gad){
 					if($ObjetLevel == 2)
-						$Object=$Name3;
+						$ObjectName=$Name3;
 					elseif($TemplateLevel == 2)
-						$Template=$Name3;
+						$TemplateName=$Name3;
 					elseif($CommandeLevel == 2)
 						$CmdName=$Name3;
-					$Cmds[]=array('name'=>$CmdName,'addr'=>$Gad);
+					$Architecture[$ObjectName][$TemplateName][$CmdName]=$Gad;
 				}
 			}
-			$this->createObject($Object);
-			$this->createEqLogic($Object,$Template,$Cmds);
 		}
-		
+		foreach($Architecture as $ObjectName => $Template){
+			$Object=$this->createObject($ObjectName);
+			foreach($Template as $TemplateName => $Cmds){
+				$this->createEqLogic($ObjectName,$TemplateName,$Cmds);
+			}
+		}
 	}
 	private function checkLevel($search){
 		foreach($this->options as $level =>$options){
@@ -196,31 +200,32 @@ class knxproj {
 				$Object->setIsVisible(true);
 				$Object->save();
 			}
-			return $Object;
 		}
+			return $Object;
 	}
 	private function createEqLogic($ObjectName,$TemplateName,$Cmds){
 		if($this->options['createEqLogic']){
-			$Template=$this->getTemplateName($TemplateName);
-			if($Template != false){
+			$TemplateId=$this->getTemplateName($TemplateName);
+			if($TemplateId != false){
 				log::add('eibd','info','[Import ETS] Le template ' .$TemplateName.' existe, nous créons un equipement');
-				foreach($Cmds as $Cmd){
-					if(isset($Template['cmd'][$Cmd['name']]))
-						$Template['cmd'][$Cmd['name']]['logicalId']=$Cmd['addr'];
-					else
-					   return false;
-				}
 				$Object=$this->createObject($ObjectName);
 				$EqLogic=eibd::AddEquipement($TemplateName,'',$Object->getId());
-				$EqLogic->applyModuleConfiguration($Template);
+             			if(is_object($EqLogic)){
+					$EqLogic->applyModuleConfiguration($TemplateId);
+					foreach($EqLogic->getCmd() as $Cmd){
+                      				if(isset($Cmds[$Cmd->getName()])){
+                        				$Cmd->setLogicalId($Cmds[$Cmd->getName()]);
+                      					$Cmd->save();
+                      				}
+                    			}
+              			}
 			}
 		}
-		
 	}
 	private function getTemplateName($TemplateName){
-		foreach($this->Templates as $Template){
+		foreach($this->Templates as $TemplateId => $Template){
 			if($Template['name'] == $TemplateName)
-				return $Template;
+				return $TemplateId;
 		}
 		return false;
 	}
