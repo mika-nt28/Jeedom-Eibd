@@ -43,7 +43,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
 		<span class="pull-right">
-			<a class="btn btn-warning btn-xs Include" data-validation="false" >
+			<a class="btn btn-warning btn-xs Include" data-validation="true" >
 				<i class="fa fa-spinner fa-pulse"></i>
 				{{Désactiver l'inculsion}}
 			</a> 
@@ -94,18 +94,14 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 
 <script>
 jeedom.config.load({
-	configuration: {'isInclude':true},
+	configuration: 'isInclude',
 	plugin:'eibd',
 	error: function (error) {
 		$('#div_alert').showAlert({message: error.message, level: 'danger'});
 	},
-	success: function(data) {
-		if (data.state != 'ok') {
-			$('#div_alert').showAlert({message: data.result, level: 'danger'});
-			return;
-		}
-		$('.Include').attr('data-validation',data.result);
-		if(data.result){
+	success: function (data) {
+		$('.Include').attr('data-validation',data);
+		if(data == "true"){
 			$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
 				.append(' {{Désactiver l\'inculsion}}');
 		}else{
@@ -114,8 +110,8 @@ jeedom.config.load({
 		}
 	}
 });
-$('body').on('click','.Include', function () {
-	if($(this).attr('data-validation')){
+$('body').off().on('click','.Include', function () {
+	if($(this).attr('data-validation') == "true"){
 		$(this).attr('data-validation',false);
 		$(this).html($('<i class="fa fa-bullseye">'))
 			.append(' {{Activer  l\'inculsion}}');
@@ -131,7 +127,6 @@ $('body').on('click','.Include', function () {
 			$('#div_alert').showAlert({message: error.message, level: 'danger'});
 		},
 		success: function () {
-			$('#div_alert').showAlert({message: '{{Vous etes sortie du mode Inclusion}}', level: 'success'});
 		}
 	});
 });
