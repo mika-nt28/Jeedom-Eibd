@@ -473,7 +473,7 @@ function addCmdToTable(_cmd) {
 				.append('{{Lecture/Ecriture Cyclique}}')
 				.append($('<sup>')
 					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-						.attr('title','Activer cette option uniquement si vous souhaitez envoyer toutes les minutes votre commande')))
+						.attr('title','{{Cette fonction permet d\'executer la commande ou de lire la valeur de maniere cyclique.}}')))
 			 .append($('<div class="input-group">')
 				 .append($('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="CycliqueSend"/>')
 					 .append($('<option value="">')
