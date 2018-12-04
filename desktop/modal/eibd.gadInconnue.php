@@ -166,8 +166,12 @@ $('.Ets4Parser').on('click', function() {
 						global: true,
 						error: function(request, status, error) {},
 						success: function(data) {
-							UpdateDeviceTable(data.result.Devices)
-							UpdateGadArbo(data.result.GAD)
+							if($('body .EtsParserDiv .EtsParseParameter[data-l1key=createEqLogic]')){
+								window.location.reload();
+							}else{
+								UpdateDeviceTable(data.result.Devices)
+								UpdateGadArbo(data.result.GAD)
+							}
 						}
 					});
 				}
@@ -254,11 +258,11 @@ function getEtsProj () {
 }
 $('body').on('click', '.Gad[data-action=remove]', function(){
 	var gad=$(this).closest('tr').find('.AdresseGroupe').text();
-	removeInCache(gad, false);
+	removeInCache(gad);
 	$(this).closest('tr').remove();
 });
 $('body').on('click', '.removeAllGad', function(){
-	removeInCache('', false);
+	removeInCache('');
 	$('#table_GadInconue tbody').html("");
 });
 $('body').on('click', '.GadInsert tbody tr', function(){
@@ -274,7 +278,7 @@ $('body').on('click', '.cmdSortable .gad', function(){
 	$(this).css('font-weight','bold');
 	SelectGad=$(this).attr('data-AdresseGroupe');
 });
-function removeInCache(gad, destination){
+function removeInCache(gad){
 	$.ajax({
 		type: 'POST',
 		async: false,
@@ -282,7 +286,6 @@ function removeInCache(gad, destination){
 		data: {
 			action: 'setCacheGadInconue',
 			gad:gad,
-			eqLogic:destination
 		},
 		dataType: 'json',
 		global: false,
@@ -291,12 +294,6 @@ function removeInCache(gad, destination){
 			if (data.state != 'ok') {
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
-			}
-			if(data.result != false){
-				bootbox.confirm('{{Souhaitez vous aller a la page de configuration de l\'équipement}}', function (result) {
-					//if (result)
-						//$(location).attr('href',$(location).attr('href')+'&id='+data.result)
-				});
 			}
 		}
 	});
