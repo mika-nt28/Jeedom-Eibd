@@ -41,12 +41,12 @@ class BusMonitorTraitement /*extends Thread*/{
 			if($dpt!=false){
 				$monitor['valeur'] = Dpt::DptSelectDecode($dpt, $this->Data);
 				$monitor['DataPointType']= $dpt;
-				if(config::byKey('isInclude','eibd') == "true" || config::byKey('isInclude','eibd') == true)					
-					$this->addCache($monitor);
 			}else
 				$monitor['valeur']="Impossible de convertir la valeur";
 			$monitor['cmdJeedom']= "La commande n’existes pas";
-			log::add('eibd', 'debug', 'Aucune commande avec l\'adresse de groupe  '.$this->AdrGroup.' n\'a pas été trouvée');
+			if(config::byKey('isInclude','eibd') == "true")					
+				$this->addCache($monitor);
+			log::add('eibd', 'debug', '[Bus Monitor] : Aucune commande avec l\'adresse de groupe  '.$this->AdrGroup.' n\'a pas été trouvée');
 		}
 		$monitor['datetime'] = date('d-m-Y H:i:s');
 		event::add('eibd::monitor', json_encode($monitor));
@@ -69,8 +69,7 @@ class BusMonitorTraitement /*extends Thread*/{
 			break;
 		}
 	}
-	
-	public function addCache($_parameter) {
+	private function addCache($_parameter) {
 		$cache = cache::byKey('eibd::CreateNewGad');
 		$value = json_decode($cache->getValue('[]'), true);
 		$key = $this->CheckIsExist($_parameter['AdresseGroupe'],$value);
@@ -84,7 +83,7 @@ class BusMonitorTraitement /*extends Thread*/{
 		}
 		cache::set('eibd::CreateNewGad', json_encode($value), 0);
 	}
-	public function CheckIsExist($AdresseGroupe,$caches) {
+	private function CheckIsExist($AdresseGroupe,$caches) {
 		foreach($caches as $key => $cache){
 			if($cache['AdresseGroupe'] == $AdresseGroupe)
 				return $key;

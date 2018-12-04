@@ -214,30 +214,10 @@ class eibd extends eqLogic {
 	//                                                                                                                                               //
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static function SearchUsbGateway(){
-		/*$bus='0';
-		$device='0';
-		$config='1';
-		$interface='0';
-		$cmd="lsusb -v";
+		$cmd="sudo findknxusb | /bin/sed -e '1 d' -e 's/device //' | /bin/cut -d':' -f1-2";
 		$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
-		$result=exec($cmd,$result);
-		//$UsbGateways = explode("\n", $result);
-		$UsbGateways = explode("Bus", $result);
-		foreach($UsbGateways as $UsbGateway){
-			if(stripos($UsbGateway,"KNX")>0){
-				log::add('eibd','debug', 'Passerelle USB trouvé');
-				$UsbParametre = explode("\n", trim($UsbGateway));
-				$UsbParametre = explode(" ", trim($UsbParametre[0]));
-				$bus=$UsbParametre[0];
-				$device=$UsbParametre[2];
-				log::add('eibd','debug', $bus.':'.$device.':'.$config.':'.$interface);
-				return $bus.':'.$device.':'.$config.':'.$interface;
-			}
-		}
-		return false;*/
-		$cmd="findknxusb | /bin/sed -e '1 d' -e 's/device //' | /bin/cut -d':' -f1-2";
-		$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
-		return exec($cmd,$result);
+		exec($cmd,$result);
+		return $result;
 	}
 	public static function SearchBroadcastGateway(){	
 		$result=array();
