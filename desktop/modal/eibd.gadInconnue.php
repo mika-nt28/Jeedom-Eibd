@@ -322,8 +322,8 @@ function UpdateGadArbo(GAD){
 			jQuery.each(Groups1,function(Niveau2, Groups2) {
 				var n2 =$('<ul class="cmdSortable ui-sortable">');
 				if(typeof(Groups2) == 'object'){
-					jQuery.each(Groups2,function(Niveau3, gad) {
-						n2.append($('<li class="cursor ui-sortable-handle gad" data-AdresseGroupe="'+gad+'">').text(Niveau3 + ' (' + gad + ')'));
+					jQuery.each(Groups2,function(Niveau3, Parameter) {
+						n2.append($('<li class="cursor ui-sortable-handle gad" data-AdresseGroupe="'+Parameter.AdresseGroupe+'" data-DataPointType="'+Parameter.DataPointType+'">').text(' (' + Parameter.AdresseGroupe + ')'+Niveau3));
 					});	
 				}
 				n1.append($('<li class="cursor ui-sortable-handle">').text(Niveau2).append(n2));

@@ -90,29 +90,31 @@ class knxproj {
 		$GroupRanges = $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges;
 		foreach ($GroupRanges->children() as $GroupRangeLevel1) {
 			if($GroupRangeLevel1->getName() == 'GroupAddress'){
-				config::save('level',1,'eibd')
+				config::save('level',1,'eibd');
 				$GroupId=$this->xml_attribute($GroupRangeLevel1, 'Id');
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRangeLevel1, 'Address'));
 				$GroupName = $this->xml_attribute($GroupRangeLevel1, 'Name');
-				$this->GroupAddresses[$GroupName]=$AdresseGroupe;
-				$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
+				$DataPointType=$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
+				$this->GroupAddresses[$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
 			}else{
 				foreach ($GroupRangeLevel1->children() as $GroupRangeLevel2)  {
 					if($GroupRangeLevel2->getName() == 'GroupAddress'){
-						config::save('level',2,'eibd')
+						config::save('level',2,'eibd');
 						$GroupId=$this->xml_attribute($GroupRangeLevel2, 'Id');
 						$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRangeLevel2, 'Address'));
 						$GroupName = $this->xml_attribute($GroupRangeLevel2, 'Name');
-						$this->GroupAddresses[$this->xml_attribute($GroupRangeLevel1, 'Name')][$GroupName]=$AdresseGroupe;
-						$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
+						$DataPointType=$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
+						$this->GroupAddresses[$this->xml_attribute($GroupRangeLevel1, 'Name')][$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+						
 					}else{
 						foreach ($GroupRangeLevel2->children() as $GroupRangeLevel3)  {
-							config::save('level',3,'eibd')
+							config::save('level',3,'eibd');
 							$GroupId=$this->xml_attribute($GroupRangeLevel3, 'Id');
 							$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRangeLevel3, 'Address'));
 							$GroupName = $this->xml_attribute($GroupRangeLevel3, 'Name');
-							$this->GroupAddresses[$this->xml_attribute($GroupRangeLevel1, 'Name')][$this->xml_attribute($GroupRangeLevel2, 'Name')][$GroupName]=$AdresseGroupe;
-							$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
+							$DataPointType=$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
+							$this->GroupAddresses[$this->xml_attribute($GroupRangeLevel1, 'Name')][$this->xml_attribute($GroupRangeLevel2, 'Name')][$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+							
 						}
 					}
 				}
@@ -120,14 +122,18 @@ class knxproj {
 		}
 	}
 	private function updateDeviceGad($id,$name,$addr){
+		$DPT='';
 		foreach($this->Devices as $DeviceProductRefId => $Device){
 			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
 				if($GroupAddressRefId == $id){
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
+					if($DPT == '')
+						$DPT = $this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['DataPointType'];
 				}
 			}
 		}
+		return $DPT;
 	}
 	private function ParserDevice(){
 		log::add('eibd','debug','[Import ETS] Recherche de device');
@@ -228,24 +234,26 @@ class knxproj {
 				$Object->save();
 			}
 		}
-			return $Object;
+		return $Object;
 	}
 	private function createEqLogic($ObjectName,$TemplateName,$Cmds){
 		if($this->options['createEqLogic']){
+			$Object=$this->createObject($ObjectName);
+			$EqLogic=eibd::AddEquipement($TemplateName,'',$Object->getId());
 			$TemplateId=$this->getTemplateName($TemplateName);
 			if($TemplateId != false){
 				log::add('eibd','info','[Import ETS] Le template ' .$TemplateName.' existe, nous créons un equipement');
-				$Object=$this->createObject($ObjectName);
-				$EqLogic=eibd::AddEquipement($TemplateName,'',$Object->getId());
-             			if(is_object($EqLogic)){
-					$EqLogic->applyModuleConfiguration($TemplateId);
-					foreach($EqLogic->getCmd() as $Cmd){
-                      				if(isset($Cmds[$Cmd->getName()])){
-                        				$Cmd->setLogicalId($Cmds[$Cmd->getName()]);
-                      					$Cmd->save();
-                      				}
-                    			}
-              			}
+             			$EqLogic->applyModuleConfiguration($TemplateId);
+				foreach($EqLogic->getCmd() as $Cmd){
+					if(isset($Cmds[$Cmd->getName()])){
+						$Cmd->setLogicalId($Cmds[$Cmd->getName()]['AdresseGroupe']);
+						$Cmd->save();
+					}
+				}
+			}else{
+				log::add('eibd','info','[Import ETS] Il n\'exite aucun template ' .$TemplateName.', nous créons un equipement basique qu\'il faudra mettre a jours');
+             			foreach($Cmds as $Name => $Cmd)
+					$EqLogic->AddCommande($Name,$Cmd['AdresseGroupe'],"info", $Cmd['DataPointType']);
 			}
 		}
 	}
