@@ -48,7 +48,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 				{{Désactiver l'inculsion}}
 			</a> 
 		</span>
-		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert">
+		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert" height="80%>
 			<thead>
 				<tr>
 					<th>{{Source}}</th>
@@ -68,7 +68,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 				{{Importer projet KNX}}
 			</a> 
 		</span>
-		<table id="table_Devices" class="table table-bordered table-condensed tablesorter GadInsert">
+		<table id="table_Devices" class="table table-bordered table-condensed tablesorter GadInsert" height="80%>
 			<thead>
 				<tr>
 					<th>{{Equipement}}</th>
