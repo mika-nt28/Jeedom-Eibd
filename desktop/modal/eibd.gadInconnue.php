@@ -42,7 +42,6 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 </ul>
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
-		
 		<span class="pull-right">
 			<a class="btn btn-danger btn-xs pull-right removeAllGad" style="margin-bottom : 5px;">
 				<i class="fa fa-trash-o"></i>
@@ -55,7 +54,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 				{{Désactiver l'inculsion}}
 			</a> 
 		</span>
-		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert" height="80%>
+		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
 					<th>{{Source}}</th>
@@ -75,7 +74,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 				{{Importer projet KNX}}
 			</a> 
 		</span>
-		<table id="table_Devices" class="table table-bordered table-condensed tablesorter GadInsert" height="80%>
+		<table id="table_Devices" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
 					<th>{{Equipement}}</th>
