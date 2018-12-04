@@ -94,8 +94,8 @@ class knxproj {
 				$GroupId=$this->xml_attribute($GroupRangeLevel1, 'Id');
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRangeLevel1, 'Address'));
 				$GroupName = $this->xml_attribute($GroupRangeLevel1, 'Name');
-				$this->GroupAddresses[$GroupName]=$AdresseGroupe;
-				$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
+				$DataPointType=$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
+				$this->GroupAddresses[$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
 			}else{
 				foreach ($GroupRangeLevel1->children() as $GroupRangeLevel2)  {
 					if($GroupRangeLevel2->getName() == 'GroupAddress'){
@@ -103,16 +103,18 @@ class knxproj {
 						$GroupId=$this->xml_attribute($GroupRangeLevel2, 'Id');
 						$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRangeLevel2, 'Address'));
 						$GroupName = $this->xml_attribute($GroupRangeLevel2, 'Name');
-						$this->GroupAddresses[$this->xml_attribute($GroupRangeLevel1, 'Name')][$GroupName]=$AdresseGroupe;
-						$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
+						$DataPointType=$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
+						$this->GroupAddresses[$this->xml_attribute($GroupRangeLevel1, 'Name')][$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+						
 					}else{
 						foreach ($GroupRangeLevel2->children() as $GroupRangeLevel3)  {
 							config::save('level',3,'eibd')
 							$GroupId=$this->xml_attribute($GroupRangeLevel3, 'Id');
 							$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRangeLevel3, 'Address'));
 							$GroupName = $this->xml_attribute($GroupRangeLevel3, 'Name');
-							$this->GroupAddresses[$this->xml_attribute($GroupRangeLevel1, 'Name')][$this->xml_attribute($GroupRangeLevel2, 'Name')][$GroupName]=$AdresseGroupe;
-							$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
+							$DataPointType=$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
+							$this->GroupAddresses[$this->xml_attribute($GroupRangeLevel1, 'Name')][$this->xml_attribute($GroupRangeLevel2, 'Name')][$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+							
 						}
 					}
 				}
@@ -120,14 +122,17 @@ class knxproj {
 		}
 	}
 	private function updateDeviceGad($id,$name,$addr){
+		$DPT='';
 		foreach($this->Devices as $DeviceProductRefId => $Device){
 			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
 				if($GroupAddressRefId == $id){
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
+					$DPT = $this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['DataPointType'];
 				}
 			}
 		}
+		return $DPT;
 	}
 	private function ParserDevice(){
 		log::add('eibd','debug','[Import ETS] Recherche de device');
