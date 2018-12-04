@@ -90,7 +90,7 @@ class knxproj {
 		$GroupRanges = $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges;
 		foreach ($GroupRanges->children() as $GroupRangeLevel1) {
 			if($GroupRangeLevel1->getName() == 'GroupAddress'){
-				config::save('level',1,'eibd')
+				config::save('level',1,'eibd');
 				$GroupId=$this->xml_attribute($GroupRangeLevel1, 'Id');
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRangeLevel1, 'Address'));
 				$GroupName = $this->xml_attribute($GroupRangeLevel1, 'Name');
@@ -99,7 +99,7 @@ class knxproj {
 			}else{
 				foreach ($GroupRangeLevel1->children() as $GroupRangeLevel2)  {
 					if($GroupRangeLevel2->getName() == 'GroupAddress'){
-						config::save('level',2,'eibd')
+						config::save('level',2,'eibd');
 						$GroupId=$this->xml_attribute($GroupRangeLevel2, 'Id');
 						$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRangeLevel2, 'Address'));
 						$GroupName = $this->xml_attribute($GroupRangeLevel2, 'Name');
@@ -108,7 +108,7 @@ class knxproj {
 						
 					}else{
 						foreach ($GroupRangeLevel2->children() as $GroupRangeLevel3)  {
-							config::save('level',3,'eibd')
+							config::save('level',3,'eibd');
 							$GroupId=$this->xml_attribute($GroupRangeLevel3, 'Id');
 							$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRangeLevel3, 'Address'));
 							$GroupName = $this->xml_attribute($GroupRangeLevel3, 'Name');
