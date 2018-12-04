@@ -11,8 +11,7 @@ if (!isConnect('admin')) {
 		<p>Il est possible que tous les possibilitées de programation ne soit pas pris en compte, il est impératif de verifier et compléter la configuration a la fin de lexecution</p>
 		<form class="form-horizontal" onsubmit="return false;"> 
 			<div class="form-group"> 
-				<label class="col-md-4 control-label">{{Créer les equipements repondant a la typo}}</label> 
-				<input type="checkbox" class="EtsParseParameter" data-l1key="createEqLogic"/>
+				<label class="col-md-4 control-label">{{Arboressance des groupes}}</label> 
 				<?php
 				for($loop = 0; $loop < config::byKey('level','eibd'); $loop++){
 					echo '<select class=" EtsParseParameter" data-l1key="'.$loop.'">';
@@ -22,6 +21,12 @@ if (!isConnect('admin')) {
 					echo '</select>';
 				}
 				?>
+			</div> 
+			<div class="form-group"> 
+				<label class="col-md-4 control-label">{{Créer les equipements}}</label> 
+				<input type="checkbox" class="EtsParseParameter" data-l1key="createEqLogic"/>
+				<label class="col-md-4 control-label">{{Uniquement correspondant a un Template}}</label> 
+				<input type="checkbox" class="EtsParseParameter" data-l1key="createTemplate"/>
 			</div> 
 			<div class="form-group"> 
 				<label class="col-md-4 control-label">{{Créer les objet}}</label> 
