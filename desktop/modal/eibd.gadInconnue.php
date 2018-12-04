@@ -42,8 +42,15 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 </ul>
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
+		
 		<span class="pull-right">
-			<a class="btn btn-warning btn-xs Include" data-validation="true" >
+			<a class="btn btn-danger btn-xs pull-right removeAllGad" style="margin-bottom : 5px;">
+				<i class="fa fa-trash-o"></i>
+				{{ Supprimer}}
+			</a>
+		</span>
+		<span class="pull-right">
+			<a class="btn btn-warning btn-xs pull-right Include" data-validation="true" style="margin-bottom : 5px;" >
 				<i class="fa fa-spinner fa-pulse"></i>
 				{{Désactiver l'inculsion}}
 			</a> 
@@ -249,7 +256,11 @@ $('body').on('click', '.Gad[data-action=remove]', function(){
 	var gad=$(this).closest('tr').find('.AdresseGroupe').text();
 	removeInCache(gad, false);
 	$(this).closest('tr').remove();
-});	
+});
+$('body').on('click', '.removeAllGad', function(){
+	removeInCache('', false);
+	$('#table_GadInconue tbody').html("");
+});
 $('body').on('click', '.GadInsert tbody tr', function(){
 	$('.cmdSortable .gad').css('font-weight','unset');
 	$('.GadInsert tr').css('font-weight','unset');
