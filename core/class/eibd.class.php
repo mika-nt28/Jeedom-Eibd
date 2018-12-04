@@ -531,17 +531,17 @@ class eibd extends eqLogic {
 		$Equipement->save();
 		return $Equipement;
 	}
-	public static function AddCommande($Equipement,$Name,$_logicalId,$Type="info", $Dpt='') {
-		$Commande = $Equipement->getCmd(null,$_logicalId);
+	public function AddCommande($Name,$_logicalId,$Type="info", $Dpt='') {
+		$Commande = $this->getCmd(null,$_logicalId);
 		if (!is_object($Commande))
 		{
 			$VerifName=$Name;
 			$Commande = new EibdCmd();
 			$Commande->setId(null);
 			$Commande->setLogicalId($_logicalId);
-			$Commande->setEqLogic_id($Equipement->getId());
+			$Commande->setEqLogic_id($this->getId());
 			$count=0;
-			while (is_object(cmd::byEqLogicIdCmdName($Equipement->getId(),$VerifName)))
+			while (is_object(cmd::byEqLogicIdCmdName($this->getId(),$VerifName)))
 			{
 				$count++;
 				$VerifName=$Name.'('.$count.')';
