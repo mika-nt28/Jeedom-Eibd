@@ -41,9 +41,8 @@ class BusMonitorTraitement /*extends Thread*/{
 			if($dpt!=false){
 				$monitor['valeur'] = Dpt::DptSelectDecode($dpt, $this->Data);
 				$monitor['DataPointType']= $dpt;
-				if(config::byKey('isInclude','eibd',false))					
+				if(config::byKey('isInclude','eibd') == "true" || config::byKey('isInclude','eibd') == true)					
 					$this->addCache($monitor);
-					//event::add('eibd::GadInconnue', json_encode($monitor));
 			}else
 				$monitor['valeur']="Impossible de convertir la valeur";
 			$monitor['cmdJeedom']= "La commande n’existes pas";
@@ -75,7 +74,7 @@ class BusMonitorTraitement /*extends Thread*/{
 		$cache = cache::byKey('eibd::CreateNewGad');
 		$value = json_decode($cache->getValue('[]'), true);
 		$key = $this->CheckIsExist($_parameter['AdresseGroupe'],$value);
-		if($key == false)
+		if($key === false)
 			$value[] = $_parameter;
 		else
 			$value[$key] = $_parameter;

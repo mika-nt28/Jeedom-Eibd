@@ -43,7 +43,13 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
 		<span class="pull-right">
-			<a class="btn btn-warning btn-xs Include" data-validation="true" >
+			<a class="btn btn-danger btn-xs pull-right removeAllGad" style="margin-bottom : 5px;">
+				<i class="fa fa-trash-o"></i>
+				{{ Supprimer}}
+			</a>
+		</span>
+		<span class="pull-right">
+			<a class="btn btn-warning btn-xs pull-right Include" data-validation="true" style="margin-bottom : 5px;" >
 				<i class="fa fa-spinner fa-pulse"></i>
 				{{Désactiver l'inculsion}}
 			</a> 
@@ -159,8 +165,12 @@ $('.Ets4Parser').on('click', function() {
 						global: true,
 						error: function(request, status, error) {},
 						success: function(data) {
-							UpdateDeviceTable(data.result.Devices)
-							UpdateGadArbo(data.result.GAD)
+							if($('body .EtsParserDiv .EtsParseParameter[data-l1key=createEqLogic]')){
+								window.location.reload();
+							}else{
+								UpdateDeviceTable(data.result.Devices)
+								UpdateGadArbo(data.result.GAD)
+							}
 						}
 					});
 				}
@@ -247,9 +257,13 @@ function getEtsProj () {
 }
 $('body').on('click', '.Gad[data-action=remove]', function(){
 	var gad=$(this).closest('tr').find('.AdresseGroupe').text();
-	removeInCache(gad, false);
+	removeInCache(gad);
 	$(this).closest('tr').remove();
-});	
+});
+$('body').on('click', '.removeAllGad', function(){
+	removeInCache('');
+	$('#table_GadInconue tbody').html("");
+});
 $('body').on('click', '.GadInsert tbody tr', function(){
 	$('.cmdSortable .gad').css('font-weight','unset');
 	$('.GadInsert tr').css('font-weight','unset');
@@ -263,7 +277,7 @@ $('body').on('click', '.cmdSortable .gad', function(){
 	$(this).css('font-weight','bold');
 	SelectGad=$(this).attr('data-AdresseGroupe');
 });
-function removeInCache(gad, destination){
+function removeInCache(gad){
 	$.ajax({
 		type: 'POST',
 		async: false,
@@ -271,7 +285,6 @@ function removeInCache(gad, destination){
 		data: {
 			action: 'setCacheGadInconue',
 			gad:gad,
-			eqLogic:destination
 		},
 		dataType: 'json',
 		global: false,
@@ -280,12 +293,6 @@ function removeInCache(gad, destination){
 			if (data.state != 'ok') {
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
-			}
-			if(data.result != false){
-				bootbox.confirm('{{Souhaitez vous aller a la page de configuration de l\'équipement}}', function (result) {
-					//if (result)
-						//$(location).attr('href',$(location).attr('href')+'&id='+data.result)
-				});
 			}
 		}
 	});
