@@ -11,7 +11,7 @@ class knxproj {
 		$this->Templates=eibd::devicesParameters();
 		$this->options=$_options[0];
 		
-		log::add('eibd','debug','[Import ETS]'.json_encode($_options));
+		//log::add('eibd','debug','[Import ETS]'.json_encode($_options));
 		$filename=$this->path.'EtsProj.json';
 		if (file_exists($filename)) 
 			exec('sudo rm '.$filename);
@@ -251,9 +251,11 @@ class knxproj {
 					}
 				}
 			}else{
-				log::add('eibd','info','[Import ETS] Il n\'exite aucun template ' .$TemplateName.', nous créons un equipement basique qu\'il faudra mettre a jours');
-             			foreach($Cmds as $Name => $Cmd)
-					$EqLogic->AddCommande($Name,$Cmd['AdresseGroupe'],"info", $Cmd['DataPointType']);
+				if(!$this->options['createTemplate']){				
+					log::add('eibd','info','[Import ETS] Il n\'exite aucun template ' .$TemplateName.', nous créons un equipement basique qu\'il faudra mettre a jours');
+					foreach($Cmds as $Name => $Cmd)
+						$EqLogic->AddCommande($Name,$Cmd['AdresseGroupe'],"info", $Cmd['DataPointType']);
+				}
 			}
 		}
 	}
