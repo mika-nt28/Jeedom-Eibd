@@ -128,7 +128,8 @@ class knxproj {
 				if($GroupAddressRefId == $id){
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
-					$DPT = $this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['DataPointType'];
+					if($DPT == '')
+						$DPT = $this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['DataPointType'];
 				}
 			}
 		}
@@ -233,24 +234,26 @@ class knxproj {
 				$Object->save();
 			}
 		}
-			return $Object;
+		return $Object;
 	}
 	private function createEqLogic($ObjectName,$TemplateName,$Cmds){
 		if($this->options['createEqLogic']){
+			$Object=$this->createObject($ObjectName);
+			$EqLogic=eibd::AddEquipement($TemplateName,'',$Object->getId());
 			$TemplateId=$this->getTemplateName($TemplateName);
 			if($TemplateId != false){
 				log::add('eibd','info','[Import ETS] Le template ' .$TemplateName.' existe, nous créons un equipement');
-				$Object=$this->createObject($ObjectName);
-				$EqLogic=eibd::AddEquipement($TemplateName,'',$Object->getId());
-             			if(is_object($EqLogic)){
-					$EqLogic->applyModuleConfiguration($TemplateId);
-					foreach($EqLogic->getCmd() as $Cmd){
-                      				if(isset($Cmds[$Cmd->getName()])){
-                        				$Cmd->setLogicalId($Cmds[$Cmd->getName()]);
-                      					$Cmd->save();
-                      				}
-                    			}
-              			}
+             			$EqLogic->applyModuleConfiguration($TemplateId);
+				foreach($EqLogic->getCmd() as $Cmd){
+					if(isset($Cmds[$Cmd->getName()])){
+						$Cmd->setLogicalId($Cmds[$Cmd->getName()]['AdresseGroupe']);
+						$Cmd->save();
+					}
+				}
+			}else{
+				log::add('eibd','info','[Import ETS] Il n\'exite aucun template ' .$TemplateName.', nous créons un equipement basique qu\'il faudra mettre a jours');
+             			foreach($Cmds as $Name => $Cmd)
+					$EqLogic->AddCommande($Name,$Cmd['AdresseGroupe'],"info", $Cmd['DataPointType']);
 			}
 		}
 	}
