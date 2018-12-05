@@ -214,10 +214,10 @@ class eibd extends eqLogic {
 	//                                                                                                                                               //
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static function SearchUsbGateway(){
-		$cmd="sudo findknxusb | /bin/sed -e '1 d' -e 's/device //' | /bin/cut -d':' -f1-2";
-		$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
-		exec($cmd,$result);
-		return $result;
+		$cmd="sudo findknxusb";
+		//$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
+		$result=explode(" ",exec($cmd));			
+		return $result[1];
 	}
 	public static function SearchBroadcastGateway(){	
 		$result=array();
