@@ -137,8 +137,8 @@ class knxproj {
 	}
 	private function ParserDevice(){
 		log::add('eibd','debug','[Import ETS] Recherche de device');
-		$Topology = $this->myProject->Project->Installations->Installation->Topology->Area;
-		foreach($Topology as $Area){
+		$Topology = $this->myProject->Project->Installations->Installation->Topology;
+		foreach($Topology->children() as $Area){
 			$AreaAddress=$this->xml_attribute($Area, 'Address');
 			foreach ($Area->children() as $Line)  {
 				$LineAddress=$this->xml_attribute($Line, 'Address');
@@ -151,7 +151,7 @@ class knxproj {
 						$this->Devices[$DeviceProductRefId]['AdressePhysique']=$AreaAddress.'.'.$LineAddress.'.'.$DeviceAddress;
 						$this->getCatalogue();
 						foreach($Device->children() as $ComObjectInstanceRefs){
-							if($ComObjectInstanceRefs->getName() == 'ComObjectInstanceRefs'){
+							//if($ComObjectInstanceRefs->getName() == 'ComObjectInstanceRefs'){
 								foreach($ComObjectInstanceRefs->children() as $ComObjectInstanceRef){
 									$DataPointType=explode('-',$this->xml_attribute($ComObjectInstanceRef, 'DatapointType'));
 									if ($DataPointType[1] >0)
@@ -160,7 +160,7 @@ class knxproj {
 											$this->Devices[$DeviceProductRefId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
 									}
 								}
-							}
+							//}
 						}
 					}
 				}
