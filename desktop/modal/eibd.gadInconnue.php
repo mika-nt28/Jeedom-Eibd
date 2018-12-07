@@ -347,11 +347,12 @@ function UpdateDeviceTable(Devices){
 	$("#table_Devices .tablesorter-filter[data-column=1]").trigger('keyup');
 	$("#table_Devices .tablesorter-filter[data-column=4]").trigger('keyup');
 	
-	$('.MyDeviceGroup .cursor').off().on('click',function(){
+	$('.MyDeviceGroup .cursor').off().on('click',function(e){
 		if(!$(this).find('ul:first').is(":visible"))
 			$(this).find('ul:first').show();
-		//else
-			//$(this).find('ul:first').hide();
+		else
+			$(this).find('ul:first').hide();
+		e.stopPropagation();
 	});
   	var _el=$('.MyDeviceGroup');
 	if(SelectAddr != ''){
@@ -379,14 +380,16 @@ function UpdateGadArbo(GAD){
 		}
 		$('.MyAdressGroup').append($('<li class="cursor ui-sortable-handle">').text(Niveau1).append(n1));
 	});
-	$('.MyAdressGroup .cursor').off().on('click',function(){
+	$('.MyAdressGroup .cursor').off().on('click',function(e){
 		if(!$(this).find('ul:first').is(":visible"))
 			$(this).find('ul:first').show();
-		//else
-			//$(this).find('ul:first').hide();
+		else
+			$(this).find('ul:first').hide();
+		e.stopPropagation();
 	});
 	if(SelectDpt != '')
 		$('.MyAdressGroup').find("[data-DataPointType="+SelectDpt.replace(/\./g, '-')+"]").css('font-weight','bold').parent().show();
 	//$('.MyAdressGroup').find("[data-AdressePhysique="+SelectAddr.replace(/\./g, '-')+"]").show();
 }	
+
 </script>
