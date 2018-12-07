@@ -340,7 +340,7 @@ function addCmdToTable(_cmd) {
 					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
 						.attr('title','Saisisez l\'adresse de groupe de votre commande KNX'))))
 			.append($('<div class="input-group">')
-				.append($('<input class="cmdAttr form-control input-sm" data-l1key="logicalId" placeholder="{{GAD}}" title="GAD">'))
+				.append($('<input class="cmdAttr form-control input-sm" data-l1key="logicalId" placeholder="{{Adresse de groupe}}" title="{{Adresse de groupe}}">'))
 					.append($('<span class="input-group-btn">')
 						.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
 							.append($('<i class="fa fa-list-alt">')))))));
@@ -354,7 +354,7 @@ function addCmdToTable(_cmd) {
 					.append('{{Lecture}}')
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-							.attr('title','Si un télégramme de type "READ" répondre en envoyant sur le bus la valeur actuelle de l\’objet.'))))))
+							.attr('title','{{Si actif, jeedom repondera a un télégramme de type "READ", en envoyant sur le bus la valeur actuelle de l\’objet.'))))))
 		 .append($('<div>')
 			.append($('<span>')
 				.append($('<label class="checkbox-inline">')
@@ -362,7 +362,7 @@ function addCmdToTable(_cmd) {
 					.append('{{Ecriture}}')
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-							.attr('title','La valeur de cet objet sera modifiée si un télégramme de type "WRITE" est vue sur le bus monitor'))))))
+							.attr('title','{{La valeur de cet objet sera modifiée si un télégramme de type "WRITE" est vue sur le bus monitor}}'))))))
 		  .append($('<div>')
 			.append($('<span>')
 				.append($('<label class="checkbox-inline">')
@@ -370,7 +370,7 @@ function addCmdToTable(_cmd) {
 					.append('{{Transmetre}}')
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-							.attr('title','Si la valeur de cet objet venait à être modifiée, envoyer un télégramme de type "WRITE" contenant la nouvelle valeur de l\’objet'))))))
+							.attr('title','{{Si la valeur de cet objet venait à être modifiée, Jeedom emmetera automatiquement un télégramme de type "WRITE" contenant la nouvelle valeur de l\’objet}}'))))))
 		.append($('<div>')
 			.append($('<span>')
 				.append($('<label class="checkbox-inline">')
@@ -378,7 +378,7 @@ function addCmdToTable(_cmd) {
 					.append('{{Mise-à-jour}}')
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-						.attr('title','Si un autre participant répond à un télégramme de type "READ" avec une valeur différente, mettre a jour la valeur par celle lue sur la réponse.'))))))
+						.attr('title','{{Si un autre participant répond à un télégramme de type "READ" avec une valeur différente, mettre a jour la valeur par celle lue sur la réponse.}}'))))))
 		
 		.append($('<div>')
 			.append($('<span>')
@@ -387,7 +387,7 @@ function addCmdToTable(_cmd) {
 					.append('{{Initialiser}}')
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-						.attr('title','Au démarrage du participant, envoyer un télégramme de type "READ" pour initiliser une valeur initial correcte')))))));	
+						.attr('title','{{Au démarrage, envoyer un télégramme de type "READ" pour initiliser une valeur initial}}')))))));	
 	tr.append($('<td>')
 		.append($('<div>')
 			.append($('<span>')
