@@ -182,7 +182,6 @@ $('.Ets4Parser').on('click', function() {
 								window.location.reload();
 							}else{
 								UpdateDeviceTable(data.result.Devices)
-								UpdateGadArbo(data.result.Devices,$('.MyDeviceGroup'))
 								UpdateGadArbo(data.result.GAD,$('.MyAdressGroup'))
 							}
 						}
@@ -313,9 +312,12 @@ function removeInCache(gad){
 }
 
 function UpdateDeviceTable(Devices){	
+	$('.MyDeviceGroup').html('');
 	$('#table_Devices tbody').html('');
 	jQuery.each(Devices,function(EquipementId, Equipement) {
+		var deviceCmd =$('<ul class="GadSortable ui-sortable">').hide();
 		jQuery.each(Equipement.Cmd,function(CmdId, Cmd) {
+			deviceCmd.append($('<li class="cursor ui-sortable-handle gad" data-AdresseGroupe="'+Cmd.AdresseGroupe+'" data-DataPointType="'+Cmd.DataPointType+'">').text(Cmd.cmdName));	
 			var tr=$("<tr>");
 			if (typeof(Equipement.DeviceName) !== 'undefined') 
 				tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
@@ -329,14 +331,15 @@ function UpdateDeviceTable(Devices){
 			tr.append($("<td class='AdresseGroupe'>").text(Cmd.AdresseGroupe));
 			tr.append($("<td class='DataPointType'>").text(Cmd.DataPointType));
 			$('#table_Devices tbody').append(tr);
-		});				
+		});	
+		$('.MyDeviceGroup').append($('<li class="cursor ui-sortable-handle" data-AdressePhysique="'+Equipement.AdressePhysique+'">').text(Equipement.DeviceName).append(deviceCmd));
 	});				
 	$('#table_Devices').trigger('update');
 	$("#table_Devices .tablesorter-filter[data-column=1]").trigger('keyup');
 	$("#table_Devices .tablesorter-filter[data-column=4]").trigger('keyup');
 }
-function UpdateGadArbo(GAD,_el){	
-	_el.html('');
+function UpdateGadArbo(GAD){	
+	$('.MyAdressGroup').html('');
 	jQuery.each(GAD,function(Niveau1, Groups1) {
 		var n1 =$('<ul class="GadSortable ui-sortable">').hide();
 		if(typeof(Groups1) == 'object'){
@@ -350,16 +353,16 @@ function UpdateGadArbo(GAD,_el){
 				n1.append($('<li class="cursor ui-sortable-handle">').text(Niveau2).append(n2));
 			});	
 		}
-		_el.append($('<li class="cursor ui-sortable-handle">').text(Niveau1).append(n1));
+		$('.MyAdressGroup').append($('<li class="cursor ui-sortable-handle">').text(Niveau1).append(n1));
 	});
-	_el.off().on('click','.cursor,'function(){
+	$('.MyAdressGroup .cursor').off().on('click',function(){
 		if(!$(this).find('ul:first').is(":visible"))
 			$(this).find('ul:first').show();
 		else
 			$(this).find('ul:first').hide();
 	});
 	if(SelectDpt != '')
-		_el.find("gad[data-DataPointType="+SelectDpt+"]").show();
-	//_el.find("gad[data-PhysicalAdress="+SelectAddr+"]").show();
+		$('.MyAdressGroup').find("gad[data-DataPointType="+SelectDpt+"]").show();
+	//$('.MyAdressGroup').find("gad[data-PhysicalAdress="+SelectAddr+"]").show();
 }	
 </script>
