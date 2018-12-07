@@ -832,7 +832,7 @@ class eibdCmd extends cmd {
 				}
 			break;
 			case 'info':
-				$DataBus=self::EibdRead($ga);
+				$DataBus=eibd::EibdRead($ga);
 				if($DataBus === false){
 					$this->setConfiguration('FlagInit',false);
 					$this->save();
