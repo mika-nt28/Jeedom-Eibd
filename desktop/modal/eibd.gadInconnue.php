@@ -32,6 +32,10 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			<i class="fa fa-tachometer"></i> {{Inconnue}}</a>
 	</li>
 	<li role="presentation" class="">
+		<a href="#Device2Tab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+			<i class="fa fa-list-alt"></i> {{Equipement}}</a>
+	</li>
+	<li role="presentation" class="">
 		<a href="#DeviceTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
 			<i class="fa fa-list-alt"></i> {{Equipement}}</a>
 	</li>
@@ -67,7 +71,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			<tbody></tbody>
 		</table>
 	</div>
-	<div role="tabpanel" class="tab-pane" id="DeviceTab">
+	<div role="tabpanel" class="tab-pane" id="Device2Tab">
 		<span class="pull-right">
 			<a class="btn btn-warning btn-xs Ets4Parser" >
 				<i class="fa fa-cloud-upload"></i>
@@ -86,6 +90,15 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			</thead>
 			<tbody></tbody>
 		</table>
+	</div>
+	<div role="tabpanel" class="tab-pane" id="DeviceTab">
+		<span class="pull-right">
+			<a class="btn btn-warning btn-xs Ets4Parser" >
+				<i class="fa fa-cloud-upload"></i>
+				{{Importer projet KNX}}
+			</a> 
+		</span>
+		<ul class="MyDeviceGroup GadSortable ui-sortable"></ul>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="AdressTab">
 		<span class="pull-right">
@@ -165,11 +178,11 @@ $('.Ets4Parser').on('click', function() {
 						global: true,
 						error: function(request, status, error) {},
 						success: function(data) {
-							if($('body .EtsParserDiv .EtsParseParameter[data-l1key=createEqLogic]')){
+							if($('body .EtsParserDiv .EtsParseParameter[data-l1key=createEqLogic]').val()){
 								window.location.reload();
 							}else{
 								UpdateDeviceTable(data.result.Devices)
-								UpdateGadArbo(data.result.GAD)
+								UpdateGadArbo(data.result.GAD,$('.MyAdressGroup'))
 							}
 						}
 					});
@@ -299,9 +312,12 @@ function removeInCache(gad){
 }
 
 function UpdateDeviceTable(Devices){	
+	$('.MyDeviceGroup').html('');
 	$('#table_Devices tbody').html('');
 	jQuery.each(Devices,function(EquipementId, Equipement) {
+		var deviceCmd =$('<ul class="GadSortable ui-sortable">').hide();
 		jQuery.each(Equipement.Cmd,function(CmdId, Cmd) {
+			deviceCmd.append($('<li class="cursor ui-sortable-handle deviceCmd" data-AdresseGroupe="'+Cmd.AdresseGroupe+'" data-DataPointType="'+Cmd.DataPointType+'">').text(Cmd.cmdName));	
 			var tr=$("<tr>");
 			if (typeof(Equipement.DeviceName) !== 'undefined') 
 				tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
@@ -315,11 +331,23 @@ function UpdateDeviceTable(Devices){
 			tr.append($("<td class='AdresseGroupe'>").text(Cmd.AdresseGroupe));
 			tr.append($("<td class='DataPointType'>").text(Cmd.DataPointType));
 			$('#table_Devices tbody').append(tr);
-		});				
+		});	
+		$('.MyDeviceGroup').append($('<li class="cursor ui-sortable-handle" data-AdressePhysique="'+Equipement.AdressePhysique+'">').text(Equipement.DeviceName).append(deviceCmd));
 	});				
 	$('#table_Devices').trigger('update');
 	$("#table_Devices .tablesorter-filter[data-column=1]").trigger('keyup');
 	$("#table_Devices .tablesorter-filter[data-column=4]").trigger('keyup');
+	
+	$('.MyDeviceGroup .cursor').off().on('click',function(){
+		if(!$(this).find('ul:first').is(":visible"))
+			$(this).find('ul:first').show();
+		else
+			$(this).find('ul:first').hide();
+	});
+	if(SelectDpt != '')
+		$('.MyDeviceGroup').find("deviceCmd[data-DataPointType="+SelectDpt+"]").show();
+	if(SelectDpt != '')
+		$('.MyDeviceGroup').find("deviceCmd[data-AdressePhysique="+SelectAddr+"]").show();
 }
 function UpdateGadArbo(GAD){	
 	$('.MyAdressGroup').html('');
@@ -345,7 +373,7 @@ function UpdateGadArbo(GAD){
 			$(this).find('ul:first').hide();
 	});
 	if(SelectDpt != '')
-		$(".MyAdressGroup").find("gad[data-DataPointType="+SelectDpt+"]").show();
-	//$(".MyAdressGroup").find("gad[data-PhysicalAdress="+SelectAddr+"]").show();
+		$('.MyAdressGroup').find("gad[data-DataPointType="+SelectDpt+"]").show();
+	//$('.MyAdressGroup').find("gad[data-AdressePhysique="+SelectAddr+"]").show();
 }	
 </script>
