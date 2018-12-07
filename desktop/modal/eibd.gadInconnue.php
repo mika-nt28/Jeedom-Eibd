@@ -178,7 +178,7 @@ $('.Ets4Parser').on('click', function() {
 						global: true,
 						error: function(request, status, error) {},
 						success: function(data) {
-							if($('body .EtsParserDiv .EtsParseParameter[data-l1key=createEqLogic]')){
+							if($('body .EtsParserDiv .EtsParseParameter[data-l1key=createEqLogic]').val()){
 								window.location.reload();
 							}else{
 								UpdateDeviceTable(data.result.Devices)
