@@ -317,7 +317,7 @@ function UpdateDeviceTable(Devices){
 	jQuery.each(Devices,function(EquipementId, Equipement) {
 		var deviceCmd =$('<ul class="GadSortable ui-sortable">').hide();
 		jQuery.each(Equipement.Cmd,function(CmdId, Cmd) {
-			deviceCmd.append($('<li class="cursor ui-sortable-handle gad" data-AdresseGroupe="'+Cmd.AdresseGroupe+'" data-DataPointType="'+Cmd.DataPointType+'">').text(Cmd.cmdName));	
+			deviceCmd.append($('<li class="cursor ui-sortable-handle deviceCmd" data-AdresseGroupe="'+Cmd.AdresseGroupe+'" data-DataPointType="'+Cmd.DataPointType+'">').text(Cmd.cmdName));	
 			var tr=$("<tr>");
 			if (typeof(Equipement.DeviceName) !== 'undefined') 
 				tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
@@ -337,6 +337,17 @@ function UpdateDeviceTable(Devices){
 	$('#table_Devices').trigger('update');
 	$("#table_Devices .tablesorter-filter[data-column=1]").trigger('keyup');
 	$("#table_Devices .tablesorter-filter[data-column=4]").trigger('keyup');
+	
+	$('.MyDeviceGroup .cursor').off().on('click',function(){
+		if(!$(this).find('ul:first').is(":visible"))
+			$(this).find('ul:first').show();
+		else
+			$(this).find('ul:first').hide();
+	});
+	if(SelectDpt != '')
+		$('.MyDeviceGroup').find("deviceCmd[data-DataPointType="+SelectDpt+"]").show();
+	if(SelectDpt != '')
+		$('.MyDeviceGroup').find("deviceCmd[data-AdressePhysique="+SelectAddr+"]").show();
 }
 function UpdateGadArbo(GAD){	
 	$('.MyAdressGroup').html('');
@@ -363,6 +374,6 @@ function UpdateGadArbo(GAD){
 	});
 	if(SelectDpt != '')
 		$('.MyAdressGroup').find("gad[data-DataPointType="+SelectDpt+"]").show();
-	//$('.MyAdressGroup').find("gad[data-PhysicalAdress="+SelectAddr+"]").show();
+	//$('.MyAdressGroup').find("gad[data-AdressePhysique="+SelectAddr+"]").show();
 }	
 </script>
