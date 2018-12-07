@@ -32,6 +32,10 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			<i class="fa fa-tachometer"></i> {{Inconnue}}</a>
 	</li>
 	<li role="presentation" class="">
+		<a href="#Device2Tab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+			<i class="fa fa-list-alt"></i> {{Equipement}}</a>
+	</li>
+	<li role="presentation" class="">
 		<a href="#DeviceTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
 			<i class="fa fa-list-alt"></i> {{Equipement}}</a>
 	</li>
@@ -67,7 +71,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			<tbody></tbody>
 		</table>
 	</div>
-	<div role="tabpanel" class="tab-pane" id="DeviceTab">
+	<div role="tabpanel" class="tab-pane" id="Device2Tab">
 		<span class="pull-right">
 			<a class="btn btn-warning btn-xs Ets4Parser" >
 				<i class="fa fa-cloud-upload"></i>
@@ -86,6 +90,15 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			</thead>
 			<tbody></tbody>
 		</table>
+	</div>
+	<div role="tabpanel" class="tab-pane" id="DeviceTab">
+		<span class="pull-right">
+			<a class="btn btn-warning btn-xs Ets4Parser" >
+				<i class="fa fa-cloud-upload"></i>
+				{{Importer projet KNX}}
+			</a> 
+		</span>
+		<ul class="MyDeviceGroup GadSortable ui-sortable"></ul>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="AdressTab">
 		<span class="pull-right">
@@ -169,7 +182,8 @@ $('.Ets4Parser').on('click', function() {
 								window.location.reload();
 							}else{
 								UpdateDeviceTable(data.result.Devices)
-								UpdateGadArbo(data.result.GAD)
+								UpdateGadArbo(data.result.Devices,$('.MyDeviceGroup'))
+								UpdateGadArbo(data.result.GAD,$('.MyAdressGroup'))
 							}
 						}
 					});
@@ -321,8 +335,8 @@ function UpdateDeviceTable(Devices){
 	$("#table_Devices .tablesorter-filter[data-column=1]").trigger('keyup');
 	$("#table_Devices .tablesorter-filter[data-column=4]").trigger('keyup');
 }
-function UpdateGadArbo(GAD){	
-	$('.MyAdressGroup').html('');
+function UpdateGadArbo(GAD,_el){	
+	_el.html('');
 	jQuery.each(GAD,function(Niveau1, Groups1) {
 		var n1 =$('<ul class="GadSortable ui-sortable">').hide();
 		if(typeof(Groups1) == 'object'){
@@ -336,16 +350,16 @@ function UpdateGadArbo(GAD){
 				n1.append($('<li class="cursor ui-sortable-handle">').text(Niveau2).append(n2));
 			});	
 		}
-		$('.MyAdressGroup').append($('<li class="cursor ui-sortable-handle">').text(Niveau1).append(n1));
+		_el.append($('<li class="cursor ui-sortable-handle">').text(Niveau1).append(n1));
 	});
-	$('.MyAdressGroup .cursor').off().on('click',function(){
+	_el.off().on('click','.cursor,'function(){
 		if(!$(this).find('ul:first').is(":visible"))
 			$(this).find('ul:first').show();
 		else
 			$(this).find('ul:first').hide();
 	});
 	if(SelectDpt != '')
-		$(".MyAdressGroup").find("gad[data-DataPointType="+SelectDpt+"]").show();
-	//$(".MyAdressGroup").find("gad[data-PhysicalAdress="+SelectAddr+"]").show();
+		_el.find("gad[data-DataPointType="+SelectDpt+"]").show();
+	//_el.find("gad[data-PhysicalAdress="+SelectAddr+"]").show();
 }	
 </script>
