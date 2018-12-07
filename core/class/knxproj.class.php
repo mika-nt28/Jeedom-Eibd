@@ -226,8 +226,8 @@ class knxproj {
 	private function createObject($Name){
 		$Object = object::byName($Name);
 		if($this->options['createObjet']){
-			log::add('eibd','info','[Import ETS] Nous allons cree l\'objet : '.$Name);
 			if (!is_object($Object)) {
+				log::add('eibd','info','[Import ETS] Nous allons cree l\'objet : '.$Name);
 				$Object = new object();
 				$Object->setName($Name);
 				$Object->setIsVisible(true);

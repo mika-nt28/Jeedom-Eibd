@@ -94,7 +94,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 				{{Importer projet KNX}}
 			</a> 
 		</span>
-		<ul class="GadSortable ui-sortable"></ul>
+		<ul class="MyAdressGroup GadSortable ui-sortable"></ul>
 	</div>
 </div>
 
@@ -322,21 +322,30 @@ function UpdateDeviceTable(Devices){
 	$("#table_Devices .tablesorter-filter[data-column=4]").trigger('keyup');
 }
 function UpdateGadArbo(GAD){	
-	$('.GadSortable').html('');
+	$('.MyAdressGroup').html('');
 	jQuery.each(GAD,function(Niveau1, Groups1) {
-		var n1 =$('<ul class="cmdSortable ui-sortable">');
+		var n1 =$('<ul class="GadSortable ui-sortable">').hide();
 		if(typeof(Groups1) == 'object'){
 			jQuery.each(Groups1,function(Niveau2, Groups2) {
-				var n2 =$('<ul class="cmdSortable ui-sortable">');
+				var n2 =$('<ul class="GadSortable ui-sortable">').hide();
 				if(typeof(Groups2) == 'object'){
 					jQuery.each(Groups2,function(Niveau3, Parameter) {
-						n2.append($('<li class="cursor ui-sortable-handle gad" data-AdresseGroupe="'+Parameter.AdresseGroupe+'" data-DataPointType="'+Parameter.DataPointType+'">').text(' (' + Parameter.AdresseGroupe + ')'+Niveau3));
+						n2.append($('<li class="cursor ui-sortable-handle gad" data-AdresseGroupe="'+Parameter.AdresseGroupe+'" data-DataPointType="'+Parameter.DataPointType+'">').text(' (' + Parameter.AdresseGroupe + ') '+Niveau3));
 					});	
 				}
 				n1.append($('<li class="cursor ui-sortable-handle">').text(Niveau2).append(n2));
 			});	
 		}
-		$('.GadSortable').append($('<li class="cursor ui-sortable-handle">').text(Niveau1).append(n1));
-	});	
+		$('.MyAdressGroup').append($('<li class="cursor ui-sortable-handle">').text(Niveau1).append(n1));
+	});
+	$('.MyAdressGroup .cursor').off().on('click',function(){
+		if(!$(this).find('ul:first').is(":visible"))
+			$(this).find('ul:first').show();
+		else
+			$(this).find('ul:first').hide();
+	});
+	if(SelectDpt != '')
+		$(".MyAdressGroup").find("gad[data-DataPointType="+SelectDpt+"]").show();
+	//$(".MyAdressGroup").find("gad[data-PhysicalAdress="+SelectAddr+"]").show();
 }	
 </script>

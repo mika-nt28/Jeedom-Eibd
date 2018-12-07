@@ -25,6 +25,8 @@ if (!isConnect('admin')) {
 			<div class="form-group"> 
 				<label class="col-md-4 control-label">{{Créer les equipements}}</label> 
 				<input type="checkbox" class="EtsParseParameter" data-l1key="createEqLogic"/>
+			</div> 
+			<div class="form-group"> 
 				<label class="col-md-4 control-label">{{Uniquement correspondant a un Template}}</label> 
 				<input type="checkbox" class="EtsParseParameter" data-l1key="createTemplate"/>
 			</div> 
