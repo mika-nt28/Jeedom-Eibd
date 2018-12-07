@@ -66,18 +66,13 @@ class knxproj {
 		}	
 		return false;
 	}
-	private function getCatalogue(){	
+	private function getCatalogue($DeviceProductRefId){	
 		//log::add('eibd','debug','[Import ETS] Rechecher des nom de module dans le catalogue');
-		foreach($this->Devices as $Device => $Parameter){
-			$Catalogue = new DomDocument();
-			if ($Catalogue->load($this->path . 'knxproj/'.substr($Device,0,6).'/Catalog.xml')) {//XMl décrivant les équipements
-				foreach($Catalogue->getElementsByTagName('CatalogItem') as $CatalogItem){
-					if ($Device==$CatalogItem->getAttribute('ProductRefId'))
-						$this->Devices[$Device]['DeviceName']=$CatalogItem->getAttribute('Name');
-				}
-			}
-			else{
-				$this->Devices[$Device]['DeviceName']= "{{Inconnue}}";
+		$Catalogue = new DomDocument();
+		if ($Catalogue->load($this->path . 'knxproj/'.substr($DeviceProductRefId,0,6).'/Catalog.xml')) {//XMl décrivant les équipements
+			foreach($Catalogue->getElementsByTagName('CatalogItem') as $CatalogItem){
+				if ($DeviceProductRefId==$CatalogItem->getAttribute('ProductRefId'))
+					return $CatalogItem->getAttribute('Name');
 			}
 		}
 	}
@@ -146,21 +141,22 @@ class knxproj {
 					$DeviceId=$this->xml_attribute($Device, 'Id');
 					$DeviceProductRefId=$this->xml_attribute($Device, 'ProductRefId');
 					if ($DeviceProductRefId != ''){
-						$this->Devices[$DeviceProductRefId]=array();
+						$this->Devices[$DeviceId]=array();
+                      				$this->Devices[$DeviceId]['DeviceName']=$this->getCatalogue($DeviceProductRefId);
 						$DeviceAddress=$this->xml_attribute($Device, 'Address');
-						$this->Devices[$DeviceProductRefId]['AdressePhysique']=$AreaAddress.'.'.$LineAddress.'.'.$DeviceAddress;
+						$this->Devices[$DeviceId]['AdressePhysique']=$AreaAddress.'.'.$LineAddress.'.'.$DeviceAddress;
 						$this->getCatalogue();
 						foreach($Device->children() as $ComObjectInstanceRefs){
-							//if($ComObjectInstanceRefs->getName() == 'ComObjectInstanceRefs'){
+							if($ComObjectInstanceRefs->getName() == 'ComObjectInstanceRefs'){
 								foreach($ComObjectInstanceRefs->children() as $ComObjectInstanceRef){
 									$DataPointType=explode('-',$this->xml_attribute($ComObjectInstanceRef, 'DatapointType'));
 									if ($DataPointType[1] >0)
 									foreach($ComObjectInstanceRef->children() as $Connector){
 										foreach($Connector->children() as $Commande)
-											$this->Devices[$DeviceProductRefId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
+											$this->Devices[$DeviceId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
 									}
 								}
-							//}
+							}
 						}
 					}
 				}
