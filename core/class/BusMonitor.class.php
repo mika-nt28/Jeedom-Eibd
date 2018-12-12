@@ -85,8 +85,10 @@ class BusMonitorTraitement /*extends Thread*/{
 	}
 	private function CheckIsExist($AdresseGroupe,$caches) {
 		foreach($caches as $key => $cache){
-			if($cache['AdresseGroupe'] == $AdresseGroupe)
+			if($cache['AdresseGroupe'] == $AdresseGroupe){
+              			log::add('eibd', 'debug', '[Bus Monitor] : Cette adresse de groupe '.$cache['AdresseGroupe'] . ' est deja en cache => '.$cache['data']);
 				return $key;
+           		}
 		}
 		return false;
 	}
