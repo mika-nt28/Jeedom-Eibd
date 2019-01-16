@@ -113,23 +113,6 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 </div>
 
 <script>
-/*jeedom.config.load({
-	configuration: 'isInclude',
-	plugin:'eibd',
-	error: function (error) {
-		$('#div_alert').showAlert({message: error.message, level: 'danger'});
-	},
-	success: function (data) {
-		$('.Include').attr('data-validation',data);
-		if(data == "true"){
-			$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
-				.append(' {{Désactiver l\'inculsion}}');
-		}else{
-			$('.Include').html($('<i class="fa fa-bullseye">'))
-				.append(' {{Activer  l\'inculsion}}');
-		}
-	}
-});*/
 $.ajax({
 	type: 'POST',
 	async: false,
@@ -146,11 +129,12 @@ $.ajax({
 			$('#div_alert').showAlert({message: data.result, level: 'danger'});
 			return;
 		}
-		$('.Include').attr('data-validation',data.result);
-		if(data.result == "true"){
+		if(data.result || data.result == "true"){
+			$('.Include').attr('data-validation',false);
 			$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
 				.append(' {{Désactiver l\'inculsion}}');
 		}else{
+			$('.Include').attr('data-validation',true);
 			$('.Include').html($('<i class="fa fa-bullseye">'))
 				.append(' {{Activer  l\'inculsion}}');
 		}
@@ -176,7 +160,7 @@ $('body').off().on('click','.Include', function () {
 				return;
 			}
 			
-			if(_el.attr('data-validation') == "true"){
+			if(_el.attr('data-validation') || _el.attr('data-validation') == "true"){
 				_el.attr('data-validation',false);
 				_el.html($('<i class="fa fa-bullseye">'))
 					.append(' {{Activer  l\'inculsion}}');
@@ -188,15 +172,6 @@ $('body').off().on('click','.Include', function () {
 
 		}
 	});
-	/*jeedom.config.save({
-		configuration: {'isInclude':$(this).attr('data-validation')},
-		plugin:'eibd',
-		error: function (error) {
-			$('#div_alert').showAlert({message: error.message, level: 'danger'});
-		},
-		success: function () {
-		}
-	});*/
 });
 $('.Ets4Parser').on('click', function() {
 	bootbox.dialog({
