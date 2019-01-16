@@ -44,7 +44,7 @@ class BusMonitorTraitement /*extends Thread*/{
 			}else
 				$monitor['valeur']="Impossible de convertir la valeur";
 			$monitor['cmdJeedom']= "La commande n’existes pas";
-			if(config::byKey('isInclude','eibd') == "true")					
+			if(cache::byKey('eibd::isInclude')->getValue(false))			
 				$this->addCache($monitor);
 			log::add('eibd', 'debug', '[Bus Monitor] : Aucune commande avec l\'adresse de groupe  '.$this->AdrGroup.' n\'a pas été trouvée');
 		}
