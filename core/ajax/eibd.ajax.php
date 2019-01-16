@@ -8,6 +8,12 @@ try {
     	if (!isConnect('admin')) {
         	throw new Exception(__('401 - Accès non autorisé', __FILE__));
     	}
+	if (init('action') == 'setIsInclude') {
+		ajax::success(cache::set('eibd::isInclude',init('value'), 0));
+	}
+	if (init('action') == 'getIsInclude') {
+		ajax::success(cache::byKey('eibd::isInclude')->getValue(false));
+	}
 	if (init('action') == 'getLog') {
 		ajax::success("<pre>".file_get_contents('/var/log/knx.log')."</pre>");
 	}
