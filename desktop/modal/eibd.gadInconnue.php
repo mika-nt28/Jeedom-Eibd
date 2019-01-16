@@ -113,7 +113,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 </div>
 
 <script>
-jeedom.config.load({
+/*jeedom.config.load({
 	configuration: 'isInclude',
 	plugin:'eibd',
 	error: function (error) {
@@ -129,18 +129,66 @@ jeedom.config.load({
 				.append(' {{Activer  l\'inculsion}}');
 		}
 	}
+});*/
+$.ajax({
+	type: 'POST',
+	async: false,
+	url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+	data: {
+		action: 'getIsInclude',
+	},
+	dataType: 'json',
+	global: false,
+	error: function(request, status, error) {
+	},
+	success: function(data) {
+		if (data.state != 'ok') {
+			$('#div_alert').showAlert({message: data.result, level: 'danger'});
+			return;
+		}
+		$('.Include').attr('data-validation',data.result);
+		if(data.result == "true"){
+			$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
+				.append(' {{Désactiver l\'inculsion}}');
+		}else{
+			$('.Include').html($('<i class="fa fa-bullseye">'))
+				.append(' {{Activer  l\'inculsion}}');
+		}
+	}
 });
 $('body').off().on('click','.Include', function () {
-	if($(this).attr('data-validation') == "true"){
-		$(this).attr('data-validation',false);
-		$(this).html($('<i class="fa fa-bullseye">'))
-			.append(' {{Activer  l\'inculsion}}');
-	}else{
-		$(this).attr('data-validation',true);
-		$(this).html($('<i class="fa fa-spinner fa-pulse">'))
-			.append(' {{Désactiver l\'inculsion}}');
-	}
-	jeedom.config.save({
+	var _el = $(this);
+	$.ajax({
+		type: 'POST',
+		async: false,
+		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+		data: {
+			action: 'setIsInclude',
+			value: _el.attr('data-validation')
+		},
+		dataType: 'json',
+		global: false,
+		error: function(request, status, error) {
+		},
+		success: function(data) {
+			if (data.state != 'ok') {
+				$('#div_alert').showAlert({message: data.result, level: 'danger'});
+				return;
+			}
+			
+			if(_el.attr('data-validation') == "true"){
+				_el.attr('data-validation',false);
+				_el.html($('<i class="fa fa-bullseye">'))
+					.append(' {{Activer  l\'inculsion}}');
+			}else{
+				_el.attr('data-validation',true);
+				_el.html($('<i class="fa fa-spinner fa-pulse">'))
+					.append(' {{Désactiver l\'inculsion}}');
+			}
+
+		}
+	});
+	/*jeedom.config.save({
 		configuration: {'isInclude':$(this).attr('data-validation')},
 		plugin:'eibd',
 		error: function (error) {
@@ -148,7 +196,7 @@ $('body').off().on('click','.Include', function () {
 		},
 		success: function () {
 		}
-	});
+	});*/
 });
 $('.Ets4Parser').on('click', function() {
 	bootbox.dialog({
