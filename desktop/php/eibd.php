@@ -249,7 +249,9 @@ $eqLogics = eqLogic::byType('eibd');
 		</div>
 	</div>
 </div>
-
+<div id="md_health"></div>
+<div id="md_GadInconue"></div>
+<div id="md_BusMoniteur"></div>
 <?php 
 include_file('desktop', 'event', 'js', 'eibd');
 include_file('desktop', 'eibd', 'js', 'eibd');

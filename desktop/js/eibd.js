@@ -1,8 +1,8 @@
 $('.templateAction').hide();
 $('.templateAction').first().show();
 $('#bt_healthEibd').on('click', function () {
-	$('#md_modal').dialog({title: "{{Santé des équpements KNX}}"});
-	$('#md_modal').load('index.php?v=d&plugin=eibd&modal=health').dialog('open');
+	$('#md_health').dialog({title: "{{Santé des équpements KNX}}"});
+	$('#md_health').load('index.php?v=d&plugin=eibd&modal=health').dialog('open');
 });
 $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	//Creation du formulaire du template
@@ -165,20 +165,20 @@ $('.log').on('click', function() {
 	$('#md_modal').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd').dialog('open');
 });
 $('.GadInconue').on('click', function() {
-	$('#md_modal').dialog({
+	$('#md_GadInconue').dialog({
 		title: "{{Importer les Gad inconnue}}",
 		resizable: true,
 		height: 700,
 		width: 850});
-	$('#md_modal').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd').dialog('open');
+	$('#md_GadInconue').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd').dialog('open');
 });
 $('.BusMoniteur').on('click', function() {
-	$('#md_modal').dialog({
+	$('#md_BusMoniteur').dialog({
 		title: "{{Bus Moniteur}}",
 		resizable: true,
 		height: 700,
 		width: 850});
-	$('#md_modal').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd').dialog('open');
+	$('#md_BusMoniteur').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd').dialog('open');
 });
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $(".eqLogicAttr[data-l1key=configuration][data-l2key=device]").html($(".eqLogicAttr[data-l1key=configuration][data-l2key=device] option").sort(function (a, b) {

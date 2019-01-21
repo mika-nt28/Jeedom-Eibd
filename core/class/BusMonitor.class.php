@@ -44,7 +44,7 @@ class BusMonitorTraitement /*extends Thread*/{
 			}else
 				$monitor['valeur']="Impossible de convertir la valeur";
 			$monitor['cmdJeedom']= "La commande n’existes pas";
-			if(config::byKey('isInclude','eibd') == "true")					
+			if(cache::byKey('eibd::isInclude')->getValue(false))			
 				$this->addCache($monitor);
 			log::add('eibd', 'debug', '[Bus Monitor] : Aucune commande avec l\'adresse de groupe  '.$this->AdrGroup.' n\'a pas été trouvée');
 		}
@@ -85,8 +85,10 @@ class BusMonitorTraitement /*extends Thread*/{
 	}
 	private function CheckIsExist($AdresseGroupe,$caches) {
 		foreach($caches as $key => $cache){
-			if($cache['AdresseGroupe'] == $AdresseGroupe)
+			if($cache['AdresseGroupe'] == $AdresseGroupe){
+              			log::add('eibd', 'debug', '[Bus Monitor] : Cette adresse de groupe '.$cache['AdresseGroupe'] . ' est deja en cache => '.$cache['data']);
 				return $key;
+           		}
 		}
 		return false;
 	}
