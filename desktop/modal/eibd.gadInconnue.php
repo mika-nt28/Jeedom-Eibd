@@ -45,7 +45,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			<i class="fa fa-list-alt"></i> {{Adresse de groupes}}</a>
 	</li>
 </ul>
-<div class="tab-content">
+<div class="tab-content" style="height: 500px;overflow: auto;">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
 		<span class="pull-right">
 			<a class="btn btn-danger btn-xs pull-right removeAllGad" style="margin-bottom : 5px;">
