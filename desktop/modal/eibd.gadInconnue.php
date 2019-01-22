@@ -140,7 +140,7 @@ $.ajax({
 		}
 	}
 });
-$('body').off().on('click','.Include', function () {
+$('body').on('click','.Include', function () {
 	var _el = $(this);
 	$.ajax({
 		type: 'POST',
