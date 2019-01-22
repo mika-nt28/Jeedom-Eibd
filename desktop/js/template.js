@@ -10,7 +10,7 @@ $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 				    .val(value.configuration.KnxObjectType)));
 		cmds.append($('<div class="form-group">')
 			.append($('<label class="col-xs-6 control-label" >')
-				.text(value.name))
+				.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"))
 			.append($('<div class="col-xs-5">')
 				.append($('<div class="input-group">')
 					.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'">'))
