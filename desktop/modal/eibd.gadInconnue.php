@@ -398,7 +398,7 @@ function UpdateGadArbo(GAD){
 		e.stopPropagation();
 	});
 	if(SelectDpt != '')
-		$('.MyAdressGroup').find("[data-DataPointType="+SelectDpt.replace(/\./g, '-')+"]").css('font-weight','bold').parent().show();
+		$('.MyAdressGroup').find("[data-DataPointType="+SelectDpt.replace(/\./g, '-')+"]").css('background-color','blue').parent().show();
 	//$('.MyAdressGroup').find("[data-AdressePhysique="+SelectAddr.replace(/\./g, '-')+"]").show();
 }	
 </script>
