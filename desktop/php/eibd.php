@@ -253,7 +253,7 @@ $eqLogics = eqLogic::byType('eibd');
 <div id="md_GadInconue"></div>
 <div id="md_BusMoniteur"></div>
 <?php 
-include_file('desktop', 'event', 'js', 'eibd');
+include_file('desktop', 'template', 'js', 'eibd');
 include_file('desktop', 'eibd', 'js', 'eibd');
 include_file('core', 'plugin.template', 'js'); 
 ?>

@@ -45,7 +45,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			<i class="fa fa-list-alt"></i> {{Adresse de groupes}}</a>
 	</li>
 </ul>
-<div class="tab-content">
+<div class="tab-content" style="height: 500px;overflow: auto;">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
 		<span class="pull-right">
 			<a class="btn btn-danger btn-xs pull-right removeAllGad" style="margin-bottom : 5px;">
@@ -54,10 +54,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			</a>
 		</span>
 		<span class="pull-right">
-			<a class="btn btn-warning btn-xs pull-right Include" data-validation="true" style="margin-bottom : 5px;" >
-				<i class="fa fa-spinner fa-pulse"></i>
-				{{Désactiver l'inculsion}}
-			</a> 
+			<a class="btn btn-warning btn-xs pull-right Include" data-validation=true style="margin-bottom : 5px;" ></a> 
 		</span>
 		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
@@ -129,26 +126,25 @@ $.ajax({
 			$('#div_alert').showAlert({message: data.result, level: 'danger'});
 			return;
 		}
-		if(data.result || data.result == "true"){
-			$('.Include').attr('data-validation',false);
-			$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
-				.append(' {{Désactiver l\'inculsion}}');
-		}else{
-			$('.Include').attr('data-validation',true);
+		if(data.result == "false"){
+			$('.Include').attr('data-validation',"true");
 			$('.Include').html($('<i class="fa fa-bullseye">'))
 				.append(' {{Activer  l\'inculsion}}');
+		}else{
+			$('.Include').attr('data-validation',"false");
+			$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
+				.append(' {{Désactiver l\'inculsion}}');
 		}
 	}
 });
-$('body').off().on('click','.Include', function () {
-	var _el = $(this);
+$('.Include').off().on('click', function () {
 	$.ajax({
 		type: 'POST',
 		async: false,
 		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
 		data: {
 			action: 'setIsInclude',
-			value: _el.attr('data-validation')
+			value: $('.Include').attr('data-validation')
 		},
 		dataType: 'json',
 		global: false,
@@ -158,18 +154,16 @@ $('body').off().on('click','.Include', function () {
 			if (data.state != 'ok') {
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
-			}
-			
-			if(_el.attr('data-validation') || _el.attr('data-validation') == "true"){
-				_el.attr('data-validation',false);
-				_el.html($('<i class="fa fa-bullseye">'))
+			}			
+			if($('.Include').attr('data-validation') == "false"){
+				$('.Include').attr('data-validation',"true");
+				$('.Include').html($('<i class="fa fa-bullseye">'))
 					.append(' {{Activer  l\'inculsion}}');
 			}else{
-				_el.attr('data-validation',true);
-				_el.html($('<i class="fa fa-spinner fa-pulse">'))
+				$('.Include').attr('data-validation',"false");
+				$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
 					.append(' {{Désactiver l\'inculsion}}');
 			}
-
 		}
 	});
 });
@@ -302,26 +296,11 @@ $('body').on('click', '.removeAllGad', function(){
 	$('#table_GadInconue tbody').html("");
 });
 $('body').on('click', '.GadInsert tbody tr', function(){
-	$('.deviceCmd').css('font-weight','unset');
-	$('.cmdSortable .gad').css('font-weight','unset');
+	$('.AdresseGroupe').css('font-weight','unset');
 	$('.GadInsert tr').css('font-weight','unset');
 	$(this).closest('tr').css('font-weight','bold');
 	SelectGad = $(this).closest('tr').find('.AdresseGroupe').text();
 	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
-});
-$('body').on('click', '.deviceCmd', function(){
-	$('.deviceCmd').css('font-weight','unset');
-	$('.cmdSortable').css('font-weight','unset');
-	$('.GadInsert tr').css('font-weight','unset');
-	$(this).css('font-weight','bold');
-	SelectGad=$(this).attr('data-AdresseGroupe');
-});
-$('body').on('click', '.cmdSortable', function(){
-	$('.deviceCmd').css('font-weight','unset');
-	$('.cmdSortable').css('font-weight','unset');
-	$('.GadInsert tr').css('font-weight','unset');
-	$(this).css('font-weight','bold');
-	SelectGad=$(this).attr('data-AdresseGroupe');
 });
 function removeInCache(gad){
 	$.ajax({
@@ -389,30 +368,37 @@ function UpdateDeviceTable(Devices){
 function UpdateGadArbo(GAD){	
 	$('.MyAdressGroup').html('');
 	jQuery.each(GAD,function(Niveau1, Groups1) {
-		var n1 =$('<ul class="GadSortable ui-sortable">').hide();
+		var n1 =$('<ul>').hide();
 		if(typeof(Groups1) == 'object'){
 			jQuery.each(Groups1,function(Niveau2, Groups2) {
-				var n2 =$('<ul class="GadSortable ui-sortable">').hide();
+				var n2 =$('<ul>').hide();
 				if(typeof(Groups2) == 'object'){
 					jQuery.each(Groups2,function(Niveau3, Parameter) {
-						n2.append($('<li class="cursor ui-sortable-handle gad" data-AdresseGroupe="'+Parameter.AdresseGroupe+'" data-DataPointType="'+Parameter.DataPointType.replace(/\./g, '-')+'">').text(' (' + Parameter.AdresseGroupe + ') '+Niveau3));
+						n2.append($('<li class="AdresseGroupe" data-AdresseGroupe="'+Parameter.AdresseGroupe+'" data-DataPointType="'+Parameter.DataPointType.replace(/\./g, '-')+'">').text(' (' + Parameter.AdresseGroupe + ') '+Niveau3));
 					});	
 				}
-				n1.append($('<li class="cursor ui-sortable-handle">').text(Niveau2).append(n2));
+				n1.append($('<li class="Level">').text(Niveau2).append(n2));
 			});	
 		}
-		$('.MyAdressGroup').append($('<li class="cursor ui-sortable-handle">').text(Niveau1).append(n1));
+		$('.MyAdressGroup').append($('<li class="Level">').text(Niveau1).append(n1));
 	});
-	$('.MyAdressGroup .cursor').off().on('click',function(e){
+	$('.MyAdressGroup .Level').off().on('click',function(e){
 		if(!$(this).find('ul:first').is(":visible"))
 			$(this).find('ul:first').show();
 		else
 			$(this).find('ul:first').hide();
 		e.stopPropagation();
 	});
+	$('.MyAdressGroup .AdresseGroupe').off().on('click',function(e){
+		$('.AdresseGroupe').css('font-weight','unset');
+		$('.GadInsert tr').css('font-weight','unset');
+		$(this).css('font-weight','bold');
+		SelectGad=$(this).attr('data-AdresseGroupe');
+		SelectDpt=$(this).attr('data-DataPointType');
+		e.stopPropagation();
+	});
 	if(SelectDpt != '')
-		$('.MyAdressGroup').find("[data-DataPointType="+SelectDpt.replace(/\./g, '-')+"]").css('font-weight','bold').parent().show();
+		$('.MyAdressGroup').find("[data-DataPointType="+SelectDpt.replace(/\./g, '-')+"]").css('background-color','blue').parent().show();
 	//$('.MyAdressGroup').find("[data-AdressePhysique="+SelectAddr.replace(/\./g, '-')+"]").show();
 }	
-
 </script>
