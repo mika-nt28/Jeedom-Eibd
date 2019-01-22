@@ -54,10 +54,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 			</a>
 		</span>
 		<span class="pull-right">
-			<a class="btn btn-warning btn-xs pull-right Include" data-validation="true" style="margin-bottom : 5px;" >
-				<i class="fa fa-spinner fa-pulse"></i>
-				{{Désactiver l'inculsion}}
-			</a> 
+			<a class="btn btn-warning btn-xs pull-right Include" data-validation=true style="margin-bottom : 5px;" ></a> 
 		</span>
 		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
@@ -129,18 +126,18 @@ $.ajax({
 			$('#div_alert').showAlert({message: data.result, level: 'danger'});
 			return;
 		}
-		if(data.result || data.result == "true"){
-			$('.Include').attr('data-validation',false);
-			$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
-				.append(' {{Désactiver l\'inculsion}}');
-		}else{
+		if(!data.result || data.result == "false"){
 			$('.Include').attr('data-validation',true);
 			$('.Include').html($('<i class="fa fa-bullseye">'))
 				.append(' {{Activer  l\'inculsion}}');
+		}else{
+			$('.Include').attr('data-validation',false);
+			$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
+				.append(' {{Désactiver l\'inculsion}}');
 		}
 	}
 });
-$('body').on('click','.Include', function () {
+$('.Include').off().on('click', function () {
 	var _el = $(this);
 	$.ajax({
 		type: 'POST',
@@ -159,7 +156,7 @@ $('body').on('click','.Include', function () {
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
 			}
-			
+			alert(_el.attr('data-validation'))
 			if(_el.attr('data-validation') || _el.attr('data-validation') == "true"){
 				_el.attr('data-validation',false);
 				_el.html($('<i class="fa fa-bullseye">'))
