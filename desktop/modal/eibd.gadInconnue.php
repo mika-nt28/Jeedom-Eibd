@@ -126,26 +126,25 @@ $.ajax({
 			$('#div_alert').showAlert({message: data.result, level: 'danger'});
 			return;
 		}
-		if(!data.result || data.result == "false"){
-			$('.Include').attr('data-validation',true);
+		if(data.result == "false"){
+			$('.Include').attr('data-validation',"true");
 			$('.Include').html($('<i class="fa fa-bullseye">'))
 				.append(' {{Activer  l\'inculsion}}');
 		}else{
-			$('.Include').attr('data-validation',false);
+			$('.Include').attr('data-validation',"false");
 			$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
 				.append(' {{Désactiver l\'inculsion}}');
 		}
 	}
 });
 $('.Include').off().on('click', function () {
-	var _el = $(this);
 	$.ajax({
 		type: 'POST',
 		async: false,
 		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
 		data: {
 			action: 'setIsInclude',
-			value: _el.attr('data-validation')
+			value: $('.Include').attr('data-validation')
 		},
 		dataType: 'json',
 		global: false,
@@ -155,18 +154,16 @@ $('.Include').off().on('click', function () {
 			if (data.state != 'ok') {
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
-			}
-			alert(_el.attr('data-validation'))
-			if(_el.attr('data-validation') || _el.attr('data-validation') == "true"){
-				_el.attr('data-validation',false);
-				_el.html($('<i class="fa fa-bullseye">'))
+			}			
+			if($('.Include').attr('data-validation') == "false"){
+				$('.Include').attr('data-validation',"true");
+				$('.Include').html($('<i class="fa fa-bullseye">'))
 					.append(' {{Activer  l\'inculsion}}');
 			}else{
-				_el.attr('data-validation',true);
-				_el.html($('<i class="fa fa-spinner fa-pulse">'))
+				$('.Include').attr('data-validation',"false");
+				$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
 					.append(' {{Désactiver l\'inculsion}}');
 			}
-
 		}
 	});
 });
