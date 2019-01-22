@@ -1,6 +1,5 @@
 $('.templateAction').hide();
 $('.templateAction').first().show();
-
 $('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	//Creation du formulaire du template
 	var form=$(this).closest('form');
@@ -124,4 +123,26 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 			},
 		}
 	});
+});
+
+$('.Template[data-action=add]').on('click', function () {
+	if($('.eqLogicAttr[data-l1key=configuration][data-l2key=typeTemplate]').val()!=""){
+		$('.eqLogicAction[data-action=save]').trigger('click');
+		$.ajax({
+			type: 'POST',   
+			url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+			data:
+			{
+				action: 'AppliTemplate',
+				id:$('.eqLogicAttr[data-l1key=id]').val(),
+				template:$('.eqLogicAttr[data-l1key=configuration][data-l2key=typeTemplate]').val()
+			},
+			dataType: 'json',
+			global: true,
+			error: function(request, status, error) {},
+			success: function(data) {
+				window.location.reload();
+			}
+		});
+	}
 });
