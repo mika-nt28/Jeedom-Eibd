@@ -39,12 +39,13 @@ $('.log').on('click', function() {
 	$('#md_modal').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd').dialog('open');
 });
 $('.GadInconue').on('click', function() {
-	$('#md_GadInconue').dialog({
+  bootbox.dialog({
 		title: "{{Importer les Gad inconnue}}",
-		resizable: true,
-		height: 700,
-		width: 850});
-	$('#md_GadInconue').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd').dialog('open');
+		height: "800px",
+		width: "auto",
+		message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd'),
+		
+	});
 });
 $('.BusMoniteur').on('click', function() {
 	$('#md_BusMoniteur').dialog({
