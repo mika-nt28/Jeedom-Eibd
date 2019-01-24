@@ -46,7 +46,7 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 											}
 										});
 									}
-									eqLogic.cmd[index].logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+']').value();
+									eqLogic.cmd[index].logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+'][data-l2key=logicalId]').value();
 									if (typeof(eqLogic.cmd[index].value) !== 'undefined')
 										eqLogic.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object_id] option:selected').text()+"]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
 								});
