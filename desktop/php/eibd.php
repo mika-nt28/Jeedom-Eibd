@@ -2,6 +2,7 @@
 if (!isConnect('admin')) {
     throw new Exception('{{401 - Accès non autorisé}}');
 }
+include_file('core', 'dpt', 'class', 'eibd');
 sendVarToJS('eqType', 'eibd');
 sendVarToJS('GadLevel',config::byKey('level','eibd'));
 sendVarToJS('AllDpt',Dpt::All_DPT());
