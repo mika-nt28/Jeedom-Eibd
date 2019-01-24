@@ -16,39 +16,53 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 				className: "btn-primary",
 				callback: function () {
 					if($('.EqLogicTemplateAttr[data-l1key=template]').value() != "" && $('.EqLogicTemplateAttr[data-l1key=name]').value() != ""){
-						var eqLogic=template[$('.EqLogicTemplateAttr[data-l1key=template]').value()];
-						eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
-						if (typeof(eqLogic.logicalId) === 'undefined')
-							eqLogic.logicalId=new Object();
-						eqLogic.logicalId=$('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
-						if (typeof(eqLogic.object_id) === 'undefined')
-							eqLogic.object_id=new Object();
-						eqLogic.object_id=$('.EqLogicTemplateAttr[data-l1key=object_id]').value();
-						if (typeof(eqLogic.configuration) === 'undefined')
-							eqLogic.configuration=new Object();
-						eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
-						$.each(eqLogic.cmd,function(index, value){
-							eqLogic.cmd[index].logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+']').value();
-							if (typeof(eqLogic.cmd[index].value) !== 'undefined')
-								eqLogic.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object_id] option:selected').text()+"]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
-						});
-						jeedom.eqLogic.save({
-							type: 'eibd',
-							eqLogics: [eqLogic],
-							error: function (error) {
-								$('#div_alert').showAlert({message: error.message, level: 'danger'});
+						$.ajax({
+							type: 'POST',   
+							url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+							data:
+							{
+								action: 'getTemplate',
+								template:$('.EqLogicTemplateAttr[data-l1key=template]').val()
 							},
-							success: function (_data) {
-								var vars = getUrlVars();
-								var url = 'index.php?';
-								for (var i in vars) {
-									if (i != 'id' && i != 'saveSuccessFull' && i != 'removeSuccessFull') {
-										url += i + '=' + vars[i].replace('#', '') + '&';
+							dataType: 'json',
+							global: true,
+							error: function(request, status, error) {},
+							success: function(data) {
+								var eqLogic=data.result;
+								eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
+								if (typeof(eqLogic.logicalId) === 'undefined')
+									eqLogic.logicalId=new Object();
+								eqLogic.logicalId=$('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
+								if (typeof(eqLogic.object_id) === 'undefined')
+									eqLogic.object_id=new Object();
+								eqLogic.object_id=$('.EqLogicTemplateAttr[data-l1key=object_id]').value();
+								if (typeof(eqLogic.configuration) === 'undefined')
+									eqLogic.configuration=new Object();
+								eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
+								$.each(eqLogic.cmd,function(index, value){
+									eqLogic.cmd[index].logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+']').value();
+									if (typeof(eqLogic.cmd[index].value) !== 'undefined')
+										eqLogic.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object_id] option:selected').text()+"]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
+								});
+								jeedom.eqLogic.save({
+									type: 'eibd',
+									eqLogics: [eqLogic],
+									error: function (error) {
+										$('#div_alert').showAlert({message: error.message, level: 'danger'});
+									},
+									success: function (_data) {
+										var vars = getUrlVars();
+										var url = 'index.php?';
+										for (var i in vars) {
+											if (i != 'id' && i != 'saveSuccessFull' && i != 'removeSuccessFull') {
+												url += i + '=' + vars[i].replace('#', '') + '&';
+											}
+										}
+										modifyWithoutSave = false;
+										url += 'id=' + _data.id + '&saveSuccessFull=1';
+										loadPage(url);
 									}
-								}
-								modifyWithoutSave = false;
-								url += 'id=' + _data.id + '&saveSuccessFull=1';
-								loadPage(url);
+								});
 							}
 						});
 					}
