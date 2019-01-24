@@ -7,34 +7,34 @@ if (!isConnect('admin')) {
 	<div class="col-md-12">
 		<form class="form-horizontal" onsubmit="return false;">
 			<div class="form-group">
-				<label class="col-md-2 control-label">
+				<label class="col-md-5 control-label">
 					{{Nom de l'équipement KNX}}
 					<sup>
 						<i class="fa fa-question-circle tooltips" title="{{Indiquez le nom de votre équipement}}" style="font-size : 1em;color:grey;"></i>
 					</sup>
 				</label>
-				<div class="col-md-3">
+				<div class="col-md-5">
 					<input type="text" class="EqLogicTemplateAttr form-control" data-l1key="name" placeholder="{{Nom de l'équipement KNX}}"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-md-2 control-label ">{{Adresse Physique de l'équipement}}
+				<label class="col-md-5 control-label ">{{Adresse Physique de l'équipement}}
 					<sup>
 						<i class="fa fa-question-circle tooltips" title="{{Indiquez l'adresse physique de votre équipement. Cette information n'est pas obigatoire mais peut etre utile dans certain cas. Pour la trouver, il faut la retrouver sur le logiciel ETS}}" style="font-size : 1em;color:grey;"></i>
 					</sup>
 				</label>
-				<div class="col-md-3">
+				<div class="col-md-5">
 					<input type="text" class="EqLogicTemplateAttr form-control" data-l1key="logicalId"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-md-2 control-label" >
+				<label class="col-md-5 control-label" >
 					{{Objet parent}}
 					<sup>
 						<i class="fa fa-question-circle tooltips" title="{{Indiquez l'objet dans lequel le widget de cette equipement apparaiterai sur le dashboard}}" style="font-size : 1em;color:grey;"></i>
 					</sup>
 				</label>
-				<div class="col-md-3">
+				<div class="col-md-5">
 					<select id="sel_object" class="EqLogicTemplateAttr form-control" data-l1key="object_id">
 						<?php
 						foreach (object::all() as $object) {
@@ -45,17 +45,17 @@ if (!isConnect('admin')) {
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-md-2 control-label" >
+				<label class="col-md-5 control-label" >
 					{{Template de votre équipement}}
 					<sup>
 						<i class="fa fa-question-circle tooltips" title="{{Choisir le template de votre nouvelle equipement}}" style="font-size : 1em;color:grey;"></i>
 					</sup>
 				</label>
-				<div class="col-md-3">
+				<div class="col-md-5">
 					<select class="EqLogicTemplateAttr form-control" data-l1key="template">
 						<?php
-						foreach (eibd::devicesParameters() as $id => $name) {		
-							echo '<option value="' . $id . '">' . $name . '</option>';
+						foreach (eibd::devicesParameters() as $id => $template) {		
+							echo '<option value="' . $id . '">' . $template['name'] . '</option>';
 						}
 						?>
 					</select>
