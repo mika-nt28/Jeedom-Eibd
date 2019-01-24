@@ -115,6 +115,9 @@ try {
 			ajax::success(json_decode(file_get_contents($filename),true));
 		ajax::success(false);
 	}
+  	if (init('action') == 'getTemplate') {
+		ajax::success(eibd::devicesParameters()[init('template')]);
+	}
   	if (init('action') == 'AppliTemplate') {
 		$EqLogic=eqLogic::byId(init('id'));
 		if (is_object($EqLogic)){
