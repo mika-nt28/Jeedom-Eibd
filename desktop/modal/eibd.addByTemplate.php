@@ -99,7 +99,7 @@ if (!isConnect('admin')) {
 							.append($('<div class="col-md-5">')
 								.append($('<div class="input-group">')
 									.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="SameCmd">')
-										.val(value.SameCmd)
+										.val(value.SameCmd))
 									.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="KnxObjectType">')
 										.val(value.configuration.KnxObjectType))
 									.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'">'))
