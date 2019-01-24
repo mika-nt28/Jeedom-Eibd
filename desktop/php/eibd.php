@@ -4,7 +4,6 @@ if (!isConnect('admin')) {
 }
 sendVarToJS('eqType', 'eibd');
 sendVarToJS('GadLevel',config::byKey('level','eibd'));
-sendVarToJS('template',eibd::devicesParameters());
 sendVarToJS('AllDpt',Dpt::All_DPT());
 $eqLogics = eqLogic::byType('eibd');
 ?>
