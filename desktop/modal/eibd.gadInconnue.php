@@ -200,7 +200,7 @@ $('.Ets4Parser').on('click', function() {
 								window.location.reload();
 							}else{
 								UpdateDeviceTable(data.result.Devices)
-								UpdateGadArbo(data.result.GAD,$('.MyAdressGroup'))
+								CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true)
 							}
 						}
 					});
@@ -282,7 +282,7 @@ function getEtsProj () {
 			if (data.result == false) 
 				return;
 			UpdateDeviceTable(data.result.Devices);
-			UpdateGadArbo(data.result.GAD);
+			CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true)
 		}
 	});
 }
@@ -365,40 +365,38 @@ function UpdateDeviceTable(Devices){
 		_el.find("[data-DataPointType="+SelectDpt.replace(/\./g, '-')+"]").css('font-weight','bold');
     	}
 }
-function UpdateGadArbo(GAD){	
-	$('.MyAdressGroup').html('');
-	jQuery.each(GAD,function(Niveau1, Groups1) {
-		var n1 =$('<ul>').hide();
-		if(typeof(Groups1) == 'object'){
-			jQuery.each(Groups1,function(Niveau2, Groups2) {
-				var n2 =$('<ul>').hide();
-				if(typeof(Groups2) == 'object'){
-					jQuery.each(Groups2,function(Niveau3, Parameter) {
-						n2.append($('<li class="AdresseGroupe" data-AdresseGroupe="'+Parameter.AdresseGroupe+'" data-DataPointType="'+Parameter.DataPointType.replace(/\./g, '-')+'">').text(' (' + Parameter.AdresseGroupe + ') '+Niveau3));
-					});	
-				}
-				n1.append($('<li class="Level">').text(Niveau2).append(n2));
-			});	
+function CreateArboressance(data, Arboressance, first){
+	jQuery.each(data,function(Niveau, Parameter) {
+		//if(typeof(Parameter) == 'object'){
+		if(typeof Parameter.AdresseGroupe == "undefined") {
+			Arboressance.append($('<li class="Level">').text(Niveau).append(CreateArboressance(Parameter, $('<ul>').hide(),false)));
+		}else{
+			var DataPointType = Parameter.DataPointType.replace(/\./g, '-');
+			Arboressance.append($('<li class="AdresseGroupe" data-AdresseGroupe="'+Parameter.AdresseGroupe+'" data-DataPointType="'+DataPointType+'">').text(' (' + Parameter.AdresseGroupe + ') '+Niveau));
 		}
-		$('.MyAdressGroup').append($('<li class="Level">').text(Niveau1).append(n1));
 	});
-	$('.MyAdressGroup .Level').off().on('click',function(e){
-		if(!$(this).find('ul:first').is(":visible"))
-			$(this).find('ul:first').show();
-		else
-			$(this).find('ul:first').hide();
-		e.stopPropagation();
-	});
-	$('.MyAdressGroup .AdresseGroupe').off().on('click',function(e){
-		$('.AdresseGroupe').css('font-weight','unset');
-		$('.GadInsert tr').css('font-weight','unset');
-		$(this).css('font-weight','bold');
-		SelectGad=$(this).attr('data-AdresseGroupe');
-		SelectDpt=$(this).attr('data-DataPointType');
-		e.stopPropagation();
-	});
+	if (first){
+		Arboressance.off().on('click','.Level',function(e){
+			if(!$(this).find('ul:first').is(":visible"))
+				$(this).find('ul:first').show();
+			else
+				$(this).find('ul:first').hide();
+			e.stopPropagation();
+		})
+		.on('click','.AdresseGroupe',function(e){
+			$('.AdresseGroupe').css('font-weight','unset');
+			$('.GadInsert tr').css('font-weight','unset');
+			$(this).css('font-weight','bold');
+			SelectGad=$(this).attr('data-AdresseGroupe');
+			SelectDpt=$(this).attr('data-DataPointType');
+			e.stopPropagation();
+		});
+		
 	if(SelectDpt != '')
-		$('.MyAdressGroup').find("[data-DataPointType="+SelectDpt.replace(/\./g, '-')+"]").css('background-color','blue').parent().show();
-	//$('.MyAdressGroup').find("[data-AdressePhysique="+SelectAddr.replace(/\./g, '-')+"]").show();
+		Arboressance.find("[data-DataPointType="+SelectDpt.replace(/\./g, '-')+"]").css('background-color','blue').parent().show();
+	if(SelectAddr != '')
+		$('.MyAdressGroup').find("[data-AdressePhysique="+SelectAddr.replace(/\./g, '-')+"]").show();
+	}
+	return Arboressance;
 }	
 </script>
