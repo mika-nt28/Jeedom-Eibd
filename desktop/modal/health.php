@@ -18,7 +18,7 @@ $eqLogics = eibd::byType('eibd');
 				<th>{{Date création}}</th>
 			</tr>
 		</thead>
-		<tbody style='height:500px;display:block;overflow:scroll'>
+		<tbody style='height:500px;overflow:scroll'>
 		<?php
 			foreach ($eqLogics as $eqLogic) {
 				$file='plugins/eibd/core/config/devices/'.$eqLogic->getConfiguration('typeTemplate').'.png';
