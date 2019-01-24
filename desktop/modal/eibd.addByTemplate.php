@@ -4,8 +4,9 @@ if (!isConnect('admin')) {
 }
 ?>
 <div class="row">
-	<div class="col-md-12">
-		<form class="form-horizontal" onsubmit="return false;">
+	<form class="form-horizontal" onsubmit="return false;">
+		<legend>{{Définition de l'equipement}}</legend>
+		<div class="col-md-12">
 			<div class="form-group">
 				<label class="col-md-5 control-label">
 					{{Nom de l'équipement KNX}}
@@ -53,6 +54,7 @@ if (!isConnect('admin')) {
 				</label>
 				<div class="col-md-5">
 					<select class="EqLogicTemplateAttr form-control" data-l1key="template">
+						<option value="">{{Séléctioner votre template}}</option>
 						<?php
 						foreach (eibd::devicesParameters() as $id => $template) {		
 							echo '<option value="' . $id . '">' . $template['name'] . '</option>';
@@ -60,30 +62,35 @@ if (!isConnect('admin')) {
 						?>
 					</select>
 				</div>
+			</div>		
+		</div>
+		<legend>{{Définition des commandes}}</legend>
+		<div class="col-md-12">
+			<div class="form-horizontal CmdsTempates">
 			</div>
+		</div>
+	</form>		
 	<script>
 	$('.templateAction').hide();
 	$('.templateAction').first().show();
 	$('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
-		//Creation du formulaire du template
-		var form=$(this).closest('form');
-		var cmds=$('<div class="form-horizontal CmdsTempates">');
+		var cmds=$('.CmdsTempates');
+		cmds.html('');
 		$.each(template[$(this).value()].cmd,function(index, value){
 			cmds.append($('<div class="form-group">')
-				    .append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l2key="KnxObjectType">')
-					    .val(value.configuration.KnxObjectType)));
-			cmds.append($('<div class="form-group">')
-				.append($('<label class="col-xs-6 control-label" >')
+				.append($('<label class="col-md-5 control-label" >')
 					.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"))
-				.append($('<div class="col-xs-5">')
+				.append($('<div class="col-md-5">')
 					.append($('<div class="input-group">')
+						.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l2key="KnxObjectType">')
+					    		.val(value.configuration.KnxObjectType))
 						.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'">'))
 						.append($('<span class="input-group-btn">')
 							.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
 								.append($('<i class="fa fa-list-alt">')))))));
+
+					
 		});
-		form.find('.CmdsTempates').remove();
-		form.append(cmds);
 	});
 
 	$('.templateAction').on('click', function () {
