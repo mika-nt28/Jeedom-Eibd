@@ -5,8 +5,8 @@ if (!isConnect('admin')) {
 $eqLogics = eibd::byType('eibd');
 ?>
 <div class="row">
-	<table class="table table-condensed tablesorter" id="table_healthEibd" style="width:300px;display:block">
-		<thead style="height: 40%;">
+	<table class="table table-condensed tablesorter" id="table_healthEibd" style="display:block">
+		<thead>
 			<tr>
 				<th></th>
 				<th>{{ID}}</th>
@@ -18,7 +18,7 @@ $eqLogics = eibd::byType('eibd');
 				<th>{{Date création}}</th>
 			</tr>
 		</thead>
-		<tbody style='height:50px;display:block;overflow:scroll'>
+		<tbody style='height:500px;display:block;overflow:scroll'>
 		<?php
 			foreach ($eqLogics as $eqLogic) {
 				$file='plugins/eibd/core/config/devices/'.$eqLogic->getConfiguration('typeTemplate').'.png';
