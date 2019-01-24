@@ -82,8 +82,8 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 $('#bt_healthEibd').off().on('click', function () {
   	bootbox.dialog({
 		title: "{{Santé des équpements KNX}}",
-		width: "auto",
-		height: "auto",
+		width: "1024px",
+		height: "600px",
 		message: $('<div>').load('index.php?v=d&plugin=eibd&modal=health'),
 		
 	});
@@ -91,8 +91,8 @@ $('#bt_healthEibd').off().on('click', function () {
 $('.log').off().on('click', function() {
   	bootbox.dialog({
 		title: "{{log}}",
-		width: "auto",
-		height: "auto",
+		width: "1024px",
+		height: "600px",
 		message: $('<div>').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd'),
 		
 	});
@@ -100,8 +100,8 @@ $('.log').off().on('click', function() {
 $('.GadInconue').off().on('click', function() {
   	bootbox.dialog({
 		title: "{{Importer les Gad inconnue}}",
-		width: "auto",
-		height: "auto",
+		width: "1024px",
+		height: "600px",
 		message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd'),
 		
 	});
@@ -109,8 +109,8 @@ $('.GadInconue').off().on('click', function() {
 $('.BusMoniteur').off().on('click', function() {
   	bootbox.dialog({
 		title: "{{Moniteur de Bus}}",
-		width: "auto",
-		height: "auto",
+		width: "1024px",
+		height: "600px",
 		message: $('<div>').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd'),
 		
 	});
@@ -121,8 +121,8 @@ $('body').on('click','.bt_selectGadInconnue', function () {
 	var input=$(this).closest('.input-group').find('input');
 	bootbox.dialog({
 		title: "{{Choisir un Gad}}",
-		width: "auto",
-		height: "auto",
+		width: "1024px",
+		height: "600px",
 		message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd&SelectAddr='+SelectAddr+'&SelectDpt='+SelectDpt+'&param'),
 		buttons: {
 			"Annuler": {
