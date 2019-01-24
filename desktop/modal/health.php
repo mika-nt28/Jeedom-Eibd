@@ -4,7 +4,22 @@ if (!isConnect('admin')) {
 }
 $eqLogics = eibd::byType('eibd');
 ?>
-
+<style>
+	table #table_healthEibd {
+	    width: 100%;
+	    display:block;
+	}
+	thead #table_healthEibd {
+	    display: inline-block;
+	    width: 100%;
+	}
+	tbody #table_healthEibd {
+	    height: 200px;
+	    display: inline-block;
+	    width: 100%;
+	    overflow: auto;
+	}
+</style>
 <table class="table table-condensed tablesorter" id="table_healthEibd">
 	<thead>
 		<tr>
