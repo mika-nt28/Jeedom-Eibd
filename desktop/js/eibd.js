@@ -1,6 +1,105 @@
-$('#bt_healthEibd').on('click', function () {
+$('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
+  	bootbox.dialog({
+		title: "{{Ajout d'un équipement avec template}}",
+		message: $('<div>').load('index.php?v=d&modal=eibd.addByTemplate&plugin=eibd&type=eibd'),
+		height: "800px",
+		width: "auto",
+		buttons: {
+			"Annuler": {
+				className: "btn-default",
+				callback: function () {
+					//el.atCaret('insert', result.human);
+				}
+			},
+			success: {
+				label: "Valider",
+				className: "btn-primary",
+				callback: function () {
+					if($('.EqLogicTemplateAttr[data-l1key=template]').value() != "" && $('.EqLogicTemplateAttr[data-l1key=name]').value() != ""){
+						$.ajax({
+							type: 'POST',   
+							url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+							data:
+							{
+								action: 'getTemplate',
+								template:$('.EqLogicTemplateAttr[data-l1key=template]').val()
+							},
+							dataType: 'json',
+							global: true,
+							error: function(request, status, error) {},
+							success: function(data) {
+								var eqLogic=data.result;
+								eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
+								if (typeof(eqLogic.logicalId) === 'undefined')
+									eqLogic.logicalId=new Object();
+								eqLogic.logicalId=$('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
+								if (typeof(eqLogic.object_id) === 'undefined')
+									eqLogic.object_id=new Object();
+								eqLogic.object_id=$('.EqLogicTemplateAttr[data-l1key=object_id]').value();
+								if (typeof(eqLogic.configuration) === 'undefined')
+									eqLogic.configuration=new Object();
+								eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
+								$.each(eqLogic.cmd,function(index, value){
+									eqLogic.cmd[index].logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+']').value();
+									if (typeof(eqLogic.cmd[index].value) !== 'undefined')
+										eqLogic.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object_id] option:selected').text()+"]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
+								});
+								jeedom.eqLogic.save({
+									type: 'eibd',
+									eqLogics: [eqLogic],
+									error: function (error) {
+										$('#div_alert').showAlert({message: error.message, level: 'danger'});
+									},
+									success: function (_data) {
+										var vars = getUrlVars();
+										var url = 'index.php?';
+										for (var i in vars) {
+											if (i != 'id' && i != 'saveSuccessFull' && i != 'removeSuccessFull') {
+												url += i + '=' + vars[i].replace('#', '') + '&';
+											}
+										}
+										modifyWithoutSave = false;
+										url += 'id=' + _data.id + '&saveSuccessFull=1';
+										loadPage(url);
+									}
+								});
+							}
+						});
+					}
+				}
+			},
+		}
+	});
+});
+$('#bt_healthEibd').off().on('click', function () {
 	$('#md_health').dialog({title: "{{Santé des équpements KNX}}"});
 	$('#md_health').load('index.php?v=d&plugin=eibd&modal=health').dialog('open');
+});
+$('.log').off().on('click', function() {
+	$('#md_modal').dialog({
+		title: "{{log}}",
+		position: 'center',
+		resizable: true,
+		height: 600,
+		width: 850});
+	$('#md_modal').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd').dialog('open');
+});
+$('.GadInconue').off().on('click', function() {
+  	bootbox.dialog({
+		title: "{{Importer les Gad inconnue}}",
+		height: "800px",
+		width: "auto",
+		message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd'),
+		
+	});
+});
+$('.BusMoniteur').off().on('click', function() {
+	$('#md_BusMoniteur').dialog({
+		title: "{{Bus Moniteur}}",
+		resizable: true,
+		height: 700,
+		width: 850});
+	$('#md_BusMoniteur').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd').dialog('open');
 });
 $('body').on('click','.bt_selectGadInconnue', function () {
 	var SelectAddr=$(this).closest('body').find('.form-control[data-l1key=logicalId]').val();	
@@ -28,32 +127,6 @@ $('body').on('click','.bt_selectGadInconnue', function () {
 			},
 		}
 	});
-});
-$('.log').on('click', function() {
-	$('#md_modal').dialog({
-		title: "{{log}}",
-		position: 'center',
-		resizable: true,
-		height: 600,
-		width: 850});
-	$('#md_modal').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd').dialog('open');
-});
-$('.GadInconue').on('click', function() {
-  bootbox.dialog({
-		title: "{{Importer les Gad inconnue}}",
-		height: "800px",
-		width: "auto",
-		message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd'),
-		
-	});
-});
-$('.BusMoniteur').on('click', function() {
-	$('#md_BusMoniteur').dialog({
-		title: "{{Bus Moniteur}}",
-		resizable: true,
-		height: 700,
-		width: 850});
-	$('#md_BusMoniteur').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd').dialog('open');
 });
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $(".eqLogicAttr[data-l1key=configuration][data-l2key=device]").html($(".eqLogicAttr[data-l1key=configuration][data-l2key=device] option").sort(function (a, b) {
@@ -422,6 +495,27 @@ function addCmdToTable(_cmd) {
 	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');	
 	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
+$('.Template[data-action=add]').off().on('click', function () {
+	if($('.eqLogicAttr[data-l1key=configuration][data-l2key=typeTemplate]').val()!=""){
+		$('.eqLogicAction[data-action=save]').trigger('click');
+		$.ajax({
+			type: 'POST',   
+			url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+			data:
+			{
+				action: 'AppliTemplate',
+				id:$('.eqLogicAttr[data-l1key=id]').val(),
+				template:$('.eqLogicAttr[data-l1key=configuration][data-l2key=typeTemplate]').val()
+			},
+			dataType: 'json',
+			global: true,
+			error: function(request, status, error) {},
+			success: function(data) {
+				window.location.reload();
+			}
+		});
+	}
+});
 $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]', function() {
 	DptOption($(this).val(),$(this).closest('.cmd').find('.option'));
 	if ($(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val() == '')

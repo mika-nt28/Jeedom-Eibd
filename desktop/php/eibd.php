@@ -4,7 +4,6 @@ if (!isConnect('admin')) {
 }
 sendVarToJS('eqType', 'eibd');
 sendVarToJS('GadLevel',config::byKey('level','eibd'));
-sendVarToJS('template',eibd::devicesParameters());
 sendVarToJS('AllDpt',Dpt::All_DPT());
 $eqLogics = eqLogic::byType('eibd');
 ?>
@@ -253,7 +252,6 @@ $eqLogics = eqLogic::byType('eibd');
 <div id="md_GadInconue"></div>
 <div id="md_BusMoniteur"></div>
 <?php 
-include_file('desktop', 'template', 'js', 'eibd');
 include_file('desktop', 'eibd', 'js', 'eibd');
 include_file('core', 'plugin.template', 'js'); 
 ?>
