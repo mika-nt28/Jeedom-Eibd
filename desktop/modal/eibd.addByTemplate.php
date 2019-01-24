@@ -71,38 +71,38 @@ if (!isConnect('admin')) {
 		</div>
 	</form>		
 	<script>
-	$('.templateAction').hide();
-	$('.templateAction').first().show();
-	$('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
-		var cmds=$('.CmdsTempates');
-		cmds.html('');
-		$.each(template[$(this).value()].cmd,function(index, value){
-			cmds.append($('<div class="form-group">')
-				.append($('<label class="col-md-5 control-label" >')
-					.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"))
-				.append($('<div class="col-md-5">')
-					.append($('<div class="input-group">')
-						.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l2key="KnxObjectType">')
-					    		.val(value.configuration.KnxObjectType))
-						.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'">'))
-						.append($('<span class="input-group-btn">')
-							.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
-								.append($('<i class="fa fa-list-alt">')))))));
+		$('.EqLogicTemplateAttr[data-l1key=template]').off().on('change', function () {
+			var cmds=$('.CmdsTempates');
+			cmds.html('');
+			$.ajax({
+				type: 'POST',   
+				url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+				data:
+				{
+					action: 'getTemplate',
+					template:$(this).val()
+				},
+				dataType: 'json',
+				global: true,
+				error: function(request, status, error) {},
+				success: function(data) {
+					$.each(data.result.cmd,function(index, value){
+						cmds.append($('<div class="form-group">')
+							.append($('<label class="col-md-5 control-label" >')
+								.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"))
+							.append($('<div class="col-md-5">')
+								.append($('<div class="input-group">')
+									.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l2key="KnxObjectType">')
+										.val(value.configuration.KnxObjectType))
+									.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'">'))
+									.append($('<span class="input-group-btn">')
+										.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
+											.append($('<i class="fa fa-list-alt">')))))));
 
-					
+
+					});
+				}
+			});
 		});
-	});
-
-	$('.templateAction').on('click', function () {
-		$('.eqLogicThumbnailContainer').hide();
-		$('.templateAction').removeClass('btn btn-primary');
-		$(this).addClass('btn btn-primary');
-		$('.eqLogicDisplayCard').hide();
-		if($(this).attr('data-template') == '')
-			$('.eqLogicDisplayCard').show();
-		else
-			$('.eqLogicDisplayCard[data-template='+$(this).attr('data-template')+']').show();
-		$('.eqLogicThumbnailContainer').show();
-	});
 	</script>
 </div>
