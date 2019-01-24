@@ -89,7 +89,7 @@ if (!isConnect('admin')) {
 					$.each(data.result.cmd,function(index, value){
 						var isExist = false;
 						if(typeof value.SameCmd != "undefined") {
-							$('.CmdEqLogicTemplateAttr[data-l1key=SameCmd]').each(function(){
+							$('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
 								if($(this).val() == value.SameCmd){
 									isExist = true;
 									return;
@@ -102,9 +102,9 @@ if (!isConnect('admin')) {
 									.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"))
 								.append($('<div class="col-md-5">')
 									.append($('<div class="input-group">')
-										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="SameCmd">')
+										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'" data-l2key="SameCmd">')
 											.val(value.SameCmd))
-										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="KnxObjectType">')
+										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'" data-l2key="KnxObjectType">')
 											.val(value.configuration.KnxObjectType))
 										.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'">'))
 										.append($('<span class="input-group-btn">')
