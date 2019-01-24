@@ -4,9 +4,9 @@ if (!isConnect('admin')) {
 }
 ?>
 <div class="row">
-	<form class="form-horizontal" onsubmit="return false;">
+	<form class="form-horizontal" onsubmit="return false;" style="height: 500px;">
 		<legend>{{Définition de l'equipement}}</legend>
-		<div class="col-md-12">
+		<div class="col-md-12"  style="height: 40%;">
 			<div class="form-group">
 				<label class="col-md-5 control-label">
 					{{Nom de l'équipement KNX}}
@@ -65,7 +65,7 @@ if (!isConnect('admin')) {
 			</div>		
 		</div>
 		<legend>{{Définition des commandes}}</legend>
-		<div class="col-md-12">
+		<div class="col-md-12" style="height: 40%;overflow: auto;">
 			<div class="form-horizontal CmdsTempates">
 			</div>
 		</div>
