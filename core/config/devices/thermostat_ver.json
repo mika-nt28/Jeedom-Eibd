@@ -170,7 +170,7 @@
 				"value":"Mode de fonctionnement",
 				"isVisible":"1"
 			},{
-				"name":"Verrouillage - Info",
+				"name":"Etat Verrouillage",
 				"type":"info",
 				"subType":"binary",
 				"isHistorized":"1",
@@ -189,6 +189,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Verrouillage",
+				"SameCmd":"Verrouillage|Verrouillage - On|Verrouillage - Off",
 				"type":"action",
 				"subType":"other",
 				"configuration":{
@@ -206,10 +207,11 @@
 					"dashboard": "lock",
 					"mobile": "lock"
 				},
-				"value":"Verrouillage - Info",
+				"value":"Etat Verrouillage",
 				"isVisible":"1"
 			},{
 				"name":"Verrouillage - On",
+				"SameCmd":"Verrouillage|Verrouillage - On|Verrouillage - Off",
 				"type":"action",
 				"subType":"other",
 				"configuration":{
@@ -224,10 +226,11 @@
 					"subTypeAuto":"1",
 					"noBatterieCheck":"0"
 				},
-				"value":"Verrouillage - Info",
+				"value":"Etat Verrouillage",
 				"isVisible":"0"
 			},{
 				"name":"Verrouillage - Off",
+				"SameCmd":"Verrouillage|Verrouillage - On|Verrouillage - Off",
 				"type":"action",
 				"subType":"other",
 				"configuration":{
@@ -242,7 +245,7 @@
 					"subTypeAuto":"1",
 					"noBatterieCheck":"0"
 				},
-				"value":"Verrouillage - Info",
+				"value":"Etat Verrouillage",
 				"isVisible":"0"
 			}
 		]
