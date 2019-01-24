@@ -5,7 +5,7 @@ if (!isConnect('admin')) {
 $eqLogics = eibd::byType('eibd');
 ?>
 <div class="row">
-	<table class="table table-condensed tablesorter" id="table_healthEibd" style="display:block">
+	<table class="table table-condensed tablesorter" id="table_healthEibd">
 		<thead>
 			<tr>
 				<th></th>
