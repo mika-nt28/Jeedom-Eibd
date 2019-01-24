@@ -87,19 +87,25 @@ if (!isConnect('admin')) {
 				error: function(request, status, error) {},
 				success: function(data) {
 					$.each(data.result.cmd,function(index, value){
-						if(typeof value.SameCmd == "undefined" || $('.'+value.SameCmd).length == 0) {
-							cmds.append($('<div class="form-group '+value.SameCmd+'">')
-								.append($('<label class="col-md-5 control-label" >')
-									.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"))
-								.append($('<div class="col-md-5">')
-									.append($('<div class="input-group">')
-										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l2key="KnxObjectType">')
-											.val(value.configuration.KnxObjectType))
-										.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'">'))
-										.append($('<span class="input-group-btn">')
-											.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
-												.append($('<i class="fa fa-list-alt">')))))));
+						if(typeof value.SameCmd != "undefined") {
+							$('.CmdEqLogicTemplateAttr[data-l1key=SameCmd]').each(function(){
+								if($(this).val() == value.SameCmd)
+									continue;
+							});							
 						}
+						cmds.append($('<div class="form-group">')
+							.append($('<label class="col-md-5 control-label" >')
+								.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"))
+							.append($('<div class="col-md-5">')
+								.append($('<div class="input-group">')
+									.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="SameCmd">')
+										.val(value.SameCmd)
+									.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="KnxObjectType">')
+										.val(value.configuration.KnxObjectType))
+									.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'">'))
+									.append($('<span class="input-group-btn">')
+										.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
+											.append($('<i class="fa fa-list-alt">')))))));
 					});
 				}
 			});
