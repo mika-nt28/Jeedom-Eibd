@@ -106,7 +106,7 @@ if (!isConnect('admin')) {
 											.val(value.SameCmd))
 										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'" data-l2key="KnxObjectType">')
 											.val(value.configuration.KnxObjectType))
-										.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'">'))
+										.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'" data-l2key="logicalId">'))
 										.append($('<span class="input-group-btn">')
 											.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
 												.append($('<i class="fa fa-list-alt">')))))));
