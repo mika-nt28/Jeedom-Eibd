@@ -80,17 +80,22 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 	});
 });
 $('#bt_healthEibd').off().on('click', function () {
-	$('#md_health').dialog({title: "{{Santé des équpements KNX}}"});
-	$('#md_health').load('index.php?v=d&plugin=eibd&modal=health').dialog('open');
+  	bootbox.dialog({
+		title: "{{Santé des équpements KNX}}",
+		height: "800px",
+		width: "auto",
+		message: $('<div>').load('index.php?v=d&plugin=eibd&modal=health'),
+		
+	});
 });
 $('.log').off().on('click', function() {
-	$('#md_modal').dialog({
+  	bootbox.dialog({
 		title: "{{log}}",
-		position: 'center',
-		resizable: true,
-		height: 600,
-		width: 850});
-	$('#md_modal').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd').dialog('open');
+		height: "800px",
+		width: "auto",
+		message: $('<div>').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd'),
+		
+	});
 });
 $('.GadInconue').off().on('click', function() {
   	bootbox.dialog({
@@ -102,12 +107,13 @@ $('.GadInconue').off().on('click', function() {
 	});
 });
 $('.BusMoniteur').off().on('click', function() {
-	$('#md_BusMoniteur').dialog({
-		title: "{{Bus Moniteur}}",
-		resizable: true,
-		height: 700,
-		width: 850});
-	$('#md_BusMoniteur').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd').dialog('open');
+  	bootbox.dialog({
+		title: "{{Moniteur de Bus}}",
+		height: "800px",
+		width: "auto",
+		message: $('<div>').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd'),
+		
+	});
 });
 $('body').on('click','.bt_selectGadInconnue', function () {
 	var SelectAddr=$(this).closest('body').find('.form-control[data-l1key=logicalId]').val();	
