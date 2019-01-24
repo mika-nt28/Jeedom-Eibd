@@ -7,9 +7,12 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.min', 'js');
 include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'js');
 if(isset($_REQUEST['SelectAddr']))
 	echo '<script>var SelectAddr="'.$_REQUEST['SelectAddr'].'";</script>';
+else
+	echo '<script>var SelectAddr="";</script>';
 if(isset($_REQUEST['SelectDpt']))
 	echo '<script>var SelectDpt="'.$_REQUEST['SelectDpt'].'";</script>';
-//	echo '<script>var SelectDpt="'.preg_replace('/.[0-9]+/', '.', $_REQUEST['SelectDpt']).'";</script>';
+else
+	echo '<script>var SelectDpt="";</script>';
 ?>
 <style>
 	table #table_GadInconue {
