@@ -3,6 +3,9 @@ if (!isConnect('admin')) {
 	throw new Exception('401 Unauthorized');
 }
 $eqLogics = eibd::byType('eibd');
+include_file('3rdparty', 'jquery.tablesorter/theme.bootstrap', 'css');
+include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.min', 'js');
+include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'js');
 ?>
 <div class="row">
 	<table id="table_healthEibd" class="table table-bordered table-condensed tablesorter">
