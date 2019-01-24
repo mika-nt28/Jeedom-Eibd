@@ -90,7 +90,7 @@ if (!isConnect('admin')) {
 						if(typeof value.SameCmd != "undefined") {
 							$('.CmdEqLogicTemplateAttr[data-l1key=SameCmd]').each(function(){
 								if($(this).val() == value.SameCmd)
-									continue;
+									return;
 							});							
 						}
 						cmds.append($('<div class="form-group">')
