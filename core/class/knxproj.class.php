@@ -131,12 +131,10 @@ class knxproj {
                       				$this->Devices[$DeviceId]['DeviceName']=$this->getCatalogue($DeviceProductRefId);
 						$DeviceAddress=$this->xml_attribute($Device, 'Address');
 						$this->Devices[$DeviceId]['AdressePhysique']=$AreaAddress.'.'.$LineAddress.'.'.$DeviceAddress;
-						$this->getCatalogue();
 						foreach($Device->children() as $ComObjectInstanceRefs){
 							if($ComObjectInstanceRefs->getName() == 'ComObjectInstanceRefs'){
 								foreach($ComObjectInstanceRefs->children() as $ComObjectInstanceRef){
 									$DataPointType=explode('-',$this->xml_attribute($ComObjectInstanceRef, 'DatapointType'));
-									if ($DataPointType[1] >0)
 									foreach($ComObjectInstanceRef->children() as $Connector){
 										foreach($Connector->children() as $Commande)
 											$this->Devices[$DeviceId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
