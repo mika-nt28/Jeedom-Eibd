@@ -291,6 +291,14 @@ $('body').on('click', '.GadInsert tbody tr', function(){
 	$(this).closest('tr').css('font-weight','bold');
 	SelectGad = $(this).closest('tr').find('.AdresseGroupe').text();
 	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
+})
+.on('dblclick','.AdresseGroupe',function(e){
+	$('.AdresseGroupe').css('font-weight','unset');
+	$('.GadInsert tr').css('font-weight','unset');
+	$(this).css('font-weight','bold');
+	SelectGad=$(this).attr('data-AdresseGroupe');
+	SelectDpt=$(this).attr('data-DataPointType');
+	$(this).closest('.modal-content').find('button[data-bb-handler=success]').trigger('click');
 });
 function removeInCache(gad){
 	$.ajax({
@@ -362,7 +370,17 @@ function CreateArboressance(data, Arboressance, first){
 			SelectGad=$(this).attr('data-AdresseGroupe');
 			SelectDpt=$(this).attr('data-DataPointType');
 			e.stopPropagation();
+		})
+		.on('dblclick','.AdresseGroupe',function(e){
+			$('.AdresseGroupe').css('font-weight','unset');
+			$('.GadInsert tr').css('font-weight','unset');
+			$(this).css('font-weight','bold');
+			SelectGad=$(this).attr('data-AdresseGroupe');
+			SelectDpt=$(this).attr('data-DataPointType');
+			e.stopPropagation();
+			$(this).closest('.modal-content').find('button[data-bb-handler=success]').trigger('click');
 		});
+		
 		
 	if(SelectDpt != '')
 		Arboressance.find("[data-DataPointType="+SelectDpt.replace(/\./g, '-')+"]").css('background-color','blue').css('color','white').parent().show();
