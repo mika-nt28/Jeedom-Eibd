@@ -186,7 +186,7 @@ $('.Ets4Parser').on('click', function() {
 						global: true,
 						error: function(request, status, error) {},
 						success: function(data) {
-							if($('body .EtsParserDiv .EtsParseParameter[data-l1key=createEqLogic]').val()){
+							if($('body .EtsParserDiv .EtsParseParameter[data-l1key=createEqLogic]').checked){
 								window.location.reload();
 							}else{
 								UpdateDeviceTable(data.result.Devices)
@@ -336,6 +336,8 @@ function UpdateDeviceTable(Devices){
 	$("#table_Devices .tablesorter-filter[data-column=4]").trigger('keyup');
 }
 function CreateArboressance(data, Arboressance, first){
+	if (first)
+		Arboressance.html('');
 	jQuery.each(data,function(Niveau, Parameter) {
 		//if(typeof(Parameter) == 'object'){
 		if(typeof Parameter.AdresseGroupe == "undefined") {
