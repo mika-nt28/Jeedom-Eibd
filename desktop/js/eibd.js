@@ -1,12 +1,15 @@
 function searchSameCmd(eqLogic,index){
 	if (typeof(eqLogic.cmd[index].SameCmd) !== 'undefined'){
+      		var GAD='';
 		$('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
-			if($(this).val() == eqLogic.cmd[index].SameCmd)
-				return $('.CmdEqLogicTemplateAttr[data-l1key='+$(this).attr('data-l1key')+'][data-l2key=logicalId]').val();
-		});
+			if($(this).val() == eqLogic.cmd[index].SameCmd){
+				GAD =  $('.CmdEqLogicTemplateAttr[data-l1key='+$(this).attr('data-l1key')+'][data-l2key=logicalId]').val();
+         			return GAD;
+			}
+         	});
+         	return GAD;
 	}
-	return $('.CmdEqLogicTemplateAttr[data-l1key='+index+'][data-l2key=logicalId]').value();
-									
+	return $('.CmdEqLogicTemplateAttr[data-l1key='+index+'][data-l2key=logicalId]').value();									
 }
 $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
   	bootbox.dialog({
