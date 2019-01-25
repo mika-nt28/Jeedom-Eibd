@@ -36,10 +36,6 @@ else
 			<i class="fa fa-tachometer"></i> {{Inconnue}}</a>
 	</li>
 	<li role="presentation" class="">
-		<a href="#Device2Tab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-			<i class="fa fa-list-alt"></i> {{Equipement}}</a>
-	</li>
-	<li role="presentation" class="">
 		<a href="#DeviceTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
 			<i class="fa fa-list-alt"></i> {{Equipement}}</a>
 	</li>
@@ -72,7 +68,7 @@ else
 			<tbody></tbody>
 		</table>
 	</div>
-	<div role="tabpanel" class="tab-pane" id="Device2Tab">
+	<div role="tabpanel" class="tab-pane" id="DeviceTab">
 		<span class="pull-right">
 			<a class="btn btn-warning btn-xs Ets4Parser" >
 				<i class="fa fa-cloud-upload"></i>
@@ -92,15 +88,6 @@ else
 			<tbody></tbody>
 		</table>
 	</div>
-	<div role="tabpanel" class="tab-pane" id="DeviceTab">
-		<span class="pull-right">
-			<a class="btn btn-warning btn-xs Ets4Parser" >
-				<i class="fa fa-cloud-upload"></i>
-				{{Importer projet KNX}}
-			</a> 
-		</span>
-		<ul class="MyDeviceGroup GadSortable ui-sortable"></ul>
-	</div>
 	<div role="tabpanel" class="tab-pane" id="AdressTab">
 		<span class="pull-right">
 			<a class="btn btn-warning btn-xs Ets4Parser" >
@@ -108,7 +95,7 @@ else
 				{{Importer projet KNX}}
 			</a> 
 		</span>
-		<ul class="MyAdressGroup GadSortable ui-sortable"></ul>
+		<ul class="MyAdressGroup"></ul>
 	</div>
 </div>
 
@@ -199,11 +186,11 @@ $('.Ets4Parser').on('click', function() {
 						global: true,
 						error: function(request, status, error) {},
 						success: function(data) {
-							if($('body .EtsParserDiv .EtsParseParameter[data-l1key=createEqLogic]').val()){
+							if($('body .EtsParserDiv .EtsParseParameter[data-l1key=createEqLogic]').checked){
 								window.location.reload();
 							}else{
 								UpdateDeviceTable(data.result.Devices)
-								CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true)
+								CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true);
 							}
 						}
 					});
@@ -285,7 +272,7 @@ function getEtsProj () {
 			if (data.result == false) 
 				return;
 			UpdateDeviceTable(data.result.Devices);
-			CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true)
+			CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true);
 		}
 	});
 }
@@ -304,6 +291,14 @@ $('body').on('click', '.GadInsert tbody tr', function(){
 	$(this).closest('tr').css('font-weight','bold');
 	SelectGad = $(this).closest('tr').find('.AdresseGroupe').text();
 	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
+})
+.on('dblclick','.AdresseGroupe',function(e){
+	$('.AdresseGroupe').css('font-weight','unset');
+	$('.GadInsert tr').css('font-weight','unset');
+	$(this).css('font-weight','bold');
+	SelectGad=$(this).attr('data-AdresseGroupe');
+	SelectDpt=$(this).attr('data-DataPointType');
+	$(this).closest('.modal-content').find('button[data-bb-handler=success]').trigger('click');
 });
 function removeInCache(gad){
 	$.ajax({
@@ -326,12 +321,9 @@ function removeInCache(gad){
 	});
 }
 function UpdateDeviceTable(Devices){	
-	$('.MyDeviceGroup').html('');
 	$('#table_Devices tbody').html('');
 	jQuery.each(Devices,function(EquipementId, Equipement) {
-		var deviceCmd =$('<ul class="GadSortable ui-sortable">').hide();
 		jQuery.each(Equipement.Cmd,function(CmdId, Cmd) {
-			deviceCmd.append($('<li class="cursor ui-sortable-handle deviceCmd" data-AdresseGroupe="'+Cmd.AdresseGroupe+'" data-DataPointType="'+Cmd.DataPointType.replace(/\./g, '-')+'">').text(Cmd.cmdName));	
 			var tr=$("<tr>");
 			if (typeof(Equipement.DeviceName) !== 'undefined') 
 				tr.append($("<td class='DeviceName'>").text(Equipement.DeviceName));
@@ -346,29 +338,14 @@ function UpdateDeviceTable(Devices){
 			tr.append($("<td class='DataPointType'>").text(Cmd.DataPointType));
 			$('#table_Devices tbody').append(tr);
 		});	
-		$('.MyDeviceGroup').append($('<li class="cursor ui-sortable-handle" data-AdressePhysique="'+Equipement.AdressePhysique.replace(/\./g, '-')+'">').text(Equipement.DeviceName).append(deviceCmd));
-	});				
+		});				
 	$('#table_Devices').trigger('update');
 	$("#table_Devices .tablesorter-filter[data-column=1]").trigger('keyup');
 	$("#table_Devices .tablesorter-filter[data-column=4]").trigger('keyup');
-	
-	$('.MyDeviceGroup .cursor').off().on('click',function(e){
-		if(!$(this).find('ul:first').is(":visible"))
-			$(this).find('ul:first').show();
-		else
-			$(this).find('ul:first').hide();
-		e.stopPropagation();
-	});
-  	var _el=$('.MyDeviceGroup');
-	if(SelectAddr != ''){
-		_el= _el.find("[data-AdressePhysique="+SelectAddr.replace(/\./g, '-')+"] ul");
-  		_el.show();
-   	}
-	if(SelectDpt != ''){
-		_el.find("[data-DataPointType="+SelectDpt.replace(/\./g, '-')+"]").css('font-weight','bold');
-    	}
 }
 function CreateArboressance(data, Arboressance, first){
+	if (first)
+		Arboressance.html('');
 	jQuery.each(data,function(Niveau, Parameter) {
 		//if(typeof(Parameter) == 'object'){
 		if(typeof Parameter.AdresseGroupe == "undefined") {
@@ -393,10 +370,20 @@ function CreateArboressance(data, Arboressance, first){
 			SelectGad=$(this).attr('data-AdresseGroupe');
 			SelectDpt=$(this).attr('data-DataPointType');
 			e.stopPropagation();
+		})
+		.on('dblclick','.AdresseGroupe',function(e){
+			$('.AdresseGroupe').css('font-weight','unset');
+			$('.GadInsert tr').css('font-weight','unset');
+			$(this).css('font-weight','bold');
+			SelectGad=$(this).attr('data-AdresseGroupe');
+			SelectDpt=$(this).attr('data-DataPointType');
+			e.stopPropagation();
+			$(this).closest('.modal-content').find('button[data-bb-handler=success]').trigger('click');
 		});
 		
+		
 	if(SelectDpt != '')
-		Arboressance.find("[data-DataPointType="+SelectDpt.replace(/\./g, '-')+"]").css('background-color','blue').parent().show();
+		Arboressance.find("[data-DataPointType="+SelectDpt.replace(/\./g, '-')+"]").css('background-color','blue').css('color','white').parent().show();
 	if(SelectAddr != '')
 		$('.MyAdressGroup').find("[data-AdressePhysique="+SelectAddr.replace(/\./g, '-')+"]").show();
 	}
