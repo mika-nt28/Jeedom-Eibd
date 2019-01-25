@@ -93,8 +93,8 @@ class knxproj {
 			if($GroupRange->getName() == 'GroupAddress'){
 				config::save('level',$NbLevel,'eibd');
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRange, 'Address'));
-				$DataPointType=$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
 				$GroupId=$this->xml_attribute($GroupRange, 'Id');
+				$DataPointType=$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
 				$Level[$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
 			}else{
 				$Level[$GroupName]=$this->getLevel($GroupRange,$NbLevel);
