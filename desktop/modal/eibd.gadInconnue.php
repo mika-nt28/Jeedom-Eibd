@@ -382,8 +382,22 @@ function CreateArboressance(data, Arboressance, first){
 		});
 		
 		
-	if(SelectDpt != '')
-		Arboressance.find("[data-DataPointType="+SelectDpt.replace(/\./g, '-')+"]").css('background-color','blue').css('color','white').parent().show();
+	if(SelectDpt != ''){
+		var SelectDptId = SelectDpt.replace(/\./g, '-');
+		$.each(Arboressance.find(".AdresseGroupe"),function() {
+			if($(this).attr("data-DataPointType") == SelectDptId){
+				$(this).css('background-color','blue');
+				$(this).css('color','white');
+				$(this).parent().show();
+				$(this).parent().parent().show();
+			}
+			else if($(this).attr("data-DataPointType").replace($(this).attr("data-DataPointType").substr(-3), '') == SelectDptId.replace(SelectDptId.substr(-3), '')){
+				$(this).css('background-color','yellow');
+				$(this).parent().show();
+				$(this).parent().parent().show();
+			}
+		});
+	}
 	if(SelectAddr != '')
 		$('.MyAdressGroup').find("[data-AdressePhysique="+SelectAddr.replace(/\./g, '-')+"]").show();
 	}
