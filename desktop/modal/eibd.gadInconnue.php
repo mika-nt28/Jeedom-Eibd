@@ -100,6 +100,7 @@ else
 </div>
 
 <script>
+var KnxGadInconueRefresh = null;
 $.ajax({
 	type: 'POST',
 	async: false,
@@ -240,11 +241,9 @@ function getKnxGadInconue () {
 			$('#table_GadInconue').trigger('update');
 			$("#table_GadInconue .tablesorter-filter[data-column=0]").trigger('keyup');
 			$("#table_GadInconue .tablesorter-filter[data-column=2]").trigger('keyup');
-			if ($('#md_modal').dialog('isOpen') === true) {
-				setTimeout(function() {
-					getKnxGadInconue()
-				}, 10000);
-			}
+			KnxGadInconueRefresh=setTimeout(function() {
+				getKnxGadInconue()
+			}, 10000);
 		}
 	});
 }
