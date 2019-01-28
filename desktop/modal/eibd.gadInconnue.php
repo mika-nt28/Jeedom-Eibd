@@ -387,12 +387,12 @@ function CreateArboressance(data, Arboressance, first){
 					$(this).css('background-color','blue');
 					$(this).css('color','white');
 					$(this).parent().show();
-					$(this).parent().parent().show();
+					$(this).parent().parent().parent().show();
 				}
 				else if($(this).attr("data-DataPointType").replace($(this).attr("data-DataPointType").substr(-3), '') == SelectDptId.replace(SelectDptId.substr(-3), '')){
 					$(this).css('background-color','yellow');
 					$(this).parent().show();
-					$(this).parent().parent().show();
+					$(this).parent().parent().parent().show();
 				}
 			});
 		}
