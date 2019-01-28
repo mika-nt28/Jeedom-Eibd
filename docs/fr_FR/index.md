@@ -206,6 +206,7 @@ Pour le débugage d'une configuration défaillante, il est aussi possible de fil
 Avec le bus monitor vous allez pouvoir analyser ce qui se passe sur votre bus et ce que comprend Jeedom au bus.
 
 Le bus monitor affiche l'adresse physique de l’équipement, l'adresse de groupe, la data en hexa et sa conversion
+
 Adresses de groupe
 ==================
 
