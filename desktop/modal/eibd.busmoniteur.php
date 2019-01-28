@@ -27,7 +27,7 @@ initTableSorter();
 $('.BusMonitorAction[data-action=remove]').off().on('click', function () {
 	$('#table_BusMonitor tbody tr').remove();
 });	
-$('body').off().on('eibd::monitor', function (_event,_options) {
+$('body').off('eibd::monitor').on('eibd::monitor', function (_event,_options) {
 	var monitors=jQuery.parseJSON(_options);
 	$('#table_BusMonitor tbody').prepend($("<tr>")
 		.append($("<td>").text(monitors.datetime))
