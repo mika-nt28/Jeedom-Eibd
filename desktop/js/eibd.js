@@ -101,7 +101,9 @@ $('.GadInconue').off().on('click', function() {
   	bootbox.dialog({
 		title: "{{Importer les Gad inconnue}}",
 		message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd'),
-		
+		onEscape:  function () {
+			clearTimeout(KnxGadInconueRefresh);			
+		}		
 	});
 });
 $('.BusMoniteur').off().on('click', function() {
@@ -119,18 +121,21 @@ $('body').on('click','.bt_selectGadInconnue', function () {
 	bootbox.dialog({
 		title: "{{Choisir un Gad}}",
 		message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd&SelectAddr='+SelectAddr+'&SelectDpt='+SelectDpt+'&param'),
+		onEscape:  function () {
+			clearTimeout(KnxGadInconueRefresh);			
+		},
 		buttons: {
 			"Annuler": {
 				className: "btn-default",
 				callback: function () {
-					//el.atCaret('insert', result.human);
+					clearTimeout(KnxGadInconueRefresh);	
 				}
 			},
 			success: {
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
-					//input.closest('.modal-body').find('.form-control[data-l1key=logicalId]').val(SelectAddr);	
+					clearTimeout(KnxGadInconueRefresh);		
 					input.val(SelectGad);
 				}
 			},
