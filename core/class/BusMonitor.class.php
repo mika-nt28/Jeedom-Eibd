@@ -37,18 +37,16 @@ class BusMonitorTraitement /*extends Thread*/{
 				$monitor['DataPointType'] = $Commande->getConfiguration('KnxObjectType');
 			}
 		}else {
-			$dpt=Dpt::getDptFromData($data["Data"]);
+			$dpt=Dpt::getDptFromData($this->Data);
 			if($dpt!=false){
 				$monitor['valeur'] = Dpt::DptSelectDecode($dpt, $this->Data);
 				$monitor['DataPointType']= $dpt;
-				if(config::byKey('isInclude','eibd'))
-					//event::add('eibd::GadInconnue', json_encode($monitor));
-					eibd::addCacheNoGad($monitor);
-				
 			}else
 				$monitor['valeur']="Impossible de convertir la valeur";
-			$monitor['cmdJeedom']= "La commande n'exites pas";
-			log::add('eibd', 'debug', 'Aucune commande avec l\'adresse de groupe  '.$this->AdrGroup.' n\'a pas été trouvée');
+			$monitor['cmdJeedom']= "La commande n’existes pas";
+			if(cache::byKey('eibd::isInclude')->getValue("false") == "true")			
+				$this->addCache($monitor);
+			log::add('eibd', 'debug', '[Bus Monitor] : Aucune commande avec l\'adresse de groupe  '.$this->AdrGroup.' n\'a pas été trouvée');
 		}
 		$monitor['datetime'] = date('d-m-Y H:i:s');
 		event::add('eibd::monitor', json_encode($monitor));
@@ -70,6 +68,29 @@ class BusMonitorTraitement /*extends Thread*/{
 				return sprintf ("%d", $addr);
 			break;
 		}
+	}
+	private function addCache($_parameter) {
+		$cache = cache::byKey('eibd::CreateNewGad');
+		$value = json_decode($cache->getValue('[]'), true);
+		$key = $this->CheckIsExist($_parameter['AdresseGroupe'],$value);
+		if($key === false)
+			$value[] = $_parameter;
+		else
+			$value[$key] = $_parameter;
+		if(count($value) >= 255){			
+			unset($value[0]);
+			array_shift($value);
+		}
+		cache::set('eibd::CreateNewGad', json_encode($value), 0);
+	}
+	private function CheckIsExist($AdresseGroupe,$caches) {
+		foreach($caches as $key => $cache){
+			if($cache['AdresseGroupe'] == $AdresseGroupe){
+              			log::add('eibd', 'debug', '[Bus Monitor] : Cette adresse de groupe '.$cache['AdresseGroupe'] . ' est deja en cache => '.$cache['data']);
+				return $key;
+           		}
+		}
+		return false;
 	}
 }
 ?>

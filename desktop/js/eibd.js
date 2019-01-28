@@ -1,138 +1,20 @@
-$('.templateAction').hide();
-$('.templateAction').first().show();
-$('#bt_healthEibd').on('click', function () {
-	$('#md_modal').dialog({title: "{{Santé des équpements KNX}}"});
-	$('#md_modal').load('index.php?v=d&plugin=eibd&modal=health').dialog('open');
-});
-$('body').on('click','.Include', function () {
-	$(this).removeClass('Include');
-	$(this).find('i').removeClass('fa-pulse');
-	$(this).find('i').removeClass('fa-spinner');
-	$(this).addClass('NotInculde');
-	$(this).find('i').addClass('fa-bullseye');
-	$(this).find('span center').text('{{Activer  l\'inculsion}}');
-	jeedom.config.save({
-		configuration: {'isInclude':false},
-		plugin:'eibd',
-		error: function (error) {
-			$('#div_alert').showAlert({message: error.message, level: 'danger'});
-		},
-		success: function () {
-			$('#div_alert').showAlert({message: '{{Vous etes sortie du mode Inclusion}}', level: 'success'});
-		}
-	});
-});
-$('body').on('click','.NotInculde', function () {
-	$(this).removeClass('NotInculde');
-	$(this).find('i').removeClass('fa-bullseye');
-	$(this).addClass('Include');
-	$(this).find('i').addClass('fa-pulse');
-	$(this).find('i').addClass('fa-spinner');;
-	$(this).find('span center').text('{{Désactiver l\'inculsion}}');
-	jeedom.config.save({
-		configuration: {'isInclude':true},
-		plugin:'eibd',
-		error: function (error) {
-			$('#div_alert').showAlert({message: error.message, level: 'danger'});
-		},
-		success: function () {
-			$('#div_alert').showAlert({message: '{{Vous etes en mode Inclusion}}', level: 'success'});
-		}
-	});
-});
-$('body').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
-	//Creation du formulaire du template
-	var form=$(this).closest('form');
-	var cmds=$('<div class="form-horizontal CmdsTempates">');
-	$.each(template[$(this).value()].cmd,function(index, value){
-		cmds.append($('<div class="form-group">')
-			.append($('<label class="col-xs-6 control-label" >')
-				.text(value.name))
-			.append($('<div class="col-xs-5">')
-				.append($('<div class="input-group">')
-					.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'">'))
-					.append($('<span class="input-group-btn">')
-						.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
-							.append($('<i class="fa fa-list-alt">')).attr('data-dpt',value.configuration.KnxObjectType).on('click',function () {
-								var SelectAddr=$(this).closest('.modal-body').find('.EqLogicTemplateAttr[data-l1key=logicalId]').val();	
-								var SelectDpt=$(this).attr('data-dpt');
-								var input=$(this).closest('.input-group').find('.CmdEqLogicTemplateAttr');
-								bootbox.dialog({
-									title: "{{Choisir un Gad}}",
-									height: "800px",
-									width: "auto",
-									message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd&SelectAddr='+SelectAddr+'&SelectDpt='+SelectDpt+'&param'),
-									buttons: {
-										"Annuler": {
-											className: "btn-default",
-											callback: function () {
-												//el.atCaret('insert', result.human);
-											}
-										},
-										success: {
-											label: "Valider",
-											className: "btn-primary",
-											callback: function () {
-												input.closest('.modal-body').find('.EqLogicTemplateAttr[data-l1key=logicalId]').val(SelectAddr);	
-												input.val(SelectGad);
-											}
-										},
-									}
-								});
-							}))))));
-	});
-	form.find('.CmdsTempates').remove();
-	form.append(cmds);
-});
-$('.templateAction').on('click', function () {
-	$('.eqLogicThumbnailContainer').hide();
-	$('.templateAction').removeClass('btn btn-primary');
-	$(this).addClass('btn btn-primary');
-	$('.eqLogicDisplayCard').hide();
-	if($(this).attr('data-template') == '')
-		$('.eqLogicDisplayCard').show();
-	else
-		$('.eqLogicDisplayCard[data-template='+$(this).attr('data-template')+']').show();
-	$('.eqLogicThumbnailContainer').show();
-});
+function searchSameCmd(eqLogic,index){
+	if (typeof(eqLogic.cmd[index].SameCmd) !== 'undefined'){
+      		var GAD='';
+		$('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
+			if($(this).val() == eqLogic.cmd[index].SameCmd){
+				GAD =  $('.CmdEqLogicTemplateAttr[data-l1key='+$(this).attr('data-l1key')+'][data-l2key=logicalId]').val();
+         			return GAD;
+			}
+         	});
+         	return GAD;
+	}
+	return $('.CmdEqLogicTemplateAttr[data-l1key='+index+'][data-l2key=logicalId]').value();									
+}
 $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
-	var message = $('<div class="row">')
-		.append($('<div class="col-md-12">')
-			.append($('<form class="form-horizontal" onsubmit="return false;">')
-				.append($('<div class="form-group">')
-					.append($('<label class="col-xs-5 control-label" >')
-						.text('{{Nom de votre équipement}}'))
-					.append($('<div class="col-xs-7">')
-						.append($('<input class="EqLogicTemplateAttr form-control" data-l1key="name"/>'))))
-				.append($('<div class="form-group">')
-					.append($('<label class="col-xs-5 control-label" >')
-						.text('{{Adresse physique de l\'equipement}}'))
-					.append($('<div class="col-xs-7">')
-						.append($('<input class="EqLogicTemplateAttr form-control" data-l1key="logicalId"/>'))))
-				.append($('<div class="form-group">')
-					.append($('<label class="col-xs-5 control-label" >')
-						.text('{{Objet parent}}'))
-					.append($('<div class="col-xs-7">')
-						.append($('<select class="EqLogicTemplateAttr form-control" data-l1key="object_id">')
-						       .append($('.eqLogicAttr[data-l1key=object_id] option').clone()))))
-				.append($('<div class="form-group">')
-					.append($('<label class="col-xs-5 control-label" >')
-						.text('{{Template de votre équipement}}'))
-					.append($('<div class="col-xs-3">')
-						.append($('<select class="EqLogicTemplateAttr form-control" data-l1key="template">')
-							   .append($('<option>')
-								.text('{{Séléctionner un template}}')))))
-				   .append($('<label>').text('{{Configurer les adresse de groupe}}'))));				
-	$.each(template,function(index, value){
-		message.find('.EqLogicTemplateAttr[data-l1key=template]')
-			.append($('<option value="'+index+'">')
-				.text(value.name))
-	});
-	bootbox.dialog({
+  	bootbox.dialog({
 		title: "{{Ajout d'un équipement avec template}}",
-		message: message,
-		height: "800px",
-		width: "auto",
+		message: $('<div>').load('index.php?v=d&modal=eibd.addByTemplate&plugin=eibd&type=eibd'),
 		buttons: {
 			"Annuler": {
 				className: "btn-default",
@@ -145,39 +27,53 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 				className: "btn-primary",
 				callback: function () {
 					if($('.EqLogicTemplateAttr[data-l1key=template]').value() != "" && $('.EqLogicTemplateAttr[data-l1key=name]').value() != ""){
-						var eqLogic=template[$('.EqLogicTemplateAttr[data-l1key=template]').value()];
-						eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
-						if (typeof(eqLogic.logicalId) === 'undefined')
-							eqLogic.logicalId=new Object();
-						eqLogic.logicalId=$('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
-						if (typeof(eqLogic.object_id) === 'undefined')
-							eqLogic.object_id=new Object();
-						eqLogic.object_id=$('.EqLogicTemplateAttr[data-l1key=object_id]').value();
-						if (typeof(eqLogic.configuration) === 'undefined')
-							eqLogic.configuration=new Object();
-						eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
-						$.each(eqLogic.cmd,function(index, value){
-							eqLogic.cmd[index].logicalId=$('.CmdEqLogicTemplateAttr[data-l1key='+index+']').value();
-							if (typeof(eqLogic.cmd[index].value) !== 'undefined')
-								eqLogic.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object_id] option:selected').text()+"]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
-						});
-						jeedom.eqLogic.save({
-							type: 'eibd',
-							eqLogics: [eqLogic],
-							error: function (error) {
-								$('#div_alert').showAlert({message: error.message, level: 'danger'});
+						$.ajax({
+							type: 'POST',   
+							url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+							data:
+							{
+								action: 'getTemplate',
+								template:$('.EqLogicTemplateAttr[data-l1key=template]').val()
 							},
-							success: function (_data) {
-								var vars = getUrlVars();
-								var url = 'index.php?';
-								for (var i in vars) {
-									if (i != 'id' && i != 'saveSuccessFull' && i != 'removeSuccessFull') {
-										url += i + '=' + vars[i].replace('#', '') + '&';
+							dataType: 'json',
+							global: true,
+							error: function(request, status, error) {},
+							success: function(data) {
+								var eqLogic=data.result;
+								eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
+								if (typeof(eqLogic.logicalId) === 'undefined')
+									eqLogic.logicalId=new Object();
+								eqLogic.logicalId=$('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
+								if (typeof(eqLogic.object_id) === 'undefined')
+									eqLogic.object_id=new Object();
+								eqLogic.object_id=$('.EqLogicTemplateAttr[data-l1key=object_id]').value();
+								if (typeof(eqLogic.configuration) === 'undefined')
+									eqLogic.configuration=new Object();
+								eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
+								$.each(eqLogic.cmd,function(index, value){
+									eqLogic.cmd[index].logicalId=searchSameCmd(eqLogic,index);
+									if (typeof(eqLogic.cmd[index].value) !== 'undefined')
+										eqLogic.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object_id] option:selected').text()+"]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
+								});
+								jeedom.eqLogic.save({
+									type: 'eibd',
+									eqLogics: [eqLogic],
+									error: function (error) {
+										$('#div_alert').showAlert({message: error.message, level: 'danger'});
+									},
+									success: function (_data) {
+										var vars = getUrlVars();
+										var url = 'index.php?';
+										for (var i in vars) {
+											if (i != 'id' && i != 'saveSuccessFull' && i != 'removeSuccessFull') {
+												url += i + '=' + vars[i].replace('#', '') + '&';
+											}
+										}
+										modifyWithoutSave = false;
+										url += 'id=' + _data.id + '&saveSuccessFull=1';
+										loadPage(url);
 									}
-								}
-								modifyWithoutSave = false;
-								url += 'id=' + _data.id + '&saveSuccessFull=1';
-								loadPage(url);
+								});
 							}
 						});
 					}
@@ -186,64 +82,70 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 		}
 	});
 });
-$('.log').on('click', function() {
-	$('#md_modal').dialog({
+$('#bt_healthEibd').off().on('click', function () {
+  	bootbox.dialog({
+		title: "{{Santé des équpements KNX}}",
+		size: "large",
+		message: $('<div>').load('index.php?v=d&plugin=eibd&modal=health'),
+		
+	});
+});
+$('.log').off().on('click', function() {
+  	bootbox.dialog({
 		title: "{{log}}",
-		position: 'center',
-		resizable: true,
-		height: 600,
-		width: 850});
-	$('#md_modal').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd').dialog('open');
+		message: $('<div>').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd'),
+		
+	});
 });
-$('.GadInconue').on('click', function() {
-	$('#md_modal').dialog({
+$('.GadInconue').off().on('click', function() {
+  	bootbox.dialog({
 		title: "{{Importer les Gad inconnue}}",
-		resizable: true,
-		height: 700,
-		width: 850});
-	$('#md_modal').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd').dialog('open');
+		message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd'),
+		onEscape:  function () {
+			clearTimeout(KnxGadInconueRefresh);			
+		}		
+	});
 });
-$('.BusMoniteur').on('click', function() {
-	$('#md_modal').dialog({
-		title: "{{Bus Moniteur}}",
-		resizable: true,
-		height: 700,
-		width: 850});
-	$('#md_modal').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd').dialog('open');
+$('.BusMoniteur').off().on('click', function() {
+  	bootbox.dialog({
+		title: "{{Moniteur de Bus}}",
+		size: "large",
+		message: $('<div>').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd'),
+		
+	});
 });
-$('.Ets4Parser').on('click', function() {
-	$('#md_modal').dialog({
-		title: "{{Ajout de vos équipement par ETS}}",
-		resizable: true,
-		height: 700,
-		width: 850});
-	$('#md_modal').load('index.php?v=d&modal=eibd.EtsParser&plugin=eibd&type=eibd').dialog('open');
+$('body').on('click','.bt_selectGadInconnue', function () {
+	var SelectAddr=$(this).closest('body').find('.form-control[data-l1key=logicalId]').val();	
+	var SelectDpt=$(this).closest('.form-group').parent().find('.form-control[data-l2key=KnxObjectType]').val();	
+	var input=$(this).closest('.input-group').find('input');
+	bootbox.dialog({
+		title: "{{Choisir un Gad}}",
+		message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd&SelectAddr='+SelectAddr+'&SelectDpt='+SelectDpt+'&param'),
+		onEscape:  function () {
+			clearTimeout(KnxGadInconueRefresh);			
+		},
+		buttons: {
+			"Annuler": {
+				className: "btn-default",
+				callback: function () {
+					clearTimeout(KnxGadInconueRefresh);	
+				}
+			},
+			success: {
+				label: "Valider",
+				className: "btn-primary",
+				callback: function () {
+					clearTimeout(KnxGadInconueRefresh);		
+					input.val(SelectGad);
+				}
+			},
+		}
+	});
 });
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $(".eqLogicAttr[data-l1key=configuration][data-l2key=device]").html($(".eqLogicAttr[data-l1key=configuration][data-l2key=device] option").sort(function (a, b) {
 	return a.text == b.text ? 0 : a.text < b.text ? -1 : 1
 }));
-$('.Template[data-action=add]').on('click', function () {
-	if($('.eqLogicAttr[data-l1key=configuration][data-l2key=typeTemplate]').val()!=""){
-		$('.eqLogicAction[data-action=save]').trigger('click');
-		$.ajax({
-			type: 'POST',   
-			url: 'plugins/eibd/core/ajax/eibd.ajax.php',
-			data:
-			{
-				action: 'AppliTemplate',
-				id:$('.eqLogicAttr[data-l1key=id]').val(),
-				template:$('.eqLogicAttr[data-l1key=configuration][data-l2key=typeTemplate]').val()
-			},
-			dataType: 'json',
-			global: true,
-			error: function(request, status, error) {},
-			success: function(data) {
-				window.location.reload();
-			}
-		});
-	}
-});
 function DptUnit(Dpt)	{
 	var result;
 	$.each(AllDpt, function(DptKeyGroup, DptValueGroup){
@@ -364,19 +266,27 @@ function addCmdToTable(_cmd) {
 			.append($('<input type="hidden" class="cmdAttr form-control input-sm" data-l1key="id">'))
 			.append($('<input class="cmdAttr form-control input-sm" data-l1key="name" value="' + init(_cmd.name) + '" placeholder="{{Name}}" title="Name">')));
 	tr.append($('<td>')
-		.append($('<label>')
-			.text('{{Data Point Type}}')
-			.append($('<sup>')
-				.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-					.attr('title','Selectionner le type de data KNX'))))
-		.append($('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectType">')
-			.append(OptionSelectDpt()))
-		.append($('<label>')
-			.text('{{Groupe d\'adresse}}')
-			.append($('<sup>')
-				.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-					.attr('title','Saisisez l\'adresse de groupe de votre commande KNX'))))
-		.append($('<input class="cmdAttr form-control input-sm" data-l1key="logicalId" placeholder="{{GAD}}" title="GAD">')));
+		.append($('<div class="form-group">')
+			.append($('<label>')
+				.text('{{Data Point Type}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+						.attr('title','Selectionner le type de data KNX'))))
+			.append($('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectType">')
+				.append(OptionSelectDpt())))
+		.append($('<div class="form-group">')
+			.append($('<label>')
+				.text('{{Groupe d\'adresse}}')
+				.append($('<sup>')
+					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
+						.attr('title','Saisisez l\'adresse de groupe de votre commande KNX'))))
+			.append($('<div class="input-group">')
+				.append($('<input class="cmdAttr form-control input-sm" data-l1key="logicalId" placeholder="{{Adresse de groupe}}" title="{{Adresse de groupe}}">'))
+					.append($('<span class="input-group-btn">')
+						.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
+							.append($('<i class="fa fa-list-alt">')))))));
+		
+		
 	tr.append($('<td>')
 		  .append($('<div>')
 			.append($('<span>')
@@ -385,7 +295,7 @@ function addCmdToTable(_cmd) {
 					.append('{{Lecture}}')
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-							.attr('title','Si un télégramme de type "READ" répondre en envoyant sur le bus la valeur actuelle de l\’objet.'))))))
+							.attr('title','{{Si actif, jeedom repondera a un télégramme de type "READ", en envoyant sur le bus la valeur actuelle de l\’objet.'))))))
 		 .append($('<div>')
 			.append($('<span>')
 				.append($('<label class="checkbox-inline">')
@@ -393,7 +303,7 @@ function addCmdToTable(_cmd) {
 					.append('{{Ecriture}}')
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-							.attr('title','La valeur de cet objet sera modifiée si un télégramme de type "WRITE" est vue sur le bus monitor'))))))
+							.attr('title','{{La valeur de cet objet sera modifiée si un télégramme de type "WRITE" est vue sur le bus monitor}}'))))))
 		  .append($('<div>')
 			.append($('<span>')
 				.append($('<label class="checkbox-inline">')
@@ -401,7 +311,7 @@ function addCmdToTable(_cmd) {
 					.append('{{Transmetre}}')
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-							.attr('title','Si la valeur de cet objet venait à être modifiée, envoyer un télégramme de type "WRITE" contenant la nouvelle valeur de l\’objet'))))))
+							.attr('title','{{Si la valeur de cet objet venait à être modifiée, Jeedom emmetera automatiquement un télégramme de type "WRITE" contenant la nouvelle valeur de l\’objet}}'))))))
 		.append($('<div>')
 			.append($('<span>')
 				.append($('<label class="checkbox-inline">')
@@ -409,7 +319,7 @@ function addCmdToTable(_cmd) {
 					.append('{{Mise-à-jour}}')
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-						.attr('title','Si un autre participant répond à un télégramme de type "READ" avec une valeur différente, mettre a jour la valeur par celle lue sur la réponse.'))))))
+						.attr('title','{{Si un autre participant répond à un télégramme de type "READ" avec une valeur différente, mettre a jour la valeur par celle lue sur la réponse.}}'))))))
 		
 		.append($('<div>')
 			.append($('<span>')
@@ -418,7 +328,7 @@ function addCmdToTable(_cmd) {
 					.append('{{Initialiser}}')
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-						.attr('title','Au démarrage du participant, envoyer un télégramme de type "READ" pour initiliser une valeur initial correcte')))))));	
+						.attr('title','{{Au démarrage, envoyer un télégramme de type "READ" pour initiliser une valeur initial}}')))))));	
 	tr.append($('<td>')
 		.append($('<div>')
 			.append($('<span>')
@@ -501,10 +411,10 @@ function addCmdToTable(_cmd) {
 	parmetre.append($('<div class="CycliqueSend">')
 		.append($('<span>')
 			.append($('<label>')
-				.append('{{Envoie Cyclique}}')
+				.append('{{Lecture/Ecriture Cyclique}}')
 				.append($('<sup>')
 					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-						.attr('title','Activer cette option uniquement si vous souhaitez envoyer toutes les minutes votre commande')))
+						.attr('title','{{Cette fonction permet d\'executer la commande ou de lire la valeur de maniere cyclique.}}')))
 			 .append($('<div class="input-group">')
 				 .append($('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="CycliqueSend"/>')
 					 .append($('<option value="">')
@@ -599,6 +509,27 @@ function addCmdToTable(_cmd) {
 	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');	
 	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
+$('.Template[data-action=add]').off().on('click', function () {
+	if($('.eqLogicAttr[data-l1key=configuration][data-l2key=typeTemplate]').val()!=""){
+		$('.eqLogicAction[data-action=save]').trigger('click');
+		$.ajax({
+			type: 'POST',   
+			url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+			data:
+			{
+				action: 'AppliTemplate',
+				id:$('.eqLogicAttr[data-l1key=id]').val(),
+				template:$('.eqLogicAttr[data-l1key=configuration][data-l2key=typeTemplate]').val()
+			},
+			dataType: 'json',
+			global: true,
+			error: function(request, status, error) {},
+			success: function(data) {
+				window.location.reload();
+			}
+		});
+	}
+});
 $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]', function() {
 	DptOption($(this).val(),$(this).closest('.cmd').find('.option'));
 	if ($(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val() == '')
@@ -614,14 +545,12 @@ $('body').on('change','.cmdAttr[data-l1key=type]', function() {
 		case "info":
 			$(this).closest('.cmd').find('.RetourEtat').hide();
 			$(this).closest('.cmd').find('.bt_read').show();
-			$(this).closest('.cmd').find('.CycliqueSend').hide();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').hide();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().show();
 		break;
 		case "action":		
 			$(this).closest('.cmd').find('.RetourEtat').show();
 			$(this).closest('.cmd').find('.bt_read').hide();
-			$(this).closest('.cmd').find('.CycliqueSend').show();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').show();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().hide();
 		break;

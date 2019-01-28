@@ -44,30 +44,6 @@ Attention, la compilation est gourmande en ressource et peux entrainer des ralen
 ![introduction01](../images/Status_Demon.jpg)
 Si tous les voyants sont au vert, nous pouvons passer a la suite
 
-
-Utilisation du Bus Monitor
-===========
-En cliquant sur cette icône ci dessous, vous allez pouvoir visualiser l'activité qui se passe sur votre bus.
-Pour le débugage d'une configuration défaillante, il est aussi possible de filtrer les messages enregistrés en mémoire cache.
-
-![introduction01](../images/eibd_screenshot_BusMonitor.jpg)
-Avec le bus monitor vous allez pouvoir analyser ce qui se passe sur votre bus et ce que comprend Jeedom au bus.
-
-Le bus monitor affiche l'adresse physique de l’équipement, l'adresse de groupe, la data en hexa et sa conversion
-
-Inclusion
-==========
-
-![introduction01](../images/eibd_screenshot_ConfigParameter.jpg)
-
-En activant l'inclusion, le bus monitor vas mettre en cache egalement tous les gad qu'il voit et qui sont inconnue a votre installation.
-Cette liste est disponible sur la page de configuration et il vous est possible d'importer le gad dans un equipement.
-Cette liste est egalment disponible si vous utilisez la creation d'equipement par template.
-
-![introduction01](../images/ListeGadInconnue.jpg)
-
-
-
 Équipement
 ===========
 Dans un premier temps, il faut créer un nouvelle équipement et le nommé.
@@ -124,7 +100,7 @@ Paramètre
 Enfin pensez sauvegarder.
 
 Utilisation des Templates
-===========
+=========================
 Ils existes sur le plugin plusieur templates.
 Ceci vous permette de configurer rapidement un equipement.
 
@@ -220,8 +196,72 @@ Exemples d'objets pour lesquels le flag "Read-on-Init" est généralement inacti
 
 ![introduction01](../images/Configuration_commande_flag.jpg)
 
+Utilisation du Bus Monitor
+==========================
+
+En cliquant sur cette icône ci dessous, vous allez pouvoir visualiser l'activité qui se passe sur votre bus.
+Pour le débugage d'une configuration défaillante, il est aussi possible de filtrer les messages enregistrés en mémoire cache.
+
+![introduction01](../images/eibd_screenshot_BusMonitor.jpg)
+Avec le bus monitor vous allez pouvoir analyser ce qui se passe sur votre bus et ce que comprend Jeedom au bus.
+
+Le bus monitor affiche l'adresse physique de l’équipement, l'adresse de groupe, la data en hexa et sa conversion
+
+Adresses de groupe
+==================
+
+Cette fenetre est disponible a plusieur endroit.
+![introduction01](../images/AdressesGroupeSelection.jpg)
+
+* Sur la page principal
+* Sur chaque bouton pour la séléction (Template et commande)
+
+En cliquant sur un des ses bouton vous allez obtenir cette fenetre.
+![introduction01](../images/eibd_screenshot_ConfigParameter.jpg)
+
+Inconnue
+--------
+
+Cette onglet permet de remonter les gad inconnue vue par le bus monitor.
+En activant l'inclusion, le bus monitor vas mettre en cache egalement tous les gad qu'il voit et qui sont inconnue a votre installation.
+De meme, si vous avez configurer les DPT dans votre projet ETS, et l'adresse physique de votre equipemnt dans votre configuration Jeedom, un filtre sera automatiquement ajouté pour facilité les rechercher
+
+Equipement
+----------
+
+Cette onglet permet de lister tous les GAD avec leur equipements.
+Pour que remplir ce tableau, il est imperatif d'utiliser le parseur ETS.
+Si vous avez ouvert cette fenetre depuis un bouton de selection de GAD, alors vous aurrez la possibilité de selectioner le bon GAD (qui se mettera en gras) et de valider pour retourner a la page de configuration.
+De meme, si vous avez configurer les DPT dans votre projet ETS, et l'adresse physique de votre equipemnt dans votre configuration Jeedom, un filtre sera automatiquement ajouté pour facilité les rechercher
+
+
+Adresse de groupes
+------------------
+
+Cette onglet permet de recreer l'arboressance de GAD tel qu'elle est defini dans ETS.
+Pour que remplir ce tableau, il est imperatif d'utiliser le parseur ETS.
+
+Si vous avez ouvert cette fenetre depuis un bouton de selection de GAD, alors vous aurrez la possibilité de selectioner le bon GAD (qui se mettera en gras) et de valider pour retourner a la page de configuration.
+De meme, si vous avez configurer les DPT dans votre projet ETS, le plugin vous soulignera en bleu lorsque le DPT est identique et en jaune lorsqu'il est compatible
+
+
+Utilisation du parser ETS
+=========================
+
+En téléchargeant votre projet ETS (.knxproj), vous allez permetre a jeedom de charger dans son cache, tout les gad de votre installation.
+
+![ParserETS](../images/eibd_screenshot_ImportETS.jpg)
+
+Avec le parseur vous pouvez luis demander des actions supplémentaire
+
+* Arboressance des groupes : Défini, pour chaque rang de votre arboressance de vos gad, un type d'information. Cette configuration est obligatoire si vous voulez qu'il cree automatiquement vos objets et equipement
+* Créer les objets : Le parser cree automatiquement s'il n'existe pas les objets defini dans le rang d'arboressance de vos gad
+* Créer les equipements  : Le parser cree automatiquement s'il n'existe pas vos equipement tel que  defini dans le rang d'arboressance de vos gad. Il sera toutefois imperatif de remprendre la configuration de chaqu'un car le fichier ETS ne defini pas tout.
+* Uniquement correspondant a un Template : Cette option permet de cree un equipement qui corresponde a un Template. Pour que le plugin puisse identifier le template et ses commandes, l'architecture de gad de votre projet doit corresponde exactement au projet ETS.[Voici un exemple]: https://github.com/mika-nt28/Jeedom-Eibd/raw/master/docs/images/Jeedom_Template.knxproj
+* Importer votre projet : Champs d'import de votre projet ETS (.knxproj)
+
 Utilisation de la passerelle Jeedom/KNX
-===========
+=======================================
 Pour être au plus proche du KNX, le plugin peut se comporter comme un participant.
 On peut donc configurer le plugin pour qu'il réalise des actions automatiquement.
 
@@ -252,112 +292,8 @@ Envoie cyclique d'une valeur
 Vous avez besoin d'envoyer une commande sur le bus de maniere cyclique (comme un horloge ou un etat a la vanne thermostatique)
 Rien de plus simple, il suffit de choisir sur votre commande de type action une base de temps, le plugin fait le reste.
 
-Exemple de configuration :
-==========================
-
-L'horloge KNX
---------------
-
-Une horloge knx cout relativement cher et nous pouvons facilement nous en passé grace a jeedom
-L'integration est hyper simple, soit en creant les commande comme ceci
-
-![introduction01](../images/Configuration_commande.jpg)
-
-Ou tous simplement en utilisant le template NTP
-Le mise a jours de l'heure peut etre demandé par un actionneur, dans ce cas il faut activé le flag "Lecture"
-La mise a jours cyclique est recommandé 
-
-Téléinfo (DPT : 235.000)
------------------------------------------------------
-
-Ce DPT permet l'emission ou réception des informations "Choix de tarif" et "Energie réactive". Il est utiliser pour récupérer l'index du compteur ainsi que les états HP/HC ...
-
-Les valeurs renvoyé dans le tarif sont les suivantes :
-
-![introduction01](../images/valeur_objet_tarif.PNG)
-
-## Composition du DPT 235.001
-
-
-Il est sur 6 octets découpé comme suit :
-
-* Entier signé 32 bits Active energy measured in the tariff indicated in the field Tariff (13.010) (Wh)  
-* Entier non signé 8 bits Tariff associated to the energy indicated in the field ActiveElectricalEnergy   
-* Binaire 8 bits b0 =0 si Tarif valide b1=0 si Active energy valide le reste est réservé.
-
-![introduction01](../images/presentation_dpt.PNG)
-
-## Confiugration des commandes
-
-
-Créer un équipement (Lien vers doc)
-
-Cliquer sur "Ajouter un commande knx" et completer la commande comme ci dessous.
-
-![introduction01](../images/Commande_jeedom.PNG)
-
-
-Actionneur ON/OFF :
--------------------
-## Créer un équipement correspondant à votre actionneur KNX :
-
-L'Adresse KNX ( elle doit être identique à votre actionneur )
-Notre retour d'état : La Groupe Adresse choisie dans l'exemple : 0/1/0 ( A adapter à votre configuration).
-
-![introduction01](../images/Eibd_Exemple_ListenerONOFF.jpg)
-
-Exemple de config ETS de l'actionneur :
-Objet status ( Retour d'Etat ) doit avoir au minimum les flags C R et T, comme ci-dessous.
-
-![introduction01](../images/Eibd_Exemple_ETS_actionneur_onoff.jpg)
-
-## Créer un équipement qui se comportera comme un intérrupteur KNX :
-
-son Adresse KNX ( elle peut être identique à un vrai intérrupteur KNX qui remplira les même fonctions)
-
-Dans l'exemple ci-dessous : l'actionneur devra réagir sur l'adresse de groupe 0/0/1 ( A adapter à votre configuration)
-
-Lumière ON/OFF est notre action qui fera la bascule (visible coché : sera affiché sur le dashboard)
-
-(Optionel) Lumière ON est une commande qui impose ON (visible décoché : utilisé uniquement via un scénario)
-
-(Optionel) Lumière OFF est une commande qui impose OFF (visible décoché : sert uniquement via un scénario)
-
-Important : Ne pas oublier de choisir dans le champs Retour d'Etat la commande crée précédemment.
-
-![introduction01](../images/Eibd_Exemple_LumONOFF.jpg)
-
-
-Actionneur Dimmer :
-----------------------------------
-## Créer un équipement correspondant à votre dimmer KNX :
-
-
-L'Adresse KNX ( elle doit être identique à votre actionneur dimmer )
-
-Etablir un retour Etat 0/0/11 ( A adapter à votre configuration)
-
-Attention au paramètre type "Numérique".
-
-![introduction01](../images/Eibd_Exemple_Actionneur_dimmer.jpg)
-
-Exemple de config ETS de l'actionneur dimmer :
-
-Objet 0/0/11 Status Brightness value ( Retour d'Etat ) doit avoir au minimum les flags C R et T, comme ci-dessous ( de longeur 1 byte).
-
-![introduction01](../images/Eibd_Exemple_ETS_dimmer.jpg)
-
-## Créer la commande pour dimmer votre lumière :
-
-La commande Write brightness 5.001 0/0/10 doit avoir le paramètre "Slider" et comme retour état la commande créée précédemment "brightness value"
-
-La commande Diming 3.007 est uniquement là pour que jeedom reconnaissance des variations faites depuis des interrupteurs poussoir KNX.
-
-![introduction01](../images/Eibd_Exemple_dimmer.jpg)
-
-
 FAQ
-===========
+===
 
 Comment créer une commande pour allumer la lumière alors que physiquement, je n'ai pas d’interrupteur ?  
 -------------------------------------------------------------------------------------------------------

@@ -24,6 +24,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Augmenter",
+				"SameCmd":"Augmenter|Diminuer",
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"0",
@@ -46,6 +47,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Diminuer",
+				"SameCmd":"Augmenter|Diminuer",
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"0",
@@ -110,6 +112,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Toogle",
+				"SameCmd":"Toogle|On|Off",
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"0",
@@ -134,6 +137,7 @@
 				"isVisible":"1"
 			},{
 				"name":"On",
+				"SameCmd":"Toogle|On|Off",
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"0",
@@ -156,6 +160,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Off",
+				"SameCmd":"Toogle|On|Off",
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"0",

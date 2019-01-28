@@ -2,9 +2,9 @@
 if (!isConnect('admin')) {
     throw new Exception('{{401 - Accès non autorisé}}');
 }
+include_file('core', 'dpt', 'class', 'eibd');
 sendVarToJS('eqType', 'eibd');
 sendVarToJS('GadLevel',config::byKey('level','eibd'));
-sendVarToJS('template',eibd::devicesParameters());
 sendVarToJS('AllDpt',Dpt::All_DPT());
 $eqLogics = eqLogic::byType('eibd');
 ?>
@@ -15,12 +15,9 @@ $eqLogics = eqLogic::byType('eibd');
                 <a class="btn btn-default btn-sm tooltips BusMoniteur" title="Bus Moniteur" style="width : 45%">
 			<i class="fa fa-archive"></i>
 		</a>
-                <a class="btn btn-default btn-sm tooltips GadInconue" title="Bus Moniteur" style="width : 45%">
+                <a class="btn btn-default btn-sm tooltips GadInconue" title="Adresses de groupe" style="width : 45%">
 			<i class="icon techno-fleches"></i>
 		</a>
-                <!--a class="btn btn-default btn-sm tooltips Ets4Parser " title="Export ETS4" style="width : 45%">
-			<i class="fa fa-spinner"></i>
-		</a-->
                 <a class="btn btn-default eqLogicAction" style="width : 45%;margin-top : 5px;margin-bottom: 5px;" data-action="add">
 			<i class="fa fa-plus-circle"></i></a>
                 <a class="btn btn-default eqLogicAction" style="width : 45%;margin-top : 5px;margin-bottom: 5px;" data-action="addByTemplate">
@@ -51,27 +48,6 @@ $eqLogics = eqLogic::byType('eibd');
 				</center>
 				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#406E88"><center>{{Par template}}</center></span>
 			</div>
-			<?php
-				if(config::byKey('isInclude','eibd')){
-			 ?>
-			<div class="cursor Include" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
-				<center>
-					<i class="fa fa-spinner fa-pulse" style="font-size : 5em;color:#406E88;"></i>
-				</center>
-				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#406E88"><center>{{Désactiver l'inculsion}}</center></span>
-			</div>
-			<?php
-				}else{
-			 ?>
-			<div class="cursor NotInculde" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
-				<center>
-					<i class="fa fa-bullseye" style="font-size : 5em;color:#406E88;"></i>
-				</center>
-				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#406E88"><center>{{Activer l'inculsion}}</center></span>
-			</div>
-			<?php
-				}
-			 ?>
 			<div class="cursor eqLogicAction" data-action="gotoPluginConf" style="height: 120px; margin-bottom: 10px; padding: 5px; border-radius: 2px; width: 160px; margin-left: 10px; position: absolute; left: 170px; top: 0px; background-color: rgb(255, 255, 255);">
 				<center>
 			      		<i class="fa fa-wrench" style="font-size : 5em;color:#767676;"></i>
@@ -88,19 +64,7 @@ $eqLogics = eqLogic::byType('eibd');
 				<center>
 					<i class="icon techno-fleches" style="font-size : 5em;color:#767676;"></i>
 				</center>
-				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Importer les commandes inconnue}}</center></span>
-			</div>
-			<!--div class="cursor Ets4Parser" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
-				<center>
-					<i class="fa fa-spinner" style="font-size : 5em;color:#767676;"></i>
-				</center>
-				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Import ETS4}}</center></span>
-			</div-->
-			<div class="cursor log" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
-				<center>
-					<i class="fa fa-heartbeat" style="font-size : 5em;color:#767676;"></i>
-				</center>
-				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Information sur le logiciel EIBD/KNXD}}</center></span>
+				<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Adresses de groupe}}</center></span>
 			</div>
 			<div class="cursor" id="bt_healthEibd" style="background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
 				<center>
@@ -279,9 +243,10 @@ $eqLogics = eqLogic::byType('eibd');
 		</div>
 	</div>
 </div>
-
+<div id="md_health"></div>
+<div id="md_GadInconue"></div>
+<div id="md_BusMoniteur"></div>
 <?php 
-include_file('desktop', 'event', 'js', 'eibd');
 include_file('desktop', 'eibd', 'js', 'eibd');
 include_file('core', 'plugin.template', 'js'); 
 ?>

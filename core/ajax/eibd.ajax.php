@@ -3,10 +3,17 @@ try {
 	require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
     	include_file('core', 'authentification', 'php');
 	include_file('core', 'dpt', 'class', 'eibd');
+	include_file('core', 'knxproj', 'class', 'eibd');
 
     	if (!isConnect('admin')) {
         	throw new Exception(__('401 - Accès non autorisé', __FILE__));
     	}
+	if (init('action') == 'setIsInclude') {
+		ajax::success(cache::set('eibd::isInclude',init('value'), 0));
+	}
+	if (init('action') == 'getIsInclude') {
+		ajax::success(cache::byKey('eibd::isInclude')->getValue(false));
+	}
 	if (init('action') == 'getLog') {
 		ajax::success("<pre>".file_get_contents('/var/log/knx.log')."</pre>");
 	}
@@ -70,33 +77,46 @@ try {
 		ajax::success(cache::byKey('eibd::CreateNewGad')->getValue('[]'));
 	}
 	if (init('action') == 'setCacheGadInconue') {
-		$return=false;
-		$cache = cache::byKey('eibd::CreateNewGad');
-		$value = json_decode($cache->getValue('[]'), true);
-		foreach ($value as $key => $val) {
-		       if ($val['AdresseGroupe'] == init('gad')){
-			       if(init('eqLogic')!=false){
-			       		if(init('eqLogic')=="new")
-						$Equipement=eibd::AddEquipement('Equipement '.$val['AdressePhysique'],$val['AdressePhysique']);
-					else
-					       	$Equipement=eqLogic::byId(str_replace('#','',init('eqLogic')));
-					if(is_object($Equipement)){
-				      		eibd::AddCommande($Equipement,'Nouvelle_Commande_'.$val['AdresseGroupe'],$val['AdresseGroupe'],'info',$val['dpt']);
-						$return=$Equipement->getId();
-					}
+		if(init('gad') == ""){
+			cache::set('eibd::CreateNewGad', '[]', 0);
+		}else{
+			$cache = cache::byKey('eibd::CreateNewGad');
+			$value = json_decode($cache->getValue('[]'), true);
+			foreach ($value as $key => $val) {
+			       if ($val['AdresseGroupe'] == init('gad')){
+				       unset($value[$key]);
+				       array_shift($value);
 			       }
-			       unset($value[$key]);
-			       array_shift($value);
-		       }
+			}
+			cache::set('eibd::CreateNewGad', json_encode($value), 0);
 		}
-		cache::set('eibd::CreateNewGad', json_encode($value), 0);
-		ajax::success($return);
+		ajax::success('');
 	}
 	if (init('action') == 'EtsParser') {
-		if (isset($_FILES['Knxproj'])){
-			eibd::ParserEtsFile($_FILES['Knxproj']['tmp_name']);
-			ajax::success(cache::byKey('eibd::CreateNewGad')->getValue('[]'));
+		if(isset($_FILES['Knxproj'])){ 
+			if(move_uploaded_file($_FILES['Knxproj']['tmp_name'],'/tmp/knxproj.knxproj'))
+				ajax::success(true);
+			else
+				ajax::success(false);
 		}
+	}
+	if (init('action') == 'AnalyseEtsProj') {
+		$filename='/tmp/knxproj.knxproj';
+		if (file_exists($filename)) {
+			$knxproj=new knxproj(init('option'));
+			$knxproj->WriteJsonProj();
+			ajax::success(json_decode($knxproj->getAll(),true));
+		}
+		ajax::success(false);
+	}
+	if (init('action') == 'getEtsProj') {
+		$filename=dirname(__FILE__) . '/../config/EtsProj.json';
+		if (file_exists($filename))
+			ajax::success(json_decode(file_get_contents($filename),true));
+		ajax::success(false);
+	}
+  	if (init('action') == 'getTemplate') {
+		ajax::success(eibd::devicesParameters()[init('template')]);
 	}
   	if (init('action') == 'AppliTemplate') {
 		$EqLogic=eqLogic::byId(init('id'));

@@ -63,6 +63,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Montée",
+				"SameCmd":"Montée|Descendre",
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"1",
@@ -113,6 +114,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Descendre",
+				"SameCmd":"Montée|Descendre",
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"1",

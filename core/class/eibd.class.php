@@ -8,28 +8,13 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd() as $Commande){
-					$ga=$Commande->getLogicalId();
-					if($Commande->getType() == 'info'){
-						if (!$Commande->getConfiguration('FlagWrite') && $Commande->getConfiguration('FlagInit')){
-							$dpt=$Commande->getConfiguration('KnxObjectType');
-							$inverse=$Commande->getConfiguration('inverse');
-							$DataBus=self::EibdRead($ga);
-							if($DataBus === false){
-								$Commande->setConfiguration('FlagInit',false);
-								$Commande->save();
-								continue;
-							}
-							$Option=$Commande->getConfiguration('option');
-							$Option["id"]=$Commande->getId();
-							$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
+					if ($Commande->getConfiguration('CycliqueSend') == "cron"){
+						$ga=$Commande->getLogicalId();
+						$Commande->execute();
+						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
-							$Equipement->checkAndUpdateCmd($ga,$BusValue);
-						}
-					}else{
-						if ($Commande->getConfiguration('CycliqueSend') == "cron"){
-							$Commande->execute();
-							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 1 min] GAD: '.$ga);
-						}
+						else
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique] GAD: '.$ga);
 					}
 				}
 			}
@@ -40,8 +25,12 @@ class eibd extends eqLogic {
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron5"){
+						$ga=$Commande->getLogicalId();
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 5 min] GAD: '.$Commande->getLogicalId());
+						if($Commande->getType() == 'info')			
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
+						else
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique] GAD: '.$ga);
 					}
 				}
 			}
@@ -52,8 +41,12 @@ class eibd extends eqLogic {
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron15"){
+						$ga=$Commande->getLogicalId();
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 15 min] GAD: '.$Commande->getLogicalId());
+						if($Commande->getType() == 'info')			
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
+						else
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique] GAD: '.$ga);
 					}
 				}
 			}
@@ -64,8 +57,12 @@ class eibd extends eqLogic {
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron30"){
+						$ga=$Commande->getLogicalId();
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 30 min] GAD: '.$Commande->getLogicalId());
+						if($Commande->getType() == 'info')			
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
+						else
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique] GAD: '.$ga);
 					}
 				}
 			}
@@ -76,8 +73,12 @@ class eibd extends eqLogic {
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronHourly"){
+						$ga=$Commande->getLogicalId();
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique 1H] GAD: '.$Commande->getLogicalId());
+						if($Commande->getType() == 'info')			
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
+						else
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique] GAD: '.$ga);
 					}
 				}
 			}
@@ -88,8 +89,12 @@ class eibd extends eqLogic {
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily"){
+						$ga=$Commande->getLogicalId();
 						$Commande->execute();
-						log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique journalier] GAD: '.$Commande->getLogicalId());
+						if($Commande->getType() == 'info')			
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
+						else
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique] GAD: '.$ga);
 					}
 				}
 			}
@@ -209,30 +214,10 @@ class eibd extends eqLogic {
 	//                                                                                                                                               //
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static function SearchUsbGateway(){
-		/*$bus='0';
-		$device='0';
-		$config='1';
-		$interface='0';
-		$cmd="lsusb -v";
-		$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
-		$result=exec($cmd,$result);
-		//$UsbGateways = explode("\n", $result);
-		$UsbGateways = explode("Bus", $result);
-		foreach($UsbGateways as $UsbGateway){
-			if(stripos($UsbGateway,"KNX")>0){
-				log::add('eibd','debug', 'Passerelle USB trouvé');
-				$UsbParametre = explode("\n", trim($UsbGateway));
-				$UsbParametre = explode(" ", trim($UsbParametre[0]));
-				$bus=$UsbParametre[0];
-				$device=$UsbParametre[2];
-				log::add('eibd','debug', $bus.':'.$device.':'.$config.':'.$interface);
-				return $bus.':'.$device.':'.$config.':'.$interface;
-			}
-		}
-		return false;*/
-		$cmd="findknxusb | /bin/sed -e '1 d' -e 's/device //' | /bin/cut -d':' -f1-2";
-		$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
-		return exec($cmd,$result);
+		$cmd="sudo findknxusb";
+		//$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
+		$result=explode(" ",exec($cmd));			
+		return $result[1];
 	}
 	public static function SearchBroadcastGateway(){	
 		$result=array();
@@ -490,20 +475,6 @@ class eibd extends eqLogic {
 		$conBusMonitor->EIBClose();		
 		log::add('eibd', 'debug', 'Deconnexion a EIBD sur le serveur '.$host.':'.$port);	
 	}
-	
-	public static function addCacheNoGad($_parameter) {
-		$cache = cache::byKey('eibd::CreateNewGad');
-		$value = json_decode($cache->getValue('[]'), true);
-		if($key = array_search($_parameter['AdresseGroupe'], array_column($value, 'AdresseGroupe')) === false)
-			$value[] = $_parameter;
-		else
-			$value[$key] = $_parameter;
-		if(count($value) >=255){			
-			unset($value[0]);
-			array_shift($value);
-		}
-		cache::set('eibd::CreateNewGad', json_encode($value), 0);
-	}
 	public static function TransmitValue($_options) 	{
 		$Event = cmd::byId($_options['event_id']);
 		if(!is_object($Event)){
@@ -525,34 +496,32 @@ class eibd extends eqLogic {
 		$WriteBusValue=eibd::EibdWrite($ga, $data);
 		log::add('eibd','info',$Commande->getHumanName().'[Transmission]: Envoie de la valeur '.$_options['value'].' sur le GAD '.$ga);
 	}
-	public static function AddEquipement($Name,$_logicalId) 	{
-		$Equipement = self::byLogicalId($_logicalId, 'eibd');
-		if (is_object($Equipement)) {
-			$Equipement->setIsEnable(1);
-			$Equipement->save();
-		} else {
-			$Equipement = new eibd();
-			$Equipement->setName($Name);
-			$Equipement->setLogicalId($_logicalId);
-			$Equipement->setObject_id(null);
-			$Equipement->setEqType_name('eibd');
-			$Equipement->setIsEnable(1);
-			$Equipement->setIsVisible(1);
-			$Equipement->save();
+	public static function AddEquipement($Name,$_logicalId,$_objectId=null) {
+		foreach(eqLogic::byType('eibd') as $Equipement){
+			if($Equipement->getName() == $Name && $Equipement->getObject_id() == $_objectId)
+				return $Equipement;
 		}
+		$Equipement = new eibd();
+		$Equipement->setName($Name);
+		$Equipement->setLogicalId($_logicalId);
+		$Equipement->setObject_id($_objectId);
+		$Equipement->setEqType_name('eibd');
+		$Equipement->setIsEnable(1);
+		$Equipement->setIsVisible(1);
+		$Equipement->save();
 		return $Equipement;
 	}
-	public static function AddCommande($Equipement,$Name,$_logicalId,$Type="info", $Dpt='') {
-		$Commande = $Equipement->getCmd(null,$_logicalId);
+	public function AddCommande($Name,$_logicalId,$Type="info", $Dpt='') {
+		$Commande = $this->getCmd(null,$_logicalId);
 		if (!is_object($Commande))
 		{
 			$VerifName=$Name;
 			$Commande = new EibdCmd();
 			$Commande->setId(null);
 			$Commande->setLogicalId($_logicalId);
-			$Commande->setEqLogic_id($Equipement->getId());
+			$Commande->setEqLogic_id($this->getId());
 			$count=0;
-			while (is_object(cmd::byEqLogicIdCmdName($Equipement->getId(),$VerifName)))
+			while (is_object(cmd::byEqLogicIdCmdName($this->getId(),$VerifName)))
 			{
 				$count++;
 				$VerifName=$Name.'('.$count.')';
@@ -773,106 +742,7 @@ class eibd extends eqLogic {
 		while(is_object($listener=listener::byClassAndFunction('eibd', 'TransmitValue')))
 			$listener->remove();
 	}
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//                                                                                                                                               //
-	//                                                            Gestion du  parser ETS                                                             // 
-	//                                                                                                                                               //
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	private function unzipKnxProj($dir,$File){
-		if (!is_dir($dir)) 
-			mkdir($dir);
-		$zip = new ZipArchive(); 
-		// On ouvre l’archive.
-		if($zip->open($File) == TRUE)
-		{
-			$zip->extractTo($dir);
-			$zip->close();
-		}
-	}
-	private function SearchFolder($dir,$Folder){
-		if ($dh = opendir($dir)) 
-		{
-			while (($file = readdir($dh)) !== false)
-			{
-				if (substr($file,0,2) == $Folder)
-				{
-					if (opendir($dir.$file)) 
-						return $dir . $file;
-					}
-			}
-			closedir($dh);
-		}	
-	}
-	private function AddCommandeETSParse($Projet,$ComObjectInstanceRef,$NewGad,$type){
-		foreach($ComObjectInstanceRef->getElementsByTagName($type) as $Commande){
-			$GroupAddressRefId=$Commande->getAttribute('GroupAddressRefId');
-			foreach($Projet->getElementsByTagName('GroupRange') as $GroupRange){
-				$NewGad['groupName']=$GroupRange->getAttribute('Name');
-				foreach($GroupRange->getElementsByTagName('GroupAddress') as $GroupAddress){
-					$NewGad['cmdName']=$GroupAddress->getAttribute('Name');
-					$GroupAddressId=$GroupAddress->getAttribute('Id');
-					if ($GroupAddressId!=""){
-						if ($GroupAddressId == $GroupAddressRefId){
-							$addr=$GroupAddress->getAttribute('Address');
-							$NewGad['AdresseGroupe']=sprintf( "%d/%d/%d", ($addr >> 11) & 0xf, ($addr >> 8) & 0x7, $addr & 0xff);
-							if($type == 'send')
-								$NewGad['cmdType']='action';
-							else
-								$NewGad['cmdType']='info';
-							if(count(cmd::byLogicalId($NewGad['AdresseGroupe']))<=0)
-								self::addCacheNoGad($NewGad);
-						}
-					}
-				}
-			}
-		}
-	}
-	public static function ParserEtsFile($File){
-		$dir='/tmp/knxproj/';
-		self::unzipKnxProj($dir,$File);
-		$ProjetFile=self::SearchFolder($dir,"P-").'/0.xml';
-		$Projet = new DomDocument();
-		if ($Projet->load($ProjetFile)){ // XML décrivant le projet
-			foreach($Projet->getElementsByTagName('Area') as $Area){
-				$AreaAddress=$Area->getAttribute('Address');
-				foreach($Area->getElementsByTagName('Line') as $Line){
-					$LineAddress=$Line->getAttribute('Address');
-					foreach($Line->getElementsByTagName('DeviceInstance') as $Device){
-						$DeviceId=$Device->getAttribute('Id');
-						$DeviceProductRefId=$Device->getAttribute('ProductRefId');
-						if ($DeviceProductRefId != ''){
-							$DeviceAddress=$Device->getAttribute('Address');
-							$Equipement['AdressePhysique']=$AreaAddress.'.'.$LineAddress.'.'.$DeviceAddress;
-							$DossierCataloge=$dir . substr($DeviceProductRefId,0,6).'/Catalog.xml';
-							$Cataloge = new DomDocument();
-							if ($Cataloge->load($DossierCataloge)) {//XMl décrivant les équipements
-								foreach($Cataloge->getElementsByTagName('CatalogItem') as $CatalogItem){
-									if ($DeviceProductRefId==$CatalogItem->getAttribute('ProductRefId'))
-										$Equipement['DeviceName']=$CatalogItem->getAttribute('Name'). " - ".$PhysicalAdress;
-								}
-							}
-							else{
-								$Equipement['DeviceName']= "No name - ".$PhysicalAdress;
-							}
-							foreach($Device->getElementsByTagName('ComObjectInstanceRefs') as $ComObjectInstanceRefs){
-								foreach($ComObjectInstanceRefs->getElementsByTagName('ComObjectInstanceRef') as $ComObjectInstanceRef){
-									$DataPointType=explode('-',$ComObjectInstanceRef->getAttribute('DatapointType'));
-									if ($DataPointType[1] >0)
-										$Equipement['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
-									self::AddCommandeETSParse($Projet,$ComObjectInstanceRef,$Equipement,'Receive');
-									self::AddCommandeETSParse($Projet,$ComObjectInstanceRef,$Equipement,'Send');
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			throw new Exception(__( 'Impossible d\'analyser le document '.$ProjetFile, __FILE__));
-		}
-	}
+
   }
 class eibdCmd extends cmd {
 	public function preSave() { 
@@ -962,13 +832,14 @@ class eibdCmd extends cmd {
 				}
 			break;
 			case 'info':
-				$inverse=$this->getConfiguration('inverse');
-				log::add('eibd', 'debug',$this->getHumanName().' Lecture sur le bus de l\'adresse de groupe : '. $ga);
-				$DataBus=eibd::EibdRead($ga);	
+				$DataBus=eibd::EibdRead($ga);
+				if($DataBus === false){
+					$this->setConfiguration('FlagInit',false);
+					$this->save();
+					return;
+				}
 				$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
-				$this->setCollectDate(date('Y-m-d H:i:s'));
-				$this->event($BusValue);
-				$this->setCache('collectDate', date('Y-m-d H:i:s'));
+				$this->getLogicalId()->checkAndUpdateCmd($ga,$BusValue);
 			break;
 		}
 	}
