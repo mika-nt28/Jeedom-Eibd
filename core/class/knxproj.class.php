@@ -205,37 +205,38 @@ class knxproj {
 	}
 	private function createObject($Name){
 		$Object = object::byName($Name);
-		if($this->options['createObjet']){
-			if (!is_object($Object)) {
-				log::add('eibd','info','[Import ETS] Nous allons cree l\'objet : '.$Name);
-				$Object = new object();
-				$Object->setName($Name);
-				$Object->setIsVisible(true);
-				$Object->save();
-			}
+		if(!$this->options['createObjet'])
+			return $Object;
+		if (!is_object($Object)) {
+			log::add('eibd','info','[Import ETS] Nous allons cree l\'objet : '.$Name);
+			$Object = new object();
+			$Object->setName($Name);
+			$Object->setIsVisible(true);
+			$Object->save();
 		}
 		return $Object;
 	}
 	private function createEqLogic($ObjectName,$TemplateName,$Cmds){
-		if($this->options['createEqLogic']){
-			$Object=$this->createObject($ObjectName);
-			$EqLogic=eibd::AddEquipement($TemplateName,'',$Object->getId());
-			$TemplateId=$this->getTemplateName($TemplateName);
-			if($TemplateId != false){
-				log::add('eibd','info','[Import ETS] Le template ' .$TemplateName.' existe, nous créons un equipement');
-             			$EqLogic->applyModuleConfiguration($TemplateId);
-				foreach($EqLogic->getCmd() as $Cmd){
-					if(isset($Cmds[$Cmd->getName()])){
-						$Cmd->setLogicalId($Cmds[$Cmd->getName()]['AdresseGroupe']);
-						$Cmd->save();
-					}
-				}
-			}else{
-				if(!$this->options['createTemplate']){				
-					log::add('eibd','info','[Import ETS] Il n\'exite aucun template ' .$TemplateName.', nous créons un equipement basique qu\'il faudra mettre a jours');
-					foreach($Cmds as $Name => $Cmd)
-						$EqLogic->AddCommande($Name,$Cmd['AdresseGroupe'],"info", $Cmd['DataPointType']);
-				}
+		if(!$this->options['createEqLogic'])
+			return;
+		$Object=$this->createObject($ObjectName);
+		$EqLogic=eibd::AddEquipement($TemplateName,'',$Object->getId());
+		$TemplateId=$this->getTemplateName($TemplateName);
+		if($TemplateId != false){
+			log::add('eibd','info','[Import ETS] Le template ' .$TemplateName.' existe, nous créons un equipement');
+			$EqLogic->applyModuleConfiguration($TemplateId);
+			foreach($EqLogic->getCmd() as $Cmd){
+				$TemplateCmdName=$this->getTemplateCmdName($TemplateId,$Cmd->getName());
+				if($TemplateCmdName === false)
+					return;
+				$Cmd->setLogicalId($Cmds[$TemplateCmdName]['AdresseGroupe']);
+				$Cmd->save();
+			}
+		}else{
+			if(!$this->options['createTemplate']){				
+				log::add('eibd','info','[Import ETS] Il n\'exite aucun template ' .$TemplateName.', nous créons un equipement basique qu\'il faudra mettre a jours');
+				foreach($Cmds as $Name => $Cmd)
+					$EqLogic->AddCommande($Name,$Cmd['AdresseGroupe'],"info", $Cmd['DataPointType']);
 			}
 		}
 	}
@@ -243,6 +244,17 @@ class knxproj {
 		foreach($this->Templates as $TemplateId => $Template){
 			if($Template['name'] == $TemplateName)
 				return $TemplateId;
+		}
+		return false;
+	}
+	private function getTemplateCmdName($TemplateId,$CmdName){
+		foreach($this->Templates[$TemplateId]['cmd'] as $TemplateCmdName){
+			if($TemplateCmdName['name'] == $CmdName)
+				return $TemplateCmdName['name'];
+			foreach(explode('|',$TemplateCmdName['SameCmd']) as $SameCmd){
+				if($SameCmd == $CmdName)
+					return $TemplateCmdName['name'];
+			}
 		}
 		return false;
 	}
