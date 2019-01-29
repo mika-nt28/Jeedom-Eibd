@@ -10,7 +10,7 @@ if(isset($_REQUEST['SelectAddr']))
 else
 	echo '<script>var SelectAddr="";</script>';
 if(isset($_REQUEST['SelectDpt']))
-	echo '<script>var SelectDpt="'.$_REQUEST['SelectDpt'].'";</script>';
+	echo '<script>var SelectDpt="'.str_replace("XXX","",$_REQUEST['SelectDpt']).'";</script>';
 else
 	echo '<script>var SelectDpt="";</script>';
 ?>
