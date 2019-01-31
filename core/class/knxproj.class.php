@@ -6,7 +6,7 @@ class knxproj {
 	private $GroupAddresses=array();
 	private $Templates=array();
 	private $myProject=array();
- 	public function __construct($_options){
+ 	public function __construct($File,$_options){
 		$this->path = dirname(__FILE__) . '/../config/';
 		$this->Templates=eibd::devicesParameters();
 		$this->options=$_options[0];
@@ -17,7 +17,7 @@ class knxproj {
 			exec('sudo rm '.$filename);
 		switch($this->options['ProjetType']){
 			case "ETS":
-				$this->unzipKnxProj('/tmp/knxproj.knxproj');
+				$this->unzipKnxProj($File);
 				$ProjetFile=$this->SearchETSFolder("P-");
 				$this->myProject=simplexml_load_file($ProjetFile.'/0.xml');
 
@@ -26,6 +26,7 @@ class knxproj {
 				$this->CheckOptions();
 			break;
 			case "TX100":
+				$this->unzipKnxProj($File);
 				$this->ParserTX100GroupAddresses();
 			break;
 		}
@@ -59,7 +60,7 @@ class knxproj {
 			$zip->extractTo($this->path . 'knxproj/');
 			$zip->close();
 		}
-		log::add('eibd','debug','[Import ETS] Extraction des fichiers de projets');
+		log::add('eibd','debug','[Import] Extraction des fichiers de projets');
 	}
 	private function SearchETSFolder($Folder){
 		if ($dh = opendir($this->path . 'knxproj/')){
