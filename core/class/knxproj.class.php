@@ -28,6 +28,7 @@ class knxproj {
 			case "TX100":
 				$this->ParserTX100GroupAddresses();
 			break;
+		}
 	}
  	public function __destruct(){
 		if (file_exists('/tmp/knxproj.knxproj')) 
@@ -96,7 +97,7 @@ class knxproj {
 		$NbLevel++;
 		foreach ($GroupRanges->children() as $GroupRange) {
 			$GroupName = $this->xml_attribute($GroupRange, 'name');
-			<property key="GroupAddress" value="50334" type="string"/>
+			//<property key="GroupAddress" value="50334" type="string"/>
 			if($GroupRange->getName() == 'property' && $this->xml_attribute($GroupRange, 'key') == "GroupAddress"){
 				config::save('level',$NbLevel,'eibd');
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRange, 'value'));
