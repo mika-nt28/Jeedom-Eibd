@@ -94,20 +94,19 @@ try {
 	}
 	if (init('action') == 'EtsParser') {
 		if(isset($_FILES['Knxproj'])){ 
-			if(move_uploaded_file($_FILES['Knxproj']['tmp_name'],'/tmp/knxproj.knxproj'))
+			$uploaddir = '/tmp/';
+			$uploadfile = $uploaddir.basename($_FILES['Knxproj']['name']);
+			if(move_uploaded_file($_FILES['Knxproj']['tmp_name'], $uploadfile)){
+				knxproj::ExtractProjectFile($uploadfile);
 				ajax::success(true);
-			else
+			}else
 				ajax::success(false);
 		}
 	}
 	if (init('action') == 'AnalyseEtsProj') {
-		$filename='/tmp/knxproj.knxproj';
-		if (file_exists($filename)) {
-			$knxproj=new knxproj(init('option'));
-			$knxproj->WriteJsonProj();
-			ajax::success(json_decode($knxproj->getAll(),true));
-		}
-		ajax::success(false);
+		$knxproj=new knxproj(init('option'));
+		$knxproj->WriteJsonProj();
+		ajax::success(json_decode($knxproj->getAll(),true));
 	}
 	if (init('action') == 'getEtsProj') {
 		$filename=dirname(__FILE__) . '/../config/EtsProj.json';
