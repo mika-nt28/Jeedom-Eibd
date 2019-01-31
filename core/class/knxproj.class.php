@@ -6,7 +6,20 @@ class knxproj {
 	private $GroupAddresses=array();
 	private $Templates=array();
 	private $myProject=array();
- 	public function __construct($File,$_options){
+	public static function ExtractProjectFile($File){
+		$path = dirname(__FILE__) . '/../config/';
+		if (!is_dir($path . 'knxproj/')) 
+			mkdir($path . 'knxproj/');
+		exec('sudo chmod -R 777 '.$path . 'knxproj/');
+		$zip = new ZipArchive(); 
+		// On ouvre l’archive.
+		if($zip->open($File) == TRUE){
+			$zip->extractTo($path . 'knxproj/');
+			$zip->close();
+		}
+		log::add('eibd','debug','[Import] Extraction des fichiers de projets');
+	}
+ 	public function __construct($_options){
 		$this->path = dirname(__FILE__) . '/../config/';
 		$this->Templates=eibd::devicesParameters();
 		$this->options=$_options[0];
@@ -17,7 +30,6 @@ class knxproj {
 			exec('sudo rm '.$filename);
 		switch($this->options['ProjetType']){
 			case "ETS":
-				$this->unzipKnxProj($File);
 				$ProjetFile=$this->SearchETSFolder("P-");
 				$this->myProject=simplexml_load_file($ProjetFile.'/0.xml');
 
@@ -26,14 +38,11 @@ class knxproj {
 				$this->CheckOptions();
 			break;
 			case "TX100":
-				$this->unzipKnxProj($File);
 				$this->ParserTX100GroupAddresses();
 			break;
 		}
 	}
  	public function __destruct(){
-		if (file_exists('/tmp/knxproj.knxproj')) 
-			exec('sudo rm  /tmp/knxproj.knxproj');
 		if (file_exists($this->path)) 
 			exec('sudo rm -R '.$this->path . 'knxproj/');
 	}
@@ -49,18 +58,6 @@ class knxproj {
 		$myKNX['Devices']=$this->Devices;
 		$myKNX['GAD']=$this->GroupAddresses;
 		return json_encode($myKNX,JSON_PRETTY_PRINT);
-	}
-	private function unzipKnxProj($File){
-		if (!is_dir($this->path . 'knxproj/')) 
-			mkdir($this->path . 'knxproj/');
-		exec('sudo chmod -R 777 '.$this->path . 'knxproj/');
-		$zip = new ZipArchive(); 
-		// On ouvre l’archive.
-		if($zip->open($File) == TRUE){
-			$zip->extractTo($this->path . 'knxproj/');
-			$zip->close();
-		}
-		log::add('eibd','debug','[Import] Extraction des fichiers de projets');
 	}
 	private function SearchETSFolder($Folder){
 		if ($dh = opendir($this->path . 'knxproj/')){
