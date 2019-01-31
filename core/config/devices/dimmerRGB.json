@@ -70,7 +70,7 @@
 					"FlagTransmit":"0",
 					"FlagUpdate":"0",
 					"FlagWrite":"0",
-					"KnxObjectType":"1.001",
+					"KnxObjectType":"3.007",
 					"KnxObjectValue":"0",
 					"inverse":"0",
 					"subTypeAuto":"1",
