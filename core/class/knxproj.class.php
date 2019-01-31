@@ -15,13 +15,19 @@ class knxproj {
 		$filename=$this->path.'EtsProj.json';
 		if (file_exists($filename)) 
 			exec('sudo rm '.$filename);
-		$this->unzipKnxProj('/tmp/knxproj.knxproj');
-		$ProjetFile=$this->SearchFolder("P-");
-		$this->myProject=simplexml_load_file($ProjetFile.'/0.xml');
-		
-		$this->ParserDevice();
-		$this->ParserGroupAddresses();
-		$this->CheckOptions();
+		switch($this->options['ProjetType']){
+			case "ETS":
+				$this->unzipKnxProj('/tmp/knxproj.knxproj');
+				$ProjetFile=$this->SearchETSFolder("P-");
+				$this->myProject=simplexml_load_file($ProjetFile.'/0.xml');
+
+				$this->ParserETSDevice();
+				$this->ParserETSGroupAddresses();
+				$this->CheckOptions();
+			break;
+			case "TX100":
+				$this->ParserTX100GroupAddresses();
+			break;
 	}
  	public function __destruct(){
 		if (file_exists('/tmp/knxproj.knxproj')) 
@@ -54,7 +60,7 @@ class knxproj {
 		}
 		log::add('eibd','debug','[Import ETS] Extraction des fichiers de projets');
 	}
-	private function SearchFolder($Folder){
+	private function SearchETSFolder($Folder){
 		if ($dh = opendir($this->path . 'knxproj/')){
 			while (($file = readdir($dh)) !== false){
 				if (substr($file,0,2) == $Folder){
@@ -66,7 +72,7 @@ class knxproj {
 		}	
 		return false;
 	}
-	private function getCatalogue($DeviceProductRefId){	
+	private function getETSCatalogue($DeviceProductRefId){	
 		//log::add('eibd','debug','[Import ETS] Rechecher des nom de module dans le catalogue');
 		$Catalogue = new DomDocument();
 		if ($Catalogue->load($this->path . 'knxproj/'.substr($DeviceProductRefId,0,6).'/Catalog.xml')) {//XMl décrivant les équipements
@@ -80,12 +86,34 @@ class knxproj {
 		if(isset($object[$attribute]))
 			return (string) $object[$attribute];
 	}
-	private function ParserGroupAddresses(){
+	private function ParserTX100GroupAddresses(){
+		log::add('eibd','debug','[Import TX100] Création de l\'arboressance de gad');
+		$GroupLinks=simplexml_load_file($this->path . 'knxproj/GroupLinks.xml');
+		$this->GroupAddresses = $this->getTX100Level($GroupLinks);
+	}
+	private function getTX100Level($GroupRanges,$NbLevel=0){
+		$Level = array();
+		$NbLevel++;
+		foreach ($GroupRanges->children() as $GroupRange) {
+			$GroupName = $this->xml_attribute($GroupRange, 'name');
+			<property key="GroupAddress" value="50334" type="string"/>
+			if($GroupRange->getName() == 'property' && $this->xml_attribute($GroupRange, 'key') == "GroupAddress"){
+				config::save('level',$NbLevel,'eibd');
+				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRange, 'value'));
+				$DataPointType=$this->xml_attribute($GroupRanges->config->property, 'value');
+				$Level[$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+			}else{
+				$Level[$GroupName]=$this->getTX100Level($GroupRange,$NbLevel);
+			}
+		}
+		return $Level;
+	}
+	private function ParserETSGroupAddresses(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de gad');
 		$GroupRanges = $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges;
-		$this->GroupAddresses = $this->getLevel($GroupRanges);
+		$this->GroupAddresses = $this->getETSLevel($GroupRanges);
 	}
-	private function getLevel($GroupRanges,$NbLevel=0){
+	private function getETSLevel($GroupRanges,$NbLevel=0){
 		$Level = array();
 		$NbLevel++;
 		foreach ($GroupRanges->children() as $GroupRange) {
@@ -97,7 +125,7 @@ class knxproj {
 				$DataPointType=$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
 				$Level[$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
 			}else{
-				$Level[$GroupName]=$this->getLevel($GroupRange,$NbLevel);
+				$Level[$GroupName]=$this->getETSLevel($GroupRange,$NbLevel);
 			}
 		}
 		return $Level;
@@ -116,7 +144,7 @@ class knxproj {
 		}
 		return $DPT;
 	}
-	private function ParserDevice(){
+	private function ParserETSDevice(){
 		log::add('eibd','debug','[Import ETS] Recherche de device');
 		$Topology = $this->myProject->Project->Installations->Installation->Topology;
 		foreach($Topology->children() as $Area){
@@ -128,7 +156,7 @@ class knxproj {
 					$DeviceProductRefId=$this->xml_attribute($Device, 'ProductRefId');
 					if ($DeviceProductRefId != ''){
 						$this->Devices[$DeviceId]=array();
-                      				$this->Devices[$DeviceId]['DeviceName']=$this->getCatalogue($DeviceProductRefId);
+                      				$this->Devices[$DeviceId]['DeviceName']=$this->getETSCatalogue($DeviceProductRefId);
 						$DeviceAddress=$this->xml_attribute($Device, 'Address');
 						$this->Devices[$DeviceId]['AdressePhysique']=$AreaAddress.'.'.$LineAddress.'.'.$DeviceAddress;
 						foreach($Device->children() as $ComObjectInstanceRefs){
