@@ -49,7 +49,9 @@ cd /usr/local/src/knxd
 sudo git clone https://github.com/knxd/knxd.git
 cd knxd
 git checkout stable
+echo 40 > /tmp/compilation_eibd_in_progress
 sudo dpkg-buildpackage -b -uc -d
+echo 80 > /tmp/compilation_eibd_in_progress
 cd /usr/local/src/knxd
 sudo dpkg -i knxd_*.deb knxd-tools_*.deb
 sudo usermod -a -G dialout knxd
