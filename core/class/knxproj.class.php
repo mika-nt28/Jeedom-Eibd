@@ -130,8 +130,10 @@ class knxproj {
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRange, 'value'));
 				$DataPointType=$this->xml_attribute($GroupRanges->config->property, 'value');
 				$Level[$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+				return $Level;
 			}else{
-				$Level[$GroupName]=$this->getTX100Level($GroupRange,$NbLevel);
+				if($GroupRange->getName() == 'config')
+					$Level[$GroupName]=$this->getTX100Level($GroupRange,$NbLevel);
 			}
 		}
 		return $Level;
