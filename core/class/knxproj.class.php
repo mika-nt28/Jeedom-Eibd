@@ -22,7 +22,7 @@ class knxproj {
 		$zip = new ZipArchive(); 
 		// On ouvre l’archive.
 		if($zip->open($File) == TRUE){
-			$zip->extractTo($path . 'knxproj/');
+			$zip->extractTo($path);
 			$zip->close();
 		}
 		log::add('eibd','debug','[Import ETS] Extraction des fichiers de projets');
