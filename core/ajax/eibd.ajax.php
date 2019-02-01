@@ -94,10 +94,16 @@ try {
 	}
 	if (init('action') == 'EtsParser') {
 		if(isset($_FILES['Knxproj'])){ 
-			$uploaddir = '/tmp/';
+			$uploaddir = '/tmp/KnxProj/';
+			if (!is_dir($uploaddir)) 
+				mkdir($uploaddir);
 			$uploadfile = $uploaddir.basename($_FILES['Knxproj']['name']);
+			$ext = pathinfo($_FILES['Knxproj']['name'], PATHINFO_EXTENSION);
 			if(move_uploaded_file($_FILES['Knxproj']['tmp_name'], $uploadfile)){
-				knxproj::ExtractProjectFile($uploadfile);
+				if($ext == 'gz')
+					knxproj::ExtractTX100ProjectFile($uploadfile);
+				else
+					knxproj::ExtractETSProjectFile($uploadfile);
 				ajax::success(true);
 			}else
 				ajax::success(false);
