@@ -33,9 +33,6 @@ class knxproj {
 		$this->options=$_options[0];
 		
 		//log::add('eibd','debug','[Import ETS]'.json_encode($_options));
-		$filename=$this->path.'EtsProj.json';
-		if (file_exists($filename)) 
-			exec('sudo rm '.$filename);
 		switch($this->options['ProjetType']){
 			case "ETS":
 				$ProjetFile=$this->SearchETSFolder("P-");
