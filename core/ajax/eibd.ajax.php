@@ -115,7 +115,7 @@ try {
 		ajax::success(json_decode($knxproj->getAll(),true));
 	}
 	if (init('action') == 'getEtsProj') {
-		$filename=dirname(__FILE__) . '/../config/EtsProj.json';
+		$filename=dirname(__FILE__) . '/../config/KnxProj.json';
 		if (file_exists($filename))
 			ajax::success(json_decode(file_get_contents($filename),true));
 		ajax::success(false);
