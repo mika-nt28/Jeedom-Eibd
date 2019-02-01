@@ -6,7 +6,15 @@ class knxproj {
 	private $GroupAddresses=array();
 	private $Templates=array();
 	private $myProject=array();
-	public static function ExtractProjectFile($File){
+	public static function ExtractTX100ProjectFile($File){
+		$path = dirname(__FILE__) . '/../config/knxproj/';
+		if (!is_dir($path)) 
+			mkdir($path);
+		exec('sudo chmod -R 777 '.$path);
+		system('cd ' . $path . '; tar xfz "' . $File . '"');
+		log::add('eibd','debug','[Import TX100] Extraction des fichiers de projets');
+	}
+	public static function ExtractETSProjectFile($File){
 		$path = dirname(__FILE__) . '/../config/';
 		if (!is_dir($path . 'knxproj/')) 
 			mkdir($path . 'knxproj/');
@@ -17,7 +25,7 @@ class knxproj {
 			$zip->extractTo($path . 'knxproj/');
 			$zip->close();
 		}
-		log::add('eibd','debug','[Import] Extraction des fichiers de projets');
+		log::add('eibd','debug','[Import ETS] Extraction des fichiers de projets');
 	}
  	public function __construct($_options){
 		$this->path = dirname(__FILE__) . '/../config/';
