@@ -124,7 +124,10 @@ class knxproj {
 		$NbLevel++;
 		foreach ($GroupRanges->children() as $GroupRange) {
 			$GroupName = $this->xml_attribute($GroupRange, 'name');
-			//<property key="GroupAddress" value="50334" type="string"/>
+          		if ($GroupName == 'Links'){
+		  		$NbLevel--;
+				return $this->getTX100Level($GroupRange,$NbLevel);
+			}
 			if($GroupRange->getName() == 'property' && $this->xml_attribute($GroupRange, 'key') == "GroupAddress"){
 				config::save('level',$NbLevel,'eibd');
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRange, 'value'));
