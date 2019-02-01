@@ -15,10 +15,10 @@ class knxproj {
 		log::add('eibd','debug','[Import TX100] Extraction des fichiers de projets');
 	}
 	public static function ExtractETSProjectFile($File){
-		$path = dirname(__FILE__) . '/../config/';
-		if (!is_dir($path . 'knxproj/')) 
-			mkdir($path . 'knxproj/');
-		exec('sudo chmod -R 777 '.$path . 'knxproj/');
+		$path = dirname(__FILE__) . '/../config/knxproj/';
+		if (!is_dir($path)) 
+			mkdir($path);
+		exec('sudo chmod -R 777 '.$path);
 		$zip = new ZipArchive(); 
 		// On ouvre l’archive.
 		if($zip->open($File) == TRUE){
@@ -52,8 +52,9 @@ class knxproj {
 		}
 	}
  	public function __destruct(){
-		if (file_exists($this->path)) 
-			exec('sudo rm -R '.$this->path );
+		$path = dirname(__FILE__) . '/../config/knxproj/';
+		if (file_exists($path)) 
+			exec('sudo rm -R '.$path );
 	}
 	public function WriteJsonProj(){
 		$filename=dirname(__FILE__) . '/../config/KnxProj.json';
