@@ -28,7 +28,7 @@ class knxproj {
 		log::add('eibd','debug','[Import ETS] Extraction des fichiers de projets');
 	}
  	public function __construct($_options){
-		$this->path = dirname(__FILE__) . '/../config/';
+		$this->path = dirname(__FILE__) . '/../config/knxproj/';
 		$this->Templates=eibd::devicesParameters();
 		$this->options=$_options[0];
 		
@@ -46,16 +46,17 @@ class knxproj {
 				$this->CheckOptions();
 			break;
 			case "TX100":
+				$ProjetFile=$this->SearchTX100Folder();
 				$this->ParserTX100GroupAddresses();
 			break;
 		}
 	}
  	public function __destruct(){
 		if (file_exists($this->path)) 
-			exec('sudo rm -R '.$this->path . 'knxproj/');
+			exec('sudo rm -R '.$this->path );
 	}
 	public function WriteJsonProj(){
-		$filename=$this->path.'EtsProj.json';
+		$filename=dirname(__FILE__) . '/../config/KnxProj.json';
 		if (file_exists($filename)) 
 			exec('sudo rm '.$filename);
 		$file=fopen($filename,"a+");
@@ -67,12 +68,34 @@ class knxproj {
 		$myKNX['GAD']=$this->GroupAddresses;
 		return json_encode($myKNX,JSON_PRETTY_PRINT);
 	}
+	private function SearchTX100Folder(){
+		log::add('eibd','debug','[Import TX100] SearchTX100Folder ');
+		if ($dh = opendir($this->path)){
+			log::add('eibd','debug','[Import TX100] overture de  '.$this->path);
+			while (($file = readdir($dh)) !== false){
+				log::add('eibd','debug','[Import TX100] Rechecher '.$file);
+				if($file != '.' && $file != '..'){
+					if ($file == 'configuration'){
+						$this->path .= $file.'/';
+						log::add('eibd','debug','[Import TX100] Rechecher dossier '.$this->path);
+						return $this->path;
+					}else{
+						$this->path .= $file.'/';
+						log::add('eibd','debug','[Import TX100] Rechecher dossier '.$this->path);
+						$this->SearchTX100Folder();
+					}
+				}
+			}
+			closedir($dh);
+		}	
+		return false;
+	}
 	private function SearchETSFolder($Folder){
-		if ($dh = opendir($this->path . 'knxproj/')){
+		if ($dh = opendir($this->path)){
 			while (($file = readdir($dh)) !== false){
 				if (substr($file,0,2) == $Folder){
-					if (opendir($this->path . 'knxproj/'.$file)) 
-						return $this->path . 'knxproj/' . $file;
+					if (opendir($this->path . $file)) 
+						return $this->path . $file;
 				}
 			}
 			closedir($dh);
@@ -82,7 +105,7 @@ class knxproj {
 	private function getETSCatalogue($DeviceProductRefId){	
 		//log::add('eibd','debug','[Import ETS] Rechecher des nom de module dans le catalogue');
 		$Catalogue = new DomDocument();
-		if ($Catalogue->load($this->path . 'knxproj/'.substr($DeviceProductRefId,0,6).'/Catalog.xml')) {//XMl décrivant les équipements
+		if ($Catalogue->load($this->path . substr($DeviceProductRefId,0,6).'/Catalog.xml')) {//XMl décrivant les équipements
 			foreach($Catalogue->getElementsByTagName('CatalogItem') as $CatalogItem){
 				if ($DeviceProductRefId==$CatalogItem->getAttribute('ProductRefId'))
 					return $CatalogItem->getAttribute('Name');
@@ -95,7 +118,7 @@ class knxproj {
 	}
 	private function ParserTX100GroupAddresses(){
 		log::add('eibd','debug','[Import TX100] Création de l\'arboressance de gad');
-		$GroupLinks=simplexml_load_file($this->path . 'knxproj/GroupLinks.xml');
+		$GroupLinks=simplexml_load_file($this->path . 'GroupLinks.xml');
 		$this->GroupAddresses = $this->getTX100Level($GroupLinks);
 	}
 	private function getTX100Level($GroupRanges,$NbLevel=0){
