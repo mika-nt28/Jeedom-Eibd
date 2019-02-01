@@ -22,7 +22,7 @@ class knxproj {
 		$zip = new ZipArchive(); 
 		// On ouvre l’archive.
 		if($zip->open($File) == TRUE){
-			$zip->extractTo($path . 'knxproj/');
+			$zip->extractTo($path);
 			$zip->close();
 		}
 		log::add('eibd','debug','[Import ETS] Extraction des fichiers de projets');
@@ -124,14 +124,19 @@ class knxproj {
 		$NbLevel++;
 		foreach ($GroupRanges->children() as $GroupRange) {
 			$GroupName = $this->xml_attribute($GroupRange, 'name');
-			//<property key="GroupAddress" value="50334" type="string"/>
+          		if ($GroupName == 'Links'){
+		  		$NbLevel--;
+				return $this->getTX100Level($GroupRange,$NbLevel);
+			}
 			if($GroupRange->getName() == 'property' && $this->xml_attribute($GroupRange, 'key') == "GroupAddress"){
 				config::save('level',$NbLevel,'eibd');
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRange, 'value'));
 				$DataPointType=$this->xml_attribute($GroupRanges->config->property, 'value');
 				$Level[$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+				return $Level;
 			}else{
-				$Level[$GroupName]=$this->getTX100Level($GroupRange,$NbLevel);
+				if($GroupRange->getName() == 'config')
+					$Level[$GroupName]=$this->getTX100Level($GroupRange,$NbLevel);
 			}
 		}
 		return $Level;
