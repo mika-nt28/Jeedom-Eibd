@@ -131,7 +131,9 @@ class knxproj {
 			if($GroupRange->getName() == 'property' && $this->xml_attribute($GroupRange, 'key') == "GroupAddress"){
 				config::save('level',$NbLevel,'eibd');
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRange, 'value'));
-				$DataPointType=$this->xml_attribute($GroupRanges->config->property, 'value');
+				$ChannelId=$this->xml_attribute($GroupRanges->config->property, 'key');
+				$DataPointId=$this->xml_attribute($GroupRanges->config->property, 'value');
+				list($DataPointType,$GroupName)=$this->getTX100DptInfo($ChannelId,$DataPointId);
 				$Level[$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
 				return $Level;
 			}else{
@@ -140,6 +142,34 @@ class knxproj {
 			}
 		}
 		return $Level;
+	}
+	private function getTX100DptInfo($ChannelId,$DataPointId){
+		log::add('eibd','debug','[Import TX100] Création de l\'arboressance de gad');	
+		$DataPointType='';	
+		$GroupName=' - ';
+		$Channels=simplexml_load_file($this->path . 'Channels.xml');
+		foreach ($Channels->children() as $Channel) {
+			if($this->xml_attribute($Channel, 'name') == $ChannelId){
+				foreach ($Channel->children() as $Block) {
+					if($this->xml_attribute($Block, 'name') == "FunctionalBlocks"){
+						foreach ($Block->children() as $FunctionalBlock) {
+							foreach ($FunctionalBlock->config->children() as $datapoints) {								
+								if($this->xml_attribute($datapoints, 'name') == $DataPointId){	
+									foreach ($datapoints->children() as $parameter) {
+										if($this->xml_attribute($parameter, 'key') == 'aDPTNumber')
+											$DataPointType=$this->xml_attribute($parameter, 'value').".xxx";
+										if($this->xml_attribute($parameter, 'key') == 'name')
+											$GroupName=$this->xml_attribute($parameter, 'value');
+									}
+									return array($DataPointType,$GroupName);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return array($DataPointType,$GroupName);
 	}
 	private function ParserETSGroupAddresses(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de gad');

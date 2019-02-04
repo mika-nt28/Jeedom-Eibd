@@ -23,7 +23,7 @@ class eibd extends eqLogic {
 	public static function cron5() {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
-				foreach($Equipement->getCmd('action') as $Commande){
+				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron5"){
 						$ga=$Commande->getLogicalId();
 						$Commande->execute();
@@ -39,7 +39,7 @@ class eibd extends eqLogic {
 	public static function cron15() {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
-				foreach($Equipement->getCmd('action') as $Commande){
+				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron15"){
 						$ga=$Commande->getLogicalId();
 						$Commande->execute();
@@ -55,7 +55,7 @@ class eibd extends eqLogic {
 	public static function cron30() {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
-				foreach($Equipement->getCmd('action') as $Commande){
+				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron30"){
 						$ga=$Commande->getLogicalId();
 						$Commande->execute();
@@ -71,7 +71,7 @@ class eibd extends eqLogic {
 	public static function cronHourly() {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
-				foreach($Equipement->getCmd('action') as $Commande){
+				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronHourly"){
 						$ga=$Commande->getLogicalId();
 						$Commande->execute();
@@ -87,7 +87,7 @@ class eibd extends eqLogic {
 	public static function cronDaily() {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
-				foreach($Equipement->getCmd('action') as $Commande){
+				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily"){
 						$ga=$Commande->getLogicalId();
 						$Commande->execute();
@@ -429,24 +429,17 @@ class eibd extends eqLogic {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static function InitInformation() { 
 		log::add('eibd', 'debug', 'Initialisation de valeur des objets KNX');
-		foreach(eqLogic::byType('eibd') as $Equipement)	{
-			if ($Equipement->getIsEnable()){
-				foreach($Equipement->getCmd('info') as $Commande)	{
+		
+		foreach(eqLogic::byType('eibd') as $Equipement){		
+			if($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('FlagInit')){
 						$ga=$Commande->getLogicalId();
-						$dpt=$Commande->getConfiguration('KnxObjectType');
-						$inverse=$Commande->getConfiguration('inverse');
-						$DataBus=self::EibdRead($ga);
-                      				if($DataBus === false){
-							$Commande->setConfiguration('FlagInit',false);
-							$Commande->save();
-							continue;
-						}
-						$Option=$Commande->getConfiguration('option');
-						$Option["id"]=$Commande->getId();
-						$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
-						log::add('eibd', 'debug',  $Commande->getHumanName().'[Initialisation] GAD '.$ga.' = '.$BusValue);
-						$Equipement->checkAndUpdateCmd($ga,$BusValue);
+						$Commande->execute();
+						if($Commande->getType() == 'info')			
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Lecture du GAD: '.$ga.' = '.$BusValue);
+						else
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Envoi sur le GAD: '.$ga);
 					}
 				}
 			}
@@ -836,6 +829,7 @@ class eibdCmd extends cmd {
 				$DataBus=eibd::EibdRead($ga);
 				if($DataBus === false){
 					$this->setConfiguration('FlagInit',false);
+					$this->setConfiguration('CycliqueSend','');
 					$this->save();
 					return;
 				}
