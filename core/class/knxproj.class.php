@@ -119,24 +119,34 @@ class knxproj {
 		$GroupLinks=simplexml_load_file($this->path . 'GroupLinks.xml');
 		$this->GroupAddresses = $this->getTX100Level($GroupLinks);
 	}
-	private function getTX100Level($GroupRanges){
+	private function getTX100Level($GroupRanges,$NbLevel=0){
+		$Level = array();
+		$NbLevel++;
 		foreach ($GroupRanges->children() as $GroupRange) {
 			$GroupName = $this->xml_attribute($GroupRange, 'name');
-          		if ($GroupName == 'Links')
-				return $this->getTX100Level($GroupRange);
+          		if ($GroupName == 'Links'){
+		  		$NbLevel--;
+				return $this->getTX100Level($GroupRange,$NbLevel);
+			}
 			if($GroupRange->getName() == 'property' && $this->xml_attribute($GroupRange, 'key') == "GroupAddress"){
+				config::save('level',$NbLevel,'eibd');
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRange, 'value'));
-				$ChannelId=$this->xml_attribute($GroupRange->config->property, 'name');
-				$DataPointId=$this->xml_attribute($GroupRange->config->property, 'value');
-				return $this->getTX100DptInfo($ChannelId,$DataPointId,$AdresseGroupe);
+				$ChannelId=$this->xml_attribute($GroupRanges->config->property, 'key');
+				$DataPointId=$this->xml_attribute($GroupRanges->config->property, 'value');
+				list($DataPointType,$GroupName)=$this->getTX100DptInfo($ChannelId,$DataPointId);
+				$Level[$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+				return $Level;
 			}else{
 				if($GroupRange->getName() == 'config')
-					return $this->getTX100Level($GroupRange);
+					$Level[$GroupName]=$this->getTX100Level($GroupRange,$NbLevel);
 			}
 		}
+		return $Level;
 	}
-	private function getTX100DptInfo($ChannelId,$DataPointId,$AdresseGroupe){
-		log::add('eibd','debug','[Import TX100] Création de l\'arboressance de gad');
+	private function getTX100DptInfo($ChannelId,$DataPointId){
+		log::add('eibd','debug','[Import TX100] Création de l\'arboressance de gad');	
+		$DataPointType='';	
+		$GroupName=' - ';
 		$Channels=simplexml_load_file($this->path . 'Channels.xml');
 		foreach ($Channels->children() as $Channel) {
 			if($this->xml_attribute($Channel, 'name') == $ChannelId){
@@ -144,16 +154,14 @@ class knxproj {
 					if($this->xml_attribute($Block, 'name') == "FunctionalBlocks"){
 						foreach ($Block->children() as $FunctionalBlock) {
 							foreach ($FunctionalBlock->config->children() as $datapoints) {								
-								if($this->xml_attribute($datapoints, 'name') == $DataPointId){		
-									$DataPointType='';	
-									$GroupName='';
-									foreach ($FunctionalBlock->config->children() as $parameter) {							
+								if($this->xml_attribute($datapoints, 'name') == $DataPointId){	
+									foreach ($datapoints->children() as $parameter) {
 										if($this->xml_attribute($parameter, 'key') == 'aDPTNumber')
-											$DataPointType=$this->xml_attribute($parameter, 'value');					
+											$DataPointType=$this->xml_attribute($parameter, 'value').".xxx";
 										if($this->xml_attribute($parameter, 'key') == 'name')
 											$GroupName=$this->xml_attribute($parameter, 'value');
 									}
-									return $Level[$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+									return array($DataPointType,$GroupName);
 								}
 							}
 						}
@@ -161,6 +169,7 @@ class knxproj {
 				}
 			}
 		}
+		return array($DataPointType,$GroupName);
 	}
 	private function ParserETSGroupAddresses(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de gad');
