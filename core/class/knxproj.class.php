@@ -43,7 +43,7 @@ class knxproj {
 				$this->CheckOptions();
 			break;
 			case "TX100":
-				$ProjetFile=$this->SearchTX100Folder();
+				$ProjetFile=$this->SearchTX100Folder($this->path);
 				$this->ParserTX100GroupAddresses();
 			break;
 		}
@@ -66,21 +66,18 @@ class knxproj {
 		$myKNX['GAD']=$this->GroupAddresses;
 		return json_encode($myKNX,JSON_PRETTY_PRINT);
 	}
-	private function SearchTX100Folder(){
-		log::add('eibd','debug','[Import TX100] SearchTX100Folder ');
-		if ($dh = opendir($this->path)){
-			log::add('eibd','debug','[Import TX100] overture de  '.$this->path);
+	private function SearchTX100Folder($path){
+		if ($dh = opendir($path)){
+			log::add('eibd','debug','[Import TX100] overture de  '.$path);
 			while (($file = readdir($dh)) !== false){
-				log::add('eibd','debug','[Import TX100] Rechecher '.$file);
 				if($file != '.' && $file != '..'){
+					log::add('eibd','debug','[Import TX100] Rechecher dans '.$path.$file);
 					if ($file == 'configuration'){
-						$this->path .= $file.'/';
-						log::add('eibd','debug','[Import TX100] Rechecher dossier '.$this->path);
+						$this->path = $path.$file.'/';
+						log::add('eibd','debug','[Import TX100] Dossier courant '.$this->path);
 						return $this->path;
 					}else{
-						$this->path .= $file.'/';
-						log::add('eibd','debug','[Import TX100] Rechecher dossier '.$this->path);
-						$this->SearchTX100Folder();
+						$this->SearchTX100Folder($path.$file.'/');
 					}
 				}
 			}
@@ -140,11 +137,10 @@ class knxproj {
 				if($GroupRange->getName() == 'config')
 					$Level[$GroupName]=$this->getTX100Level($GroupRange,$NbLevel);
 			}
-		}
+        }
 		return $Level;
 	}
 	private function getTX100DptInfo($ChannelId,$DataPointId){
-		log::add('eibd','debug','[Import TX100] Création de l\'arboressance de gad');	
 		$DataPointType='';	
 		$GroupName=' - ';
 		$Channels=simplexml_load_file($this->path . 'Channels.xml');
