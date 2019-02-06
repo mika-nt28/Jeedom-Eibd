@@ -286,10 +286,10 @@ Pour cela il suffit de configurer votre commande ainsi:
 * Saisir le GAD qui correspond à l'objet KNX que vous souhaitez surveiller
 * Activer le flag "Lecture"
 
-Envoie cyclique d'une valeur
---------------------------
+Mode cyclique
+-------------
 
-Vous avez besoin d'envoyer une commande sur le bus de maniere cyclique (comme un horloge ou un etat a la vanne thermostatique)
+Vous avez besoin de lire un etat ou d'envoyer une valeur sur le bus de maniere cyclique (comme une horloge ou un etat a la vanne thermostatique)
 Rien de plus simple, il suffit de choisir sur votre commande de type action une base de temps, le plugin fait le reste.
 
 FAQ

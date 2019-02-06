@@ -4,12 +4,12 @@
         "L'adresse physique doit obligatoirement être renseigné": "L'adresse physique doit obligatoirement être renseigné"
     },
     "plugins\/eibd\/desktop\/php\/eibd.php": {
-        "Ajouter un équipement": "Add equipment",
+        "Ajouter un équipement": "Add device",
         "Rechercher": "Search",
         "Générale": "General",
         "Dupliquer": "Duplicate",
-        "Nom de l'équipement KNX": "Name of the equipment KNX",
-        "Adresse Physique de l'équipement": "Equipment physical address",
+        "Nom de l'équipement KNX": "KNX device name",
+        "Adresse Physique de l'équipement": "Device physical address",
         "Objet parent": "Parent object",
         "Catégorie": "Category",
         "Visible": "Visible",
