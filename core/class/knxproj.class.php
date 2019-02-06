@@ -45,6 +45,7 @@ class knxproj {
 			case "TX100":
 				$ProjetFile=$this->SearchTX100Folder($this->path);
 				$this->ParserTX100GroupAddresses();
+				$this->ParserTX100Products();				
 			break;
 		}
 	}
@@ -111,6 +112,45 @@ class knxproj {
 		if(isset($object[$attribute]))
 			return (string) $object[$attribute];
 	}
+	private function getTX100Topology($id){
+		$Topology=simplexml_load_file($this->path . 'Topology.xml');
+		foreach ($Topology->children() as $Room) {
+			$RoomId = $this->xml_attribute($Room, 'name');	
+			foreach ($Room->children() as $Property) {
+				$PropertyKey = $this->xml_attribute($Property, 'key');
+				$PropertyValue = $this->xml_attribute($Property, 'value');
+				if($PropertyKey == "name")
+					return $PropertyValue;
+			}
+		}
+		return '';
+	}
+	private function ParserTX100Products(){
+		log::add('eibd','debug','[Import TX100] Recherche des equipement');
+		$Products=simplexml_load_file($this->path . 'Products.xml');		
+		foreach ($Products->children() as $Product) {
+			$ProductId = $this->xml_attribute($Product, 'name');	
+			foreach ($Product->children() as $Property) {
+				$PropertyKey = $this->xml_attribute($Property, 'key');
+				$PropertyValue = $this->xml_attribute($Property, 'value');
+				if($PropertyKey == "SerialNumber")
+					$SerialNumber = $PropertyValue;
+				if($PropertyKey == "ProductCatalogReference")
+					$Reference = $PropertyValue;
+				if($PropertyKey == "IndividualAddress")
+					$IndividualAddress = $PropertyValue;
+				if($PropertyKey == "product.location")
+					$Location = $this->getTX100Topology($PropertyValue);
+			}
+			$this->Devices[$ProductId]['AdressePhysique'] = $IndividualAddress;
+			$this->Devices[$ProductId]['DeviceName'] = $Location.' - '.$Reference.' ('.$SerialNumber.')';
+			$this->Devices[$ProductId]['Cmd'] = $this->getTX100ProductCmd($ProductId);
+			//$this->Devices[$ProductId]['Cmd']['']['DataPointType']='';
+			//$this->Devices[$ProductId]['Cmd']['']['cmdName']='';
+			//$this->Devices[$ProductId]['Cmd']['']['AdresseGroupe']='';
+									
+		}
+	}
 	private function ParserTX100GroupAddresses(){
 		log::add('eibd','debug','[Import TX100] Création de l\'arboressance de gad');
 		$GroupLinks=simplexml_load_file($this->path . 'GroupLinks.xml');
@@ -139,6 +179,25 @@ class knxproj {
 			}
         }
 		return $Level;
+	}
+	private function getTX100ProductCmd($ProductId){
+		$DataPointType='';	
+		$GroupName=' - ';
+		$Channels=simplexml_load_file($this->path . 'Channels.xml');
+		foreach ($Channels->children() as $Channel) {
+			$ChannelId = $this->xml_attribute($Channel, 'name');
+			foreach ($Channel->children() as $Block) {
+				if($this->xml_attribute($Block, 'name') == "Context"){
+					foreach ($Block->children() as $parameter) {
+						if($this->xml_attribute($parameter, 'key') == 'product.id'){
+							if($this->xml_attribute($parameter, 'value') == $ProductId){
+							}
+						}
+					}
+				}
+			}
+		}
+		return array($DataPointType,$GroupName);
 	}
 	private function getTX100DptInfo($ChannelId,$DataPointId){
 		$DataPointType='';	
