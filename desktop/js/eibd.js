@@ -99,7 +99,7 @@ $('.log').off().on('click', function() {
 });
 $('.GadInconue').off().on('click', function() {
   	bootbox.dialog({
-		title: "{{Importer les Gad inconnue}}",
+		title: "{{Gestion des adresses de groupe}}",
 		message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd'),
 		onEscape:  function () {
 			clearTimeout(KnxGadInconueRefresh);			
