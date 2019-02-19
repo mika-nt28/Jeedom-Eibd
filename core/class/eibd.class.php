@@ -435,7 +435,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('FlagInit')){
 						$ga=$Commande->getLogicalId();
-						$Commande->execute();
+						$BusValue = $Commande->execute();
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Lecture du GAD: '.$ga.' = '.$BusValue);
 						else
@@ -835,6 +835,7 @@ class eibdCmd extends cmd {
 				}
 				$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
 				$this->getEqLogic()->checkAndUpdateCmd($ga,$BusValue);
+				return $BusValue;
 			break;
 		}
 	}
