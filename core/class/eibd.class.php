@@ -834,7 +834,7 @@ class eibdCmd extends cmd {
 					return;
 				}
 				$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
-				$this->checkAndUpdateCmd($ga,$BusValue);
+				$this->getEqLogic()->checkAndUpdateCmd($ga,$BusValue);
 			break;
 		}
 	}
