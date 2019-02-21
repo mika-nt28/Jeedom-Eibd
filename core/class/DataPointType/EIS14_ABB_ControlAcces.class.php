@@ -7,6 +7,21 @@ class EIS14_ABB_ControlAcces {
   Byte 4 = number of blocks to read (1 block = 6 items on the list).
   Bytes 5,6,7,8,9,10,11,12,13 and 14 = 00
   */
+  $Bytes[0]=0x42;
+  $Bytes[1]='';
+  $Bytes[2]='';
+  $Bytes[3]='';
+  $Bytes[4]=0;
+  $Bytes[5]=0;
+  $Bytes[6]=0;
+  $Bytes[7]=0;
+  $Bytes[8]=0;
+  $Bytes[9]=0;
+  $Bytes[10]=0;
+  $Bytes[11]=0;
+  $Bytes[12]=0;
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function RD_BLACK_LIST(){
   /*
@@ -15,6 +30,21 @@ class EIS14_ABB_ControlAcces {
   Byte 4 = Number of blocks to read (1 block = 6 items on the list).
   Bytes 5,6,7,8,9,10,11,12,13 and 14 = 00
   */
+  $Bytes[0]=0x43;
+  $Bytes[1]='';
+  $Bytes[2]='';
+  $Bytes[3]='';
+  $Bytes[4]=0;
+  $Bytes[5]=0;
+  $Bytes[6]=0;
+  $Bytes[7]=0;
+  $Bytes[8]=0;
+  $Bytes[9]=0;
+  $Bytes[10]=0;
+  $Bytes[11]=0;
+  $Bytes[12]=0;
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function RD_TIME_TAB(){
   /*
@@ -23,6 +53,21 @@ class EIS14_ABB_ControlAcces {
   Byte 3 = Number of blocks to read (1 block = 2 timeslots).
   Bytes 4,5,6,7,8,9,10,11,12.13 and 14 = 00
   */
+  $Bytes[0]=0x47;
+  $Bytes[1]='';
+  $Bytes[2]='';
+  $Bytes[3]=0;
+  $Bytes[4]=0;
+  $Bytes[5]=0;
+  $Bytes[6]=0;
+  $Bytes[7]=0;
+  $Bytes[8]=0;
+  $Bytes[9]=0;
+  $Bytes[10]=0;
+  $Bytes[11]=0;
+  $Bytes[12]=0;
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function RD_ACC_DATA14(){
   /*
@@ -30,6 +75,21 @@ class EIS14_ABB_ControlAcces {
   Byte 2 = Number of accesses to read
   Bytes 3,4,5,6,7,8,9,10,11,12,13 and 14 = 00
   */
+  $Bytes[0]=0x49;
+  $Bytes[1]='';
+  $Bytes[2]=0;
+  $Bytes[3]=0;
+  $Bytes[4]=0;
+  $Bytes[5]=0;
+  $Bytes[6]=0;
+  $Bytes[7]=0;
+  $Bytes[8]=0;
+  $Bytes[9]=0;
+  $Bytes[10]=0;
+  $Bytes[11]=0;
+  $Bytes[12]=0;
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function RD_PLT_CODE(){
   /*
@@ -38,6 +98,21 @@ class EIS14_ABB_ControlAcces {
   Bytes 3 = number of blocks to read (1 block = 4 items in the list).
   Bytes 4,5,6,7,8,9,10,11,12.13 and 14 = 00
   */
+  $Bytes[0]=0x45;
+  $Bytes[1]='';
+  $Bytes[2]='';
+  $Bytes[3]=0;
+  $Bytes[4]=0;
+  $Bytes[5]=0;
+  $Bytes[6]=0;
+  $Bytes[7]=0;
+  $Bytes[8]=0;
+  $Bytes[9]=0;
+  $Bytes[10]=0;
+  $Bytes[11]=0;
+  $Bytes[12]=0;
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function RD_GRP_ASS_TBL(){
   /*
@@ -46,6 +121,10 @@ class EIS14_ABB_ControlAcces {
   Bytes 3 = Reading start index.
   MAXIMUM NUMBER OF TIMESLOTS ATTRIBUTABLE TO A SINGLE GROUP => 256 X 13 = 3328! 
   */
+  $Bytes[0]=0x4F;
+  $Bytes[1]='';
+  $Bytes[2]='';
+  return $Bytes;
  }
  public function WR_INS_WL(){
   /*Byte 1 = Command code 0x88
@@ -58,6 +137,21 @@ class EIS14_ABB_ControlAcces {
   Byte 14 = 00
   N.B. The codes with a value of 00 00 will not be added (NULL code)
   */
+  $Bytes[0]=0x88;
+  $Bytes[1]='';
+  $Bytes[2]='';
+  $Bytes[3]='';
+  $Bytes[4]='';
+  $Bytes[5]='';
+  $Bytes[6]='';
+  $Bytes[7]='';
+  $Bytes[8]='';
+  $Bytes[9]='';
+  $Bytes[10]='';
+  $Bytes[11]='';
+  $Bytes[12]='';
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function WR_DEL_WL(){
   /*Byte 1 = Command code 0x89
@@ -70,6 +164,21 @@ class EIS14_ABB_ControlAcces {
   Byte 14 = 00
   N.B. codes with a value of 00 00 will not be eliminated (NULL code)
   */
+  $Bytes[0]=0x89;
+  $Bytes[1]='';
+  $Bytes[2]='';
+  $Bytes[3]='';
+  $Bytes[4]='';
+  $Bytes[5]='';
+  $Bytes[6]='';
+  $Bytes[7]='';
+  $Bytes[8]='';
+  $Bytes[9]='';
+  $Bytes[10]='';
+  $Bytes[11]='';
+  $Bytes[12]='';
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function WR_INS_BL(){
   /*Byte 1 = Command code 0x8B
@@ -82,6 +191,21 @@ class EIS14_ABB_ControlAcces {
   Byte 14 = 00
   N.B. The codes with a value of 00 00 will not be added (NULL code) 
   */
+  $Bytes[0]=0x8B;
+  $Bytes[1]='';
+  $Bytes[2]='';
+  $Bytes[3]='';
+  $Bytes[4]='';
+  $Bytes[5]='';
+  $Bytes[6]='';
+  $Bytes[7]='';
+  $Bytes[8]='';
+  $Bytes[9]='';
+  $Bytes[10]='';
+  $Bytes[11]='';
+  $Bytes[12]='';
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function WR_DEL_BL(){
   /*Byte 1 = Command code 0x8C
@@ -94,6 +218,21 @@ class EIS14_ABB_ControlAcces {
   Byte 14 = 0
   N.B. codes with a value of 00 00 will not be eliminated (NULL code)
   */
+  $Bytes[0]=0x8C;
+  $Bytes[1]='';
+  $Bytes[2]='';
+  $Bytes[3]='';
+  $Bytes[4]='';
+  $Bytes[5]='';
+  $Bytes[6]='';
+  $Bytes[7]='';
+  $Bytes[8]='';
+  $Bytes[9]='';
+  $Bytes[10]='';
+  $Bytes[11]='';
+  $Bytes[12]='';
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function WR_PLT_CODE(){
   /*Byte 1 = Command code 0x8E
@@ -104,6 +243,21 @@ class EIS14_ABB_ControlAcces {
   Byte 14 = 00
   Code PC 00 is the null
   */
+  $Bytes[0]=0x8E;
+  $Bytes[1]='';
+  $Bytes[2]='';
+  $Bytes[3]='';
+  $Bytes[4]='';
+  $Bytes[5]='';
+  $Bytes[6]='';
+  $Bytes[7]='';
+  $Bytes[8]='';
+  $Bytes[9]='';
+  $Bytes[10]='';
+  $Bytes[11]='';
+  $Bytes[12]='';
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function WR_DEL_PLT_CODE(){
   /*Byte 1 = command code 0x97
@@ -113,18 +267,38 @@ class EIS14_ABB_ControlAcces {
   Byte 11,12,13 = code 4
   Byte 14 = 00
   */
+  $Bytes[0]=0x97;
+  $Bytes[1]='';
+  $Bytes[2]='';
+  $Bytes[3]='';
+  $Bytes[4]='';
+  $Bytes[5]='';
+  $Bytes[6]='';
+  $Bytes[7]='';
+  $Bytes[8]='';
+  $Bytes[9]='';
+  $Bytes[10]='';
+  $Bytes[11]='';
+  $Bytes[12]='';
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function WRITE_TIME(){
-  /*Byte 1 = Command code 0x8F
-  Byte 2 = Day
-  Byte 3 = Month
-  Byte 4 = Year
-  Byte 5 = Hour
-  Byte 6 = Minutes
-  Byte 7 = Seconds
-  Byte 8 = Day of the week 1=Mon;2=Tue;3=Wed;4=Thu;5=Fri;6=Sat;7=Sun; 0=undef.
-  Byte 9,10,11,12,13,14 = 00 
-  */
+  $Bytes[0]=0x8F;
+  $Bytes[1]=date("d");
+  $Bytes[2]=date("m");
+  $Bytes[3]=date("Y");
+  $Bytes[4]=date("H");
+  $Bytes[5]=date("i");
+  $Bytes[6]=date("s");
+  $Bytes[7]=date("N");
+  $Bytes[8]=0;
+  $Bytes[9]=0;
+  $Bytes[10]=0;
+  $Bytes[11]=0;
+  $Bytes[12]=0;
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function WR_TIME_TAB(){
   /*Byte 1 = Command code 0x92
@@ -150,6 +324,21 @@ class EIS14_ABB_ControlAcces {
   Byte 13 = Number of associated group (00 01 – FF FF, group no. 0000 is the NULL)
   Byte 14 = Number of associated group (00 01 – FF FF, group no. 0000 is the NULL)
   */
+  $Bytes[0]=0x42;
+  $Bytes[1]=0x42;
+  $Bytes[2]=0x42;
+  $Bytes[3]=0x42;
+  $Bytes[4]=0;
+  $Bytes[5]=0;
+  $Bytes[6]=0;
+  $Bytes[7]=0;
+  $Bytes[8]=0;
+  $Bytes[9]=0;
+  $Bytes[10]=0;
+  $Bytes[11]=0;
+  $Bytes[12]=0;
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function WR_INS_GRP_ASS_TBL(){
   /*Byte 1 = command code 0x98
@@ -161,6 +350,21 @@ class EIS14_ABB_ControlAcces {
   .....
   Byte 14 = Timeslot (00-FF)
   */
+  $Bytes[0]=0x42;
+  $Bytes[1]=0x42;
+  $Bytes[2]=0x42;
+  $Bytes[3]=0x42;
+  $Bytes[4]=0;
+  $Bytes[5]=0;
+  $Bytes[6]=0;
+  $Bytes[7]=0;
+  $Bytes[8]=0;
+  $Bytes[9]=0;
+  $Bytes[10]=0;
+  $Bytes[11]=0;
+  $Bytes[12]=0;
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function WR_BLK1(){
   /*Byte 1 = command code 0XA1
@@ -174,6 +378,21 @@ class EIS14_ABB_ControlAcces {
   .....
   Byte 14 = 00
   */
+  $Bytes[0]=0x42;
+  $Bytes[1]=0x42;
+  $Bytes[2]=0x42;
+  $Bytes[3]=0x42;
+  $Bytes[4]=0;
+  $Bytes[5]=0;
+  $Bytes[6]=0;
+  $Bytes[7]=0;
+  $Bytes[8]=0;
+  $Bytes[9]=0;
+  $Bytes[10]=0;
+  $Bytes[11]=0;
+  $Bytes[12]=0;
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function WR_BLK2(){
   /*Byte 1 = command code 0XA2
@@ -187,6 +406,21 @@ class EIS14_ABB_ControlAcces {
   .....
   Byte 14 = 00
   */
+  $Bytes[0]=0x42;
+  $Bytes[1]=0x42;
+  $Bytes[2]=0x42;
+  $Bytes[3]=0x42;
+  $Bytes[4]=0;
+  $Bytes[5]=0;
+  $Bytes[6]=0;
+  $Bytes[7]=0;
+  $Bytes[8]=0;
+  $Bytes[9]=0;
+  $Bytes[10]=0;
+  $Bytes[11]=0;
+  $Bytes[12]=0;
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function WR_DEL_GRP_ASS_TBL(){
   /*Byte 1 = command code 0XA5
@@ -208,6 +442,21 @@ class EIS14_ABB_ControlAcces {
   Byte 6 = Slot (00-FF) to delete .....
   Byte 14= Slot (00-FF)
   */
+  $Bytes[0]=0x42;
+  $Bytes[1]=0x42;
+  $Bytes[2]=0x42;
+  $Bytes[3]=0x42;
+  $Bytes[4]=0;
+  $Bytes[5]=0;
+  $Bytes[6]=0;
+  $Bytes[7]=0;
+  $Bytes[8]=0;
+  $Bytes[9]=0;
+  $Bytes[10]=0;
+  $Bytes[11]=0;
+  $Bytes[12]=0;
+  $Bytes[13]=0;
+  return $Bytes;
  }
  public function WR_PRICE_TBL(){
   /*Byte 1 = Command Code 0x9E
@@ -224,6 +473,21 @@ class EIS14_ABB_ControlAcces {
   Byte 12= rate profile 4, byte 2
   Byte 13= rate profile 4, byte 3
   Byte 14= 0x00 */
+  $Bytes[0]=0x42;
+  $Bytes[1]=0x42;
+  $Bytes[2]=0x42;
+  $Bytes[3]=0x42;
+  $Bytes[4]=0;
+  $Bytes[5]=0;
+  $Bytes[6]=0;
+  $Bytes[7]=0;
+  $Bytes[8]=0;
+  $Bytes[9]=0;
+  $Bytes[10]=0;
+  $Bytes[11]=0;
+  $Bytes[12]=0;
+  $Bytes[13]=0;
+  return $Bytes;
  }
 }
 ?>
