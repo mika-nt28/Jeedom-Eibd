@@ -532,7 +532,8 @@ class Dpt{
 							$listener->save();
 						}
 						$value= self::rgb2html($R->execCmd(),$G->execCmd(),$B->execCmd());
-					break;		
+					break;	
+				}
 			break;
 		};
 		return $value;
