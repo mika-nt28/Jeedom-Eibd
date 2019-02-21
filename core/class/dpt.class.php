@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__) . '/DataPointType/EIS14_ABB_ControlAcces.class.php';
 class Dpt{
 	public function DptSelectEncode ($dpt, $value, $inverse=false, $option=null){
 		$All_DPT=self::All_DPT();
@@ -225,6 +226,20 @@ class Dpt{
 						$cmdB=cmd::byId(str_replace('#','',$option["B"]));
 						if(is_object($cmdB))
 							$cmdB->execCmd(array('slider'=>$b));
+					break;	
+					case "ABB_ControlAcces_WRITE_TIME":	
+						$ControlAcces=new EIS14_ABB_ControlAcces();
+						$ControlAcces->WRITE_TIME();
+					break;		
+					case "ABB_ControlAcces_WR_TIME_TAB":	
+						$index1=jeedom::evaluateExpression($option["index1"]);
+						$start1=jeedom::evaluateExpression($option["start1"]);
+						$stop1=jeedom::evaluateExpression($option["stop1"]);
+						$index2=jeedom::evaluateExpression($option["index2"]);
+						$start2=jeedom::evaluateExpression($option["start2"]);
+						$stop2=jeedom::evaluateExpression($option["stop2"]);
+						$ControlAcces=new EIS14_ABB_ControlAcces();
+						$ControlAcces->WR_TIME_TAB($index1,$start1,$stop1,$index2,$start2,$stop2);
 					break;
 				}
 			break;
@@ -517,8 +532,7 @@ class Dpt{
 							$listener->save();
 						}
 						$value= self::rgb2html($R->execCmd(),$G->execCmd(),$B->execCmd());
-					break;
-				}
+					break;		
 			break;
 		};
 		return $value;
@@ -2535,7 +2549,7 @@ class Dpt{
 				"Option" =>array("R","G","B"),
 				"Unite" =>"")),
 		"ABB - Acces Control"=> array(
-			"WRITE_TIME"=> array(
+			"ABB_ControlAcces_WRITE_TIME"=> array(
 				"Name"=>"Send local time",
 				"Valeurs"=>array(),
 				"min"=>'',
@@ -2544,6 +2558,16 @@ class Dpt{
 				"ActionType"=>'other',
 				"GenericType"=>"DONT",
 				"Option" =>array(),
+				"Unite" =>""),
+			"ABB_ControlAcces_WR_TIME_TAB"=> array(
+				"Name"=>"Send local time",
+				"Valeurs"=>array(),
+				"min"=>'',
+				"max"=>'',
+				"InfoType"=>'binary',
+				"ActionType"=>'other',
+				"GenericType"=>"DONT",
+				"Option" =>array("index1","start1","stop1","index2","start2","stop2"),
 				"Unite" =>""))
 		);
 	}
