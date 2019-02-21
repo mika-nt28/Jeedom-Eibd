@@ -300,7 +300,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_TIME_TAB(){
+ public function WR_TIME_TAB($index1,$start1,$stop1,$index2,$start2,$stop2){
   /*Byte 1 = Command code 0x92
   Byte 2 = First timeslot index (timeslot 00 is the NULL slot, and must not be considered!)
   Byte 3 = bit (0,1,2) Day of the week (0=all - 1=Mon 2=Tue etc.)
@@ -324,17 +324,22 @@ class EIS14_ABB_ControlAcces {
   Byte 13 = Number of associated group (00 01 – FF FF, group no. 0000 is the NULL)
   Byte 14 = Number of associated group (00 01 – FF FF, group no. 0000 is the NULL)
   */
-  $Bytes[0]=0x42;
-  $Bytes[1]=0x42;
-  $Bytes[2]=0x42;
-  $Bytes[3]=0x42;
-  $Bytes[4]=0;
-  $Bytes[5]=0;
-  $Bytes[6]=0;
-  $Bytes[7]=0;
-  $Bytes[8]=0;
-  $Bytes[9]=0;
-  $Bytes[10]=0;
+  
+  $start1=strtotime($start1);
+  $stop1=strtotime($stop1);
+  $start2=strtotime($start2);
+  $stop2=strtotime($stop2);
+  $Bytes[0]=0x92;
+  $Bytes[1]=$index1;
+  $Bytes[2]=(0xF8 & date("H",$start1)) << 3 | 0x07 & date("N",$start1);
+  $Bytes[3]=0x03 << 6 | 0xF & date("i",$start1);
+  $Bytes[4]=(0xF8 & date("H",$stop1)) << 3 | 0x07 & date("N",$stop1);
+  $Bytes[5]=0x03 << 6 | 0xF & date("i",$stop1);
+  $Bytes[6]=$index2;
+  $Bytes[7]=(0xF8 & date("H",$start2)) << 3 | 0x07 & date("N",$start2);
+  $Bytes[8]=0x03 << 6 | 0xF & date("i",$start2);
+  $Bytes[9]=(0xF8 & date("H",$stop2)) << 3 | 0x07 & date("N",$stop2);
+  $Bytes[10]=0x03 << 6 | 0xF & date("i",$stop2);
   $Bytes[11]=0;
   $Bytes[12]=0;
   $Bytes[13]=0;
