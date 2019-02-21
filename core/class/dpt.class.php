@@ -2533,6 +2533,17 @@ class Dpt{
 				"ActionType"=>'color',
 				"GenericType"=>"DONT",
 				"Option" =>array("R","G","B"),
+				"Unite" =>"")),
+		"ABB - Acces Control"=> array(
+			"WRITE_TIME"=> array(
+				"Name"=>"Send local time",
+				"Valeurs"=>array(),
+				"min"=>'',
+				"max"=>'',
+				"InfoType"=>'binary',
+				"ActionType"=>'other',
+				"GenericType"=>"DONT",
+				"Option" =>array(),
 				"Unite" =>""))
 		);
 	}
