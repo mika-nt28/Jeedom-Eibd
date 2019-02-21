@@ -2561,7 +2561,7 @@ class Dpt{
 				"Option" =>array(),
 				"Unite" =>""),
 			"ABB_ControlAcces_WR_TIME_TAB"=> array(
-				"Name"=>"Send local time",
+				"Name"=>"Send timeslot",
 				"Valeurs"=>array(),
 				"min"=>'',
 				"max"=>'',
