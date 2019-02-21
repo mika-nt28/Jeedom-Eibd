@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__) . '/DataPointType/EIS14_ABB_ControlAcces.class.php';
 class Dpt{
 	public function DptSelectEncode ($dpt, $value, $inverse=false, $option=null){
 		$All_DPT=self::All_DPT();
@@ -201,6 +202,12 @@ class Dpt{
 					}
 				}
 			break;
+			case "251":
+				$rgb= self::html2rgb($value);
+				$w=jeedom::evaluateExpression($option["Température"]);
+				$data= array(0x00,0x00,$w);
+				array_push($data,$rgb);
+			break;
 			default:
 				switch($dpt){
 					case "x.001":
@@ -225,6 +232,20 @@ class Dpt{
 						$cmdB=cmd::byId(str_replace('#','',$option["B"]));
 						if(is_object($cmdB))
 							$cmdB->execCmd(array('slider'=>$b));
+					break;	
+					case "ABB_ControlAcces_WRITE_TIME":	
+						$ControlAcces=new EIS14_ABB_ControlAcces();
+						$ControlAcces->WRITE_TIME();
+					break;		
+					case "ABB_ControlAcces_WR_TIME_TAB":	
+						$index1=jeedom::evaluateExpression($option["index1"]);
+						$start1=jeedom::evaluateExpression($option["start1"]);
+						$stop1=jeedom::evaluateExpression($option["stop1"]);
+						$index2=jeedom::evaluateExpression($option["index2"]);
+						$start2=jeedom::evaluateExpression($option["start2"]);
+						$stop2=jeedom::evaluateExpression($option["stop2"]);
+						$ControlAcces=new EIS14_ABB_ControlAcces();
+						$ControlAcces->WR_TIME_TAB($index1,$start1,$stop1,$index2,$start2,$stop2);
 					break;
 				}
 			break;
@@ -479,6 +500,16 @@ class Dpt{
 					}
 				}
 			break;
+			case "251":
+				$Temperature=cmd::byId(str_replace('#','',$option["Température"]));
+				if (is_object($Temperature)){
+					$valeur=$data[2];
+					log::add('eibd', 'debug', 'L\'objet '.$Temperature->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $valeur);
+					$Temperature->event($valeur);
+					$Temperature->setCache('collectDate', date('Y-m-d H:i:s'));
+				}	
+				$value= self::rgb2html($data[3],$data[4], $data[5]);
+			break;
 			default:
 				switch($dpt){
 					case "x.001":
@@ -517,7 +548,7 @@ class Dpt{
 							$listener->save();
 						}
 						$value= self::rgb2html($R->execCmd(),$G->execCmd(),$B->execCmd());
-					break;
+					break;	
 				}
 			break;
 		};
@@ -2511,7 +2542,7 @@ class Dpt{
 				"InfoType"=>'string',
 				"ActionType"=>'color',
 				"GenericType"=>"DONT",
-				"Option" =>array(),
+				"Option" =>array("Température"),
 				"Unite" =>"")),
 		"Spécifique"=> array(
 			"x.001"=> array(
@@ -2533,6 +2564,27 @@ class Dpt{
 				"ActionType"=>'color',
 				"GenericType"=>"DONT",
 				"Option" =>array("R","G","B"),
+				"Unite" =>"")),
+		"ABB - Acces Control"=> array(
+			"ABB_ControlAcces_WRITE_TIME"=> array(
+				"Name"=>"Send local time",
+				"Valeurs"=>array(),
+				"min"=>'',
+				"max"=>'',
+				"InfoType"=>'binary',
+				"ActionType"=>'other',
+				"GenericType"=>"DONT",
+				"Option" =>array(),
+				"Unite" =>""),
+			"ABB_ControlAcces_WR_TIME_TAB"=> array(
+				"Name"=>"Send timeslot",
+				"Valeurs"=>array(),
+				"min"=>'',
+				"max"=>'',
+				"InfoType"=>'binary',
+				"ActionType"=>'other',
+				"GenericType"=>"DONT",
+				"Option" =>array("index1","start1","stop1","index2","start2","stop2"),
 				"Unite" =>""))
 		);
 	}
