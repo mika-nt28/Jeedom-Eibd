@@ -1,5 +1,52 @@
 <?php
 class EIS14_ABB_ControlAcces {
+ public function RD_WHITE_LIST(){
+  /*
+  Byte 1 = Command code 0x42
+  Bytes 2,3 = Index of the item in the list from which to start reading.
+  Byte 4 = number of blocks to read (1 block = 6 items on the list).
+  Bytes 5,6,7,8,9,10,11,12,13 and 14 = 00
+  */
+ }
+ public function RD_BLACK_LIST(){
+  /*
+  Byte 1 = Command code 0x43
+  Byte 2,3 = Reading start item
+  Byte 4 = Number of blocks to read (1 block = 6 items on the list).
+  Bytes 5,6,7,8,9,10,11,12,13 and 14 = 00
+  */
+ }
+ public function RD_TIME_TAB(){
+  /*
+  Byte 1 = Command code 0x47
+  Byte 2 = Number of reading start timeslot 01 / FF)
+  Byte 3 = Number of blocks to read (1 block = 2 timeslots).
+  Bytes 4,5,6,7,8,9,10,11,12.13 and 14 = 00
+  */
+ }
+ public function RD_ACC_DATA14(){
+  /*
+  Byte 1 = Command code 0x49
+  Byte 2 = Number of accesses to read
+  Bytes 3,4,5,6,7,8,9,10,11,12,13 and 14 = 00
+  */
+ }
+ public function RD_PLT_CODE(){
+  /*
+  Byte 1 = Command code 0x45
+  Bytes 2 = Index of the item in the plant codes list from which to start reading.
+  Bytes 3 = number of blocks to read (1 block = 4 items in the list).
+  Bytes 4,5,6,7,8,9,10,11,12.13 and 14 = 00
+  */
+ }
+ public function RD_GRP_ASS_TBL(){
+  /*
+  Byte 1 = Command code 0x4F
+  Bytes 2 = Group index
+  Bytes 3 = Reading start index.
+  MAXIMUM NUMBER OF TIMESLOTS ATTRIBUTABLE TO A SINGLE GROUP => 256 X 13 = 3328! 
+  */
+ }
  public function WR_INS_WL(){
   /*Byte 1 = Command code 0x88
   Byte 2,3 = Code 1
