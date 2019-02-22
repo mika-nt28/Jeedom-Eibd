@@ -205,8 +205,8 @@ class Dpt{
 			case "251":
 				$rgb= self::html2rgb($value);
 				$w=jeedom::evaluateExpression($option["Température"]);
-				$data= array(0x00,0x00,$w);
-				array_push($data,$rgb);
+				$data= array(0x00,0x00);
+				array_push($data,$rgb,$w);
 			break;
 			default:
 				switch($dpt){
@@ -503,12 +503,12 @@ class Dpt{
 			case "251":
 				$Temperature=cmd::byId(str_replace('#','',$option["Température"]));
 				if (is_object($Temperature)){
-					$valeur=$data[2];
+					$valeur=$data[0];
 					log::add('eibd', 'debug', 'L\'objet '.$Temperature->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $valeur);
 					$Temperature->event($valeur);
 					$Temperature->setCache('collectDate', date('Y-m-d H:i:s'));
 				}	
-				$value= self::rgb2html($data[3],$data[4], $data[5]);
+				$value= self::rgb2html($data[1],$data[2], $data[3]);
 			break;
 			default:
 				switch($dpt){
