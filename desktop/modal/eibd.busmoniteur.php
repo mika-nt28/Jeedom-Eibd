@@ -21,7 +21,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 				<th>{{Valeur}}</th>
 			</tr>
 		</thead>
-		<tbody style='height:500px;overflow:scroll'></tbody>
+		<tbody></tbody>
 	</table>
 	<script>
 	initTableSorter();
