@@ -6,7 +6,7 @@ include_file('3rdparty', 'jquery.tablesorter/theme.bootstrap', 'css');
 include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.min', 'js');
 include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'js');
 ?>
-<legend><a class="btn btn-danger btn-xs BusMonitorAction" data-action="remove"><i class="fa fa-minus-circle"></i> {{Netoyer}}</a></legend>
+<legend><a class="btn btn-danger btn-xs BusMonitorAction" data-action="remove"><i class="fa fa-minus-circle"></i> {{Nettoyer}}</a></legend>
 <div style="height: 500px;overflow: auto;">
 	<table id="table_BusMonitor" class="table table-bordered table-condensed tablesorter">
 		<thead>
@@ -21,7 +21,7 @@ include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'j
 				<th>{{Valeur}}</th>
 			</tr>
 		</thead>
-		<tbody style='height:500px;overflow:scroll'></tbody>
+		<tbody></tbody>
 	</table>
 	<script>
 	initTableSorter();

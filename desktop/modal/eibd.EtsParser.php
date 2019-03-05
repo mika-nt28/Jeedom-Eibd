@@ -11,7 +11,18 @@ if (!isConnect('admin')) {
 		<p>{{Il est possible que tous les possibilitées de programation ne soit pas pris en compte, il est impératif de verifier et compléter la configuration a la fin de l'execution}}</p>
 		<p><b>{{Attention :}}</b></p>
 		<p>{{Cette opération peut etre longue.}}</p>
-		<form class="form-horizontal" onsubmit="return false;"> 
+		<form class="form-horizontal" onsubmit="return false;">  
+			<div class="form-group"> 
+				<label class="col-md-4 control-label">{{Type de fichier}}
+					<sup>
+						<i class="fa fa-question-circle tooltips" title="{{Sélectioner le type de fichier}}" style="font-size : 1em;color:grey;"></i>
+					</sup>
+				</label> 
+				<select class=" EtsParseParameter" data-l1key="ProjetType">
+					<option value="ETS">{{ETS}}</option>
+					<option value="TX100">{{TX100}}</option>
+				</select>
+			</div> 
 			<div class="form-group"> 
 				<label class="col-md-4 control-label">{{Créer les objets}}
 					<sup>
