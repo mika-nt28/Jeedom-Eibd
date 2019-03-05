@@ -295,7 +295,7 @@ function addCmdToTable(_cmd) {
 					.append('{{Lecture}}')
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-							.attr('title','{{Si actif, jeedom repondera a un télégramme de type "READ", en envoyant sur le bus la valeur actuelle de l\’objet.'))))))
+							.attr('title','{{Si actif, jeedom repondera a un télégramme de type "READ", en envoyant sur le bus la valeur actuelle de l\’objet.}}'))))))
 		 .append($('<div>')
 			.append($('<span>')
 				.append($('<label class="checkbox-inline">')
