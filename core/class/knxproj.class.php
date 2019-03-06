@@ -293,13 +293,34 @@ class knxproj {
 			}
 		}
 	}
+	private function getOptionLevel($GroupLevel,$NbLevel=0){
+		$Architecture = array();
+		$NbLevel++;
+		foreach ($GroupLevel as $Name => $Level) {
+			$ObjectName = '';
+			$TemplateName = '';
+			$CmdName = '';
+			if($ObjetLevel == $NbLevel)
+				$ObjectName=$Name;
+			elseif($TemplateLevel == $NbLevel)
+				$TemplateName=$Name;
+			elseif($CommandeLevel == $NbLevel)
+				$CmdName=$Name;
+			if(is_array($Level)){
+				$Architecture[$GroupName]=$this->getOptionLevel($Level,$NbLevel);
+			}else{
+				$Architecture[$ObjectName][$TemplateName][$CmdName]=$Level;
+			}
+		}
+		return $Architecture;
+	}
+		
 	private function CheckOptions(){
 		$ObjetLevel= $this->checkLevel('object');
 		$TemplateLevel= $this->checkLevel('function');
 		$CommandeLevel= $this->checkLevel('cmd');
-		
+		//$Architecture= $this->getOptionLevel($this->GroupAddresses);
 		$Architecture=array();
-		
 		foreach($this->GroupAddresses as $Name1 => $Level1){
 			$ObjectName = '';
 			$TemplateName = '';
