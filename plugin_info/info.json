@@ -8,7 +8,7 @@
 	"maxDependancyInstallTime" : 130,
 	"hasOwnDeamon" : true,
 	"hasDependency" : true,
-	"require" : "3.3.15",
+	"require" : "3.3.16",
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
 	"category" : "automation protocol",
 	"issue" : "https://github.com/mika-nt28/Jeedom-Eibd/issues",
