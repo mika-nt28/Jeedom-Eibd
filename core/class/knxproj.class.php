@@ -350,12 +350,12 @@ class knxproj {
 		}
 	}
 	private function createObject($Name){
-		$Object = jeeObject::byName($Name);
+		$Object = object::byName($Name);
 		if(!$this->options['createObjet'])
 			return $Object;
 		if (!is_object($Object)) {
 			log::add('eibd','info','[Import ETS] Nous allons cree l\'objet : '.$Name);
-			$Object = new jeeObject();
+			$Object = new object();
 			$Object->setName($Name);
 			$Object->setIsVisible(true);
 			$Object->save();
