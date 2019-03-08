@@ -491,7 +491,7 @@ function addCmdToTable(_cmd) {
 				}
 		});
 	});
-	$('.cmdAttr[data-l1key=logicalId]').off().on('keyup', function() {
+	/*$('.cmdAttr[data-l1key=logicalId]').off().on('keyup', function() {
 		var valeur= $(this).val();
 		var Gad=valeur.split('/');
 		if(Gad.length < parseInt(GadLevel)){
@@ -505,7 +505,7 @@ function addCmdToTable(_cmd) {
 		if(valeur.substr(-1) =='//' && Gad.length == parseInt(data.result))
 			valeur.substring(0,-1);
 		$(this).val(valeur);
-	}); 
+	}); */
 	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');	
 	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
