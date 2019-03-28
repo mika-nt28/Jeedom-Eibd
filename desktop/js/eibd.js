@@ -83,7 +83,7 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 		}
 	});
 });
-$('#bt_healthEibd').off().on('click', function () {
+$('.eqLogicAction[data-action=gotoHealth]').on('click', function () {
   	bootbox.dialog({
 		title: "{{Santé des équpements KNX}}",
 		size: "large",
@@ -91,14 +91,7 @@ $('#bt_healthEibd').off().on('click', function () {
 		
 	});
 });
-$('.log').off().on('click', function() {
-  	bootbox.dialog({
-		title: "{{log}}",
-		message: $('<div>').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd'),
-		
-	});
-});
-$('.GadInconue').off().on('click', function() {
+$('.eqLogicAction[data-action=gotoAdressGroup]').on('click', function () {
   	bootbox.dialog({
 		title: "{{Gestion des adresses de groupe}}",
 		message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd'),
@@ -107,7 +100,7 @@ $('.GadInconue').off().on('click', function() {
 		}		
 	});
 });
-$('.BusMoniteur').off().on('click', function() {
+$('.eqLogicAction[data-action=gotoBusMoniteur]').on('click', function () {	
   	bootbox.dialog({
 		title: "{{Moniteur de Bus}}",
 		size: "large",
@@ -258,7 +251,7 @@ function addCmdToTable(_cmd) {
 	var tr =$('<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">');
   	tr.append($('<td>')
 		.append($('<i class="fas fa-minus-circle pull-right cmdAction cursor" data-action="remove">'))
-		.append($('<i class="fas fa-arrows-v pull-left cursor bt_sortable">')));
+		.append($('<i class="fas fa-arrows-alt-v pull-left cursor bt_sortable">')));
 	tr.append($('<td>')
 			.append($('<input type="hidden" class="cmdAttr form-control input-sm" data-l1key="id">'))
 			.append($('<input class="cmdAttr form-control input-sm" data-l1key="name" value="' + init(_cmd.name) + '" placeholder="{{Name}}" title="Name">')));

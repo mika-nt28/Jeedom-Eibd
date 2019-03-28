@@ -28,18 +28,19 @@
 				<br>
 				<span>{{Configuration}}</span>
 			</div>
-			<div class="cursor BusMoniteur logoSecondary">
+			<div class="cursor eqLogicAction logoSecondary" data-action="gotoBusMoniteur">
 				<i class="fas fa-archive"></i>  
 				<br>
 				<span>{{Moniteur de bus}}</span>
 			</div>
+			<div class="cursor eqLogicAction logoSecondary" data-action="gotoAdressGroup">
 			<div class="cursor GadInconue logoSecondary">
-				<i class="icon techno-fleches"></i>  
+				<i class="fas fa-address-card"></i>
 				<br>
 				<span>{{Adresses de groupe}}</span>
 			</div>
-			<div class="cursor logoSecondary" id="bt_healthEibd">
-				<i class="fa fa-medkit"></i>  
+			<div class="cursor eqLogicAction logoSecondary" data-action="gotoHealth">
+				<i class="fas fa-medkit"></i>  
 				<br>
 				<span>{{Santé}}</span>
 			</div>
@@ -167,7 +168,7 @@
 						?>
 					</select>
 					<sup>
-						<i class="fa fa-question-circle tooltips" title="Choisissez si vous le souhaité un model de configuration d'équipement" style="font-size : 1em;color:grey;"></i>
+						<i class="fa fa-question-circle tooltips" title="Choisissez si vous le souhaité un model de configuration d'équipement"></i>
 					</sup>
 					<a class="btn btn-success btn-sm Template" data-action="add"><i class="fa fa-plus-circle"></i> {{Ajouter le template}}</a>
 				</div>
