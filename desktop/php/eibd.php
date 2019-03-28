@@ -34,7 +34,6 @@
 				<span>{{Moniteur de bus}}</span>
 			</div>
 			<div class="cursor eqLogicAction logoSecondary" data-action="gotoAdressGroup">
-			<div class="cursor GadInconue logoSecondary">
 				<i class="fas fa-address-card"></i>
 				<br>
 				<span>{{Adresses de groupe}}</span>
