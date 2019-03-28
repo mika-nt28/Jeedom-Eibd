@@ -258,7 +258,7 @@ function addCmdToTable(_cmd) {
 	var tr =$('<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">');
   	tr.append($('<td>')
 		.append($('<i class="fas fa-minus-circle pull-right cmdAction cursor" data-action="remove">'))
-		.append($('<i class="fas fa-arrows-v pull-left cursor bt_sortable">')));
+		.append($('<i class="fas fa-arrows-alt-v pull-left cursor bt_sortable">')));
 	tr.append($('<td>')
 			.append($('<input type="hidden" class="cmdAttr form-control input-sm" data-l1key="id">'))
 			.append($('<input class="cmdAttr form-control input-sm" data-l1key="name" value="' + init(_cmd.name) + '" placeholder="{{Name}}" title="Name">')));
