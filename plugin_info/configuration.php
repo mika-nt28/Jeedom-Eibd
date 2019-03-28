@@ -105,8 +105,7 @@ $('.configKey[data-l1key=KnxSoft]').on('change',function(){
 	}
 });
 $('.SearchGatway').on('click',function(){
-//$('.configKey[data-l1key=TypeKNXgateway]').on('change',function(){
-	if($('.configKey[data-l1key=KNXgateway]').val()==''){
+	//if($('.configKey[data-l1key=KNXgateway]').val()==''){
 		$.ajax({
 			async: false,
 			type: 'POST',
@@ -130,6 +129,6 @@ $('.SearchGatway').on('click',function(){
 				}
 			}
 		});
-	}
+	//}
 });
 </script>
