@@ -246,12 +246,10 @@ class Dpt{
 						EIS14_ABB_ControlAcces::WR_TIME_TAB($index1,$start1,$stop1,$index2,$start2,$stop2);
 					break;
 					case "ABB_ControlAcces_WRITE_BLK1":
-						$Tag=jeedom::evaluateExpression($option["Tag"]);
-						EIS14_ABB_ControlAcces::WR_BLK1($Tag);
+						EIS14_ABB_ControlAcces::WR_BLK1();
 					break;
 					case "ABB_ControlAcces_WRITE_BLK2":
-						$Tag=jeedom::evaluateExpression($option["Tag"]);
-						EIS14_ABB_ControlAcces::WR_BLK2($Tag);
+						EIS14_ABB_ControlAcces::WR_BLK2();
 					break;
 				}
 			break;
@@ -2600,7 +2598,7 @@ class Dpt{
 				"InfoType"=>'binary',
 				"ActionType"=>'other',
 				"GenericType"=>"DONT",
-				"Option" =>array("Tag"),
+				"Option" =>array(),
 				"Unite" =>""),
 			"ABB_ControlAcces_WRITE_BLK2"=> array(
 				"Name"=>"Write tag to blk2",
@@ -2610,7 +2608,7 @@ class Dpt{
 				"InfoType"=>'binary',
 				"ActionType"=>'other',
 				"GenericType"=>"DONT",
-				"Option" =>array("Tag"),
+				"Option" =>array(),
 				"Unite" =>""))
 		);
 	}
