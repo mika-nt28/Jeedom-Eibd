@@ -247,6 +247,16 @@ class Dpt{
 						$ControlAcces=new EIS14_ABB_ControlAcces();
 						$ControlAcces->WR_TIME_TAB($index1,$start1,$stop1,$index2,$start2,$stop2);
 					break;
+					case "ABB_ControlAcces_WRITE_BLK1":
+						$Tag=jeedom::evaluateExpression($option["Tag"]);
+						$ControlAcces=new EIS14_ABB_ControlAcces();
+						$ControlAcces->WR_BLK1($Tag);
+					break;
+					case "ABB_ControlAcces_WRITE_BLK2":
+						$Tag=jeedom::evaluateExpression($option["Tag"]);
+						$ControlAcces=new EIS14_ABB_ControlAcces();
+						$ControlAcces->WR_BLK2($Tag);
+					break;
 				}
 			break;
 		};
@@ -2585,6 +2595,26 @@ class Dpt{
 				"ActionType"=>'other',
 				"GenericType"=>"DONT",
 				"Option" =>array("index1","start1","stop1","index2","start2","stop2"),
+				"Unite" =>""),
+			"ABB_ControlAcces_WRITE_BLK1"=> array(
+				"Name"=>"Write tag to blk1",
+				"Valeurs"=>array(),
+				"min"=>'',
+				"max"=>'',
+				"InfoType"=>'binary',
+				"ActionType"=>'other',
+				"GenericType"=>"DONT",
+				"Option" =>array("Tag"),
+				"Unite" =>""),
+			"ABB_ControlAcces_WRITE_BLK2"=> array(
+				"Name"=>"Write tag to blk2",
+				"Valeurs"=>array(),
+				"min"=>'',
+				"max"=>'',
+				"InfoType"=>'binary',
+				"ActionType"=>'other',
+				"GenericType"=>"DONT",
+				"Option" =>array("Tag"),
 				"Unite" =>""))
 		);
 	}
