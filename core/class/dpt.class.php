@@ -234,8 +234,7 @@ class Dpt{
 							$cmdB->execCmd(array('slider'=>$b));
 					break;	
 					case "ABB_ControlAcces_WRITE_TIME":	
-						$ControlAcces=new EIS14_ABB_ControlAcces();
-						$ControlAcces->WRITE_TIME();
+ 						EIS14_ABB_ControlAcces::WRITE_TIME();
 					break;		
 					case "ABB_ControlAcces_WR_TIME_TAB":	
 						$index1=jeedom::evaluateExpression($option["index1"]);
@@ -244,18 +243,13 @@ class Dpt{
 						$index2=jeedom::evaluateExpression($option["index2"]);
 						$start2=jeedom::evaluateExpression($option["start2"]);
 						$stop2=jeedom::evaluateExpression($option["stop2"]);
-						$ControlAcces=new EIS14_ABB_ControlAcces();
-						$ControlAcces->WR_TIME_TAB($index1,$start1,$stop1,$index2,$start2,$stop2);
+						EIS14_ABB_ControlAcces::WR_TIME_TAB($index1,$start1,$stop1,$index2,$start2,$stop2);
 					break;
 					case "ABB_ControlAcces_WRITE_BLK1":
-						$Tag=jeedom::evaluateExpression($option["Tag"]);
-						$ControlAcces=new EIS14_ABB_ControlAcces();
-						$ControlAcces->WR_BLK1($Tag);
+						EIS14_ABB_ControlAcces::WR_BLK1();
 					break;
 					case "ABB_ControlAcces_WRITE_BLK2":
-						$Tag=jeedom::evaluateExpression($option["Tag"]);
-						$ControlAcces=new EIS14_ABB_ControlAcces();
-						$ControlAcces->WR_BLK2($Tag);
+						EIS14_ABB_ControlAcces::WR_BLK2();
 					break;
 				}
 			break;
@@ -2604,7 +2598,7 @@ class Dpt{
 				"InfoType"=>'binary',
 				"ActionType"=>'other',
 				"GenericType"=>"DONT",
-				"Option" =>array("Tag"),
+				"Option" =>array(),
 				"Unite" =>""),
 			"ABB_ControlAcces_WRITE_BLK2"=> array(
 				"Name"=>"Write tag to blk2",
@@ -2614,7 +2608,7 @@ class Dpt{
 				"InfoType"=>'binary',
 				"ActionType"=>'other',
 				"GenericType"=>"DONT",
-				"Option" =>array("Tag"),
+				"Option" =>array(),
 				"Unite" =>""))
 		);
 	}

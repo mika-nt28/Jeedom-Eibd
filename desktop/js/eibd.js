@@ -224,9 +224,15 @@ function DptValue(Dpt){
 	$.each(AllDpt, function(DptKeyGroup, DptValueGroup){
 		$.each(DptValueGroup, function(DptKey, DptValue){
 			if (DptKey==Dpt){
-				$.each(DptValue.Valeurs, function(keyValeurs, Valeurs){
-					DptValues.append($('<option>').attr('value',keyValeurs).text(Valeurs));
-				});
+				if(DptValue.Valeurs.length >0){
+					$.each(DptValue.Valeurs, function(keyValeurs, Valeurs){
+						DptValues.append($('<option>').attr('value',keyValeurs).text(Valeurs));
+					});
+				}else{
+					for (var i = DptValue.min; i < DptValue.max; i++) {
+						DptValues.append($('<option>').attr('value',i).text(i));
+					}
+				}
 			}
 		});
 	});
