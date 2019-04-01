@@ -373,14 +373,14 @@ class EIS14_ABB_ControlAcces {
  }
  public static function WR_BLK1($Tag){
   $Bytes[0]=0xA1;
-  $Bytes[1]=substr($Tag,0,2);
-  $Bytes[2]=substr($Tag,2,2);
-  $Bytes[3]=substr($Tag,4,2);
-  $Bytes[4]=substr($Tag,6,2);
-  $Bytes[5]=substr($Tag,8,2);
-  $Bytes[6]=substr($Tag,10,2);
-  $Bytes[7]=0;
-  $Bytes[8]=0;
+  $Bytes[1]=mt_rand(0,0xff);
+  $Bytes[2]=mt_rand(0,0xff);
+  $Bytes[3]=mt_rand(0,0xff);
+  $Bytes[4]=mt_rand(0,0xff);
+  $Bytes[5]=mt_rand(0,0xff);
+  $Bytes[6]=mt_rand(0,0xff);
+  $Bytes[7]=mt_rand(0,0xff);
+  $Bytes[8]=mt_rand(0,0xff);
   $Bytes[9]=0;
   $Bytes[10]=0;
   $Bytes[11]=0;
@@ -390,14 +390,14 @@ class EIS14_ABB_ControlAcces {
  }
  public static function WR_BLK2($Tag){
   $Bytes[0]=0xA2;
-  $Bytes[1]=substr($Tag,0,2);
-  $Bytes[2]=substr($Tag,2,2);
-  $Bytes[3]=substr($Tag,4,2);
-  $Bytes[4]=substr($Tag,6,2);
-  $Bytes[5]=substr($Tag,8,2);
-  $Bytes[6]=substr($Tag,10,2);
-  $Bytes[7]=0;
-  $Bytes[8]=0;
+  $Bytes[1]=mt_rand(0,0xff);
+  $Bytes[2]=mt_rand(0,0xff);
+  $Bytes[3]=mt_rand(0,0xff);
+  $Bytes[4]=mt_rand(0,0xff);
+  $Bytes[5]=mt_rand(0,0xff);
+  $Bytes[6]=mt_rand(0,0xff);
+  $Bytes[7]=mt_rand(0,0xff);
+  $Bytes[8]=mt_rand(0,0xff);
   $Bytes[9]=0;
   $Bytes[10]=0;
   $Bytes[11]=0;
