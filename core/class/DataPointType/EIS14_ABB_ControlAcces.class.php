@@ -1,6 +1,6 @@
 <?php
 class EIS14_ABB_ControlAcces {
- public function RD_WHITE_LIST(){
+ public static function RD_WHITE_LIST(){
   /*
   Byte 1 = Command code 0x42
   Bytes 2,3 = Index of the item in the list from which to start reading.
@@ -23,7 +23,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function RD_BLACK_LIST(){
+ public static function RD_BLACK_LIST(){
   /*
   Byte 1 = Command code 0x43
   Byte 2,3 = Reading start item
@@ -46,7 +46,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function RD_TIME_TAB(){
+ public static function RD_TIME_TAB(){
   /*
   Byte 1 = Command code 0x47
   Byte 2 = Number of reading start timeslot 01 / FF)
@@ -69,7 +69,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function RD_ACC_DATA14(){
+ public static function RD_ACC_DATA14(){
   /*
   Byte 1 = Command code 0x49
   Byte 2 = Number of accesses to read
@@ -114,7 +114,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function RD_GRP_ASS_TBL(){
+ public static function RD_GRP_ASS_TBL(){
   /*
   Byte 1 = Command code 0x4F
   Bytes 2 = Group index
@@ -126,7 +126,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[2]='';
   return $Bytes;
  }
- public function WR_INS_WL(){
+ public static function WR_INS_WL(){
   /*Byte 1 = Command code 0x88
   Byte 2,3 = Code 1
   Byte 4,5 = Code 2
@@ -153,7 +153,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_DEL_WL(){
+ public static function WR_DEL_WL(){
   /*Byte 1 = Command code 0x89
   Byte 2,3 = Code 1
   Byte 4,5 = Code 2
@@ -180,7 +180,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_INS_BL(){
+ public static function WR_INS_BL(){
   /*Byte 1 = Command code 0x8B
   Byte 2,3 = Code 1
   Byte 4,5 = Code 2
@@ -207,7 +207,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_DEL_BL(){
+ public static function WR_DEL_BL(){
   /*Byte 1 = Command code 0x8C
   Byte 2,3 = Code 1
   Byte 4,5 = Code 2
@@ -234,7 +234,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_PLT_CODE(){
+ public static function WR_PLT_CODE(){
   /*Byte 1 = Command code 0x8E
   Byte 2,3,4 = Plant Code1
   Byte 5,6,7 = Plant Code 2
@@ -259,7 +259,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_DEL_PLT_CODE(){
+ public static function WR_DEL_PLT_CODE(){
   /*Byte 1 = command code 0x97
   Byte 2,3,4 = code 1
   Byte 5,6,7 = code 2
@@ -283,7 +283,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WRITE_TIME(){
+ public static function WRITE_TIME(){
   $Bytes[0]=0x8F;
   $Bytes[1]=date("d");
   $Bytes[2]=date("m");
@@ -300,7 +300,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_TIME_TAB($index1,$start1,$stop1,$index2,$start2,$stop2){
+ public static function WR_TIME_TAB($index1,$start1,$stop1,$index2,$start2,$stop2){
   /*Byte 1 = Command code 0x92
   Byte 2 = First timeslot index (timeslot 00 is the NULL slot, and must not be considered!)
   Byte 3 = bit (0,1,2) Day of the week (0=all - 1=Mon 2=Tue etc.)
@@ -345,7 +345,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_INS_GRP_ASS_TBL(){
+ public static function WR_INS_GRP_ASS_TBL(){
   /*Byte 1 = command code 0x98
   Byte 2 Group (0001- FFFF) Note: Type 00 00 does not exist, numbering must start from group 1.
   Byte 3 = Slot (00-FF)
@@ -371,7 +371,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_BLK1($Tag){
+ public static function WR_BLK1($Tag){
   $Bytes
   $Bytes[0]=0xA1;
   $Bytes[1]=substr($Tag,0,2);
@@ -389,7 +389,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_BLK2($Tag){
+ public static function WR_BLK2($Tag){
   $Bytes
   $Bytes[0]=0xA2;
   $Bytes[1]=substr($Tag,0,2);
@@ -407,7 +407,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_DEL_GRP_ASS_TBL(){
+ public static function WR_DEL_GRP_ASS_TBL(){
   /*Byte 1 = command code 0XA5
   Byte 2 Group (01- FF) Note: Type 00 00 does not exist, numbering must start from group 1.
   Byte 3 = Slot (00-FF) to delete
@@ -418,7 +418,7 @@ class EIS14_ABB_ControlAcces {
   Byte 14= Slot (00-FF)
   */
  }
- public function WR_DEL_TIME_TBL(){
+ public static function WR_DEL_TIME_TBL(){
   /*Byte 1 = command code 0XA8
   Byte 2 = Slot (00-FF) to delete
   Byte 3 = Slot (00-FF) to delete
@@ -443,7 +443,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_PRICE_TBL(){
+ public static function WR_PRICE_TBL(){
   /*Byte 1 = Command Code 0x9E
   Byte 2 = rate profile 1, byte 1
   Byte 3 = rate profile 1, byte 2
