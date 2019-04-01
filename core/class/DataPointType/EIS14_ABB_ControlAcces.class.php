@@ -371,25 +371,15 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_BLK1(){
-  /*Byte 1 = command code 0XA1
-  Byte 2 = TAG byte 0
-  Byte 3 = TAG byte 1
-  Byte 4 = TAG byte 2
-  Byte 5 = TAG byte 3
-  Byte 6 = TAG byte 5
-  Byte 6 = TAG byte 6
-  Byte 6 = 00
-  .....
-  Byte 14 = 00
-  */
-  $Bytes[0]=0x42;
-  $Bytes[1]=0x42;
-  $Bytes[2]=0x42;
-  $Bytes[3]=0x42;
-  $Bytes[4]=0;
-  $Bytes[5]=0;
-  $Bytes[6]=0;
+ public function WR_BLK1($Tag){
+  $Bytes
+  $Bytes[0]=0xA1;
+  $Bytes[1]=substr($Tag,0,2);
+  $Bytes[2]=substr($Tag,2,2);
+  $Bytes[3]=substr($Tag,4,2);
+  $Bytes[4]=substr($Tag,6,2);
+  $Bytes[5]=substr($Tag,8,2);
+  $Bytes[6]=substr($Tag,10,2);
   $Bytes[7]=0;
   $Bytes[8]=0;
   $Bytes[9]=0;
@@ -399,25 +389,15 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public function WR_BLK2(){
-  /*Byte 1 = command code 0XA2
-  Byte 2 = TAG byte 7
-  Byte 3 = TAG byte 8
-  Byte 4 = TAG byte 9
-  Byte 5 = TAG byte 10
-  Byte 6 = TAG byte 11
-  Byte 7 = TAG byte 12
-  Byte 8 = TAG byte 13
-  .....
-  Byte 14 = 00
-  */
-  $Bytes[0]=0x42;
-  $Bytes[1]=0x42;
-  $Bytes[2]=0x42;
-  $Bytes[3]=0x42;
-  $Bytes[4]=0;
-  $Bytes[5]=0;
-  $Bytes[6]=0;
+ public function WR_BLK2($Tag){
+  $Bytes
+  $Bytes[0]=0xA2;
+  $Bytes[1]=substr($Tag,0,2);
+  $Bytes[2]=substr($Tag,2,2);
+  $Bytes[3]=substr($Tag,4,2);
+  $Bytes[4]=substr($Tag,6,2);
+  $Bytes[5]=substr($Tag,8,2);
+  $Bytes[6]=substr($Tag,10,2);
   $Bytes[7]=0;
   $Bytes[8]=0;
   $Bytes[9]=0;
