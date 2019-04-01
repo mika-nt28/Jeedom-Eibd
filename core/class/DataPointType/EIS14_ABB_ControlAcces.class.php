@@ -372,7 +372,6 @@ class EIS14_ABB_ControlAcces {
   return $Bytes;
  }
  public static function WR_BLK1($Tag){
-  $Bytes
   $Bytes[0]=0xA1;
   $Bytes[1]=substr($Tag,0,2);
   $Bytes[2]=substr($Tag,2,2);
@@ -390,7 +389,6 @@ class EIS14_ABB_ControlAcces {
   return $Bytes;
  }
  public static function WR_BLK2($Tag){
-  $Bytes
   $Bytes[0]=0xA2;
   $Bytes[1]=substr($Tag,0,2);
   $Bytes[2]=substr($Tag,2,2);
