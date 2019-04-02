@@ -243,13 +243,13 @@ class Dpt{
 						$index2=jeedom::evaluateExpression($option["index2"]);
 						$start2=jeedom::evaluateExpression($option["start2"]);
 						$stop2=jeedom::evaluateExpression($option["stop2"]);
-						EIS14_ABB_ControlAcces::WR_TIME_TAB($index1,$start1,$stop1,$index2,$start2,$stop2);
+						$data= EIS14_ABB_ControlAcces::WR_TIME_TAB($index1,$start1,$stop1,$index2,$start2,$stop2);
 					break;
 					case "ABB_ControlAcces_WRITE_BLK1":
-						EIS14_ABB_ControlAcces::WR_BLK1();
+						$data = EIS14_ABB_ControlAcces::WR_BLK1();
 					break;
 					case "ABB_ControlAcces_WRITE_BLK2":
-						EIS14_ABB_ControlAcces::WR_BLK2();
+						$data = EIS14_ABB_ControlAcces::WR_BLK2();
 					break;
 				}
 			break;
