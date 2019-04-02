@@ -885,18 +885,20 @@ class eibdCmd extends cmd {
 			$unite=Dpt::getDptUnite($dpt);
 			log::add('eibd', 'debug',$this->getHumanName().' : Décodage de la valeur avec le DPT :'.$dpt);
 			$valeur=Dpt::DptSelectDecode($dpt, $data, $inverse, $Option);
-			if($this->getConfiguration('noBatterieCheck')){
-				switch(explode('.',$dpt)[0]){
-					case 1 :
-						$valeur=$valeur*100;
-					break;
+			if($valeur !== false){
+				if($this->getConfiguration('noBatterieCheck')){
+					switch(explode('.',$dpt)[0]){
+						case 1 :
+							$valeur=$valeur*100;
+						break;
+					}
+					$this->getEqlogic()->batteryStatus($valeur,date('Y-m-d H:i:s'));
 				}
-				$this->getEqlogic()->batteryStatus($valeur,date('Y-m-d H:i:s'));
-			}
-			if($this->getType() == 'info'){
-				log::add('eibd', 'info',$this->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
-				$this->event($valeur);
-				$this->setCache('collectDate', date('Y-m-d H:i:s'));
+				if($this->getType() == 'info'){
+					log::add('eibd', 'info',$this->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
+					$this->event($valeur);
+					$this->setCache('collectDate', date('Y-m-d H:i:s'));
+				}
 			}
 		}else{
 			$valeur='Aucun DPT n\'est associé a cette adresse';
