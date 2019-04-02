@@ -539,7 +539,7 @@ class Dpt{
 						$value= self::rgb2html($R->execCmd(),$G->execCmd(),$B->execCmd());
 					break;
 					case "ABB_ControlAcces_Read_Write":
-						$value = EIS14_ABB_ControlAcces::ReadTag();
+						$value = EIS14_ABB_ControlAcces::ReadTag($data);
 					break;	
 				}
 			break;
