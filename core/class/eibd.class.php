@@ -818,10 +818,17 @@ class eibdCmd extends cmd {
 				log::add('eibd','debug',$this->getHumanName().' Valeur a envoyer '.$ActionValue);
 				$data= Dpt::DptSelectEncode($dpt, $ActionValue, $inverse,$Option);
 				if($ga != '' && $data !== false){
-					$WriteBusValue=eibd::EibdWrite($ga, $data);
-					if ($WriteBusValue != -1 && isset($Listener) && is_object($Listener) && $ga==$Listener->getLogicalId()){
-						$Listener->event($BusValue);
-						$Listener->setCache('collectDate', date('Y-m-d H:i:s'));
+					if(is_array($data[0])){
+						foreach($data as $frame){
+							$WriteBusValue=eibd::EibdWrite($ga, $frame);
+							sleep(1);
+						}
+					}else{
+						$WriteBusValue=eibd::EibdWrite($ga, $data);
+						if ($WriteBusValue != -1 && isset($Listener) && is_object($Listener) && $ga==$Listener->getLogicalId()){
+							$Listener->event($BusValue);
+							$Listener->setCache('collectDate', date('Y-m-d H:i:s'));
+						}
 					}
 				}
 			break;
