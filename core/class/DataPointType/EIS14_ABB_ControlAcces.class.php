@@ -411,6 +411,25 @@ class EIS14_ABB_ControlAcces {
   $Frame[2] = array(0xA3);
   return $Frame;
  }
+ public static function ReadTag($data,$id){
+  $Tag = false;
+  if($data[0] == 0xD8){// 7 premier bytes
+   cache::set('eibd::FirstTagElements::'.$id, json_encode(array_slice($data,1,7)), 0);
+  }
+  if($data[0] == 0xD9){// 7 dernier bytes
+   cache::set('eibd::LastTagElements::'.$id, json_encode(array_slice($data,1,7)), 0);
+  }
+		$FirstTagElements = cache::byKey('eibd::FirstTagElements::'.$id);
+		$LastTagElements = cache::byKey('eibd::LastTagElements::'.$id);
+  if(is_object($FirstTagElements) && is_object($LastTagElements)){
+   $Tag='';
+   foreach (json_decode($FirstTagElements->getValue('[]'), true) as $Byte)
+    $Tag.=sprintf(' %02x',$Byte);
+   foreach (json_decode($LastTagElements->getValue('[]'), true) as $Byte)
+    $Tag.=sprintf(' %02x',$Byte);
+  }
+  return $Tag;
+ }
  public static function WR_DEL_GRP_ASS_TBL(){
   /*Byte 1 = command code 0XA5
   Byte 2 Group (01- FF) Note: Type 00 00 does not exist, numbering must start from group 1.
