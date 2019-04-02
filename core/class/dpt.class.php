@@ -233,23 +233,8 @@ class Dpt{
 						if(is_object($cmdB))
 							$cmdB->execCmd(array('slider'=>$b));
 					break;	
-					case "ABB_ControlAcces_WRITE_TIME":	
- 						EIS14_ABB_ControlAcces::WRITE_TIME();
-					break;		
-					case "ABB_ControlAcces_WR_TIME_TAB":	
-						$index1=jeedom::evaluateExpression($option["index1"]);
-						$start1=jeedom::evaluateExpression($option["start1"]);
-						$stop1=jeedom::evaluateExpression($option["stop1"]);
-						$index2=jeedom::evaluateExpression($option["index2"]);
-						$start2=jeedom::evaluateExpression($option["start2"]);
-						$stop2=jeedom::evaluateExpression($option["stop2"]);
-						$data= EIS14_ABB_ControlAcces::WR_TIME_TAB($index1,$start1,$stop1,$index2,$start2,$stop2);
-					break;
-					case "ABB_ControlAcces_WRITE_BLK1":
-						$data = EIS14_ABB_ControlAcces::WR_BLK1();
-					break;
-					case "ABB_ControlAcces_WRITE_BLK2":
-						$data = EIS14_ABB_ControlAcces::WR_BLK2();
+					case "ABB_ControlAcces_Read_Write":
+						$data = EIS14_ABB_ControlAcces::WriteTag();
 					break;
 				}
 			break;
@@ -2570,42 +2555,12 @@ class Dpt{
 				"Option" =>array("R","G","B"),
 				"Unite" =>"")),
 		"ABB - Acces Control"=> array(
-			"ABB_ControlAcces_WRITE_TIME"=> array(
-				"Name"=>"Send local time",
+			"ABB_ControlAcces_Read_Write"=> array(
+				"Name"=>"Read/Write code Tag",
 				"Valeurs"=>array(),
 				"min"=>'',
 				"max"=>'',
-				"InfoType"=>'binary',
-				"ActionType"=>'other',
-				"GenericType"=>"DONT",
-				"Option" =>array(),
-				"Unite" =>""),
-			"ABB_ControlAcces_WR_TIME_TAB"=> array(
-				"Name"=>"Send timeslot",
-				"Valeurs"=>array(),
-				"min"=>'',
-				"max"=>'',
-				"InfoType"=>'binary',
-				"ActionType"=>'other',
-				"GenericType"=>"DONT",
-				"Option" =>array("index1","start1","stop1","index2","start2","stop2"),
-				"Unite" =>""),
-			"ABB_ControlAcces_WRITE_BLK1"=> array(
-				"Name"=>"Write tag to blk1",
-				"Valeurs"=>array(),
-				"min"=>'',
-				"max"=>'',
-				"InfoType"=>'binary',
-				"ActionType"=>'other',
-				"GenericType"=>"DONT",
-				"Option" =>array(),
-				"Unite" =>""),
-			"ABB_ControlAcces_WRITE_BLK2"=> array(
-				"Name"=>"Write tag to blk2",
-				"Valeurs"=>array(),
-				"min"=>'',
-				"max"=>'',
-				"InfoType"=>'binary',
+				"InfoType"=>'string',
 				"ActionType"=>'other',
 				"GenericType"=>"DONT",
 				"Option" =>array(),
