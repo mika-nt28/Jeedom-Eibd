@@ -371,7 +371,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public static function WR_BLK1($Tag){
+ public static function WR_BLK1(){
   $Bytes[0]=0xA1;
   $Bytes[1]=mt_rand(0,0xff);
   $Bytes[2]=mt_rand(0,0xff);
@@ -388,7 +388,7 @@ class EIS14_ABB_ControlAcces {
   $Bytes[13]=0;
   return $Bytes;
  }
- public static function WR_BLK2($Tag){
+ public static function WR_BLK2(){
   $Bytes[0]=0xA2;
   $Bytes[1]=mt_rand(0,0xff);
   $Bytes[2]=mt_rand(0,0xff);
@@ -404,6 +404,12 @@ class EIS14_ABB_ControlAcces {
   $Bytes[12]=0;
   $Bytes[13]=0;
   return $Bytes;
+ }
+ public static function WriteTag(){
+  $Frame[0] = self::WR_BLK1();
+  $Frame[1] = self::WR_BLK2();
+  $Frame[2] = array(0xA3);
+  return $Frame;
  }
  public static function WR_DEL_GRP_ASS_TBL(){
   /*Byte 1 = command code 0XA5
