@@ -412,7 +412,6 @@
 			return $Frame;
 		}
 		public static function ReadTag($data,$id){
-			$Tag = false;
 			//Programmation
 			if($data[0] == 0xA1)// 7 premier bytes
 				cache::set('eibd::FirstTagElements::'.$id, json_encode(array_slice($data,1,7)), 0);
@@ -433,8 +432,9 @@
 					$Tag.=sprintf(' %02x',$Byte);
 				$FirstTagElements->remove();
 				$LastTagElements->remove();
+				return $Tag;
 			}
-			return $Tag;
+			return false;
 		}
 		public static function WR_DEL_GRP_ASS_TBL(){
 			/*Byte 1 = command code 0XA5
