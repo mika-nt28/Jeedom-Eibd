@@ -841,7 +841,8 @@ class eibdCmd extends cmd {
 					return;
 				}
 				$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
-				$this->getEqLogic()->checkAndUpdateCmd($ga,$BusValue);
+				if($BusValue !== false)
+					$this->getEqLogic()->checkAndUpdateCmd($ga,$BusValue);
 				return $BusValue;
 			break;
 		}
@@ -912,7 +913,7 @@ class eibdCmd extends cmd {
 		$Option=$this->getConfiguration('option');
 		$Option["id"]=$this->getId();
 		$valeur=Dpt::DptSelectDecode($dpt, null, $inverse, $Option);
-		if($this->getType() == 'info'){
+		if($this->getType() == 'info' && $valeur !== false){
 			log::add('eibd', 'info',$this->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
 			$this->event($valeur);
 			$this->setCache('collectDate', date('Y-m-d H:i:s'));
