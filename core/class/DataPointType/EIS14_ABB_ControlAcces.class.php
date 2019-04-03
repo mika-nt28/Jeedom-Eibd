@@ -424,7 +424,7 @@
 				cache::set('eibd::LastTagElements::'.$id, json_encode(array_slice($data,1,7)), 0);
 			$FirstTagElements = cache::byKey('eibd::FirstTagElements::'.$id);
 			$LastTagElements = cache::byKey('eibd::LastTagElements::'.$id);
-			if(is_object($FirstTagElements) && is_object($LastTagElements)){
+			if(is_object($FirstTagElements) && $FirstTagElements->getValue('[]') != '[]' && is_object($LastTagElements) && $LastTagElements->getValue('[]') != '[]' ){
 				$Tag='';
 				foreach (json_decode($FirstTagElements->getValue('[]'), true) as $Byte)
 					$Tag.=sprintf(' %02x',$Byte);
