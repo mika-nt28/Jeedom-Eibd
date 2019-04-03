@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . '/DataPointType/EIS14_ABB_ControlAcces.class.ph
 class Dpt{
 	public function DptSelectEncode ($dpt, $value, $inverse=false, $option=null){
 		$All_DPT=self::All_DPT();
-		switch (explode('.',$dpt)[0]{
+		switch (explode('.',$dpt)[0]){
 			case "1":
 				if ($value != 0 && $value != 1)
 					{
@@ -244,7 +244,7 @@ class Dpt{
 		if ($inverse)
 			log::add('eibd', 'debug','La commande sera inversée');
 		$All_DPT=self::All_DPT();
-		switch (explode('.',$dpt)[0]{
+		switch (explode('.',$dpt)[0]){
 			case "1":
 				$value = $data;		
 				if ($inverse)
