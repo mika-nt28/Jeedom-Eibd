@@ -3,8 +3,7 @@ require_once dirname(__FILE__) . '/DataPointType/EIS14_ABB_ControlAcces.class.ph
 class Dpt{
 	public function DptSelectEncode ($dpt, $value, $inverse=false, $option=null){
 		$All_DPT=self::All_DPT();
-		$type= substr($dpt,0,strpos( $dpt, '.' ));
-		switch ($type){
+		switch (explode('.',$dpt)[0]{
 			case "1":
 				if ($value != 0 && $value != 1)
 					{
@@ -208,6 +207,22 @@ class Dpt{
 				$data= array(0x00,0x00);
 				array_push($data,$rgb,$w);
 			break;
+			case "Color":	
+				$data= false;
+				list($r, $g, $b)=self::html2rgb($value);
+				$cmdR=cmd::byId(str_replace('#','',$option["R"]));
+				if(is_object($cmdR))
+					$cmdR->execCmd(array('slider'=>$r));
+				$cmdG=cmd::byId(str_replace('#','',$option["G"]));
+				if(is_object($cmdG))
+					$cmdG->execCmd(array('slider'=>$g));
+				$cmdB=cmd::byId(str_replace('#','',$option["B"]));
+				if(is_object($cmdB))
+					$cmdB->execCmd(array('slider'=>$b));
+			break;	
+			case "ABB_ControlAcces_Read_Write":
+				$data = EIS14_ABB_ControlAcces::WriteTag();
+			break;
 			default:
 				switch($dpt){
 					case "x.001":
@@ -220,22 +235,6 @@ class Dpt{
 						}
 						$data= array(($Mode->execCmd()<< 1) & 0xEF | $value& 0x01);
 					break;
-					case "Color":	
-						$data= false;
-						list($r, $g, $b)=self::html2rgb($value);
-						$cmdR=cmd::byId(str_replace('#','',$option["R"]));
-						if(is_object($cmdR))
-							$cmdR->execCmd(array('slider'=>$r));
-						$cmdG=cmd::byId(str_replace('#','',$option["G"]));
-						if(is_object($cmdG))
-							$cmdG->execCmd(array('slider'=>$g));
-						$cmdB=cmd::byId(str_replace('#','',$option["B"]));
-						if(is_object($cmdB))
-							$cmdB->execCmd(array('slider'=>$b));
-					break;	
-					case "ABB_ControlAcces_Read_Write":
-						$data = EIS14_ABB_ControlAcces::WriteTag();
-					break;
 				}
 			break;
 		};
@@ -245,8 +244,7 @@ class Dpt{
 		if ($inverse)
 			log::add('eibd', 'debug','La commande sera inversée');
 		$All_DPT=self::All_DPT();
-		$type= substr($dpt,0,strpos( $dpt, '.' ));
-		switch ($type){
+		switch (explode('.',$dpt)[0]{
 			case "1":
 				$value = $data;		
 				if ($inverse)
@@ -498,7 +496,34 @@ class Dpt{
 					$Temperature->setCache('collectDate', date('Y-m-d H:i:s'));
 				}	
 				$value= self::rgb2html($data[1],$data[2], $data[3]);
+			break;			
+			case "Color":	
+				$R=cmd::byId(str_replace('#','',$option["R"]));
+				if(!is_object($R) && $R->getType() == 'info')
+					return;
+				$G=cmd::byId(str_replace('#','',$option["G"]));
+				if(!is_object($G) && $G->getType() == 'info')
+					return;
+				$B=cmd::byId(str_replace('#','',$option["B"]));
+				if(!is_object($B) && $B->getType() == 'info')
+					return;
+				$listener = listener::byClassAndFunction('eibd', 'UpdateCmdOption', $option);
+				if (!is_object($listener)){
+					$listener = new listener();
+					$listener->setClass('eibd');
+					$listener->setFunction('UpdateCmdOption');
+					$listener->setOption($option);
+					$listener->emptyEvent();
+					$listener->addEvent($R->getId());
+					$listener->addEvent($G->getId());
+					$listener->addEvent($B->getId());
+					$listener->save();
+				}
+				$value= self::rgb2html($R->execCmd(),$G->execCmd(),$B->execCmd());
 			break;
+			case "ABB_ControlAcces_Read_Write":
+				$value = EIS14_ABB_ControlAcces::ReadTag($data,$option['id']);
+			break;	
 			default:
 				switch($dpt){
 					case "x.001":
@@ -513,34 +538,7 @@ class Dpt{
 								}
 							}
 						}
-					break;					
-					case "Color":	
-						$R=cmd::byId(str_replace('#','',$option["R"]));
-						if(!is_object($R) && $R->getType() == 'info')
-							return;
-						$G=cmd::byId(str_replace('#','',$option["G"]));
-						if(!is_object($G) && $G->getType() == 'info')
-							return;
-						$B=cmd::byId(str_replace('#','',$option["B"]));
-						if(!is_object($B) && $B->getType() == 'info')
-							return;
-						$listener = listener::byClassAndFunction('eibd', 'UpdateCmdOption', $option);
-						if (!is_object($listener)){
-						   	$listener = new listener();
-							$listener->setClass('eibd');
-							$listener->setFunction('UpdateCmdOption');
-							$listener->setOption($option);
-							$listener->emptyEvent();
-							$listener->addEvent($R->getId());
-							$listener->addEvent($G->getId());
-							$listener->addEvent($B->getId());
-							$listener->save();
-						}
-						$value= self::rgb2html($R->execCmd(),$G->execCmd(),$B->execCmd());
-					break;
-					case "ABB_ControlAcces_Read_Write":
-						$value = EIS14_ABB_ControlAcces::ReadTag($data,$option['id']);
-					break;	
+					break;		
 				}
 			break;
 		};
