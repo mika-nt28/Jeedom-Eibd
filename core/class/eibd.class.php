@@ -825,10 +825,10 @@ class eibdCmd extends cmd {
 						}
 					}else{
 						$WriteBusValue=eibd::EibdWrite($ga, $data);
-						if ($WriteBusValue != -1 && isset($Listener) && is_object($Listener) && $ga==$Listener->getLogicalId()){
-							$Listener->event($BusValue);
+						/*if ($WriteBusValue != -1 && isset($Listener) && is_object($Listener) && $ga==$Listener->getLogicalId()){
+							$Listener->event($ActionValue);
 							$Listener->setCache('collectDate', date('Y-m-d H:i:s'));
-						}
+						}*/
 					}
 				}
 			break;
