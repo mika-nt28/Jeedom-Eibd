@@ -3,8 +3,7 @@ require_once dirname(__FILE__) . '/DataPointType/EIS14_ABB_ControlAcces.class.ph
 class Dpt{
 	public function DptSelectEncode ($dpt, $value, $inverse=false, $option=null){
 		$All_DPT=self::All_DPT();
-		$type= substr($dpt,0,strpos( $dpt, '.' ));
-		switch ($type){
+		switch (explode('.',$dpt)[0]){
 			case "1":
 				if ($value != 0 && $value != 1)
 					{
@@ -208,6 +207,22 @@ class Dpt{
 				$data= array(0x00,0x00);
 				array_push($data,$rgb,$w);
 			break;
+			case "Color":	
+				$data= false;
+				list($r, $g, $b)=self::html2rgb($value);
+				$cmdR=cmd::byId(str_replace('#','',$option["R"]));
+				if(is_object($cmdR))
+					$cmdR->execCmd(array('slider'=>$r));
+				$cmdG=cmd::byId(str_replace('#','',$option["G"]));
+				if(is_object($cmdG))
+					$cmdG->execCmd(array('slider'=>$g));
+				$cmdB=cmd::byId(str_replace('#','',$option["B"]));
+				if(is_object($cmdB))
+					$cmdB->execCmd(array('slider'=>$b));
+			break;	
+			case "ABB_ControlAcces_Read_Write":
+				$data = EIS14_ABB_ControlAcces::WriteTag();
+			break;
 			default:
 				switch($dpt){
 					case "x.001":
@@ -220,37 +235,6 @@ class Dpt{
 						}
 						$data= array(($Mode->execCmd()<< 1) & 0xEF | $value& 0x01);
 					break;
-					case "Color":	
-						$data= false;
-						list($r, $g, $b)=self::html2rgb($value);
-						$cmdR=cmd::byId(str_replace('#','',$option["R"]));
-						if(is_object($cmdR))
-							$cmdR->execCmd(array('slider'=>$r));
-						$cmdG=cmd::byId(str_replace('#','',$option["G"]));
-						if(is_object($cmdG))
-							$cmdG->execCmd(array('slider'=>$g));
-						$cmdB=cmd::byId(str_replace('#','',$option["B"]));
-						if(is_object($cmdB))
-							$cmdB->execCmd(array('slider'=>$b));
-					break;	
-					case "ABB_ControlAcces_WRITE_TIME":	
- 						EIS14_ABB_ControlAcces::WRITE_TIME();
-					break;		
-					case "ABB_ControlAcces_WR_TIME_TAB":	
-						$index1=jeedom::evaluateExpression($option["index1"]);
-						$start1=jeedom::evaluateExpression($option["start1"]);
-						$stop1=jeedom::evaluateExpression($option["stop1"]);
-						$index2=jeedom::evaluateExpression($option["index2"]);
-						$start2=jeedom::evaluateExpression($option["start2"]);
-						$stop2=jeedom::evaluateExpression($option["stop2"]);
-						EIS14_ABB_ControlAcces::WR_TIME_TAB($index1,$start1,$stop1,$index2,$start2,$stop2);
-					break;
-					case "ABB_ControlAcces_WRITE_BLK1":
-						EIS14_ABB_ControlAcces::WR_BLK1();
-					break;
-					case "ABB_ControlAcces_WRITE_BLK2":
-						EIS14_ABB_ControlAcces::WR_BLK2();
-					break;
 				}
 			break;
 		};
@@ -260,8 +244,7 @@ class Dpt{
 		if ($inverse)
 			log::add('eibd', 'debug','La commande sera inversée');
 		$All_DPT=self::All_DPT();
-		$type= substr($dpt,0,strpos( $dpt, '.' ));
-		switch ($type){
+		switch (explode('.',$dpt)[0]){
 			case "1":
 				$value = $data;		
 				if ($inverse)
@@ -513,7 +496,34 @@ class Dpt{
 					$Temperature->setCache('collectDate', date('Y-m-d H:i:s'));
 				}	
 				$value= self::rgb2html($data[1],$data[2], $data[3]);
+			break;			
+			case "Color":	
+				$R=cmd::byId(str_replace('#','',$option["R"]));
+				if(!is_object($R) && $R->getType() == 'info')
+					return;
+				$G=cmd::byId(str_replace('#','',$option["G"]));
+				if(!is_object($G) && $G->getType() == 'info')
+					return;
+				$B=cmd::byId(str_replace('#','',$option["B"]));
+				if(!is_object($B) && $B->getType() == 'info')
+					return;
+				$listener = listener::byClassAndFunction('eibd', 'UpdateCmdOption', $option);
+				if (!is_object($listener)){
+					$listener = new listener();
+					$listener->setClass('eibd');
+					$listener->setFunction('UpdateCmdOption');
+					$listener->setOption($option);
+					$listener->emptyEvent();
+					$listener->addEvent($R->getId());
+					$listener->addEvent($G->getId());
+					$listener->addEvent($B->getId());
+					$listener->save();
+				}
+				$value= self::rgb2html($R->execCmd(),$G->execCmd(),$B->execCmd());
 			break;
+			case "ABB_ControlAcces_Read_Write":
+				$value = EIS14_ABB_ControlAcces::ReadTag($data,$option['id']);
+			break;	
 			default:
 				switch($dpt){
 					case "x.001":
@@ -528,31 +538,7 @@ class Dpt{
 								}
 							}
 						}
-					break;					
-					case "Color":	
-						$R=cmd::byId(str_replace('#','',$option["R"]));
-						if(!is_object($R) && $R->getType() == 'info')
-							return;
-						$G=cmd::byId(str_replace('#','',$option["G"]));
-						if(!is_object($G) && $G->getType() == 'info')
-							return;
-						$B=cmd::byId(str_replace('#','',$option["B"]));
-						if(!is_object($B) && $B->getType() == 'info')
-							return;
-						$listener = listener::byClassAndFunction('eibd', 'UpdateCmdOption', $option);
-						if (!is_object($listener)){
-						   	$listener = new listener();
-							$listener->setClass('eibd');
-							$listener->setFunction('UpdateCmdOption');
-							$listener->setOption($option);
-							$listener->emptyEvent();
-							$listener->addEvent($R->getId());
-							$listener->addEvent($G->getId());
-							$listener->addEvent($B->getId());
-							$listener->save();
-						}
-						$value= self::rgb2html($R->execCmd(),$G->execCmd(),$B->execCmd());
-					break;	
+					break;		
 				}
 			break;
 		};
@@ -2570,42 +2556,12 @@ class Dpt{
 				"Option" =>array("R","G","B"),
 				"Unite" =>"")),
 		"ABB - Acces Control"=> array(
-			"ABB_ControlAcces_WRITE_TIME"=> array(
-				"Name"=>"Send local time",
+			"ABB_ControlAcces_Read_Write"=> array(
+				"Name"=>"Read/Write code Tag",
 				"Valeurs"=>array(),
 				"min"=>'',
 				"max"=>'',
-				"InfoType"=>'binary',
-				"ActionType"=>'other',
-				"GenericType"=>"DONT",
-				"Option" =>array(),
-				"Unite" =>""),
-			"ABB_ControlAcces_WR_TIME_TAB"=> array(
-				"Name"=>"Send timeslot",
-				"Valeurs"=>array(),
-				"min"=>'',
-				"max"=>'',
-				"InfoType"=>'binary',
-				"ActionType"=>'other',
-				"GenericType"=>"DONT",
-				"Option" =>array("index1","start1","stop1","index2","start2","stop2"),
-				"Unite" =>""),
-			"ABB_ControlAcces_WRITE_BLK1"=> array(
-				"Name"=>"Write tag to blk1",
-				"Valeurs"=>array(),
-				"min"=>'',
-				"max"=>'',
-				"InfoType"=>'binary',
-				"ActionType"=>'other',
-				"GenericType"=>"DONT",
-				"Option" =>array(),
-				"Unite" =>""),
-			"ABB_ControlAcces_WRITE_BLK2"=> array(
-				"Name"=>"Write tag to blk2",
-				"Valeurs"=>array(),
-				"min"=>'',
-				"max"=>'',
-				"InfoType"=>'binary',
+				"InfoType"=>'string',
 				"ActionType"=>'other',
 				"GenericType"=>"DONT",
 				"Option" =>array(),
