@@ -371,15 +371,17 @@
 			$Bytes[13]=0;
 			return $Bytes;
 		}
-		public static function WR_BLK1(){
+		public static function WR_BLK1($TagCode,$Group,$PlantCode){
+			$TagCode=explode("|",sprintf('%02x|%02x',$TagCode));
+			$PlantCode=explode("|",sprintf('%02x|%02x|%02x',$PlantCode));
 			$Bytes[0]=0xA1;
-			$Bytes[1]=mt_rand(0,0xff);//Tag code
-			$Bytes[2]=mt_rand(0,0xff);//Tag code
-			$Bytes[3]=0x01;//Group 
+			$Bytes[1]=$TagCode[0];//Tag code
+			$Bytes[2]=$TagCode[1];//Tag code
+			$Bytes[3]=$Group;//Group 
 			$Bytes[4]=mt_rand(0,0xff);//Dummy 
-			$Bytes[5]=0x01;//Plant Code
-			$Bytes[6]=0x02;//Plant Code
-			$Bytes[7]=0x03;//Plant Code
+			$Bytes[5]=$PlantCode[0];//Plant Code
+			$Bytes[6]=$PlantCode[1];//Plant Code
+			$Bytes[7]=$PlantCode[2];//Plant Code
 			$Bytes[8]=0;
 			$Bytes[9]=0;
 			$Bytes[10]=0;
@@ -388,13 +390,13 @@
 			$Bytes[13]=0;
 			return $Bytes;
 		}
-		public static function WR_BLK2(){
+		public static function WR_BLK2($Expire){
 			$Bytes[0]=0xA2;
-			$Bytes[1]=0xff;//Year 
-			$Bytes[2]=0xff;//Month
-			$Bytes[3]=0xff;//Day
-			$Bytes[4]=0xff;//hour 
-			$Bytes[5]=0xff;//minute 
+			$Bytes[1]=date("Y",$Expire);//Year 
+			$Bytes[2]=date("m",$Expire);//Month
+			$Bytes[3]=date("d",$Expire);//Day
+			$Bytes[4]=date("H",$Expire);//hour 
+			$Bytes[5]=date("i",$Expire);//minute 
 			$Bytes[6]=mt_rand(0,0xff);//Dummy 
 			$Bytes[7]=mt_rand(0,0xff);//Dummy 
 			$Bytes[8]=mt_rand(0,0xff);//Dummy 
@@ -405,9 +407,10 @@
 			$Bytes[13]=0;
 			return $Bytes;
 		}
-		public static function WriteTag(){
-			$Frame[0] = self::WR_BLK1();
-			$Frame[1] = self::WR_BLK2();
+		public static function WriteTag($Tag){
+			list($TagCode,$Group,$PlantCode,$Expire)= json_decode($Tag,true);
+			$Frame[0] = self::WR_BLK1($TagCode,$Group,$PlantCode);
+			$Frame[1] = self::WR_BLK2($Expire);
 			$Frame[2] = array(0xA3);
 			return $Frame;
 		}
