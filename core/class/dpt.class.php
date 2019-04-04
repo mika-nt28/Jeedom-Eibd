@@ -221,7 +221,7 @@ class Dpt{
 					$cmdB->execCmd(array('slider'=>$b));
 			break;	
 			case "ABB_ControlAcces_Read_Write":
-				$data = EIS14_ABB_ControlAcces::WriteTag($value);
+				$data = EIS14_ABB_ControlAcces::WriteTag($value,$option["Group"],$option["PlantCode"],$option["Expire"]);
 			break;
 			default:
 				switch($dpt){
@@ -2564,7 +2564,7 @@ class Dpt{
 				"InfoType"=>'string',
 				"ActionType"=>'message',
 				"GenericType"=>"DONT",
-				"Option" =>array(),
+				"Option" =>array("Group","PlantCode","Expire"),
 				"Unite" =>""))
 		);
 	}
