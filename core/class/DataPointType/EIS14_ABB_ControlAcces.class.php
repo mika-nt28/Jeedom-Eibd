@@ -373,14 +373,14 @@
 		}
 		public static function WR_BLK1(){
 			$Bytes[0]=0xA1;
-			$Bytes[1]=mt_rand(0,0xff);
-			$Bytes[2]=mt_rand(0,0xff);
-			$Bytes[3]=mt_rand(0,0xff);
-			$Bytes[4]=mt_rand(0,0xff);
-			$Bytes[5]=mt_rand(0,0xff);
-			$Bytes[6]=mt_rand(0,0xff);
-			$Bytes[7]=mt_rand(0,0xff);
-			$Bytes[8]=0;//mt_rand(0,0xff);
+			$Bytes[1]=mt_rand(0,0xff);//Tag code
+			$Bytes[2]=mt_rand(0,0xff);//Tag code
+			$Bytes[3]=0x01;//Group 
+			$Bytes[4]=mt_rand(0,0xff);//Dummy 
+			$Bytes[5]=0x01;//Plant Code
+			$Bytes[6]=0x02;//Plant Code
+			$Bytes[7]=0x03;//Plant Code
+			$Bytes[8]=0;
 			$Bytes[9]=0;
 			$Bytes[10]=0;
 			$Bytes[11]=0;
@@ -390,14 +390,14 @@
 		}
 		public static function WR_BLK2(){
 			$Bytes[0]=0xA2;
-			$Bytes[1]=mt_rand(0,0xff);
-			$Bytes[2]=mt_rand(0,0xff);
-			$Bytes[3]=mt_rand(0,0xff);
-			$Bytes[4]=mt_rand(0,0xff);
-			$Bytes[5]=mt_rand(0,0xff);
-			$Bytes[6]=mt_rand(0,0xff);
-			$Bytes[7]=mt_rand(0,0xff);
-			$Bytes[8]=0;//mt_rand(0,0xff);
+			$Bytes[1]=0xff;//Year 
+			$Bytes[2]=0xff;//Month
+			$Bytes[3]=0xff;//Day
+			$Bytes[4]=0xff;//hour 
+			$Bytes[5]=0xff;//minute 
+			$Bytes[6]=mt_rand(0,0xff);//Dummy 
+			$Bytes[7]=mt_rand(0,0xff);//Dummy 
+			$Bytes[8]=mt_rand(0,0xff);//Dummy 
 			$Bytes[9]=0;
 			$Bytes[10]=0;
 			$Bytes[11]=0;
