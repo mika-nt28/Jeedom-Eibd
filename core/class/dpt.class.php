@@ -221,7 +221,7 @@ class Dpt{
 					$cmdB->execCmd(array('slider'=>$b));
 			break;	
 			case "ABB_ControlAcces_Read_Write":
-				$data = EIS14_ABB_ControlAcces::WriteTag();
+				$data = EIS14_ABB_ControlAcces::WriteTag($value);
 			break;
 			default:
 				switch($dpt){
@@ -2562,7 +2562,7 @@ class Dpt{
 				"min"=>'',
 				"max"=>'',
 				"InfoType"=>'string',
-				"ActionType"=>'other',
+				"ActionType"=>'message',
 				"GenericType"=>"DONT",
 				"Option" =>array(),
 				"Unite" =>""))
