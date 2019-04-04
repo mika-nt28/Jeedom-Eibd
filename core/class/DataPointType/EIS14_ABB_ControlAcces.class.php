@@ -372,16 +372,14 @@
 			return $Bytes;
 		}
 		public static function WR_BLK1($TagCode,$Group,$PlantCode){
-			$TagCode = pack ("n", $TagCode);
-			$PlantCode = pack ("n", $PlantCode);
 			$Bytes[0]=0xA1;
-			$Bytes[1]=$TagCode[0];//Tag code
-			$Bytes[2]=$TagCode[1];//Tag code
+			$Bytes[1]=($TagCode >> 8) & 0x00FF;//Tag code
+			$Bytes[2]=$TagCode & 0x00FF;//Tag code
 			$Bytes[3]=$Group;//Group 
 			$Bytes[4]=mt_rand(0,0xff);//Dummy 
-			$Bytes[5]=$PlantCode[0];//Plant Code
-			$Bytes[6]=$PlantCode[1];//Plant Code
-			$Bytes[7]=$PlantCode[2];//Plant Code
+			$Bytes[5]=($PlantCode >> 16) & 0x0000FF;//Plant Code
+			$Bytes[6]=($PlantCode >> 8) & 0x0000FF;//Plant Code
+			$Bytes[7]=$PlantCode & 0x0000FF;//Plant Code
 			$Bytes[8]=0;
 			$Bytes[9]=0;
 			$Bytes[10]=0;
@@ -408,9 +406,9 @@
 			return $Bytes;
 		}
 		public static function WriteTag($Tag){
-			list($TagCode,$Group,$PlantCode,$Expire)= json_decode($Tag,true);
-			$Frame[0] = self::WR_BLK1($TagCode,$Group,$PlantCode);
-			$Frame[1] = self::WR_BLK2($Expire);
+			$Tag= json_decode($Tag,true);
+			$Frame[0] = self::WR_BLK1($Tag["TagCode"],$Tag["Group"],$Tag["PlantCode"]);
+			$Frame[1] = self::WR_BLK2($Tag["Expire"]);
 			$Frame[2] = array(0xA3);
 			return $Frame;
 		}
@@ -418,9 +416,9 @@
 			$Tag='';
 			if($data[0] == 0xCA){
 				foreach (array_slice($data,7,2) as $Byte)
-					$Tag.=sprintf(' %02x',$Byte);
+					$Tag.=sprintf('%02x',$Byte);
 			}
-			return $Tag;
+			return dechex($Tag);
 			//Programmation
 			/*if($data[0] == 0xA1)// 7 premier bytes
 				cache::set('eibd::FirstTagElements::'.$id, json_encode(array_slice($data,1,7)), 0);
