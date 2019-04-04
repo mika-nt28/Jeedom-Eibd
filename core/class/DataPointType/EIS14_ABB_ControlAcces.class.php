@@ -405,10 +405,9 @@
 			$Bytes[13]=0;
 			return $Bytes;
 		}
-		public static function WriteTag($Tag){
-			$Tag= json_decode($Tag,true);
-			$Frame[0] = self::WR_BLK1($Tag["TagCode"],$Tag["Group"],$Tag["PlantCode"]);
-			$Frame[1] = self::WR_BLK2($Tag["Expire"]);
+		public static function WriteTag($TagCode,$Group,$PlantCode,$Expire){
+			$Frame[0] = self::WR_BLK1($TagCode,$Group,$PlantCode);
+			$Frame[1] = self::WR_BLK2($Expire);
 			$Frame[2] = array(0xA3);
 			return $Frame;
 		}
