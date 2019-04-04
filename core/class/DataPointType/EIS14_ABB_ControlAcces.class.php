@@ -372,8 +372,8 @@
 			return $Bytes;
 		}
 		public static function WR_BLK1($TagCode,$Group,$PlantCode){
-			$TagCode=explode("|",sprintf('%02x|%02x',$TagCode));
-			$PlantCode=explode("|",sprintf('%02x|%02x|%02x',$PlantCode));
+			$TagCode = pack ("n", $TagCode);
+			$PlantCode = pack ("n", $PlantCode);
 			$Bytes[0]=0xA1;
 			$Bytes[1]=$TagCode[0];//Tag code
 			$Bytes[2]=$TagCode[1];//Tag code
