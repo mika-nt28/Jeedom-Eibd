@@ -418,7 +418,7 @@
 				$Month = (($data[3] >> 5) & 0x07) & (($data[4] & 0x01) << 3);
 				$Hour = ($data[4] >> 1) & 0x1F;
 				$Minutes = (($data[4] >> 6) & 0x03) & (($data[5] & 0x0F) << 4);
-				$Second = ($data[5] >> 4) & 0x07;
+				$Second = (($data[5] >> 4) & 0x07) * 10;
 				
 				$Expire= mktime ($Hour, $Minutes, $Second,$Month,$Day,$Year);
 				$Tag = $data[6] << 8;
