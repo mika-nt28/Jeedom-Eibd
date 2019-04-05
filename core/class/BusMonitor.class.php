@@ -24,6 +24,8 @@ class BusMonitorTraitement /*extends Thread*/{
 			foreach($commandes as $Commande){
 				if($Commande->getEqType_name() != 'eibd')
 					continue;
+				if(!$Commande->getEqLogic()->getIsEnable())
+					continue;
 				if($Message != '' && $Commande->getType() == 'action')
 					continue;
 				if($this->Mode == "Read" && $Commande->getConfiguration('FlagRead'))
