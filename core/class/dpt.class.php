@@ -532,13 +532,13 @@ class Dpt{
 				list($value,$PlantCode,$Expire)=$Read;
 				$PlantCodeCmd=cmd::byId(str_replace('#','',$option["PlantCode"]));
 				if (is_object($PlantCodeCmd)){
-					log::add('eibd', 'debug', 'L\'objet '.$PlantCodeCmd->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $PlantCodeCmd);
+					log::add('eibd', 'debug', 'L\'objet '.$PlantCodeCmd->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $PlantCode);
 					$PlantCodeCmd->event($PlantCode);
 				}	
 				$ExpireCmd=cmd::byId(str_replace('#','',$option["Expire"]));
 				if (is_object($ExpireCmd)){
-					log::add('eibd', 'debug', 'L\'objet '.$ExpireCmd->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $PlantCodeCmd);
-					$ExpireCmd->event($Expire);
+					log::add('eibd', 'debug', 'L\'objet '.$ExpireCmd->getName().' à été trouvé et vas etre mis a jours avec la valeur '. date("d/m/Y H:i:s",$Expire));
+					$ExpireCmd->event(date("d/m/Y H:i:s",$Expire));
 				}	
 			break;	
 			default:
