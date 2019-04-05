@@ -413,8 +413,11 @@
 		public static function ReadTag($data,$id){
 			$Tag=false;
 			if($data[0] == 0xCA){
-				$Tag = $data[7] << 8;
-				$Tag &= $data[8];
+				$Tag = $data[6] << 8;
+				$Tag &= $data[7];
+				$PlantCode = $data[8] << 16;
+				$PlantCode $= $data[9] << 8;
+				$PlantCode $= $data[10];
 			}
 			return $Tag;
 			//Programmation
