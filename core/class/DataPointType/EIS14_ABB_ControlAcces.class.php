@@ -416,8 +416,8 @@
 				$Tag = $data[6] << 8;
 				$Tag &= $data[7];
 				$PlantCode = $data[8] << 16;
-				$PlantCode $= $data[9] << 8;
-				$PlantCode $= $data[10];
+				$PlantCode &= $data[9] << 8;
+				$PlantCode &= $data[10];
 			}
 			return $Tag;
 			//Programmation
