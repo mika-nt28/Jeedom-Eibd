@@ -408,7 +408,6 @@
 		public static function WriteTag($TagCode,$Group,$PlantCode,$Expire){
 			$Frame[0] = self::WR_BLK1($TagCode,$Group,$PlantCode);
 			$Frame[1] = self::WR_BLK2($Expire);
-			$Frame[2] = array(0xA3);
 			return $Frame;
 		}
 		public static function ReadTag($data,$id){
