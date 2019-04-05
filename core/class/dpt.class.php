@@ -532,7 +532,6 @@ class Dpt{
 					$PlantCodeCmd->event($PlantCode);
 					$PlantCodeCmd->setCache('collectDate', date('Y-m-d H:i:s'));
 				}	
-				$value 
 			break;	
 			default:
 				switch($dpt){
