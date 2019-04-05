@@ -412,12 +412,12 @@
 			return $Frame;
 		}
 		public static function ReadTag($data,$id){
-			$Tag='';
+			$Tag=false;
 			if($data[0] == 0xCA){
-				foreach (array_slice($data,7,2) as $Byte)
-					$Tag.=sprintf('%02x',$Byte);
+				$Tag = $data[7] << 8;
+				$Tag &= $data[8];
 			}
-			return dechex($Tag);
+			return $Tag;
 			//Programmation
 			/*if($data[0] == 0xA1)// 7 premier bytes
 				cache::set('eibd::FirstTagElements::'.$id, json_encode(array_slice($data,1,7)), 0);
