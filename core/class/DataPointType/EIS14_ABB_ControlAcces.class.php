@@ -395,7 +395,7 @@
 			$Bytes[3]=date("d",$Expire);//Day
 			$Bytes[4]=date("h",$Expire);//hour 
 			$Bytes[5]=date("i",$Expire);//minute 
-			$Bytes[6]=0xFF//Dummy 
+			$Bytes[6]=0xFF;//Dummy 
 			$Bytes[7]=0;//Dummy 
 			$Bytes[8]=0;//Dummy 
 			$Bytes[9]=0;
