@@ -411,21 +411,18 @@
 			return $Frame;
 		}
 		public static function ReadTag($data){
-			$Tag=false;
 			if($data[0] == 0xCA){
 				$Year = $data[2];
 				$Day = $data[3] & 0x1F;
-				$Month = (($data[3] >> 5) & 0x07) & (($data[4] & 0x01) << 3);
+				$Month = (($data[3] >> 5) & 0x07) | (($data[4] & 0x01) << 3);
 				$Hour = ($data[4] >> 1) & 0x1F;
-				$Minutes = (($data[4] >> 6) & 0x03) & (($data[5] & 0x0F) << 4);
+				$Minutes = (($data[4] >> 6) & 0x03) | (($data[5] & 0x0F) << 4);
 				$Second = (($data[5] >> 4) & 0x07) * 10;
-				
 				$Expire= mktime ($Hour, $Minutes, $Second,$Month,$Day,$Year);
-				$Tag = $data[6] << 8;
-				$Tag &= $data[7];
+				$Tag =$data[7] | $data[6] << 8;
 				$PlantCode = $data[8] << 16;
-				$PlantCode &= $data[9] << 8;
-				$PlantCode &= $data[10];
+				$PlantCode |= $data[9] << 8;
+				$PlantCode |= $data[10];
 				return array($Tag,$PlantCode,$Expire);
 			}
 			return false;
