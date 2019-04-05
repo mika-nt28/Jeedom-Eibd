@@ -525,12 +525,20 @@ class Dpt{
 				$value= self::rgb2html($R->execCmd(),$G->execCmd(),$B->execCmd());
 			break;
 			case "ABB_ControlAcces_Read_Write":
-				list($value,$PlantCode)= EIS14_ABB_ControlAcces::ReadTag($data,$option['id']);
+				$Read= EIS14_ABB_ControlAcces::ReadTag($data,$option['id']);
+				if(!$Read)
+					return false;
+				//$option["Group"]
+				list($value,$PlantCode,$Expire)=$Read;
 				$PlantCodeCmd=cmd::byId(str_replace('#','',$option["PlantCode"]));
 				if (is_object($PlantCodeCmd)){
 					log::add('eibd', 'debug', 'L\'objet '.$PlantCodeCmd->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $PlantCodeCmd);
 					$PlantCodeCmd->event($PlantCode);
-					$PlantCodeCmd->setCache('collectDate', date('Y-m-d H:i:s'));
+				}	
+				$ExpireCmd=cmd::byId(str_replace('#','',$option["Expire"]));
+				if (is_object($ExpireCmd)){
+					log::add('eibd', 'debug', 'L\'objet '.$ExpireCmd->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $PlantCodeCmd);
+					$ExpireCmd->event($Expire);
 				}	
 			break;	
 			default:
