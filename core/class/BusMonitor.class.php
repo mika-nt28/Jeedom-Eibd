@@ -38,7 +38,7 @@ class BusMonitorTraitement /*extends Thread*/{
 			}
 		}else {
 			$dpt=Dpt::getDptFromData($this->Data);
-			if($dpt!=false){
+			if($dpt !== false){
 				$monitor['valeur'] = Dpt::DptSelectDecode($dpt, $this->Data);
 				$monitor['DataPointType']= $dpt;
 			}else

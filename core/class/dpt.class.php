@@ -221,7 +221,10 @@ class Dpt{
 					$cmdB->execCmd(array('slider'=>$b));
 			break;	
 			case "ABB_ControlAcces_Read_Write":
-				$data = EIS14_ABB_ControlAcces::WriteTag();
+				$Group=jeedom::evaluateExpression($option["Group"]);
+				$PlantCode=jeedom::evaluateExpression($option["PlantCode"]);
+				$Expire=jeedom::evaluateExpression($option["Expire"]);
+				$data = EIS14_ABB_ControlAcces::WriteTag($value,$Group,$PlantCode,$Expire);
 			break;
 			default:
 				switch($dpt){
@@ -2562,9 +2565,9 @@ class Dpt{
 				"min"=>'',
 				"max"=>'',
 				"InfoType"=>'string',
-				"ActionType"=>'other',
+				"ActionType"=>'message',
 				"GenericType"=>"DONT",
-				"Option" =>array(),
+				"Option" =>array("Group","PlantCode","Expire"),
 				"Unite" =>""))
 		);
 	}
