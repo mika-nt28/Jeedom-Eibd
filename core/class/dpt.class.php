@@ -525,7 +525,7 @@ class Dpt{
 				$value= self::rgb2html($R->execCmd(),$G->execCmd(),$B->execCmd());
 			break;
 			case "ABB_ControlAcces_Read_Write":
-				$Read= EIS14_ABB_ControlAcces::ReadTag($data,$option['id']);
+				$Read= EIS14_ABB_ControlAcces::ReadTag($data);
 				if(!$Read)
 					return false;
 				//$option["Group"]
