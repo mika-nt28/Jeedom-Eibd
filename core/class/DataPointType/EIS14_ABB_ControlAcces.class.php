@@ -287,7 +287,7 @@
 			$Bytes[0]=0x8F;
 			$Bytes[1]=date("d");
 			$Bytes[2]=date("m");
-			$Bytes[3]=date("Y");
+			$Bytes[3]=date("y");
 			$Bytes[4]=date("H");
 			$Bytes[5]=date("i");
 			$Bytes[6]=date("s");
@@ -376,7 +376,7 @@
 			$Bytes[1]=($TagCode >> 8) & 0x00FF;//Tag code
 			$Bytes[2]=$TagCode & 0x00FF;//Tag code
 			$Bytes[3]=$Group;//Group 
-			$Bytes[4]=mt_rand(0,0xff);//Dummy 
+			$Bytes[4]=0xF0;//Dummy 
 			$Bytes[5]=($PlantCode >> 16) & 0x0000FF;//Plant Code
 			$Bytes[6]=($PlantCode >> 8) & 0x0000FF;//Plant Code
 			$Bytes[7]=$PlantCode & 0x0000FF;//Plant Code
@@ -390,14 +390,14 @@
 		}
 		public static function WR_BLK2($Expire){
 			$Bytes[0]=0xA2;
-			$Bytes[1]=date("Y",$Expire);//Year 
+			$Bytes[1]=date("y",$Expire);//Year 
 			$Bytes[2]=date("m",$Expire);//Month
 			$Bytes[3]=date("d",$Expire);//Day
-			$Bytes[4]=date("H",$Expire);//hour 
+			$Bytes[4]=date("h",$Expire);//hour 
 			$Bytes[5]=date("i",$Expire);//minute 
-			$Bytes[6]=mt_rand(0,0xff);//Dummy 
-			$Bytes[7]=mt_rand(0,0xff);//Dummy 
-			$Bytes[8]=mt_rand(0,0xff);//Dummy 
+			$Bytes[6]=0xFF//Dummy 
+			$Bytes[7]=0;//Dummy 
+			$Bytes[8]=0;//Dummy 
 			$Bytes[9]=0;
 			$Bytes[10]=0;
 			$Bytes[11]=0;
