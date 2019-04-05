@@ -287,7 +287,7 @@
 			$Bytes[0]=0x8F;
 			$Bytes[1]=date("d");
 			$Bytes[2]=date("m");
-			$Bytes[3]=date("Y");
+			$Bytes[3]=date("y");
 			$Bytes[4]=date("H");
 			$Bytes[5]=date("i");
 			$Bytes[6]=date("s");
@@ -376,7 +376,7 @@
 			$Bytes[1]=($TagCode >> 8) & 0x00FF;//Tag code
 			$Bytes[2]=$TagCode & 0x00FF;//Tag code
 			$Bytes[3]=$Group;//Group 
-			$Bytes[4]=mt_rand(0,0xff);//Dummy 
+			$Bytes[4]=0xF0;//Dummy 
 			$Bytes[5]=($PlantCode >> 16) & 0x0000FF;//Plant Code
 			$Bytes[6]=($PlantCode >> 8) & 0x0000FF;//Plant Code
 			$Bytes[7]=$PlantCode & 0x0000FF;//Plant Code
@@ -390,14 +390,14 @@
 		}
 		public static function WR_BLK2($Expire){
 			$Bytes[0]=0xA2;
-			$Bytes[1]=date("Y",$Expire);//Year 
+			$Bytes[1]=date("y",$Expire);//Year 
 			$Bytes[2]=date("m",$Expire);//Month
 			$Bytes[3]=date("d",$Expire);//Day
-			$Bytes[4]=date("H",$Expire);//hour 
+			$Bytes[4]=date("h",$Expire);//hour 
 			$Bytes[5]=date("i",$Expire);//minute 
-			$Bytes[6]=mt_rand(0,0xff);//Dummy 
-			$Bytes[7]=mt_rand(0,0xff);//Dummy 
-			$Bytes[8]=mt_rand(0,0xff);//Dummy 
+			$Bytes[6]=0xFF;//Dummy 
+			$Bytes[7]=0;//Dummy 
+			$Bytes[8]=0;//Dummy 
 			$Bytes[9]=0;
 			$Bytes[10]=0;
 			$Bytes[11]=0;
@@ -408,39 +408,27 @@
 		public static function WriteTag($TagCode,$Group,$PlantCode,$Expire){
 			$Frame[0] = self::WR_BLK1($TagCode,$Group,$PlantCode);
 			$Frame[1] = self::WR_BLK2($Expire);
-			$Frame[2] = array(0xA3);
 			return $Frame;
 		}
-		public static function ReadTag($data,$id){
+		public static function ReadTag($data){
 			$Tag=false;
 			if($data[0] == 0xCA){
-				$Tag = $data[7] << 8;
-				$Tag &= $data[8];
+				$Year = $data[2];
+				$Day = $data[3] & 0x1F;
+				$Month = (($data[3] >> 5) & 0x07) & (($data[4] & 0x01) << 3);
+				$Hour = ($data[4] >> 1) & 0x1F;
+				$Minutes = (($data[4] >> 6) & 0x03) & (($data[5] & 0x0F) << 4);
+				$Second = (($data[5] >> 4) & 0x07) * 10;
+				
+				$Expire= mktime ($Hour, $Minutes, $Second,$Month,$Day,$Year);
+				$Tag = $data[6] << 8;
+				$Tag &= $data[7];
+				$PlantCode = $data[8] << 16;
+				$PlantCode &= $data[9] << 8;
+				$PlantCode &= $data[10];
+				return array($Tag,$PlantCode,$Expire);
 			}
-			return $Tag;
-			//Programmation
-			/*if($data[0] == 0xA1)// 7 premier bytes
-				cache::set('eibd::FirstTagElements::'.$id, json_encode(array_slice($data,1,7)), 0);
-			if($data[0] == 0xA2)// 7 dernier bytes
-				cache::set('eibd::LastTagElements::'.$id, json_encode(array_slice($data,1,7)), 0);
-			//Reception
-			if($data[0] == 0xD8)// 7 premier bytes
-				cache::set('eibd::FirstTagElements::'.$id, json_encode(array_slice($data,1,7)), 0);
-			if($data[0] == 0xD9)// 7 dernier bytes
-				cache::set('eibd::LastTagElements::'.$id, json_encode(array_slice($data,1,7)), 0);
-			$FirstTagElements = cache::byKey('eibd::FirstTagElements::'.$id);
-			$LastTagElements = cache::byKey('eibd::LastTagElements::'.$id);
-			if(is_object($FirstTagElements) && $FirstTagElements->getValue('[]') != '[]' && is_object($LastTagElements) && $LastTagElements->getValue('[]') != '[]' ){
-				$Tag='';
-				foreach (json_decode($FirstTagElements->getValue('[]'), true) as $Byte)
-					$Tag.=sprintf(' %02x',$Byte);
-				foreach (json_decode($LastTagElements->getValue('[]'), true) as $Byte)
-					$Tag.=sprintf(' %02x',$Byte);
-				$FirstTagElements->remove();
-				$LastTagElements->remove();
-				return $Tag;
-			}
-			return false;*/
+			return false;
 		}
 		public static function WR_DEL_GRP_ASS_TBL(){
 			/*Byte 1 = command code 0XA5

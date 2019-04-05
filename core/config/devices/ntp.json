@@ -53,14 +53,15 @@
 		"subType":"other",
 		"isHistorized":"0",
 		"configuration":{
-		  "KnxObjectType":"11.001",
-		  "FlagRead":"1",
-		  "FlagWrite":"0",
-		  "FlagTransmit":"0",
-		  "FlagUpdate":"0",
-		  "FlagInit":"0",
-		  "inverse":"0",
-		  "subTypeAuto":"1"
+			"KnxObjectType":"11.001",
+			"FlagRead":"1",
+			"FlagWrite":"0",
+			"FlagTransmit":"0",
+			"FlagUpdate":"0",
+			"FlagInit":"1",
+			"inverse":"0",
+			"subTypeAuto":"1",
+			"CycliqueSend":"cronDaily"
 		},
 		"isVisible":"0"
 	      },{
@@ -69,14 +70,15 @@
 		"subType":"other",
 		"isHistorized":"0",
 		"configuration":{
-		    "KnxObjectType":"10.001",
-		    "FlagRead":"1",
-		    "FlagWrite":"0",
-		    "FlagTransmit":"0",
-		    "FlagUpdate":"0",
-		    "FlagInit":"0",
-		    "inverse":"0",
-		    "subTypeAuto":"1"
+			"KnxObjectType":"10.001",
+			"FlagRead":"1",
+			"FlagWrite":"0",
+			"FlagTransmit":"0",
+			"FlagUpdate":"0",
+			"FlagInit":"1",
+			"inverse":"0",
+			"subTypeAuto":"1",
+			"CycliqueSend":"cronDaily"
 		  },
 		"isVisible":"0"
 	      }
