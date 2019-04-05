@@ -530,15 +530,14 @@ class Dpt{
 					return false;
 				list($value,$PlantCode,$Expire)=$Read;
 				$isValidCode = false;
-				/*$Groups=$option["Group"];
-				foreach($Groups as $Groupe){
+				/*
+				foreach(explode("&&",$option["Group"]) as $Groupe){
 					if(jeedom::evaluateExpression($Groupe) == $Groupe){
 						$isValidCode= true;
 						break;
 					}
-				}*/
-				$PlantCodes=$option["PlantCode"];
-				foreach($PlantCodes as $Plant){
+				}*/				
+				foreach(explode("&&",$option["PlantCode"]) as $Plant){
 					if(jeedom::evaluateExpression($Plant) == $PlantCode){
 						$isValidCode= true;
 						break;
