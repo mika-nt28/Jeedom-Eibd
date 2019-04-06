@@ -536,6 +536,10 @@ class Dpt{
 						$isValidCode= true;
 						break;
 					}
+				}
+				if(!$isValidCode){
+					log::add('eibd','debug','{{Le badge ('.$value.')  n\'appartient a aucun groupe  ('.$Group.') }}');
+					return false;
 				}*/				
 				foreach(explode("&&",$option["PlantCode"]) as $Plant){
 					if(jeedom::evaluateExpression($Plant) == $PlantCode){
@@ -543,12 +547,14 @@ class Dpt{
 						break;
 					}
 				}
-				if(jeedom::evaluateExpression($option["Expire"]) <= $Expire)
-					$isValidCode= true;
-				else
-					$isValidCode = false;
-				if(!$isValidCode)
+				if(!$isValidCode){
+					log::add('eibd','debug','{{Le badge ('.$value.') n\'appartient a aucun PlantCode ('.$PlantCode.')}}');
 					return false;
+				}
+				if(jeedom::evaluateExpression($option["Expire"]) > $Expire){
+					log::add('eibd','debug','{{Le badge ('.$value.') est expirer ('.date("d/m/Y H:i:s",$Expire).')}}');
+					return false;
+				}
 			break;	
 			default:
 				switch($dpt){
