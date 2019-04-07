@@ -525,21 +525,36 @@ class Dpt{
 				$value= self::rgb2html($R->execCmd(),$G->execCmd(),$B->execCmd());
 			break;
 			case "ABB_ControlAcces_Read_Write":
-				$Read= EIS14_ABB_ControlAcces::ReadTag($data,$option['id']);
+				$Read= EIS14_ABB_ControlAcces::ReadTag($data);
 				if(!$Read)
 					return false;
-				//$option["Group"]
 				list($value,$PlantCode,$Expire)=$Read;
-				$PlantCodeCmd=cmd::byId(str_replace('#','',$option["PlantCode"]));
-				if (is_object($PlantCodeCmd)){
-					log::add('eibd', 'debug', 'L\'objet '.$PlantCodeCmd->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $PlantCodeCmd);
-					$PlantCodeCmd->event($PlantCode);
-				}	
-				$ExpireCmd=cmd::byId(str_replace('#','',$option["Expire"]));
-				if (is_object($ExpireCmd)){
-					log::add('eibd', 'debug', 'L\'objet '.$ExpireCmd->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $PlantCodeCmd);
-					$ExpireCmd->event($Expire);
-				}	
+				$isValidCode = false;
+				/*
+				foreach(explode("&&",$option["Group"]) as $Groupe){
+					if(jeedom::evaluateExpression($Groupe) == $Groupe){
+						$isValidCode= true;
+						break;
+					}
+				}
+				if(!$isValidCode){
+					log::add('eibd','debug','{{Le badge ('.$value.')  n\'appartient a aucun groupe  ('.$Group.') }}');
+					return false;
+				}*/				
+				foreach(explode("&&",$option["PlantCode"]) as $Plant){
+					if(jeedom::evaluateExpression($Plant) == $PlantCode){
+						$isValidCode= true;
+						break;
+					}
+				}
+				if(!$isValidCode){
+					log::add('eibd','debug','{{Le badge ('.$value.') n\'appartient a aucun PlantCode ('.$PlantCode.')}}');
+					return false;
+				}
+// 				if(jeedom::evaluateExpression($option["Expire"]) > $Expire){
+// 					log::add('eibd','debug','{{Le badge ('.$value.') est expirer ('.date("d/m/Y H:i:s",$Expire).')}}');
+// 					return false;
+// 				}
 			break;	
 			default:
 				switch($dpt){
