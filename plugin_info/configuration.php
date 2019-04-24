@@ -6,9 +6,9 @@ if (!isConnect()) {
     die();
 }
 ?>
- <div class="col-sm-6">
+ <div>
 	<form class="form-horizontal">
-		<legend>Connexion au Bus KNX</legend>
+		<legend><i class="fas fa-archive"></i> {{Connexion au Bus KNX}}</legend>
 		<fieldset>
 			<div class="form-group">
 				<label class="col-lg-4 control-label" >{{Interface de communication :}}</label>
@@ -35,9 +35,9 @@ if (!isConnect()) {
 		</fieldset>
 	</form>
 </div>
- <div class="col-sm-6">
+ <div>
 	<form class="form-horizontal">
-		<legend>Option</legend>
+		<legend><i class="fas fa-address-card"></i> {{Options}}</legend>
 		<fieldset>
 			<div class="form-group">
 				<label class="col-lg-4 control-label" >{{Niveau de Gad}}</label>
@@ -54,7 +54,7 @@ if (!isConnect()) {
 </div>
  <div class="Soft">
 	<form class="form-horizontal">
-		<legend>Configuration du démon</legend>
+		<legend><i class="icon fas fa-cog"></i> {{Configuration du démon}}</legend>
 		<fieldset>
 			<div class="form-group">
 				<label class="col-lg-4 control-label" >{{Type de passerelle}}</label>
@@ -84,28 +84,37 @@ if (!isConnect()) {
 					<input class="configKey form-control" data-l1key="EibdNbAddr" placeholder="{{Nombre de connexion}}"/>
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-lg-4 control-label">{{Nom du serveur KNX}}</label>
-				<div class="col-lg-4">
-					<input class="configKey form-control" data-l1key="ServeurName" placeholder="{{Nom du serveur KNX}}"/>
+		</fieldset>
+	</form>
+</div>
+ <div class="Soft">
+	<form class="form-horizontal">
+		<legend><i class="icon fas fa-cog"></i> {{Configuration du démon avancée}} <i class="fas fa-plus-circle" data-toggle="collapse" href="#OptionsCollapse" role="button" aria-expanded="false" aria-controls="OptionsCollapse"></i></legend>
+		<fieldset>
+			<div class="collapse" id="OptionsCollapse">
+				<div class="form-group">
+					<label class="col-lg-4 control-label">{{Nom du serveur KNX}}</label>
+					<div class="col-lg-4">
+						<input class="configKey form-control" data-l1key="ServeurName" placeholder="{{Nom du serveur KNX}}"/>
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-lg-4 control-label">{{Visibilité du serveur KNX}}</label>
-				<div class="col-lg-4">
-					<input type="checkbox" class="configKey tooltips" data-l1key="Discovery"/>
+				<div class="form-group">
+					<label class="col-lg-4 control-label">{{Visibilité du serveur KNX}}</label>
+					<div class="col-lg-4">
+						<input type="checkbox" class="configKey tooltips" data-l1key="Discovery"/>
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-lg-4 control-label">{{Mode Routing}}</label>
-				<div class="col-lg-4">
-					<input type="checkbox" class="configKey tooltips" data-l1key="Routing"/>
+				<div class="form-group">
+					<label class="col-lg-4 control-label">{{Mode Routing}}</label>
+					<div class="col-lg-4">
+						<input type="checkbox" class="configKey tooltips" data-l1key="Routing"/>
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-lg-4 control-label">{{Mode Tunnelling}}</label>
-				<div class="col-lg-4">
-					<input type="checkbox" class="configKey tooltips" data-l1key="Tunnelling"/>
+				<div class="form-group">
+					<label class="col-lg-4 control-label">{{Mode Tunnelling}}</label>
+					<div class="col-lg-4">
+						<input type="checkbox" class="configKey tooltips" data-l1key="Tunnelling"/>
+					</div>
 				</div>
 			</div>
 		</fieldset>
