@@ -24,6 +24,8 @@ class BusMonitorTraitement /*extends Thread*/{
 			foreach($commandes as $Commande){
 				if($Commande->getEqType_name() != 'eibd')
 					continue;
+				if(!$Commande->getEqLogic()->getIsEnable())
+					continue;
 				if($Message != '' && $Commande->getType() == 'action')
 					continue;
 				if($this->Mode == "Read" && $Commande->getConfiguration('FlagRead'))
@@ -38,7 +40,7 @@ class BusMonitorTraitement /*extends Thread*/{
 			}
 		}else {
 			$dpt=Dpt::getDptFromData($this->Data);
-			if($dpt!=false){
+			if($dpt !== false){
 				$monitor['valeur'] = Dpt::DptSelectDecode($dpt, $this->Data);
 				$monitor['DataPointType']= $dpt;
 			}else
