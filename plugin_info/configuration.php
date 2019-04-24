@@ -93,19 +93,19 @@ if (!isConnect()) {
 			<div class="form-group">
 				<label class="col-lg-4 control-label">{{Visibilité du serveur KNX}}</label>
 				<div class="col-lg-4">
-					<input type="checkbox" class="configKey form-control" data-l1key="Discovery"/>
+					<input type="checkbox" class="configKey tooltips" data-l1key="Discovery"/>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-lg-4 control-label">{{Mode Routing}}</label>
 				<div class="col-lg-4">
-					<input type="checkbox" class="configKey form-control" data-l1key="Routing"/>
+					<input type="checkbox" class="configKey tooltips" data-l1key="Routing"/>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-lg-4 control-label">{{Mode Tunnelling}}</label>
 				<div class="col-lg-4">
-					<input type="checkbox" class="configKey form-control" data-l1key="Tunnelling"/>
+					<input type="checkbox" class="configKey tooltips" data-l1key="Tunnelling"/>
 				</div>
 			</div>
 		</fieldset>
