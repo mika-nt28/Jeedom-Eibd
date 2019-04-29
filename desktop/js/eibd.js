@@ -218,20 +218,17 @@ function DptListSelect(Dpt){
 	});
 	return DptListSelect;
 }
-function DptValue(Dpt){
-  	var DptValues=$('<div>');
-  	DptValues.append($('<option>').attr('value','').text('{{Imposer une valeur}}'));
+function DptValue(Dpt, _el){
+  	var DptValues=$('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectValue">');
 	$.each(AllDpt, function(DptKeyGroup, DptValueGroup){
 		$.each(DptValueGroup, function(DptKey, DptValue){
 			if (DptKey==Dpt){
 				if(DptValue.Valeurs.length >0){
+  					DptValues.append($('<option>').attr('value','').text('{{Imposer une valeur}}'));
 					$.each(DptValue.Valeurs, function(keyValeurs, Valeurs){
 						DptValues.append($('<option>').attr('value',keyValeurs).text(Valeurs));
 					});
-				}else{
-					for (var i = DptValue.min; i < DptValue.max; i++) {
-						DptValues.append($('<option>').attr('value',i).text(i));
-					}
+					_el.html(DptValues);				
 				}
 			}
 		});
@@ -379,8 +376,9 @@ function addCmdToTable(_cmd) {
 					.append($('<i class="fas fa-question-circle tooltips">')
 					.attr('title','Choisissez, si vous le souhaitez la valeur fixe de votre commande'))))
 			.append($('<div class="input-group">')
-				.append($('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectValue">')
-					.append(DptValue(init(_cmd.configuration.KnxObjectType)))))));
+				.append($('<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectValue" placeholder="{{Valeur par défaut}}" title="{{Valeur par défaut}}">'))
+				/*.append($('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectValue">')
+					.append(DptValue(init(_cmd.configuration.KnxObjectType))))*/)));
 	tr.append($('<td>')	
 		.append($('<span class="type" type="' + init(_cmd.type) + '">')
 			.append(jeedom.cmd.availableType()))
@@ -454,6 +452,7 @@ function addCmdToTable(_cmd) {
 						.attr('title','Activer cette option uniquement si votre équipement est sur batterie. Ce groupe d\'adresse correspond au niveau de batterie'))))));
 	tr.append(parmetre);
 	$('#table_cmd tbody').append(tr);
+	DptValue(_cmd.configuration.KnxObjectType,$('#table_cmd tbody tr:last').find('.cmdAttr[data-l2key=KnxObjectValue]'));
 	DptOption(_cmd.configuration.KnxObjectType,$('#table_cmd tbody tr:last').find('.option'));
 	$('.bt_selectCmdExpression').off().on('click',function() {
 		var el=$(this).closest('.input-group').find('.cmdAttr');
@@ -533,7 +532,7 @@ $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectTy
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val(DptUnit($(this).val()));
 	var valeur =$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').val();
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').empty();
-	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').append(DptValue($(this).val()));
+	DptValue($(this).val(),$(this).closest('.cmd').find('.cmdAttr[data-l2key=KnxObjectValue]'));
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+valeur+'"]').prop('selected', true);
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
 }); 
