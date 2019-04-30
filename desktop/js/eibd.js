@@ -219,21 +219,23 @@ function DptListSelect(Dpt){
 	return DptListSelect;
 }
 function DptValue(Dpt, _el){
-  	var DptValues=$('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectValue">');
 	$.each(AllDpt, function(DptKeyGroup, DptValueGroup){
 		$.each(DptValueGroup, function(DptKey, DptValue){
 			if (DptKey==Dpt){
 				if(DptValue.Valeurs.length >0){
-  					DptValues.append($('<option>').attr('value','').text('{{Imposer une valeur}}'));
+  					var Valeur = _el.val();
+					var DptValues=$('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectValue">');
+					DptValues.append($('<option>').attr('value','').text('{{Imposer une valeur}}'));
 					$.each(DptValue.Valeurs, function(keyValeurs, Valeurs){
 						DptValues.append($('<option>').attr('value',keyValeurs).text(Valeurs));
 					});
-					_el.html(DptValues);				
+					_el.parent().html(DptValues);		
+					_el.find('option[value="'+Valeur+'"]').prop('selected', true);
+							
 				}
 			}
 		});
 	});
-	return DptValues.children();
 }
 function OptionSelectDpt(){
   var DptSelectorOption=$('<div>');
@@ -376,9 +378,7 @@ function addCmdToTable(_cmd) {
 					.append($('<i class="fas fa-question-circle tooltips">')
 					.attr('title','Choisissez, si vous le souhaitez la valeur fixe de votre commande'))))
 			.append($('<div class="input-group">')
-				.append($('<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectValue" placeholder="{{Valeur par défaut}}" title="{{Valeur par défaut}}">'))
-				/*.append($('<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectValue">')
-					.append(DptValue(init(_cmd.configuration.KnxObjectType))))*/)));
+				.append($('<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="KnxObjectValue" placeholder="{{Valeur par défaut}}" title="{{Valeur par défaut}}">')))));
 	tr.append($('<td>')	
 		.append($('<span class="type" type="' + init(_cmd.type) + '">')
 			.append(jeedom.cmd.availableType()))
@@ -530,10 +530,7 @@ $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectTy
 	DptOption($(this).val(),$(this).closest('.cmd').find('.option'));
 	if ($(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val() == '')
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val(DptUnit($(this).val()));
-	var valeur =$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').val();
-	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').empty();
 	DptValue($(this).val(),$(this).closest('.cmd').find('.cmdAttr[data-l2key=KnxObjectValue]'));
-	$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue] option[value="'+valeur+'"]').prop('selected', true);
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
 }); 
 $('body').on('change','.cmdAttr[data-l1key=type]', function() {
