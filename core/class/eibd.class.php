@@ -626,7 +626,7 @@ class eibd extends eqLogic {
 		foreach(eqLogic::byType('eibd') as $Equipement)	{
 			if ($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
-					if($Commande->getConfiguration('FlagTransmit')){
+					if($Commande->getConfiguration('FlagTransmit') && $Commande->getValue() != ''){
 						$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $Commande->getId()));
 						if (!is_object($listener)){
 							$return['state'] = 'nok';
