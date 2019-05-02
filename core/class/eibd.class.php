@@ -463,8 +463,6 @@ class eibd extends eqLogic {
 				$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
 				$Traitement->run(); 
 			}
-			else
-				break;
 		}
 		$conBusMonitor->EIBClose();		
 		log::add('eibd', 'debug', 'Deconnexion a EIBD sur le serveur '.$host.':'.$port);	
@@ -642,7 +640,7 @@ class eibd extends eqLogic {
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['launchable'] != 'ok') 
 			return;
-		log::remove('eibd');
+		//log::remove('eibd');
 		self::deamon_stop();
 		foreach(eqLogic::byType('eibd') as $Equipement)	{
 			if ($Equipement->getIsEnable()){
