@@ -627,7 +627,6 @@ class eibd extends eqLogic {
 			if ($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd('action') as $Commande){
 					if($Commande->getConfiguration('FlagTransmit') && $Commande->getValue() != ''){
-						log::add('eibd','debug','[FlagTransmit]:'.$Commande->getConfiguration('FlagTransmit').' Retour etat: '.$Commande->getValue());
 						$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $Commande->getId()));
 						if (!is_object($listener)){
 							$return['state'] = 'nok';
@@ -643,7 +642,7 @@ class eibd extends eqLogic {
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['launchable'] != 'ok') 
 			return;
-		log::remove('eibd');
+		//log::remove('eibd');
 		self::deamon_stop();
 		foreach(eqLogic::byType('eibd') as $Equipement)	{
 			if ($Equipement->getIsEnable()){
