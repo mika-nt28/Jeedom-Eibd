@@ -4,8 +4,9 @@ if (!isConnect()) {
 }
 
 ?>
-<div class='Log' style="width: 100%;height: 75%;  overflow: auto;" onload="getLog()"></div>
+<div class='Log'></div>
 <script>
+getLog();
 function getLog(){
 	$.ajax({
 		type: "POST",
