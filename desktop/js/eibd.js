@@ -108,6 +108,14 @@ $('.eqLogicAction[data-action=gotoBusMoniteur]').on('click', function () {
 		
 	});
 });
+$('.eqLogicAction[data-action=gotoLog]').on('click', function () {	
+  	bootbox.dialog({
+		title: "{{Log du démon}}",
+		size: "large",
+		message: $('<div>').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd'),
+		
+	});
+});
 $('body').on('click','.bt_selectGadInconnue', function () {
 	var SelectAddr=$(this).closest('body').find('.form-control[data-l1key=logicalId]').val();	
 	var SelectDpt=$(this).closest('.form-group').parent().find('.form-control[data-l2key=KnxObjectType]').val();	
