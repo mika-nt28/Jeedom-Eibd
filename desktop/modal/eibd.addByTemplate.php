@@ -98,7 +98,7 @@ if (!isConnect('admin')) {
 						}
 						if(isExist == false){
 							var cmd = $('<div class="form-group">');
-							if(value.SameCmd == ''){
+							if(typeof  value.SameCmd == 'undefined'){
 								cmd.append($('<label class="col-md-5 control-label" >')
 									.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"));
 							}else{
@@ -115,7 +115,7 @@ if (!isConnect('admin')) {
 									.append($('<span class="input-group-btn">')
 										.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
 											.append($('<i class="fa fa-list-alt">'))))));
-							cmds.append(cmd);
+							cmds.append(cmd.hide());
 						}
 					});
 					$.each(data.result.options,function(id, options){
@@ -126,7 +126,7 @@ if (!isConnect('admin')) {
 								.append($('<input type="checkbox" class="TemplateOption" data-l1key="'+id+'">'))));
 						$.each(options.cmd,function(index, value){
 							var cmd = $('<div class="form-group '+id+'">');
-							if(value.SameCmd == ''){
+							if(typeof  value.SameCmd == 'undefined'){
 								cmd.append($('<label class="col-md-5 control-label" >')
 									.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"));
 							}else{
@@ -143,7 +143,7 @@ if (!isConnect('admin')) {
 									.append($('<span class="input-group-btn">')
 										.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
 											.append($('<i class="fa fa-list-alt">'))))));
-							cmds.append(cmd);
+							cmds.append(cmd.hide());
 						});
 						$('.TemplateOption[data-l1key='+id+']').off().on('change',function(){
 							if($(this).is(':checked'))
