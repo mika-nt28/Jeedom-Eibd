@@ -1,7 +1,7 @@
 {
     "plugins\/eibd\/core\/class\/eibd.class.php": {
         "Read failed": "Read failed",
-        "L'adresse physique doit obligatoirement être renseigné": "L'adresse physique doit obligatoirement être renseigné"
+        "L'adresse physique doit obligatoirement être renseigné": "Physical adresse"
     },
     "plugins\/eibd\/desktop\/php\/eibd.php": {
         "Ajouter un équipement": "Add device",
@@ -16,32 +16,32 @@
         "Activer": "Enable",
         "Commandes": "Commands",
         "Ajouter une commande KNX": "Add a KNX command",
-        "Nom": "Nom",
+        "Nom": "Name",
         "Data Point": "Data Point",
         "GAD": "GAD",
-        "Retours d'état": "Retours d'état",
-        "Paramètre": "Paramètre",
+        "Retours d'état": "Listener",
+        "Paramètre": "Parameter",
         "Supprimer": "Delete",
         "Sauvegarder": "Save"
     },
     "plugins\/eibd\/desktop\/js\/eibd.js": {
-        "Bus Moniteur": "Bus Moniteur",
-        "Configurer Jeedom grâce a un export ETS4": "Configurer Jeedom grâce a un export ETS4",
-        "Configurer EIBD": "Configurer EIBD",
-        "Inverser": "Inverser",
-        "Imposer une valeur": "Imposer une valeur",
-        "Sélèctionner un DPT": "Sélèctionner un DPT",
+        "Bus Moniteur": "Bus Monitor",
+        "Configurer Jeedom grâce a un export ETS4": "Jeedom configure with ETS4 Export",
+        "Configurer EIBD": "EIBD configure",
+        "Inverser": "Invert",
+        "Imposer une valeur": "Value",
+        "Sélèctionner un DPT": "Select DPT",
         "Name": "Name",
         "GAD": "GAD",
-        "Rechercher une commande": "Rechercher une commande",
-        "Evenement": "Evenement",
+        "Rechercher une commande": "Find command",
+        "Evenement": "Event",
         "Visible": "Visible",
-        "Historiser": "Historiser",
+        "Historiser": "Historize",
         "Min": "Min",
         "Max": "Max",
-        "Unitée": "Unitée",
+        "Unitée": "Unite",
         "Lifetime cache": "Lifetime cache",
-        "Tester": "Tester",
+        "Tester": "Test",
         "Dupliquer": "Dupliquer"
     },
     "plugins\/eibd\/desktop\/modal\/eibd.busmoniteur.php": {
