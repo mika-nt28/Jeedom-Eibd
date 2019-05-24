@@ -4,9 +4,9 @@ if (!isConnect('admin')) {
 }
 ?>
 <div class="row">
-	<form class="form-horizontal" onsubmit="return false;" style="height: 500px;">
+	<form class="form-horizontal" onsubmit="return false;">
 		<legend>{{Définition de l'equipement}}</legend>
-		<div class="col-md-12"  style="height: 40%;">
+		<div class="col-md-12>
 			<div class="form-group">
 				<label class="col-md-5 control-label">
 					{{Nom de l'équipement KNX}}
@@ -19,7 +19,8 @@ if (!isConnect('admin')) {
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-md-5 control-label ">{{Adresse Physique de l'équipement}}
+				<label class="col-md-5 control-label ">
+					{{Adresse Physique de l'équipement}}
 					<sup>
 						<i class="fa fa-question-circle tooltips" title="{{Indiquez l'adresse physique de votre équipement. Cette information n'est pas obigatoire mais peut etre utile dans certain cas. Pour la trouver, il faut la retrouver sur le logiciel ETS}}" style="font-size : 1em;color:grey;"></i>
 					</sup>
@@ -65,7 +66,7 @@ if (!isConnect('admin')) {
 			</div>		
 		</div>
 		<legend>{{Définition des commandes}}</legend>
-		<div class="col-md-12" style="height: 40%;overflow: auto;">
+		<div class="col-md-12">
 			<div class="form-horizontal CmdsTempates">
 			</div>
 		</div>
