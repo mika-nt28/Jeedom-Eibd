@@ -41,6 +41,13 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 							error: function(request, status, error) {},
 							success: function(data) {
 								var eqLogic=data.result;
+								$.each(eqLogic.options,function(id, option){
+									if($('.TemplateOption[data-l1key='+id+']').is(':checked')){
+										$.each(option.cmd,function(idCmd, cmd){
+											eqLogic.cmd.push(cmd);
+										});
+									}
+								});
 								eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
 								if (typeof(eqLogic.logicalId) === 'undefined')
 									eqLogic.logicalId=new Object();
@@ -105,6 +112,14 @@ $('.eqLogicAction[data-action=gotoBusMoniteur]').on('click', function () {
 		title: "{{Moniteur de Bus}}",
 		size: "large",
 		message: $('<div>').load('index.php?v=d&modal=eibd.busmoniteur&plugin=eibd&type=eibd'),
+		
+	});
+});
+$('.eqLogicAction[data-action=gotoLog]').on('click', function () {	
+  	bootbox.dialog({
+		title: "{{Log du démon}}",
+		size: "large",
+		message: $('<div>').load('index.php?v=d&modal=eibd.log&plugin=eibd&type=eibd'),
 		
 	});
 });

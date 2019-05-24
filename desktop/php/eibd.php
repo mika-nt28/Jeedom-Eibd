@@ -38,6 +38,11 @@
 				<br>
 				<span>{{Adresses de groupe}}</span>
 			</div>
+			<div class="cursor eqLogicAction logoSecondary" data-action="gotoLog">
+				<i class="fas fa-medkit"></i>  
+				<br>
+				<span>{{Log du démon}}</span>
+			</div>
 			<div class="cursor eqLogicAction logoSecondary" data-action="gotoHealth">
 				<i class="fas fa-medkit"></i>  
 				<br>
