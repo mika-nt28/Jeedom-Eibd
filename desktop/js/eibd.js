@@ -48,7 +48,6 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 										});
 									}
 								});
-								eqLogic.options.remove();
 								eqLogic.name=$('.EqLogicTemplateAttr[data-l1key=name]').value();
 								if (typeof(eqLogic.logicalId) === 'undefined')
 									eqLogic.logicalId=new Object();
