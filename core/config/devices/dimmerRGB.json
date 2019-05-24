@@ -36,7 +36,7 @@
 					"KnxObjectType":"232.600",
 					"KnxObjectValue":"0",
 					"inverse":"0",
-					"subTypeAuto":"1",
+					"subTypeAuto":"1"
 				},
 				"value":"Etat Couleur",
 				"isVisible":"1"
