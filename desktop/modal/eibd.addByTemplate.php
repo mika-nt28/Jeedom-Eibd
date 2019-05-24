@@ -112,6 +112,34 @@ if (!isConnect('admin')) {
 												.append($('<i class="fa fa-list-alt">')))))));
 						}
 					});
+					$.each(data.result.options,function(id, options){
+						cmds.append($('<div class="form-group">')
+							.append($('<label class="col-md-5 control-label" >')
+								.text(options.name))
+							.append($('<div class="col-md-5">')
+								.append($('<input type="checkbox" class="TemplateOption" data-l1key="'+id+'">'))));
+						$.each(options.cmd,function(index, value){
+							cmds.append($('<div class="form-group '+id+'">')
+								.append($('<label class="col-md-5 control-label" >')
+									.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"))
+								.append($('<div class="col-md-5">')
+									.append($('<div class="input-group">')
+										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'" data-l2key="SameCmd">')
+											.val(value.SameCmd))
+										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'" data-l2key="KnxObjectType">')
+											.val(value.configuration.KnxObjectType))
+										.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'" data-l2key="logicalId">'))
+										.append($('<span class="input-group-btn">')
+											.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
+												.append($('<i class="fa fa-list-alt">')))))).hide());
+						});
+						$('.TemplateOption[data-l1key='+id+']').off().on('change',function(){
+							if($(this).is(':checked'))
+								$('.'+$(this).attr('data-l1key')).show();
+							else
+								$('.'+$(this).attr('data-l1key')).hide();
+						});
+					});
 				}
 			});
 		});
