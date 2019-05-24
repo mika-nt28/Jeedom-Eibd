@@ -115,7 +115,7 @@ if (!isConnect('admin')) {
 									.append($('<span class="input-group-btn">')
 										.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
 											.append($('<i class="fa fa-list-alt">'))))));
-							cmds.append(cmd.hide());
+							cmds.append(cmd);
 						}
 					});
 					$.each(data.result.options,function(id, options){
