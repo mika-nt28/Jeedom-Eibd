@@ -41,8 +41,10 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 							error: function(request, status, error) {},
 							success: function(data) {
 								var eqLogic=data.result;
+								eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
 								$.each(eqLogic.options,function(id, option){
 									if($('.TemplateOption[data-l1key='+id+']').is(':checked')){
+										eqLogic.configuration.typeTemplate = eqLogic.configuration.typeTemplate + "_" + id;
 										$.each(option.cmd,function(idCmd, cmd){
 											eqLogic.cmd.push(cmd);
 										});
@@ -57,7 +59,6 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 								eqLogic.object_id=$('.EqLogicTemplateAttr[data-l1key=object_id]').value();
 								if (typeof(eqLogic.configuration) === 'undefined')
 									eqLogic.configuration=new Object();
-								eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
 								$.each(eqLogic.cmd,function(index, value){
 									eqLogic.cmd[index].logicalId=searchSameCmd(eqLogic,index);
 									if (typeof(eqLogic.cmd[index].value) !== 'undefined')

@@ -170,6 +170,70 @@
 				"value":"Mode de fonctionnement",
 				"isVisible":"1"
 			}
-		]
-    }
+		],
+		"options":{
+			"verrou":{
+				"name":"Verrouillage",
+				"cmd":[
+					{
+						"name":"Etat Verrouillage",
+						"type":"info",
+						"subType":"binary",
+						"isHistorized":"1",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"1.003",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+					"name":"Activer le verrouillage",
+						"SameCmd":"Activer le verrouillage|Désactiver le verrouillage",
+						"type":"action",
+						"subType":"other",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectValue":"1",
+							"KnxObjectType":"1.003",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"value":"Etat Verrouillage",
+						"isVisible":"0"
+					},{
+						"name":"Désactiver le verrouillage",
+						"SameCmd":"Activer le verrouillage|Désactiver le verrouillage",
+						"type":"action",
+						"subType":"other",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectValue":"0",
+							"KnxObjectType":"1.003",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"value":"Etat Verrouillage",
+						"isVisible":"0"
+					}
+				]
+			}
+		}
+	}
 }
