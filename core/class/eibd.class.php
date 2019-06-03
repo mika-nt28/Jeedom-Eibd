@@ -842,9 +842,7 @@ class eibdCmd extends cmd {
 			case 'info':
 				$DataBus=eibd::EibdRead($ga);
 				if($DataBus === false){
-					$this->setConfiguration('FlagInit',false);
-					$this->setConfiguration('CycliqueSend','');
-					$this->save();
+					message::add('info',$this->getHumanName().'[READ]: Aucune reponse','',$ga);
 					return;
 				}
 				$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
