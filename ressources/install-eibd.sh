@@ -141,6 +141,7 @@ echo '/var/log/eibd.log {
         missingok
         notifempty
 }' > /etc/logrotate.d/eibd
+sudo usermod -a -G www-data eibd
 echo 100 > /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
 echo "*                              Installing terminé avec succes                                  *"
