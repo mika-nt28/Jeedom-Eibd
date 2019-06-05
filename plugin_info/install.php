@@ -13,6 +13,10 @@ function eibd_update() {
 		$listener->remove();
 	foreach(eqLogic::byType('eibd') as $eqLogic){
 		switch($eqLogic->getConfiguration('typeTemplate')){
+				
+			case 'bso':
+				$eqLogic->setConfiguration('typeTemplate','shutter_BSO');
+			break;
 			case 'thermostat_ver':
 				$eqLogic->setConfiguration('typeTemplate','thermostat_verrou');
 			break;
