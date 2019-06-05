@@ -165,6 +165,112 @@
 				"value":"Hauteur",
 				"isVisible":"1"
 			}
-		]
+		],
+		"options":{
+			"BSO":{
+				"name":"Variation",
+				"cmd":[
+					{
+						"name":"Lames Etat",
+						"type":"info",
+						"subType":"numeric",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"5.xxx",
+							"inverse":"0",
+							"noBatterieCheck":"0",
+							"minValue":"0",
+							"maxValue":"255",
+							"subTypeAuto":"1"
+						},
+						"template":{
+							"dashboard":"default",
+							"mobile":"default"
+						},
+						"display":{
+							"icon":"",
+							"generic_type":"FLAP_BSO_STATE"
+						},
+						"value":"",
+						"isVisible":"1"
+					},{
+						"name":"Lames Commande",
+						"type":"action",
+						"subType":"slider",
+						"isHistorized":"1",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"5.xxx",
+							"inverse":"0",
+							"noBatterieCheck":"0",
+							"minValue":"0",
+							"maxValue":"255",
+							"subTypeAuto":"1"
+						},
+						"value":"Lames Etat",
+						"isVisible":"1"
+					},{
+						"name":"Lames Montée",
+						"type":"action",
+						"subType":"slider",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"5.xxx",
+							"inverse":"0",
+							"noBatterieCheck":"0",
+							"minValue":"0",
+							"maxValue":"255",
+							"subTypeAuto":"1"
+						},
+						"display":{
+							"generic_type":"FLAP_BSO_UP"
+						},
+						"value":"Lames Etat",
+						"isVisible":"0"
+					},{
+						"name":"Lames Decente",
+						"type":"action",
+						"subType":"slider",
+						"isHistorized":"1",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"5.xxx",
+							"inverse":"0",
+							"noBatterieCheck":"0",
+							"minValue":"0",
+							"maxValue":"255",
+							"subTypeAuto":"1"
+						},
+						"display":{
+							"generic_type":"FLAP_BSO_DOWN"
+						},
+						"value":"Lames Etat",
+						"isVisible":"0"
+					}
+				]
+			}
+		}
 	}
 }
