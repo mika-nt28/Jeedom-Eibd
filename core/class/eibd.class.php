@@ -660,6 +660,8 @@ class eibd extends eqLogic {
 				}
 			}
 		}
+		exec("sudo touch /var/log/knx.log");
+		exec("sudo chmod 777 /var/log/knx.log");
 		$cmd = '';
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
@@ -742,6 +744,9 @@ class eibd extends eqLogic {
 		}
 		while(is_object($listener=listener::byClassAndFunction('eibd', 'TransmitValue')))
 			$listener->remove();
+		if(file_exists("/var/log/knx.log"))			
+			exec("sudo rm /var/log/knx.log");
+			
 	}
 
   }
