@@ -660,7 +660,7 @@ class eibd extends eqLogic {
 				}
 			}
 		}
-		fopen("/var/log/knx.log","w+");
+		exec("sudo touch /var/log/knx.log");
 		exec("sudo chmod 777 /var/log/knx.log");
 		$cmd = '';
 		switch(config::byKey('KnxSoft', 'eibd')){
