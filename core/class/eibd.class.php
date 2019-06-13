@@ -849,7 +849,7 @@ class eibdCmd extends cmd {
 						}*/
 					}
 				}
-				usleep(10000);
+				usleep(100000);
 			break;
 			case 'info':
 				$DataBus=eibd::EibdRead($ga);
