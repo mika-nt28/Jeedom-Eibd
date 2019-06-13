@@ -665,22 +665,26 @@ class eibd extends eqLogic {
 		$cmd = '';
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
+            			$clientAddrs = explode('.',config::byKey('EibdGad', 'eibd'));
+            			$clientAddrs[count($clientAddrs)-1] +=1;
 				//$cmd .= 'knxd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid -t1023 --eibaddr='.config::byKey('EibdGad', 'eibd').' --client-addrs='.config::byKey('EibdGad', 'eibd').':'.config::byKey('EibdNbAddr', 'eibd');
-				$cmd .= 'knxd --eibaddr='.config::byKey('EibdGad', 'eibd').' --client-addrs='.config::byKey('EibdGad', 'eibd').':'.config::byKey('EibdNbAddr', 'eibd');
-			break;
+				$cmd .= 'knxd -t1023 --eibaddr='.config::byKey('EibdGad', 'eibd').' --client-addrs='.implode('.',$clientAddrs).':'.config::byKey('EibdNbAddr', 'eibd');
+           		break;
 			case 'eibd':
 				$cmd .= 'eibd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid -t1023 --eibaddr='.config::byKey('EibdGad', 'eibd');			
 			break;
 		}
 		if(config::byKey('KnxSoft', 'eibd') == 'knxd' && config::byKey('ServeurName', 'eibd') !='')
-			$cmd .= ' --Name=JeedomKnx';
+			$cmd .= ' --Name='.config::byKey('ServeurName', 'eibd');
 		if(config::byKey('Discovery', 'eibd'))
 				$cmd .= ' -D';
 		if(config::byKey('Routing', 'eibd'))
 				$cmd .= ' -R';
 		if(config::byKey('Tunnelling', 'eibd'))
 				$cmd .= '  -T';
-		$cmd .= ' -S --listen-tcp='.config::byKey('EibdPort', 'eibd');	
+		if(config::byKey('Discovery', 'eibd') || config::byKey('Routing', 'eibd') || config::byKey('Tunnelling', 'eibd'))
+				$cmd .= '  -S';
+		$cmd .= ' --listen-tcp='.config::byKey('EibdPort', 'eibd');	
 		if($cmd != ''){
 			switch(config::byKey('TypeKNXgateway', 'eibd')){
 				case 'ip':
@@ -706,7 +710,8 @@ class eibd extends eqLogic {
 				break;
 			}
 			$cmd .=config::byKey('KNXgateway', 'eibd');
-			$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
+			$cmd .= ' >> /var/log/knx.log 2>&1 &';
+          		log::add('eibd','info', '[Start] '.$cmd);
 			exec($cmd);
 		}
 		$cron = cron::byClassAndFunction('eibd', 'BusMonitor');

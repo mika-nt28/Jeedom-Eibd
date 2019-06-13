@@ -58,7 +58,7 @@ sudo usermod -a -G dialout knxd
 echo 99 > /tmp/compilation_eibd_in_progress
 sudo service knxd stop
 sudo update-rc.d knxd disable
-sudo chmod 777 /usr/lib/knxd
+sudo chmod 777 /usr/bin/knxd
 sudo rm /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
 echo "*                                       Installation terminé                                        *"
