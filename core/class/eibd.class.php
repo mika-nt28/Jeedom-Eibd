@@ -223,7 +223,7 @@ class eibd extends eqLogic {
 	public static function SearchBroadcastGateway(){	
 		$result=array();
 		$ServerPort=1024;
-		$ServerAddr=config::byKey('internalAddr');
+		$ServerAddr=config::byKey('internalAddr','eibd');
 		set_time_limit(0); 
 		$BroadcastSocket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 		if (!$BroadcastSocket) {
@@ -839,8 +839,9 @@ class eibdCmd extends cmd {
 					if(is_array($data[0])){
 						foreach($data as $frame){
 							$WriteBusValue=eibd::EibdWrite($ga, $frame);
-							sleep(1);
+							usleep(config::byKey('SendSleep','eibd')*1000);
 						}
+						break;
 					}else{
 						$WriteBusValue=eibd::EibdWrite($ga, $data);
 						/*if ($WriteBusValue != -1 && isset($Listener) && is_object($Listener) && $ga==$Listener->getLogicalId()){
@@ -849,7 +850,7 @@ class eibdCmd extends cmd {
 						}*/
 					}
 				}
-				usleep(100000);
+				usleep(config::byKey('SendSleep','eibd')*1000);
 			break;
 			case 'info':
 				$DataBus=eibd::EibdRead($ga);
