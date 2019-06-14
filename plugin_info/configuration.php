@@ -122,7 +122,7 @@ if (!isConnect()) {
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-4 control-label">{{Temps d'attente entre 2 envoie}}</label>
+					<label class="col-lg-4 control-label">{{Temps d'attente entre 2 envoie (ms)}}</label>
 					<div class="col-lg-4">
 						<input type="checkbox" class="configKey tooltips" data-l1key="SendSleep"/>
 					</div>
