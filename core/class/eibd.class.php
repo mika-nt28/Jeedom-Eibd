@@ -152,6 +152,7 @@ class eibd extends eqLogic {
 			$this->save();
 			return true;
 		}
+		$typeTemplate=$template;
 		$device = self::devicesParameters($template);
 		if (!is_array($device) || !isset($device['cmd'])) {
 			return true;
@@ -175,6 +176,7 @@ class eibd extends eqLogic {
 		if(is_array($TemplateOptions)){
 			foreach ($device['options'] as $DeviceOptionsId => $DeviceOptions) {
 				if(isset($TemplateOptions[$DeviceOptionsId])){
+					$typeTemplate.='_'.$DeviceOptionsId;
 					foreach ($DeviceOptions['cmd'] as $command) {
 						$cmd = null;
 						foreach ($this->getCmd() as $liste_cmd) {
@@ -188,7 +190,7 @@ class eibd extends eqLogic {
 				}
 			}
 		}
-		$this->setConfiguration('typeTemplate',$template);
+		$this->setConfiguration('typeTemplate',$typeTemplate);
 		$this->save();
 	}
 	public function createTemplateCmd($cmd,$command) {		
