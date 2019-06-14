@@ -147,7 +147,7 @@ class eibd extends eqLogic {
 		}
 		return $return;
 	}
-	public function applyModuleConfiguration($template) {
+	public function applyModuleConfiguration($template, $TemplateOptions=null) {
 		if ($template == '') {
 			$this->save();
 			return true;
@@ -161,12 +161,8 @@ class eibd extends eqLogic {
 				$this->setConfiguration($key, $value);
 			}
 		}
-		$cmd_order = 0;
 		$link_cmds = array();
 		foreach ($device['cmd'] as $command) {
-			if (isset($device['cmd']['logicalId'])) {
-				continue;
-			}
 			$cmd = null;
 			foreach ($this->getCmd() as $liste_cmd) {
 				if (isset($command['name']) && $liste_cmd->getName() == $command['name']) {
@@ -174,39 +170,56 @@ class eibd extends eqLogic {
 					break;
 				}
 			}
-			try {
-				if ($cmd == null || !is_object($cmd)) {
-					$cmd = new eibdCmd();
-					$cmd->setOrder($cmd_order);
-					$cmd->setEqLogic_id($this->getId());
-				} else {
-					$command['name'] = $cmd->getName();
-				}
-				utils::a2o($cmd, $command);
-				if (isset($command['value']) && $command['value']!="") {
-					$CmdValue=cmd::byEqLogicIdCmdName($this->getId(),$command['value']);
-					if(is_object($CmdValue))
-						$cmd->setValue('#'.$CmdValue->getId().'#');
-					else
-						$cmd->setValue(null);
-				}
-				if (isset($command['configuration']['option']) && $command['configuration']['option']!="") {
-					$options=array();
-					foreach($command['configuration']['option'] as $option => $cmdOption){
-						$options[$option]=$cmdOption;
-						$CmdValue=cmd::byEqLogicIdCmdName($this->getId(),$cmdOption);
-						if(is_object($CmdValue))
-							$options[$option]='#'.$CmdValue->getId().'#';
+			$this->createTemplateCmd($cmd,$command);
+		}
+		if(is_array($TemplateOptions)){
+			foreach ($device['options'] as $DeviceOptionsId => $DeviceOptions) {
+				if(isset($TemplateOptions[$DeviceOptionsId])){
+					foreach ($DeviceOptions['cmd'] as $command) {
+						$cmd = null;
+						foreach ($this->getCmd() as $liste_cmd) {
+							if (isset($command['name']) && $liste_cmd->getName() == $command['name']) {
+								$cmd = $liste_cmd;	
+								break;
+							}
+						}
+						$this->createTemplateCmd($cmd,$command);
 					}
-					$cmd->setConfiguration('option',$options);
 				}
-				$cmd->save();
-				$cmd_order++;
-			} catch (Exception $exc) {
-				error_log($exc->getMessage());
 			}
+		}
 		$this->setConfiguration('typeTemplate',$template);
 		$this->save();
+	}
+	public function createTemplateCmd($cmd,$command) {		
+		try {
+			if ($cmd == null || !is_object($cmd)) {
+				$cmd = new eibdCmd();
+				$cmd->setEqLogic_id($this->getId());
+			} else {
+				$command['name'] = $cmd->getName();
+			}
+			utils::a2o($cmd, $command);
+			if (isset($command['value']) && $command['value']!="") {
+				$CmdValue=cmd::byEqLogicIdCmdName($this->getId(),$command['value']);
+				if(is_object($CmdValue))
+					$cmd->setValue('#'.$CmdValue->getId().'#');
+				else
+					$cmd->setValue(null);
+			}
+			if (isset($command['configuration']['option']) && $command['configuration']['option']!="") {
+				$options=array();
+				foreach($command['configuration']['option'] as $option => $cmdOption){
+					$options[$option]=$cmdOption;
+					$CmdValue=cmd::byEqLogicIdCmdName($this->getId(),$cmdOption);
+					if(is_object($CmdValue))
+						$options[$option]='#'.$CmdValue->getId().'#';
+				}
+				$cmd->setConfiguration('option',$options);
+			}
+			$cmd->save();
+		} catch (Exception $exc) {
+			error_log($exc->getMessage());
 		}
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
