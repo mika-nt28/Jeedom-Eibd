@@ -429,7 +429,7 @@ class knxproj {
 			foreach($this->Templates[$TemplateId]['options'] as $TemplateOptionName =>$TemplateOption){		
 				foreach($TemplateOption['cmd'] as $OptionCmd){
 					if($OptionCmd['name'] == $Name){
-						$Options[$TemplateOptionName]=;
+						$Options[$TemplateOptionName]=true;
 						break;
 					}
 				}
