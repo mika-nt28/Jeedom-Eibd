@@ -81,7 +81,12 @@ if (!isConnect()) {
 				<label class="col-lg-4 control-label">{{Adressage des connexions}}</label>
 				<div class="col-lg-4">
 					<input class="configKey form-control" data-l1key="EibdGad" placeholder="{{Adresse physique}}"/>
-					<input class="configKey form-control" data-l1key="EibdNbAddr" placeholder="{{Nombre de connexion}}"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-lg-4 control-label">{{Nombres de connexions simultané}}</label>
+				<div class="col-lg-4">
+					<input class="configKey form-control" data-l1key="EibdNbAddr" placeholder="{{Nombre de connexion simultané}}"/>
 				</div>
 			</div>
 		</fieldset>
@@ -114,6 +119,12 @@ if (!isConnect()) {
 					<label class="col-lg-4 control-label">{{Mode Tunnelling}}</label>
 					<div class="col-lg-4">
 						<input type="checkbox" class="configKey tooltips" data-l1key="Tunnelling"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-4 control-label">{{Temps d'attente entre 2 envoie (ms)}}</label>
+					<div class="col-lg-4">
+						<input type="checkbox" class="configKey tooltips" data-l1key="SendSleep"/>
 					</div>
 				</div>
 			</div>
