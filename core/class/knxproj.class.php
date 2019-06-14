@@ -392,8 +392,8 @@ class knxproj {
 		else
 			$ObjectId = null;
 		$TemplateId=$this->getTemplateName($TemplateName);
-		$TemplateOptions=$this->getTemplateOptions($TemplateId);
 		if($TemplateId != false){
+			$TemplateOptions=$this->getTemplateOptions($TemplateId,$Cmds);
 			log::add('eibd','info','[Import ETS] Le template ' .$TemplateName.' existe, nous créons un equipement');
 			$EqLogic=eibd::AddEquipement($TemplateName,'',$ObjectId);
 			$EqLogic->applyModuleConfiguration($TemplateId,$TemplateOptions);
@@ -423,13 +423,13 @@ class knxproj {
 		}
 		return false;
 	}
-	private function getTemplateOptions($TemplateId){
+	private function getTemplateOptions($TemplateId,$Cmds){
 		$Options=array();
 		foreach($Cmds as $Name => $Cmd){
-			foreach($this->Templates[$TemplateId]['options'] as $TemplateOptionName =>$TemplateOption){		
+			foreach($this->Templates[$TemplateId]['options'] as $TemplateOptionId =>$TemplateOption){	      
 				foreach($TemplateOption['cmd'] as $OptionCmd){
 					if($OptionCmd['name'] == $Name){
-						$Options[$TemplateOptionName]=true;
+						$Options[$TemplateOptionId]=true;
 						break;
 					}
 				}
