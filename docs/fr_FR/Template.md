@@ -1,3 +1,8 @@
+Voici la définition de chaque template.
+Desormais une template peut contenir des options (par exemple pour un point de lumiere qui peut etre simple, varriateur ou couleur).
+Pour simplifier la creation, un template est rassemble les commande indentique (On / Off, Ouvrir / Fermer,...)
+Pour donner plus de souplesse a l'import ETS, la notion de synonyme est integer.
+
 Thermostat
 ==========
 
