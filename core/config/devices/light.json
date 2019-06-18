@@ -5,6 +5,27 @@
 		"isEnable":"1",
 		"cmd":[
           		{
+				"name":"Etat",
+				"type":"info",
+				"subType":"string",
+				"isHistorized":"0",
+				"unite":"",
+				"configuration":{
+					"FlagInit":"1",
+					"FlagRead":"0",
+					"FlagTransmit":"0",
+					"FlagUpdate":"1",
+					"FlagWrite":"1",
+					"KnxObjectType":"1.001",
+					"inverse":"0",
+					"subTypeAuto":"1",
+					"noBatterieCheck":"0"
+				},
+				"display":{
+					"generic_type":"LIGHT_STATE"
+				},
+				"isVisible":"0"
+			},{
 				"name":"On",
 				"SameCmd":"On|Off",
 				"type":"action",
@@ -141,27 +162,6 @@
 						},
 						"value":"Luminosité",
 						"isVisible":"1"
-					},{
-						"name":"Etat",
-						"type":"info",
-						"subType":"string",
-						"isHistorized":"0",
-						"unite":"",
-						"configuration":{
-							"FlagInit":"1",
-							"FlagRead":"0",
-							"FlagTransmit":"0",
-							"FlagUpdate":"1",
-							"FlagWrite":"1",
-							"KnxObjectType":"1.001",
-							"inverse":"0",
-							"subTypeAuto":"1",
-							"noBatterieCheck":"0"
-						},
-						"display":{
-							"generic_type":"LIGHT_STATE"
-						},
-						"isVisible":"0"
 					}
 				]
 			},
