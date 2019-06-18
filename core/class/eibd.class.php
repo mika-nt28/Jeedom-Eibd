@@ -682,8 +682,7 @@ class eibd extends eqLogic {
 			case 'knxd':
             			$clientAddrs = explode('.',config::byKey('EibdGad', 'eibd'));
             			$clientAddrs[count($clientAddrs)-1] +=1;
-				//$cmd .= 'knxd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid -t1023 --eibaddr='.config::byKey('EibdGad', 'eibd').' --client-addrs='.config::byKey('EibdGad', 'eibd').':'.config::byKey('EibdNbAddr', 'eibd');
-				$cmd .= 'knxd -t1023 --eibaddr='.config::byKey('EibdGad', 'eibd').' --client-addrs='.implode('.',$clientAddrs).':'.config::byKey('EibdNbAddr', 'eibd');
+				$cmd .= 'knxd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid -t1023 --eibaddr='.config::byKey('EibdGad', 'eibd').' --client-addrs='.implode('.',$clientAddrs).':'.config::byKey('EibdNbAddr', 'eibd');
            		break;
 			case 'eibd':
 				$cmd .= 'eibd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid -t1023 --eibaddr='.config::byKey('EibdGad', 'eibd');			
@@ -699,7 +698,8 @@ class eibd extends eqLogic {
 				$cmd .= '  -T';
 		if(config::byKey('Discovery', 'eibd') || config::byKey('Routing', 'eibd') || config::byKey('Tunnelling', 'eibd'))
 				$cmd .= '  -S';
-		$cmd .= ' --listen-tcp='.config::byKey('EibdPort', 'eibd');	
+		$cmd .= ' --listen-tcp='.config::byKey('EibdPort', 'eibd');
+		$cmd .= ' -b ';	
 		if($cmd != ''){
 			switch(config::byKey('TypeKNXgateway', 'eibd')){
 				case 'ip':
