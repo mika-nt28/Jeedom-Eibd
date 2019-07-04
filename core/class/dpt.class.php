@@ -1130,7 +1130,7 @@ class Dpt{
 				"max"=> 254,
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
-				"Unite"=>"ratio"),
+				"Unite"=>""),
 			"5.010"=> array(
 				"Name"=>"Unsigned count",
 				"Valeurs"=>array(),
