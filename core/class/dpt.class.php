@@ -179,6 +179,12 @@ class Dpt{
 						
 				}
 			break;
+			case "225":
+				if ($dpt != "225.002"){
+					$TimePeriode=cmd::byId(str_replace('#','',$option["TimePeriode"]));
+					$data= array(($TimePeriode->execCmd() >> 8) & 0xFF, $TimePeriode->execCmd() & 0xFF, $value);
+				}
+			break;
 			case "229":
 				if ($dpt != "229.001"){
 					if ($value < 0)
@@ -420,6 +426,24 @@ class Dpt{
 								$InfoCmd->setCache('collectDate', date('Y-m-d H:i:s'));
 							}
 						}
+					}
+				}
+			break;
+			case "225":
+				if ($dpt != "225.002"){
+					$value = $data[0];    
+					if ($option != null){
+						if ($option["ValInfField"] !='' /*&& is_numeric($data[4])&& $data[4]!=''*/){	
+							//log::add('eibd', 'debug', 'Mise a jours de l\'objet Jeedom ValInfField: '.$option["ValInfField"]);
+							$TimePeriode=cmd::byId(str_replace('#','',$option["TimePeriode"]));
+							if (is_object($TimePeriode)){
+								$valeur = $data[0] << 8 | $data[1];
+								log::add('eibd', 'debug', 'L\'objet '.$TimePeriode->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $valeur);
+								$TimePeriode->event($valeur);
+								$TimePeriode->setCache('collectDate', date('Y-m-d H:i:s'));
+							}
+						}
+						
 					}
 				}
 			break;
@@ -2526,6 +2550,26 @@ class Dpt{
 				"GenericType"=>"DONT",
 				"Option" =>array("Info"),
 				"Unite" =>""),
+			"225.002"=> array(
+				"Name"=>"Scaling step time",
+				"Valeurs"=>array(),
+				"min"=>'',
+				"max"=>'',
+				"InfoType"=>'numeric',
+				"ActionType"=>'slider',
+				"GenericType"=>"DONT",
+				"Option" =>array("TimePeriode"),
+				"Unite" =>""),
+			"229.001"=> array(
+				"Name"=>"Metering value",
+				"Valeurs"=>array(),
+				"min"=>'',
+				"max"=>'',
+				"InfoType"=>'numeric',
+				"ActionType"=>'slider',
+				"GenericType"=>"DONT",
+				"Option" =>array("ValInfField","StatusCommande"),
+				"Unite" =>""),
 			"235.001"=> array(
 				"Name"=>"Tarif ActiveEnergy",
 				"Valeurs"=>array(),
@@ -2545,16 +2589,6 @@ class Dpt{
 				"ActionType"=>'slider',
 				"GenericType"=>"DONT",
 				"Option" =>array(),
-				"Unite" =>""),
-			"229.001"=> array(
-				"Name"=>"Metering value",
-				"Valeurs"=>array(),
-				"min"=>'',
-				"max"=>'',
-				"InfoType"=>'numeric',
-				"ActionType"=>'slider',
-				"GenericType"=>"DONT",
-				"Option" =>array("ValInfField","StatusCommande"),
 				"Unite" =>""),
 			"251.600"=> array(
 				"Name"=>"Colour RGBW",
