@@ -8,6 +8,7 @@
 		[
 			{
 				"name":"Tarif_1",
+				"Synonyme":[],
 				"logicalId":"255/255/255",
 				"type":"info",
 				"subType":"numeric",
@@ -25,6 +26,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Tarif_2",
+				"Synonyme":[],
 				"logicalId":"255/255/255",
 				"type":"info",
 				"subType":"numeric",
@@ -42,6 +44,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Tarif_3",
+				"Synonyme":[],
 				"logicalId":"255/255/255",
 				"type":"info",
 				"subType":"numeric",
@@ -58,6 +61,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Vilidité",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
 				"unite":"kW/H",
