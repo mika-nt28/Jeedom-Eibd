@@ -1,6 +1,7 @@
 {
 	"light":{
 		"name":"Lumière",
+		"Synonyme":["Dimmer","Varriateur","Couleur ambiance","Ambiance"],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":[
