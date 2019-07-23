@@ -12,8 +12,10 @@ function searchSameCmd(eqLogic,index){
 	return $('.CmdEqLogicTemplateAttr[data-l1key='+index+'][data-l2key=logicalId]').value();									
 }
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
-$('.Template[data-action=add]').off().on('click', function () {bootbox.dialog({
+$('.Template[data-action=add]').off().on('click', function () {
+  	var dialog =bootbox.dialog({
 		title: "{{Ajout d'un équipement avec template}}",
+    		show: false,
 		message: $('<div>').load('index.php?v=d&modal=eibd.addByTemplate&plugin=eibd&type=eibd'),
 		buttons: {
 			"Annuler": {
@@ -26,7 +28,7 @@ $('.Template[data-action=add]').off().on('click', function () {bootbox.dialog({
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
-					if($('.EqLogicTemplateAttr[data-l1key=template]').value() != "" && $('.EqLogicTemplateAttr[data-l1key=name]').value() != ""){
+					if($('.EqLogicTemplateAttr[data-l1key=template]').value() != ""){
 						$.ajax({
 							type: 'POST',   
 							url: 'plugins/eibd/core/ajax/eibd.ajax.php',
@@ -63,7 +65,12 @@ $('.Template[data-action=add]').off().on('click', function () {bootbox.dialog({
 			},
 		}
 	});
-	
+	dialog.on('shown.bs.modal', function(e){
+  		$(".EqLogicTemplateAttr[data-l1key=name]").val($(".eqLogicAttr[data-l1key=name]").val()).attr("disabled","true");
+  		$(".EqLogicTemplateAttr[data-l1key=logicalId]").val($(".eqLogicAttr[data-l1key=logicalId]").val()).attr("disabled","true");
+  		$(".EqLogicTemplateAttr[data-l1key=object_id]").val($(".eqLogicAttr[data-l1key=object_id]").val()).attr("disabled","true");
+    	});
+ 	dialog.modal("show");
 });
 $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
   	bootbox.dialog({
