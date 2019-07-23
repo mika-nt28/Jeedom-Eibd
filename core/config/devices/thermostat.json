@@ -8,6 +8,7 @@
 		[
 			{
 				"name":"Etat",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"binary",
 				"isHistorized":"1",
@@ -34,6 +35,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Température ambiante",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"1",
@@ -62,6 +64,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Température consigne",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"1",
@@ -90,6 +93,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Consigne",
+				"Synonyme":[],
 				"type":"action",
 				"subType":"slider",
 				"isHistorized":"0",
@@ -119,6 +123,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Mode de fonctionnement",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"string",
 				"isHistorized":"0",
@@ -145,6 +150,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Mode",
+				"Synonyme":[],
 				"type":"action",
 				"subType":"select",
 				"isHistorized":"1",
@@ -178,6 +184,7 @@
 				"cmd":[
 					{
 						"name":"Etat Verrouillage",
+						"Synonyme":[],
 						"type":"info",
 						"subType":"binary",
 						"isHistorized":"1",
@@ -195,7 +202,8 @@
 						},
 						"isVisible":"0"
 					},{
-					"name":"Activer le verrouillage",
+						"name":"Activer le verrouillage",
+						"Synonyme":[],
 						"SameCmd":"Activer le verrouillage|Désactiver le verrouillage",
 						"type":"action",
 						"subType":"other",
@@ -215,6 +223,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Désactiver le verrouillage",
+						"Synonyme":[],
 						"SameCmd":"Activer le verrouillage|Désactiver le verrouillage",
 						"type":"action",
 						"subType":"other",
