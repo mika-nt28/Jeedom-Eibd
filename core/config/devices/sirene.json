@@ -1,6 +1,7 @@
 {
 	"sirene":{
 		"name":"Sirène",
+		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":[
