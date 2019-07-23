@@ -6,8 +6,8 @@
 		"isEnable":"1",
 		"cmd":[
 			{
-				"eqType":"eibd",
 				"name":"valeur",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"binary",
 				"isHistorized":"1",
