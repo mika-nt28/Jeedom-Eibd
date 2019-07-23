@@ -1,6 +1,7 @@
 {
 	"prise":{
 		"name":"Prise",
+		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":[
