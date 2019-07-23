@@ -1,6 +1,7 @@
 {
 	"temperature":{
 		"name":"Temperature",
+		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
 		"category":	{
