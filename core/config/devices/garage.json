@@ -29,8 +29,8 @@
 				"isVisible":"0"
 			},{
 				"name":"Ouvrir",
-				"Synonyme":["Toogle"],
-				"SameCmd":"Toogle|Ouvrir|Fermer",
+				"Synonyme":[],
+				"SameCmd":"Ouvrir|Fermer",
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"0",
@@ -53,8 +53,8 @@
 				"isVisible":"0"
 			},{
 				"name":"Fermer",
-				"Synonyme":["Toogle"],
-				"SameCmd":"Toogle|Ouvrir|Fermer",
+				"Synonyme":[],
+				"SameCmd":"Ouvrir|Fermer",
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"0",
