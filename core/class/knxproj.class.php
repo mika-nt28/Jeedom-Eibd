@@ -420,6 +420,10 @@ class knxproj {
 		foreach($this->Templates as $TemplateId => $Template){
 			if($Template['name'] == $TemplateName)
 				return $TemplateId;
+			foreach($Template['Synonyme'] as $SynonymeName){
+				if($SynonymeName == $TemplateName)
+					return $TemplateId;
+			}
 		}
 		return false;
 	}
@@ -444,6 +448,10 @@ class knxproj {
 			foreach(explode('|',$TemplateCmdName['SameCmd']) as $SameCmd){
 				if($SameCmd == $CmdName)
 					return $TemplateCmdName['name'];
+			}
+			foreach($TemplateCmdName['Synonyme'] as $SynonymeName){
+				if($SynonymeName == $CmdName)
+					return $SynonymeName;
 			}
 		}
 		return false;
