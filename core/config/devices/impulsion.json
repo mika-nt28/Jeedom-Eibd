@@ -1,10 +1,11 @@
 {
 	"impulsion":{
 		"name":"Impulsion",
+		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":[
-    {
+    			{
 				"name":"Eau de pluie",
 				"type":"info",
 				"subType":"numeric",
