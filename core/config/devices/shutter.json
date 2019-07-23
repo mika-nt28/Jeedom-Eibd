@@ -7,6 +7,7 @@
 		"cmd":[
 			{
 				"name":"Déplacement",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"binary",
 				"isHistorized":"0",
@@ -25,6 +26,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Hauteur",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"0",
@@ -46,6 +48,7 @@
 				"isVisible":"0"
 			},{	
 				"name":"Stop - status",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"binary",
 				"isHistorized":"0",
@@ -64,6 +67,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Montée",
+				"Synonyme":[],
 				"SameCmd":"Montée|Descendre",
 				"type":"action",
 				"subType":"other",
@@ -90,6 +94,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Stop",
+				"Synonyme":[],
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"1",
@@ -115,6 +120,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Descendre",
+				"Synonyme":[],
 				"SameCmd":"Montée|Descendre",
 				"type":"action",
 				"subType":"other",
@@ -141,6 +147,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Position",
+				"Synonyme":[],
 				"type":"action",
 				"subType":"slider",
 				"isHistorized":"1",
@@ -173,6 +180,7 @@
 				"cmd":[
 					{
 						"name":"Lames Etat",
+						"Synonyme":[],
 						"type":"info",
 						"subType":"numeric",
 						"isHistorized":"0",
@@ -202,6 +210,7 @@
 						"isVisible":"1"
 					},{
 						"name":"Lames Commande",
+						"Synonyme":[],
 						"type":"action",
 						"subType":"slider",
 						"isHistorized":"1",
@@ -223,6 +232,7 @@
 						"isVisible":"1"
 					},{
 						"name":"Lames Montée",
+						"Synonyme":[],
 						"type":"action",
 						"subType":"slider",
 						"isHistorized":"0",
@@ -247,6 +257,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Lames Decente",
+						"Synonyme":[],
 						"type":"action",
 						"subType":"slider",
 						"isHistorized":"1",
