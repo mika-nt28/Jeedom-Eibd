@@ -30,32 +30,8 @@
 				},
 				"isVisible":"0"
 			},{
-				"name":"Toogle",
-				"SameCmd":"Toogle|Ouvrir|Fermer",
-				"type":"action",
-				"subType":"other",
-				"isHistorized":"0",
-				"configuration":{
-					"FlagInit":"0",
-					"FlagRead":"0",
-					"FlagTransmit":"0",
-					"FlagUpdate":"0",
-					"FlagWrite":"0",
-					"KnxObjectType":"1.001",
-					"inverse":"0",
-					"transmitReponse":"0",
-					"eventOnly":"1",
-					"init":"1",
-					"subTypeAuto":"1",
-					"noBatterieCheck":"0"
-				},
-				"display":{
-					"generic_type":"GB_TOGGLE"
-				},
-				"value":"Etat",
-				"isVisible":"1"
-			},{
 				"name":"Ouvrir",
+				"Synonyme":["Toogle"],
 				"SameCmd":"Toogle|Ouvrir|Fermer",
 				"type":"action",
 				"subType":"other",
@@ -82,6 +58,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Fermer",
+				"Synonyme":["Toogle"],
 				"SameCmd":"Toogle|Ouvrir|Fermer",
 				"type":"action",
 				"subType":"other",
