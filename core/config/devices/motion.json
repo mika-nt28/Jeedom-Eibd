@@ -16,6 +16,7 @@
 		"cmd":[
 			{
 				"name":"valeur",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"binary",
 				"isHistorized":"1",
@@ -40,6 +41,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Luminosité",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"1",
