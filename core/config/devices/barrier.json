@@ -1,7 +1,7 @@
 {
 	"barrier":{
 		"name":"Portail",
-		"Synonyme":{"Portillon","barriere"},
+		"Synonyme":["Portillon","barriere"],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":[
