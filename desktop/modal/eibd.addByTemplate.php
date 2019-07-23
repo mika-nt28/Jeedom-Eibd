@@ -6,7 +6,7 @@ if (!isConnect('admin')) {
 <div class="row">
 	<form class="form-horizontal" onsubmit="return false;">
 		<legend>{{Définition de l'equipement}}</legend>
-		<div class="col-md-12>
+		<div class="col-md-12">
 			<div class="form-group">
 				<label class="col-md-5 control-label">
 					{{Nom de l'équipement KNX}}
