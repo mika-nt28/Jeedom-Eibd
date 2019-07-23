@@ -1,6 +1,7 @@
 {
 	"shutter": {
 		"name":"Volet",
+		"Synonyme":["BSO"],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":[
