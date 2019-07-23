@@ -15,24 +15,25 @@
 		},
 		"cmd":[
 			{
-			"name":"Valeur",
-			"type":"info",
-			"subType":"numeric",
-			"isHistorized":"1",
-			"unite":"°C",
-			"configuration":{
-				"KnxObjectType":"9.001",
-				"FlagRead":"0",
-				"FlagWrite":"1",
-				"FlagTransmit":"0",
-				"FlagUpdate":"1",
-				"FlagInit":"0",
-				"inverse":"0",
-				"minValue":"05",
-				"maxValue":"35",
-				"subTypeAuto":"1"
-			},
-			"isVisible":"1"
+				"name":"Valeur",
+				"Synonyme":[],
+				"type":"info",
+				"subType":"numeric",
+				"isHistorized":"1",
+				"unite":"°C",
+				"configuration":{
+					"KnxObjectType":"9.001",
+					"FlagRead":"0",
+					"FlagWrite":"1",
+					"FlagTransmit":"0",
+					"FlagUpdate":"1",
+					"FlagInit":"0",
+					"inverse":"0",
+					"minValue":"05",
+					"maxValue":"35",
+					"subTypeAuto":"1"
+				},
+				"isVisible":"1"
 			}
 		]		
 	}

@@ -7,6 +7,7 @@
 		"cmd":[
           		{
 				"name":"Etat",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"string",
 				"isHistorized":"0",
@@ -28,6 +29,7 @@
 				"isVisible":"0"
 			},{
 				"name":"On",
+				"Synonyme":[],
 				"SameCmd":"On|Off",
 				"type":"action",
 				"subType":"other",
@@ -51,6 +53,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Off",
+				"Synonyme":[],
 				"SameCmd":"On|Off",
 				"type":"action",
 				"subType":"other",
@@ -80,6 +83,7 @@
 				"cmd":[
 					{
 						"name":"Luminosité",
+						"Synonyme":[],
 						"type":"info",
 						"subType":"numeric",
 						"isHistorized":"0",
@@ -98,6 +102,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Augmenter",
+						"Synonyme":[],	
 						"SameCmd":"Augmenter|Diminuer",
 						"type":"action",
 						"subType":"other",
@@ -121,6 +126,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Diminuer",
+						"Synonyme":[],
 						"SameCmd":"Augmenter|Diminuer",
 						"type":"action",
 						"subType":"other",
@@ -144,6 +150,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Variation",
+						"Synonyme":[],
 						"type":"action",
 						"subType":"slider",
 						"isHistorized":"0",
@@ -171,6 +178,7 @@
 				"cmd":[
 					{
 						"name":"Etat Couleur",
+						"Synonyme":[],
 						"type":"info",
 						"subType":"color",
 						"isHistorized":"0",
@@ -189,6 +197,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Couleur",
+						"Synonyme":[],
 						"type":"action",
 						"subType":"color",
 						"isHistorized":"0",
@@ -213,6 +222,7 @@
 				"cmd":[
 					{
 						"name":"Etat R",
+						"Synonyme":[],
 						"type":"info",
 						"subType":"binary",
 						"isHistorized":"0",
@@ -231,6 +241,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Etat G",
+						"Synonyme":[],
 						"type":"info",
 						"subType":"binary",
 						"isHistorized":"0",
@@ -249,6 +260,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Etat B",
+						"Synonyme":[],
 						"type":"info",
 						"subType":"binary",
 						"isHistorized":"0",
@@ -267,6 +279,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Etat W",
+						"Synonyme":[],
 						"type":"info",
 						"subType":"binary",
 						"isHistorized":"0",
@@ -285,6 +298,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Luminosité  R",
+						"Synonyme":[],
 						"type":"info",
 						"subType":"numeric",
 						"isHistorized":"0",
@@ -303,6 +317,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Luminosité  G",
+						"Synonyme":[],
 						"type":"info",
 						"subType":"numeric",
 						"isHistorized":"0",
@@ -321,6 +336,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Luminosité  B",
+						"Synonyme":[],
 						"type":"info",
 						"subType":"numeric",
 						"isHistorized":"0",
@@ -339,6 +355,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Luminosité  W",
+						"Synonyme":[],
 						"type":"info",
 						"subType":"numeric",
 						"isHistorized":"0",
@@ -357,6 +374,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Vitesse de regulation 1",
+						"Synonyme":[],
 						"type":"action",
 						"subType":"slider",
 						"isHistorized":"0",
@@ -375,6 +393,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Vitesse de regulation 2",
+						"Synonyme":[],
 						"type":"action",
 						"subType":"slider",
 						"isHistorized":"0",
@@ -393,6 +412,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Varriation de couleur",
+						"Synonyme":[],
 						"type":"action",
 						"subType":"other",
 						"isHistorized":"0",
@@ -412,11 +432,12 @@
 					}
 				]
 			},
-			"lumeto":{
+			"lumento":{
 				"name":"Lumento",
 				"cmd":[
 					{
 						"name":"Couleur Direct",
+						"Synonyme":[],
 						"type":"info",
 						"subType":"select",
 						"isHistorized":"0",

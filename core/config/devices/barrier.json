@@ -7,6 +7,7 @@
 		"cmd":[
 			{
 				"name":"Etat",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"string",
 				"isHistorized":"0",
@@ -30,33 +31,9 @@
 				},
 				"isVisible":"0"
 			},{
-				"name":"Toogle",
-				"SameCmd":"Toogle|Ouvrir|Fermer",
-				"type":"action",
-				"subType":"other",
-				"isHistorized":"0",
-				"configuration":{
-					"FlagInit":"0",
-					"FlagRead":"0",
-					"FlagTransmit":"0",
-					"FlagUpdate":"0",
-					"FlagWrite":"0",
-					"KnxObjectType":"1.001",
-					"inverse":"0",
-					"transmitReponse":"0",
-					"eventOnly":"1",
-					"init":"1",
-					"subTypeAuto":"1",
-					"noBatterieCheck":"0"
-				},
-				"display":{
-					"generic_type":"GB_TOGGLE"
-				},
-				"value":"Etat",
-				"isVisible":"1"
-			},{
 				"name":"Ouvrir",
-				"SameCmd":"Toogle|Ouvrir|Fermer",
+				"Synonyme":[],
+				"SameCmd":"Ouvrir|Fermer",
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"0",
@@ -82,7 +59,8 @@
 				"isVisible":"0"
 			},{
 				"name":"Fermer",
-				"SameCmd":"Toogle|Ouvrir|Fermer",
+				"Synonyme":[],
+				"SameCmd":"Ouvrir|Fermer",
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"0",

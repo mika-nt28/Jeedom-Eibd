@@ -16,6 +16,7 @@
 		"cmd":[
 			{
 				"name":"valeur",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"1",
