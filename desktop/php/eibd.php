@@ -162,20 +162,7 @@
 			</div>
 			<div role="tabpanel" class="tab-pane" id="commandtab">
 				<a class="btn btn-success btn-sm cmdAction pull-right" data-action="add" style="margin-top:5px;"><i class="fa fa-plus-circle"></i> {{Commandes}}</a><br/><br/>
-				<div class="pull-right" >
-					<select class="eqLogicAttr input-sm" data-l1key="configuration" data-l2key="typeTemplate">
-						<option value="">{{Aucun}}</option>
-						<?php
-							foreach (eibd::devicesParameters() as $id => $info) {
-								echo '<option value="' . $id . '">' . $info['name'] . '</option>';
-							}
-						?>
-					</select>
-					<sup>
-						<i class="fa fa-question-circle tooltips" title="Choisissez si vous le souhaité un model de configuration d'équipement"></i>
-					</sup>
-					<a class="btn btn-success btn-sm Template" data-action="add"><i class="fa fa-plus-circle"></i> {{Ajouter le template}}</a>
-				</div>
+				<a class="btn btn-default btn-sm Template pull-right" data-action="add" style="margin-top:5px;"><i class="fa fa-plus-circle"></i> {{Template}}</a><br/><br/>
 				<table id="table_cmd" class="table table-bordered table-condensed">
 					<thead>
 						<tr>
