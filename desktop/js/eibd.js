@@ -12,6 +12,59 @@ function searchSameCmd(eqLogic,index){
 	return $('.CmdEqLogicTemplateAttr[data-l1key='+index+'][data-l2key=logicalId]').value();									
 }
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+$('.Template[data-action=add]').off().on('click', function () {bootbox.dialog({
+		title: "{{Ajout d'un équipement avec template}}",
+		message: $('<div>').load('index.php?v=d&modal=eibd.addByTemplate&plugin=eibd&type=eibd'),
+		buttons: {
+			"Annuler": {
+				className: "btn-default",
+				callback: function () {
+					//el.atCaret('insert', result.human);
+				}
+			},
+			success: {
+				label: "Valider",
+				className: "btn-primary",
+				callback: function () {
+					if($('.EqLogicTemplateAttr[data-l1key=template]').value() != "" && $('.EqLogicTemplateAttr[data-l1key=name]').value() != ""){
+						$.ajax({
+							type: 'POST',   
+							url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+							data:
+							{
+								action: 'getTemplate',
+								template:$('.EqLogicTemplateAttr[data-l1key=template]').val()
+							},
+							dataType: 'json',
+							global: true,
+							error: function(request, status, error) {},
+							success: function(data) {
+								var eqLogic=data.result;
+								/*eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
+								$.each(eqLogic.options,function(id, option){
+									if($('.TemplateOption[data-l1key='+id+']').is(':checked')){
+										eqLogic.configuration.typeTemplate = eqLogic.configuration.typeTemplate + "_" + id;
+										$.each(option.cmd,function(idCmd, cmd){
+											eqLogic.cmd.push(cmd);
+										});
+									}
+								});*/
+								
+								$.each(eqLogic.cmd,function(index, value){
+									eqLogic.cmd[index].logicalId=searchSameCmd(eqLogic,index);
+									if (typeof(eqLogic.cmd[index].value) !== 'undefined')
+										eqLogic.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object_id] option:selected').text()+"]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
+									addCmdToTable(eqLogic.cmd[index]);
+								});
+							}
+						});
+					}
+				}
+			},
+		}
+	});
+	
+});
 $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
   	bootbox.dialog({
 		title: "{{Ajout d'un équipement avec template}}",
@@ -521,27 +574,6 @@ function addCmdToTable(_cmd) {
 	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');	
 	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
-$('.Template[data-action=add]').off().on('click', function () {
-	if($('.eqLogicAttr[data-l1key=configuration][data-l2key=typeTemplate]').val()!=""){
-		$('.eqLogicAction[data-action=save]').trigger('click');
-		$.ajax({
-			type: 'POST',   
-			url: 'plugins/eibd/core/ajax/eibd.ajax.php',
-			data:
-			{
-				action: 'AppliTemplate',
-				id:$('.eqLogicAttr[data-l1key=id]').val(),
-				template:$('.eqLogicAttr[data-l1key=configuration][data-l2key=typeTemplate]').val()
-			},
-			dataType: 'json',
-			global: true,
-			error: function(request, status, error) {},
-			success: function(data) {
-				window.location.reload();
-			}
-		});
-	}
-});
 $('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]', function() {
 	DptOption($(this).val(),$(this).closest('.cmd').find('.option'));
 	if ($(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val() == '')

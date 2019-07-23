@@ -1,6 +1,7 @@
 {
 	"lock":{
 		"name":"Serrure",
+		"Synonyme":["Verrou"],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":[

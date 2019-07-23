@@ -1,6 +1,7 @@
 {
 	"digicode":{
 		"name":"Digicode",
+		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
 		"configuration":{

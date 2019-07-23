@@ -1,6 +1,7 @@
 {
     "thermostat": {
 		"name":"Thermostat",
+		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":

@@ -1,6 +1,7 @@
 {
 	"detectFumee":	{
 		"name":"Detecteur Fumée",
+		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
 		"category":	{
