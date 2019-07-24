@@ -1,12 +1,14 @@
 {
     "thermostat": {
 		"name":"Thermostat",
+		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":
 		[
 			{
 				"name":"Etat",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"binary",
 				"isHistorized":"1",
@@ -33,6 +35,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Température ambiante",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"1",
@@ -61,6 +64,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Température consigne",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"1",
@@ -89,6 +93,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Consigne",
+				"Synonyme":[],
 				"type":"action",
 				"subType":"slider",
 				"isHistorized":"0",
@@ -118,6 +123,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Mode de fonctionnement",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"string",
 				"isHistorized":"0",
@@ -144,6 +150,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Mode",
+				"Synonyme":[],
 				"type":"action",
 				"subType":"select",
 				"isHistorized":"1",
@@ -170,6 +177,73 @@
 				"value":"Mode de fonctionnement",
 				"isVisible":"1"
 			}
-		]
-    }
+		],
+		"options":{
+			"verrou":{
+				"name":"Verrouillage",
+				"cmd":[
+					{
+						"name":"Etat Verrouillage",
+						"Synonyme":[],
+						"type":"info",
+						"subType":"binary",
+						"isHistorized":"1",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"1.003",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+						"name":"Activer le verrouillage",
+						"Synonyme":[],
+						"SameCmd":"Activer le verrouillage|Désactiver le verrouillage",
+						"type":"action",
+						"subType":"other",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectValue":"1",
+							"KnxObjectType":"1.003",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"value":"Etat Verrouillage",
+						"isVisible":"0"
+					},{
+						"name":"Désactiver le verrouillage",
+						"Synonyme":[],
+						"SameCmd":"Activer le verrouillage|Désactiver le verrouillage",
+						"type":"action",
+						"subType":"other",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectValue":"0",
+							"KnxObjectType":"1.003",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"value":"Etat Verrouillage",
+						"isVisible":"0"
+					}
+				]
+			}
+		}
+	}
 }

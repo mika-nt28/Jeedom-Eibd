@@ -1,11 +1,13 @@
 {
 	"light":{
 		"name":"Lumière",
+		"Synonyme":["Dimmer","Varriateur","Couleur ambiance","Ambiance"],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":[
-			{
+          		{
 				"name":"Etat",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"string",
 				"isHistorized":"0",
@@ -26,33 +28,9 @@
 				},
 				"isVisible":"0"
 			},{
-				"name":"Toogle",
-				"SameCmd":"Toogle|On|Off",
-				"type":"action",
-				"subType":"other",
-				"isHistorized":"0",
-				"configuration":{
-					"FlagInit":"0",
-					"FlagRead":"0",
-					"FlagTransmit":"0",
-					"FlagUpdate":"0",
-					"FlagWrite":"0",
-					"KnxObjectType":"1.001",
-					"inverse":"0",
-					"subTypeAuto":"1",
-					"noBatterieCheck":"0"
-				},
-				"template":{
-					"dashboard":"light",
-					"mobile":"light"
-				},
-				"display":{
-				},
-				"value":"Etat",
-				"isVisible":"1"
-			},{
 				"name":"On",
-				"SameCmd":"Toogle|On|Off",
+				"Synonyme":[],
+				"SameCmd":"On|Off",
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"0",
@@ -75,7 +53,8 @@
 				"isVisible":"0"
 			},{
 				"name":"Off",
-				"SameCmd":"Toogle|On|Off",
+				"Synonyme":[],
+				"SameCmd":"On|Off",
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"0",
@@ -97,6 +76,388 @@
 				"value":"Etat",
 				"isVisible":"0"
 			}
-		]
+		],
+		"options":{
+			"dimmer":{
+				"name":"Variation",
+				"cmd":[
+					{
+						"name":"Luminosité",
+						"Synonyme":[],
+						"type":"info",
+						"subType":"numeric",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"5.001",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+						"name":"Augmenter",
+						"Synonyme":[],	
+						"SameCmd":"Augmenter|Diminuer",
+						"type":"action",
+						"subType":"other",
+						"isHistorized":"0",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"3.007",
+							"KnxObjectValue":"0",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0",
+							"option":{
+								"ctrl": "1"
+							}
+						},
+						"unite":"step",
+						"isVisible":"0"
+					},{
+						"name":"Diminuer",
+						"Synonyme":[],
+						"SameCmd":"Augmenter|Diminuer",
+						"type":"action",
+						"subType":"other",
+						"isHistorized":"0",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"3.007",
+							"KnxObjectValue":"0",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0",
+							"option":{
+								"ctrl": "0"
+							}
+						},
+						"unite":"step",
+						"isVisible":"0"
+					},{
+						"name":"Variation",
+						"Synonyme":[],
+						"type":"action",
+						"subType":"slider",
+						"isHistorized":"0",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"5.001",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"display":{
+							"generic_type":"LIGHT_SLIDER"
+						},
+						"value":"Luminosité",
+						"isVisible":"1"
+					}
+				]
+			},
+			"rgb":{
+				"name":"Couleur",
+				"cmd":[
+					{
+						"name":"Etat Couleur",
+						"Synonyme":[],
+						"type":"info",
+						"subType":"color",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"232.600",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+						"name":"Couleur",
+						"Synonyme":[],
+						"type":"action",
+						"subType":"color",
+						"isHistorized":"0",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"232.600",
+							"KnxObjectValue":"0",
+							"inverse":"0",
+							"subTypeAuto":"1"
+						},
+						"value":"Etat Couleur",
+						"isVisible":"1"
+					}
+				]
+			},
+			"rgbw":{
+				"name":"RGBW",
+				"cmd":[
+					{
+						"name":"Etat R",
+						"Synonyme":[],
+						"type":"info",
+						"subType":"binary",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"1.001",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+						"name":"Etat G",
+						"Synonyme":[],
+						"type":"info",
+						"subType":"binary",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"1.001",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+						"name":"Etat B",
+						"Synonyme":[],
+						"type":"info",
+						"subType":"binary",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"1.001",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+						"name":"Etat W",
+						"Synonyme":[],
+						"type":"info",
+						"subType":"binary",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"1.001",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+						"name":"Luminosité  R",
+						"Synonyme":[],
+						"type":"info",
+						"subType":"numeric",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"5.001",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+						"name":"Luminosité  G",
+						"Synonyme":[],
+						"type":"info",
+						"subType":"numeric",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"5.001",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+						"name":"Luminosité  B",
+						"Synonyme":[],
+						"type":"info",
+						"subType":"numeric",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"5.001",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+						"name":"Luminosité  W",
+						"Synonyme":[],
+						"type":"info",
+						"subType":"numeric",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"5.001",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+						"name":"Vitesse de regulation 1",
+						"Synonyme":[],
+						"type":"action",
+						"subType":"slider",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"5.001",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+						"name":"Vitesse de regulation 2",
+						"Synonyme":[],
+						"type":"action",
+						"subType":"slider",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"5.001",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					},{
+						"name":"Varriation de couleur",
+						"Synonyme":[],
+						"type":"action",
+						"subType":"other",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"1.009",
+							"inverse":"0",
+							"subTypeAuto":"1",
+							"noBatterieCheck":"0"
+						},
+						"isVisible":"0"
+					}
+				]
+			},
+			"lumento":{
+				"name":"Lumento",
+				"cmd":[
+					{
+						"name":"Couleur Direct",
+						"Synonyme":[],
+						"type":"info",
+						"subType":"select",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"5.xxx",
+							"inverse":"0",
+							"subTypeAuto":"0",
+							"noBatterieCheck":"0",
+							"listValue":"0|Éteint;1|Blanc;2|Blanc Doux;3|Bleu;4|Bleu Clair;5|Bleu Foncé;6|Bleu Cyan;7|Bleu Turquoise;8|Bleu Lavande;9|Vert;10|Vert Clair;11|Vert foncé;12|Vert Lime;13|Rouge;14|Rouge Rose;15|Rouge Foncé;16|Rouge Magenta;17|Rouge Fuchsia;18|Jaune;19|Orange;20|Lilas;21|Violet"
+						},
+						"isVisible":"0"
+					}
+				]
+			}
+		}
 	}
 }

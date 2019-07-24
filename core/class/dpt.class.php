@@ -10,13 +10,12 @@ class Dpt{
 					$ValeurDpt=$All_DPT["Boolean"][$dpt]['Valeurs'];
 					$value = array_search($value, $ValeurDpt); 
 					}
-				if ($inverse)
-					{
+				if ($inverse){
 					if ($value == 0 )
 						$value = 1;
 					else
 						$value = 0;
-					}
+				}
 				$data= $value;
 				break;
 			case "2":
@@ -41,6 +40,8 @@ class Dpt{
 						$value = round(intval($value) * 255 / 360);
 						break;
 					case "5.004":
+						if ($inverse)
+							$value=255-$value;
 						$value = round(intval($value) * 255);
 						break;
 				}

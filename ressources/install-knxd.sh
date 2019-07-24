@@ -56,10 +56,9 @@ cd /usr/local/src/knxd
 sudo dpkg -i knxd_*.deb knxd-tools_*.deb
 sudo usermod -a -G dialout knxd
 echo 99 > /tmp/compilation_eibd_in_progress
-sudo mkdir /etc/eibd/
-sudo chmod 777 /etc/eibd/
-sudo systemctl knxd.service stop
-sudo systemctl knxd.service disable
+sudo service knxd stop
+sudo update-rc.d knxd disable
+sudo chmod 777 /usr/bin/knxd
 sudo rm /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
 echo "*                                       Installation terminé                                        *"

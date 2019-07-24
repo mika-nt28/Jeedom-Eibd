@@ -1,11 +1,13 @@
 {
 	"shutter": {
 		"name":"Volet",
+		"Synonyme":["BSO"],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":[
 			{
 				"name":"Déplacement",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"binary",
 				"isHistorized":"0",
@@ -24,6 +26,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Hauteur",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"0",
@@ -45,6 +48,7 @@
 				"isVisible":"0"
 			},{	
 				"name":"Stop - status",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"binary",
 				"isHistorized":"0",
@@ -63,6 +67,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Montée",
+				"Synonyme":[],
 				"SameCmd":"Montée|Descendre",
 				"type":"action",
 				"subType":"other",
@@ -89,6 +94,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Stop",
+				"Synonyme":[],
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"1",
@@ -114,6 +120,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Descendre",
+				"Synonyme":[],
 				"SameCmd":"Montée|Descendre",
 				"type":"action",
 				"subType":"other",
@@ -140,6 +147,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Position",
+				"Synonyme":[],
 				"type":"action",
 				"subType":"slider",
 				"isHistorized":"1",
@@ -165,6 +173,116 @@
 				"value":"Hauteur",
 				"isVisible":"1"
 			}
-		]
+		],
+		"options":{
+			"BSO":{
+				"name":"Variation",
+				"cmd":[
+					{
+						"name":"Lames Etat",
+						"Synonyme":[],
+						"type":"info",
+						"subType":"numeric",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"1",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"5.xxx",
+							"inverse":"0",
+							"noBatterieCheck":"0",
+							"minValue":"0",
+							"maxValue":"255",
+							"subTypeAuto":"1"
+						},
+						"template":{
+							"dashboard":"default",
+							"mobile":"default"
+						},
+						"display":{
+							"icon":"",
+							"generic_type":"FLAP_BSO_STATE"
+						},
+						"value":"",
+						"isVisible":"1"
+					},{
+						"name":"Lames Commande",
+						"Synonyme":[],
+						"type":"action",
+						"subType":"slider",
+						"isHistorized":"1",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"5.xxx",
+							"inverse":"0",
+							"noBatterieCheck":"0",
+							"minValue":"0",
+							"maxValue":"255",
+							"subTypeAuto":"1"
+						},
+						"value":"Lames Etat",
+						"isVisible":"1"
+					},{
+						"name":"Lames Montée",
+						"Synonyme":[],
+						"type":"action",
+						"subType":"slider",
+						"isHistorized":"0",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"5.xxx",
+							"inverse":"0",
+							"noBatterieCheck":"0",
+							"minValue":"0",
+							"maxValue":"255",
+							"subTypeAuto":"1"
+						},
+						"display":{
+							"generic_type":"FLAP_BSO_UP"
+						},
+						"value":"Lames Etat",
+						"isVisible":"0"
+					},{
+						"name":"Lames Decente",
+						"Synonyme":[],
+						"type":"action",
+						"subType":"slider",
+						"isHistorized":"1",
+						"unite":"",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"0",
+							"FlagWrite":"0",
+							"KnxObjectType":"5.xxx",
+							"inverse":"0",
+							"noBatterieCheck":"0",
+							"minValue":"0",
+							"maxValue":"255",
+							"subTypeAuto":"1"
+						},
+						"display":{
+							"generic_type":"FLAP_BSO_DOWN"
+						},
+						"value":"Lames Etat",
+						"isVisible":"0"
+					}
+				]
+			}
+		}
 	}
 }

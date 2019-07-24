@@ -147,11 +147,12 @@ class eibd extends eqLogic {
 		}
 		return $return;
 	}
-	public function applyModuleConfiguration($template) {
+	public function applyModuleConfiguration($template, $TemplateOptions=null) {
 		if ($template == '') {
 			$this->save();
 			return true;
 		}
+		$typeTemplate=$template;
 		$device = self::devicesParameters($template);
 		if (!is_array($device) || !isset($device['cmd'])) {
 			return true;
@@ -161,12 +162,8 @@ class eibd extends eqLogic {
 				$this->setConfiguration($key, $value);
 			}
 		}
-		$cmd_order = 0;
 		$link_cmds = array();
 		foreach ($device['cmd'] as $command) {
-			if (isset($device['cmd']['logicalId'])) {
-				continue;
-			}
 			$cmd = null;
 			foreach ($this->getCmd() as $liste_cmd) {
 				if (isset($command['name']) && $liste_cmd->getName() == $command['name']) {
@@ -174,39 +171,57 @@ class eibd extends eqLogic {
 					break;
 				}
 			}
-			try {
-				if ($cmd == null || !is_object($cmd)) {
-					$cmd = new eibdCmd();
-					$cmd->setOrder($cmd_order);
-					$cmd->setEqLogic_id($this->getId());
-				} else {
-					$command['name'] = $cmd->getName();
-				}
-				utils::a2o($cmd, $command);
-				if (isset($command['value']) && $command['value']!="") {
-					$CmdValue=cmd::byEqLogicIdCmdName($this->getId(),$command['value']);
-					if(is_object($CmdValue))
-						$cmd->setValue('#'.$CmdValue->getId().'#');
-					else
-						$cmd->setValue(null);
-				}
-				if (isset($command['configuration']['option']) && $command['configuration']['option']!="") {
-					$options=array();
-					foreach($command['configuration']['option'] as $option => $cmdOption){
-						$options[$option]=$cmdOption;
-						$CmdValue=cmd::byEqLogicIdCmdName($this->getId(),$cmdOption);
-						if(is_object($CmdValue))
-							$options[$option]='#'.$CmdValue->getId().'#';
+			$this->createTemplateCmd($cmd,$command);
+		}
+		if(is_array($TemplateOptions)){
+			foreach ($device['options'] as $DeviceOptionsId => $DeviceOptions) {
+				if(isset($TemplateOptions[$DeviceOptionsId])){
+					$typeTemplate.='_'.$DeviceOptionsId;
+					foreach ($DeviceOptions['cmd'] as $command) {
+						$cmd = null;
+						foreach ($this->getCmd() as $liste_cmd) {
+							if (isset($command['name']) && $liste_cmd->getName() == $command['name']) {
+								$cmd = $liste_cmd;	
+								break;
+							}
+						}
+						$this->createTemplateCmd($cmd,$command);
 					}
-					$cmd->setConfiguration('option',$options);
 				}
-				$cmd->save();
-				$cmd_order++;
-			} catch (Exception $exc) {
-				error_log($exc->getMessage());
 			}
-		$this->setConfiguration('typeTemplate',$template);
+		}
+		$this->setConfiguration('typeTemplate',$typeTemplate);
 		$this->save();
+	}
+	public function createTemplateCmd($cmd,$command) {		
+		try {
+			if ($cmd == null || !is_object($cmd)) {
+				$cmd = new eibdCmd();
+				$cmd->setEqLogic_id($this->getId());
+			} else {
+				$command['name'] = $cmd->getName();
+			}
+			utils::a2o($cmd, $command);
+			if (isset($command['value']) && $command['value']!="") {
+				$CmdValue=cmd::byEqLogicIdCmdName($this->getId(),$command['value']);
+				if(is_object($CmdValue))
+					$cmd->setValue('#'.$CmdValue->getId().'#');
+				else
+					$cmd->setValue(null);
+			}
+			if (isset($command['configuration']['option']) && $command['configuration']['option']!="") {
+				$options=array();
+				foreach($command['configuration']['option'] as $option => $cmdOption){
+					$options[$option]=$cmdOption;
+					$CmdValue=cmd::byEqLogicIdCmdName($this->getId(),$cmdOption);
+					if(is_object($CmdValue))
+						$options[$option]='#'.$CmdValue->getId().'#';
+				}
+				$cmd->setConfiguration('option',$options);
+			}
+			$cmd->save();
+		} catch (Exception $exc) {
+			error_log($exc->getMessage());
 		}
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -223,7 +238,7 @@ class eibd extends eqLogic {
 	public static function SearchBroadcastGateway(){	
 		$result=array();
 		$ServerPort=1024;
-		$ServerAddr=config::byKey('internalAddr');
+		$ServerAddr=config::byKey('internalAddr','eibd');
 		set_time_limit(0); 
 		$BroadcastSocket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 		if (!$BroadcastSocket) {
@@ -660,24 +675,31 @@ class eibd extends eqLogic {
 				}
 			}
 		}
+		exec("sudo touch /var/log/knx.log");
+		exec("sudo chmod 777 /var/log/knx.log");
 		$cmd = '';
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
-				$cmd .= 'sudo knxd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid --eibaddr='.config::byKey('EibdGad', 'eibd').' --client-addrs='.config::byKey('EibdGad', 'eibd').':'.config::byKey('EibdNbAddr', 'eibd');
-			break;
+            			$clientAddrs = explode('.',config::byKey('EibdGad', 'eibd'));
+            			$clientAddrs[count($clientAddrs)-1] +=1;
+				$cmd .= 'knxd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid -t1023 --eibaddr='.config::byKey('EibdGad', 'eibd').' --client-addrs='.implode('.',$clientAddrs).':'.config::byKey('EibdNbAddr', 'eibd');
+           		break;
 			case 'eibd':
-				$cmd .= 'sudo eibd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid --eibaddr='.config::byKey('EibdGad', 'eibd');			
+				$cmd .= 'eibd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid -t1023 --eibaddr='.config::byKey('EibdGad', 'eibd');			
 			break;
 		}
 		if(config::byKey('KnxSoft', 'eibd') == 'knxd' && config::byKey('ServeurName', 'eibd') !='')
-			$cmd .= ' --Name=JeedomKnx';
+			$cmd .= ' --Name='.config::byKey('ServeurName', 'eibd');
 		if(config::byKey('Discovery', 'eibd'))
 				$cmd .= ' -D';
 		if(config::byKey('Routing', 'eibd'))
 				$cmd .= ' -R';
 		if(config::byKey('Tunnelling', 'eibd'))
 				$cmd .= '  -T';
-		$cmd .= ' -S --listen-tcp='.config::byKey('EibdPort', 'eibd');	
+		if(config::byKey('Discovery', 'eibd') || config::byKey('Routing', 'eibd') || config::byKey('Tunnelling', 'eibd'))
+				$cmd .= '  -S';
+		$cmd .= ' --listen-tcp='.config::byKey('EibdPort', 'eibd');
+		$cmd .= ' -b ';	
 		if($cmd != ''){
 			switch(config::byKey('TypeKNXgateway', 'eibd')){
 				case 'ip':
@@ -703,7 +725,8 @@ class eibd extends eqLogic {
 				break;
 			}
 			$cmd .=config::byKey('KNXgateway', 'eibd');
-			$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
+			$cmd .= ' >> /var/log/knx.log 2>&1 &';
+          		log::add('eibd','info', '[Start] '.$cmd);
 			exec($cmd);
 		}
 		$cron = cron::byClassAndFunction('eibd', 'BusMonitor');
@@ -742,6 +765,9 @@ class eibd extends eqLogic {
 		}
 		while(is_object($listener=listener::byClassAndFunction('eibd', 'TransmitValue')))
 			$listener->remove();
+		if(file_exists("/var/log/knx.log"))			
+			exec("sudo rm /var/log/knx.log");
+			
 	}
 
   }
@@ -828,8 +854,9 @@ class eibdCmd extends cmd {
 					if(is_array($data[0])){
 						foreach($data as $frame){
 							$WriteBusValue=eibd::EibdWrite($ga, $frame);
-							sleep(1);
+							usleep(config::byKey('SendSleep','eibd')*1000);
 						}
+						break;
 					}else{
 						$WriteBusValue=eibd::EibdWrite($ga, $data);
 						/*if ($WriteBusValue != -1 && isset($Listener) && is_object($Listener) && $ga==$Listener->getLogicalId()){
@@ -838,13 +865,12 @@ class eibdCmd extends cmd {
 						}*/
 					}
 				}
+				usleep(config::byKey('SendSleep','eibd')*1000);
 			break;
 			case 'info':
 				$DataBus=eibd::EibdRead($ga);
 				if($DataBus === false){
-					$this->setConfiguration('FlagInit',false);
-					$this->setConfiguration('CycliqueSend','');
-					$this->save();
+					message::add('info',$this->getHumanName().'[READ]: Aucune reponse','',$ga);
 					return;
 				}
 				$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);

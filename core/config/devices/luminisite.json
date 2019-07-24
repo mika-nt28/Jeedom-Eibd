@@ -1,6 +1,7 @@
 {
 	"luminisite":{
 		"name":"Luminosité",
+		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
 		"category":	{
@@ -15,6 +16,7 @@
 		"cmd":[
 			{
 				"name":"valeur",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"1",

@@ -1,11 +1,13 @@
 {
 	"impulsion":{
 		"name":"Impulsion",
+		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":[
-    {
+    			{
 				"name":"Eau de pluie",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"0",
@@ -30,6 +32,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Eau de ville",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
 				"unite":"pulses",
@@ -52,6 +55,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Gaz",
+				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"0",

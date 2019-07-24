@@ -8,7 +8,7 @@ Installation et configuration
 ===========
 
 Configuration du plugin et de ses dépendances
----
+----------------------------------------------
 ![introduction01](../images/eibd_screenshot_Configuration.jpg)
 
 * `Interface de communication` : Choisir l'interface par laquel nous allons nous connecter au bus
@@ -30,8 +30,21 @@ Configuration du plugin et de ses dépendances
 
 > Pensez à sauvegarder.
 
+Configuration avancée 
+---------------------
+![Parametre de configuration avancée](../images/ConfigurationAvance.png)
+
+* `Nom du serveur KNX` : donne un nom au service knxd quand il est utilisé, uniquement pour KNXd
+
+* `Visibilité du serveur KNX` : le serveur knx virtuel répond a un requet permettant de decouvrir les passerelles par un multicat IP dédié au KNX (224.0.23.12).
+Cette fonctionnalité est présente dans ETS et liste automatiquement toutes les passerelles sur le réseau locale. En désactivant cette fonctionnalité, le daemon ne répondra plus.
+
+* `Mode Routing` et `Mode Tunnelling` : permet au daemon de devenir un router KNX virtuel.
+Le mode Routing permet d’écouter et de réponde au multicat IP dédié au KNX (224.0.23.12)
+Le mode Tunnelling permet de se connecter depuis un client IP comme ETS vers le BUS en passant par le deamon. utile si la passerelle IP n’autorise qu’une connexion simultanée et si elle est déjà utilisée par Jeedom.
+
 Installation des dépendances
----
+----------------------------
 Pour faciliter la mise en place des dépendances, jeedom vas gérer seul l'installation de la suite logiciele EIBD.
 
 Dans la cadre réservé aux dépendances, vous allez avoir le statut de l'installation.
