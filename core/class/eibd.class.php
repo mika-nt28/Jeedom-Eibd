@@ -699,7 +699,8 @@ class eibd extends eqLogic {
 		if(config::byKey('Discovery', 'eibd') || config::byKey('Routing', 'eibd') || config::byKey('Tunnelling', 'eibd'))
 				$cmd .= '  -S';
 		$cmd .= ' --listen-tcp='.config::byKey('EibdPort', 'eibd');
-		$cmd .= ' -b ';	
+		if(config::byKey('KnxSoft', 'eibd') == 'knxd')
+			$cmd .= ' -b ';	
 		if($cmd != ''){
 			switch(config::byKey('TypeKNXgateway', 'eibd')){
 				case 'ip':
