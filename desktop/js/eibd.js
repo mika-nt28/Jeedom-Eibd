@@ -42,16 +42,15 @@ $('.Template[data-action=add]').off().on('click', function () {
 							error: function(request, status, error) {},
 							success: function(data) {
 								var eqLogic=data.result;
-								/*eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
+								//eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
 								$.each(eqLogic.options,function(id, option){
 									if($('.TemplateOption[data-l1key='+id+']').is(':checked')){
-										eqLogic.configuration.typeTemplate = eqLogic.configuration.typeTemplate + "_" + id;
+										//eqLogic.configuration.typeTemplate = eqLogic.configuration.typeTemplate + "_" + id;
 										$.each(option.cmd,function(idCmd, cmd){
 											eqLogic.cmd.push(cmd);
 										});
 									}
-								});*/
-								
+								});
 								$.each(eqLogic.cmd,function(index, value){
 									eqLogic.cmd[index].logicalId=searchSameCmd(eqLogic,index);
 									if (typeof(eqLogic.cmd[index].value) !== 'undefined')
