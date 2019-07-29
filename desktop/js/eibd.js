@@ -1,15 +1,15 @@
-function searchSameCmd(eqLogic,index){
+function searchSameCmd(eqLogic,index,option){
 	if (typeof(eqLogic.cmd[index].SameCmd) !== 'undefined'){
       		var GAD='';
 		$('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
 			if($(this).val() == eqLogic.cmd[index].SameCmd){
-				GAD =  $('.CmdEqLogicTemplateAttr[data-l1key='+$(this).attr('data-l1key')+'][data-l2key=logicalId]').val();
+				GAD =  $(option + ' .CmdEqLogicTemplateAttr[data-l1key='+$(this).attr('data-l1key')+'][data-l2key=logicalId]').val();
          			return GAD;
 			}
          	});
          	return GAD;
 	}
-	return $('.CmdEqLogicTemplateAttr[data-l1key='+index+'][data-l2key=logicalId]').value();									
+	return $(option + ' .CmdEqLogicTemplateAttr[data-l1key='+index+'][data-l2key=logicalId]').value();									
 }
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $('.Template[data-action=add]').off().on('click', function () {
@@ -42,21 +42,25 @@ $('.Template[data-action=add]').off().on('click', function () {
 							error: function(request, status, error) {},
 							success: function(data) {
 								var eqLogic=data.result;
-								//eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
+								var typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
 								$.each(eqLogic.options,function(id, option){
 									if($('.TemplateOption[data-l1key='+id+']').is(':checked')){
-										//eqLogic.configuration.typeTemplate = eqLogic.configuration.typeTemplate + "_" + id;
-										$.each(option.cmd,function(idCmd, cmd){
-											eqLogic.cmd.push(cmd);
+										typeTemplate = typeTemplate + "_" + id;
+										$.each(option.cmd,function(index, cmd){
+										    option.cmd[index].logicalId=searchSameCmd(option,index,'.'+id);
+										    if (typeof(option.cmd[index].value) !== 'undefined')
+											option.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object_id] option:selected').text()+"]["+eqLogic.name+"]["+option.cmd[index].value+"]#";
+										    addCmdToTable(option.cmd[index]);
 										});
 									}
 								});
 								$.each(eqLogic.cmd,function(index, value){
-									eqLogic.cmd[index].logicalId=searchSameCmd(eqLogic,index);
+									eqLogic.cmd[index].logicalId=searchSameCmd(eqLogic,index,'');
 									if (typeof(eqLogic.cmd[index].value) !== 'undefined')
 										eqLogic.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object_id] option:selected').text()+"]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
 									addCmdToTable(eqLogic.cmd[index]);
 								});
+                              $(".eqLogicAttr[data-l2key=typeTemplate]").val(typeTemplate)
 							}
 						});
 					}
