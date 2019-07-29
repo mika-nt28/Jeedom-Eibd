@@ -92,7 +92,8 @@
 								</sup>
 							</label>
 							<div class="col-sm-3">
-								<input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
+								<input type="hidden" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="typeTemplate"/>
+								<input type="hidden" class="eqLogicAttr form-control" data-l1key="id" />
 								<input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'équipement KNX}}"/>
 							</div>
 						</div>
