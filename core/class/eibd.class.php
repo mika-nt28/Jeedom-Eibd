@@ -726,7 +726,7 @@ class eibd extends eqLogic {
 				break;
 			}
 			$cmd .=config::byKey('KNXgateway', 'eibd');
-			$cmd .= ' >> /var/log/knx.log';
+			$cmd .= ' >> /var/log/knx.log 2>&1 &';
           		log::add('eibd','info', '[Start] '.$cmd);
 			exec($cmd);
 		}
