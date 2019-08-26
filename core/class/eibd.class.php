@@ -726,7 +726,7 @@ class eibd extends eqLogic {
 				break;
 			}
 			$cmd .=config::byKey('KNXgateway', 'eibd');
-			$cmd .= ' >> /var/log/knx.log';
+			$cmd .= ' >> /var/log/knx.log 2>&1';
           		log::add('eibd','info', '[Start] '.$cmd);
 			exec($cmd);
 		}
@@ -756,7 +756,7 @@ class eibd extends eqLogic {
 			break;
 		}
 		if(isset($cmd)){
-			$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
+			$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1';
 			exec($cmd);
 		}
 		$cron = cron::byClassAndFunction('eibd', 'BusMonitor');
