@@ -251,7 +251,7 @@ De meme, si vous avez configurer les DPT dans votre projet ETS, et l'adresse phy
 Adresse de groupes
 ------------------
 
-Cette onglet permet de recreer l'arboressance de GAD tel qu'elle est defini dans ETS.
+Cette onglet permet de recreer l'arborescence de GAD tel qu'elle est defini dans ETS.
 Pour que remplir ce tableau, il est imperatif d'utiliser le parseur ETS.
 
 Si vous avez ouvert cette fenetre depuis un bouton de selection de GAD, alors vous aurrez la possibilité de selectioner le bon GAD (qui se mettera en gras) et de valider pour retourner a la page de configuration.
@@ -267,9 +267,9 @@ En téléchargeant votre projet ETS (.knxproj), vous allez permetre a jeedom de 
 
 Avec le parseur vous pouvez luis demander des actions supplémentaire
 
-* Arboressance des groupes : Défini, pour chaque rang de votre arboressance de vos gad, un type d'information. Cette configuration est obligatoire si vous voulez qu'il cree automatiquement vos objets et equipement
-* Créer les objets : Le parser cree automatiquement s'il n'existe pas les objets defini dans le rang d'arboressance de vos gad
-* Créer les equipements  : Le parser cree automatiquement s'il n'existe pas vos equipement tel que  defini dans le rang d'arboressance de vos gad. Il sera toutefois imperatif de remprendre la configuration de chaqu'un car le fichier ETS ne defini pas tout.
+* Arborescence des groupes : Défini, pour chaque rang de votre arborescence de vos gad, un type d'information. Cette configuration est obligatoire si vous voulez qu'il cree automatiquement vos objets et equipement
+* Créer les objets : Le parser cree automatiquement s'il n'existe pas les objets defini dans le rang d'arborescence de vos gad
+* Créer les equipements  : Le parser cree automatiquement s'il n'existe pas vos equipement tel que  defini dans le rang d'arborescence de vos gad. Il sera toutefois imperatif de remprendre la configuration de chaqu'un car le fichier ETS ne defini pas tout.
 * Uniquement correspondant a un Template : Cette option permet de cree un equipement qui corresponde a un Template. Pour que le plugin puisse identifier le template et ses commandes, l'architecture de gad de votre projet doit corresponde exactement au projet ETS.[Voici un exemple]: https://github.com/mika-nt28/Jeedom-Eibd/raw/master/docs/images/Jeedom_Template.knxproj
 * Importer votre projet : Champs d'import de votre projet ETS (.knxproj)
 
