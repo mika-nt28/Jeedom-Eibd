@@ -40,7 +40,7 @@ if (!isConnect('admin')) {
 				<input type="checkbox" class="EtsParseParameter" data-l1key="createEqLogic"/>
 			</div> 
 			<div class="form-group withCreate"> 
-				<label class="col-md-4 control-label">{{Arboressance des groupes}}
+				<label class="col-md-4 control-label">{{Arborescence des groupes}}
 					<sup>
 						<i class="fa fa-question-circle tooltips" title="{{La définition de l'arboressance de groupe permet au parser de connaitre ou se situe le nom a prendre pour la creation automatique des objets ou des equipemnt}}" style="font-size : 1em;color:grey;"></i>
 					</sup>
