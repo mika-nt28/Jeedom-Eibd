@@ -722,6 +722,8 @@ class eibd extends eqLogic {
 					$cmd .=' tpuarts:';
 				break;
 				case 'usb':
+					$USBaddr = explode(":",config::byKey('KNXgateway', 'eibd'));
+					exec("sudo /dev/bus/usb/".$USBaddr[0]."/".$USBaddr[1]." 2>&1");
 					$cmd .=' usb:';
 				break;
 			}
