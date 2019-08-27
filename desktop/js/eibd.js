@@ -41,6 +41,10 @@ $('.Template[data-action=add]').off().on('click', function () {
 							global: true,
 							error: function(request, status, error) {},
 							success: function(data) {
+								if (data.state != 'ok') {
+									$('#div_alert').showAlert({message: data.result, level: 'danger'});
+									return;
+								}
 								var eqLogic=data.result;
 								var typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
 								$.each(eqLogic.options,function(id, option){
@@ -60,7 +64,7 @@ $('.Template[data-action=add]').off().on('click', function () {
 										eqLogic.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object_id] option:selected').text()+"]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
 									addCmdToTable(eqLogic.cmd[index]);
 								});
-                              $(".eqLogicAttr[data-l2key=typeTemplate]").val(typeTemplate)
+                              					$(".eqLogicAttr[data-l2key=typeTemplate]").val(typeTemplate)
 							}
 						});
 					}
@@ -103,7 +107,13 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 							global: true,
 							error: function(request, status, error) {},
 							success: function(data) {
+								if (data.state != 'ok') {
+									$('#div_alert').showAlert({message: data.result, level: 'danger'});
+									return;
+								}
 								var eqLogic=data.result;
+								if (typeof(eqLogic.configuration) === 'undefined')
+									eqLogic.configuration=new Object();
 								eqLogic.configuration.typeTemplate=$('.EqLogicTemplateAttr[data-l1key=template]').value();
 								$.each(eqLogic.options,function(id, option){
 									if($('.TemplateOption[data-l1key='+id+']').is(':checked')){
@@ -120,8 +130,7 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 								if (typeof(eqLogic.object_id) === 'undefined')
 									eqLogic.object_id=new Object();
 								eqLogic.object_id=$('.EqLogicTemplateAttr[data-l1key=object_id]').value();
-								if (typeof(eqLogic.configuration) === 'undefined')
-									eqLogic.configuration=new Object();
+								
 								$.each(eqLogic.cmd,function(index, value){
 									eqLogic.cmd[index].logicalId=searchSameCmd(eqLogic,index);
 									if (typeof(eqLogic.cmd[index].value) !== 'undefined')
