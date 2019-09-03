@@ -220,7 +220,7 @@
 							"noBatterieCheck":"0"
 						},
 						"value":"Etat Verrouillage",
-						"isVisible":"0"
+						"isVisible":"1"
 					},{
 						"name":"Désactiver le verrouillage",
 						"Synonyme":[],
@@ -240,7 +240,7 @@
 							"noBatterieCheck":"0"
 						},
 						"value":"Etat Verrouillage",
-						"isVisible":"0"
+						"isVisible":"1"
 					}
 				]
 			}
