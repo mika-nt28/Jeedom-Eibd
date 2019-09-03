@@ -50,7 +50,7 @@
 					"generic_type":"LIGHT_ON"
 				},
 				"value":"Etat",
-				"isVisible":"0"
+				"isVisible":"1"
 			},{
 				"name":"Off",
 				"Synonyme":[],
@@ -74,7 +74,7 @@
 					"generic_type":"LIGHT_OFF"
 				},
 				"value":"Etat",
-				"isVisible":"0"
+				"isVisible":"1"
 			}
 		],
 		"options":{
