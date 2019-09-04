@@ -168,6 +168,10 @@
 						"display":{
 							"generic_type":"LIGHT_SLIDER"
 						},
+						"template":{
+							"dashboard": "core::light", 
+							"mobile": "core::light"
+						},
 						"value":"Luminosité",
 						"isVisible":"1"
 					}
