@@ -165,7 +165,8 @@
 					"noBatterieCheck":"0"
 				},
 				"template":{
-					"dashboard":"SlidVertical"
+					"dashboard": "core::shutter", 
+					"mobile": "core::shutter"
 				},
 				"display":{
 					"generic_type":"FLAP_SLIDER"
@@ -197,10 +198,6 @@
 							"minValue":"0",
 							"maxValue":"255",
 							"subTypeAuto":"1"
-						},
-						"template":{
-							"dashboard":"default",
-							"mobile":"default"
 						},
 						"display":{
 							"icon":"",
