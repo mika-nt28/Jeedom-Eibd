@@ -48,30 +48,10 @@ try {
 	}
 	if (init('action') == 'Read') {
 		$Commande=cmd::byLogicalId(init('Gad'))[0];
-		if (is_object($Commande)){
-			$ga=$Commande->getLogicalId();
-			$dpt=$Commande->getConfiguration('KnxObjectType');
-			$inverse=$Commande->getConfiguration('inverse');
-			log::add('eibd', 'debug', 'Lecture sur le bus de l\'adresse de groupe : '. $ga);
-			$DataBus=eibd::EibdRead($ga);	
-			$option=null;
-			if ($dpt == '235.001')
-				{
-				$option=array(
-					"Tarif"=>$Commande->getConfiguration('option1'),
-					"validityTarif"=>$Commande->getConfiguration('option2'),
-					"validityActiveElectricalEnergy"=>$Commande->getConfiguration('option3')
-					);
-				}
-			$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$option);
-			$Commande->setCollectDate(date('Y-m-d H:i:s'));
-			//$Commande->setConfiguration('doNotRepeatEvent', 1);
-			$Commande->event($BusValue);
-			$Commande->save();
-			ajax::success($BusValue);
-			//ajax::success(true);
-		}
-		ajax::success(false);
+		if (is_object($Commande))
+			ajax::success($Commande->execute());
+		else
+			ajax::success(false);
 	}
 	if (init('action') == 'getCacheGadInconue') {
 		ajax::success(cache::byKey('eibd::CreateNewGad')->getValue('[]'));
