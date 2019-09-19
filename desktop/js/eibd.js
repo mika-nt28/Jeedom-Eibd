@@ -568,11 +568,11 @@ function addCmdToTable(_cmd) {
 			global: false,
 			error: function(request, status, error) {},
 			success: function(data) {
-				if (!data.result)
+				if (data.result === false)
 					$('#div_alert').showAlert({message: 'Aucun message recu', level: 'error'});
 				else
-					$('#div_alert').showAlert({message: 'Message recu', level: 'success'});
-				}
+					$('#div_alert').showAlert({message: 'Message recu :' +data.result, level: 'success'});
+			}
 		});
 	});
 	/*$('.cmdAttr[data-l1key=logicalId]').off().on('keyup', function() {

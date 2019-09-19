@@ -232,7 +232,11 @@ class eibd extends eqLogic {
 	public static function SearchUsbGateway(){
 		$cmd="sudo findknxusb";
 		//$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
-		$result=explode(" ",exec($cmd));			
+		$result=explode(" ",exec($cmd));	
+		$USBaddr = explode(":",$result[1]);
+		exec("sudo /dev/bus/usb/".$USBaddr[0]."/".$USBaddr[1]." 2>&1");
+		$cmd="sudo findknxusb";
+		$result=explode(" ",exec($cmd));	
 		return $result[1];
 	}
 	public static function SearchBroadcastGateway(){	
@@ -695,9 +699,9 @@ class eibd extends eqLogic {
 		if(config::byKey('Routing', 'eibd'))
 				$cmd .= ' -R';
 		if(config::byKey('Tunnelling', 'eibd'))
-				$cmd .= '  -T';
+				$cmd .= ' -T';
 		if(config::byKey('Discovery', 'eibd') || config::byKey('Routing', 'eibd') || config::byKey('Tunnelling', 'eibd'))
-				$cmd .= '  -S';
+				$cmd .= ' -S';
 		$cmd .= ' --listen-tcp='.config::byKey('EibdPort', 'eibd');
 		if(config::byKey('KnxSoft', 'eibd') == 'knxd')
 			$cmd .= ' -b ';	
@@ -722,8 +726,6 @@ class eibd extends eqLogic {
 					$cmd .=' tpuarts:';
 				break;
 				case 'usb':
-					//$USBaddr = explode(":",config::byKey('KNXgateway', 'eibd'));
-					//exec("sudo /dev/bus/usb/".$USBaddr[0]."/".$USBaddr[1]." 2>&1");
 					$cmd .=' usb:';
 				break;
 			}
