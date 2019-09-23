@@ -229,15 +229,23 @@ class eibd extends eqLogic {
 	//                                                      Recherche automatique passerelle                                                       // 
 	//                                                                                                                                               //
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public static function SearchUsbGateway(){
-		$cmd="sudo findknxusb";
-		//$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1 &';
+	public static function SearchUsbGateway(){		
+		if(config::byKey('KnxSoft', 'eibd') == 'knxd')
+			$cmd="sudo /usr/local/src/knxd/knxd/src/usb/findknxusb";
+		else
+			$cmd="sudo findknxusb";
 		$result=explode(" ",exec($cmd));	
 		$USBaddr = explode(":",$result[1]);
-		exec("sudo /dev/bus/usb/".$USBaddr[0]."/".$USBaddr[1]." 2>&1");
-		$cmd="sudo findknxusb";
-		$result=explode(" ",exec($cmd));	
-		return $result[1];
+		$cmd = sprintf("/dev/bus/usb/%'.03d/%'.03d",$USBaddr[0],$USBaddr[1]);
+		log::add('eibd', 'debug', "Droit d'acces sur la passerelle USB " . $cmd);
+		exec("sudo chmod 777 ".$cmd. ' >> ' . log::getPathToLog('eibd') . ' 2>&1');
+		if(config::byKey('KnxSoft', 'eibd') == 'knxd'){
+			return $USBaddr[0].":".$USBaddr[1];
+		}else{
+			$cmd="sudo findknxusb";
+			$result=explode(" ",exec($cmd));	
+			return $result[1];
+		}
 	}
 	public static function SearchBroadcastGateway(){	
 		$result=array();
