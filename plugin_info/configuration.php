@@ -14,8 +14,8 @@ if (!isConnect()) {
 				<label class="col-lg-4 control-label" >{{Interface de communication :}}</label>
 				<div class="col-lg-4">
 					<select class="configKey form-control" data-l1key="KnxSoft" >
-						<option value="knxd">KNXd</option>
-						<option value="eibd">EIBD</option>
+						<option value="knxd">KNXd (Recommandée)</option>
+						<option value="eibd">EIBD (Déprecier)</option>
 						<option value="manual">Manuel</option>
 					</select>
 				</div>
