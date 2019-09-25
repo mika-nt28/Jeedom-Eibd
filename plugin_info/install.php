@@ -5,6 +5,8 @@ function eibd_install() {
 }
 function eibd_update() {
 	log::add('eibd','debug','Lancement du scripte de mise a  jours'); 
+	if(exec("command -v eibd") !='')
+		config::save('KnxSoft', 'eibd','eibd');
 	if(config::byKey('KnxSoft', 'eibd') == 'eibd')
 		exec('sudo usermod -a -G www-data eibd');
 	if(config::byKey('KnxSoft', 'eibd') == 'knxd')
