@@ -56,8 +56,12 @@ cd /usr/local/src/knxd
 sudo dpkg -i knxd_*.deb knxd-tools_*.deb
 sudo usermod -a -G dialout knxd
 echo 99 > /tmp/compilation_eibd_in_progress
-sudo service knxd stop
-sudo update-rc.d knxd disable
+sudo systemctl knxd stop
+sudo systemctl stop knxd.service
+sudo systemctl stop knxd.socket 
+sudo systemctl disable knxd.service
+sudo systemctl disable knxd.socket 
+sudo update-rc.d
 sudo chmod 777 /usr/bin/knxd
 sudo rm /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
