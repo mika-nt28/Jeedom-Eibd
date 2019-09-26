@@ -4,7 +4,7 @@ function eibd_install() {
 	log::add('eibd','debug','Instalation'); 
 }
 function eibd_update() {
-	log::add('eibd','debug','Lancement du scripte de mise a  jours'); 
+	log::add('eibd','debug','Lancement du script de mise a jours'); 
 	if(exec("command -v eibd") !='')
 		config::save('KnxSoft', 'eibd','eibd');
 	else{
@@ -40,6 +40,7 @@ function eibd_update() {
 		}
 		$eqLogic->save();
 	}
+	log::add('eibd','debug','Fin du script de mise a jours'); 
 }
 function eibd_remove() {
 	while(is_object($listener=listener::byClassAndFunction('eibd', 'TransmitValue')))
