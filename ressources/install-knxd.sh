@@ -26,7 +26,6 @@ sudo apt-get -qy install libev-dev
 sudo apt-get -qy install git-core
 sudo apt-get -qy install dpkg-buildpackage
 sudo apt-get -qy install cdb
-sudo apt-get -qy install git-core
 sudo apt-get -qy install debhelper
 sudo apt-get -qy install autoconf
 sudo apt-get -qy install automake
