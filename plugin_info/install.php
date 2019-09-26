@@ -1,8 +1,5 @@
 <?php
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
-function eibd_install() {
-	log::add('eibd','debug','Instalation'); 
-}
 function eibd_update() {
 	log::add('eibd','debug','Lancement du script de mise a jours'); 
 	if(exec("command -v eibd") !='')
