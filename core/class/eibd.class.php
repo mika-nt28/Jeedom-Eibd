@@ -324,8 +324,7 @@ class eibd extends eqLogic {
 			$result['KnxIpGateway'] ="";
 			$result['KnxPortGateway'] ="";
 			$result['IndividualAddressGateWay']="";
-			//$result['DeviceName']="";
-			break;
+			$result['DeviceName']="";
 		}	
 		return $result;
 	}
