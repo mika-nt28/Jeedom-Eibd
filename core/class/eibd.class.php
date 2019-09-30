@@ -263,7 +263,10 @@ class eibd extends eqLogic {
 			log::add('eibd', 'debug', "socket_set_option() failed: reason: " . socket_strerror(socket_last_error($BroadcastSocket)));
 			return false;
 		}
-		socket_set_timeout($BroadcastSocket,2);
+     		if (!socket_set_option($BroadcastSocket,SOL_SOCKET,SO_RCVTIMEO,array("sec"=>1,"usec"=>0))) {
+			log::add('eibd', 'debug', "socket_set_option() failed: reason: " . socket_strerror(socket_last_error($BroadcastSocket)));
+			return false;
+		}
 		log::add('eibd', 'debug', 'Envoi de la trame search request');
 		$msg = "06".						// 06 HEADER_SIZE
 		"10".					// 10 KNX/IP v1.0
@@ -286,7 +289,7 @@ class eibd extends eqLogic {
 			return false;
 		}
 		$NbLoop=0;
-		while($NbLoop < 100) { 
+		while($NbLoop < 10) { 
 			$buf = '';
 			socket_recvfrom($BroadcastSocket, $buf , 2048, 0, $name, $port);
 			$ReadFrame= unpack("C*", $buf);
