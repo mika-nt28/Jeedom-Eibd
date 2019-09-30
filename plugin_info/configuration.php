@@ -149,30 +149,54 @@ $('.configKey[data-l1key=KnxSoft]').on('change',function(){
 	}
 });
 $('.SearchGatway').on('click',function(){
-	//if($('.configKey[data-l1key=KNXgateway]').val()==''){
-		$.ajax({
-			async: false,
-			type: 'POST',
-			url: 'plugins/eibd/core/ajax/eibd.ajax.php',
-			data:
-				{
-				action: 'SearchGatway',
-				type: $('.configKey[data-l1key=TypeKNXgateway]').val(),
-				},
-			dataType: 'json',
-			global: false,
-			error: function(request, status, error) {},
-			success: function(data) {
-				if (data.state != 'ok') {
-					$('#div_alert').showAlert({message: data.result, level: 'danger'});
-					return;
+	$.ajax({
+		async: false,
+		type: 'POST',
+		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+		data:
+			{
+			action: 'SearchGatway',
+			type: $('.configKey[data-l1key=TypeKNXgateway]').val(),
+			},
+		dataType: 'json',
+		global: false,
+		error: function(request, status, error) {},
+		success: function(data) {
+			if (data.state != 'ok') {
+				$('#div_alert').showAlert({message: data.result, level: 'danger'});
+				return;
+			}
+			if(data.result){
+				var format = '';
+				switch($('.configKey[data-l1key=TypeKNXgateway]').val()){
+					case 'ip':
+						format = '%(KnxIpGateway)';
+					break;
+					case 'ipt':
+					case 'iptn':
+						format = '%(KnxIpGateway):%(KnxPortGateway)';
+					break;
+					/*case 'ft12':
+					break;
+					case 'bcu1':
+					break;
+					case 'tpuarts':
+					break;*/
+					case 'usb':
+						format = '{}';
+					break;
 				}
-				if(data.result)
-				{
-					$('.configKey[data-l1key=KNXgateway]').val(data.result);
+				if(!data.result.isArray){
+					$('.configKey[data-l1key=KNXgateway]').val(sprintf(format ,data.result));
+				}else{
+					var html = $('<select class="configKey" data-l1key="KNXgateway" >');
+					$.each(data.result,function(index, value){
+						html.append($('<option>').attr('value',sprintf(format ,data.result)).text(data.result.DeviceName));
+					})
+					$('.configKey[data-l1key=KNXgateway]').parent().html(html);
 				}
 			}
-		});
-	//}
+		}
+	});
 });
 </script>
