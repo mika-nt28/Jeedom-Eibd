@@ -263,6 +263,10 @@ class eibd extends eqLogic {
 			log::add('eibd', 'debug', "socket_set_option() failed: reason: " . socket_strerror(socket_last_error($BroadcastSocket)));
 			return false;
 		}
+     		if (!socket_set_option($BroadcastSocket,SOL_SOCKET,SO_RCVTIMEO,array("sec"=>1,"usec"=>0))) {
+			log::add('eibd', 'debug', "socket_set_option() failed: reason: " . socket_strerror(socket_last_error($BroadcastSocket)));
+			return false;
+		}
 		log::add('eibd', 'debug', 'Envoi de la trame search request');
 		$msg = "06".						// 06 HEADER_SIZE
 		"10".					// 10 KNX/IP v1.0
@@ -285,7 +289,7 @@ class eibd extends eqLogic {
 			return false;
 		}
 		$NbLoop=0;
-		while(!isset($result['KnxIpGateway'])) { 
+		while($NbLoop < 10) { 
 			$buf = '';
 			socket_recvfrom($BroadcastSocket, $buf , 2048, 0, $name, $port);
 			$ReadFrame= unpack("C*", $buf);
@@ -301,28 +305,30 @@ class eibd extends eqLogic {
 				case 0x02:
 					switch (array_slice($Header,3,1)[0]){
 						case 0x02:
-							$result['KnxIpGateway'] =	array_slice($Body,2,1)[0]
+							$result[]['KnxIpGateway'] =	array_slice($Body,2,1)[0]
 											.".".	array_slice($Body,3,1)[0]
 											.".".	array_slice($Body,4,1)[0]
 											.".".	array_slice($Body,5,1)[0];
 							$KnxPortGateway =	array_slice($Body,6,2);
-							$result['KnxPortGateway'] =$KnxPortGateway[0]<<8|$KnxPortGateway[1];
-							$result['IndividualAddressGateWay']=array_slice($Body,12,1)[0]<<8|array_slice($Body,13,1);
-							//$result['DeviceName']= self::Hex2String(array_slice($Body,32,4));
+							$result[]['KnxPortGateway'] =$KnxPortGateway[0]<<8|$KnxPortGateway[1];
+							$result[]['IndividualAddressGateWay']=array_slice($Body,12,1)[0]<<8|array_slice($Body,13,1);
+							$string='';
+							foreach (array_slice($Body,32,4) as $hexcar)
+								$string .= chr($hexcar);
+							$result[]['DeviceName'] = $string;
 						break;
 					}
 				break;
-			}
-			if($NbLoop==100){
-				$result['KnxIpGateway'] ="";
-				$result['KnxPortGateway'] ="";
-				$result['IndividualAddressGateWay']="";
-				//$result['DeviceName']="";
-				break;
-			}			
+			}		
 			$NbLoop++;
 		}
 		socket_close($BroadcastSocket);
+		if(count($result) == 0){
+			$result['KnxIpGateway'] ="";
+			$result['KnxPortGateway'] ="";
+			$result['IndividualAddressGateWay']="";
+			$result['DeviceName']="";
+		}	
 		return $result;
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
