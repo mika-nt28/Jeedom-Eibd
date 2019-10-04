@@ -673,7 +673,7 @@ class eibd extends eqLogic {
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['launchable'] != 'ok') 
 			return;
-		//log::remove('eibd');
+		log::remove('eibd');
 		self::deamon_stop();
 		foreach(eqLogic::byType('eibd') as $Equipement)	{
 			if ($Equipement->getIsEnable()){
@@ -763,7 +763,7 @@ class eibd extends eqLogic {
 		}
 		$cron->start();
 		$cron->run();
-		sleep(2);
+		sleep(10);
 		self::InitInformation();
 	}
 	public static function deamon_stop() {
