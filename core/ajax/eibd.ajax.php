@@ -20,16 +20,9 @@ try {
 	if (init('action') == 'SearchGatway') {
 		switch(init('type')){
 			case 'ip':
-				$result=eibd::SearchBroadcastGateway();
-				ajax::success($result['KnxIpGateway']);
-			break;
 			case 'ipt':
-				$result=eibd::SearchBroadcastGateway();
-				ajax::success($result['KnxIpGateway'].':'.$result['KnxPortGateway']);
-			break;
 			case 'iptn':
 				$result=eibd::SearchBroadcastGateway();
-				ajax::success($result['KnxIpGateway'].':'.$result['KnxPortGateway']);
 			break;
 			/*case 'ft12':
 			break;
@@ -39,12 +32,12 @@ try {
 			break;*/
 			case 'usb':
 				$result=eibd::SearchUsbGateway();
-				ajax::success($result);
 			break;
 			default:
 				ajax::success(false);
 			break;
 		}
+		ajax::success($result);
 	}
 	if (init('action') == 'Read') {
 		$Commande=cmd::byLogicalId(init('Gad'))[0];
