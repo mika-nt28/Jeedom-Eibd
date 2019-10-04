@@ -763,7 +763,7 @@ class eibd extends eqLogic {
 		}
 		$cron->start();
 		$cron->run();
-		sleep(2);
+		sleep(10);
 		self::InitInformation();
 	}
 	public static function deamon_stop() {
