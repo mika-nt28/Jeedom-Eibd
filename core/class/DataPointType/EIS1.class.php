@@ -3,30 +3,30 @@ class EIS1{
 	public function DptSelectEncode ($dpt, $value, $inverse=false, $option=null){
 		$All_DPT=self::All_DPT();
 		if(explode('.',$dpt)[0] == "1"){
-				if ($value != 0 && $value != 1){
-					$ValeurDpt=$All_DPT["Boolean"][$dpt]['Valeurs'];
-					$value = array_search($value, $ValeurDpt); 
-				}
-				if ($inverse){
-					if ($value == 0 )
-						$value = 1;
-					else
-						$value = 0;
-				}
-				return $value;
+			if ($value != 0 && $value != 1){
+				$ValeurDpt=$All_DPT["Boolean"][$dpt]['Valeurs'];
+				$value = array_search($value, $ValeurDpt); 
+			}
+			if ($inverse){
+				if ($value == 0 )
+					$value = 1;
+				else
+					$value = 0;
+			}
+			return $value;
 		}
 	}
 	public function DptSelectDecode ($dpt, $data, $inverse=false, $option=null){
 		$All_DPT=self::All_DPT();		
 		if(explode('.',$dpt)[0] == "1"){
-				$value = $data;		
-				if ($inverse){
-					if ($value == 0 )
-						$value = 1;
-					else
-						$value = 0;
-				}
-     }
+			$value = $data;		
+			if ($inverse){
+				if ($value == 0 )
+					return 1;
+				else
+					return 0;
+			}
+     		}
 	}
 	public function OtherValue ($dpt, $oldValue){
 		$All_DPT=self::All_DPT();
@@ -37,7 +37,7 @@ class EIS1{
 					return 1;
 		}
 	}
-	public function All_DPT()	{
+	public function All_DPT(){
 		return array (
 		"Boolean"=> array(
 			"1.xxx"=> array(
