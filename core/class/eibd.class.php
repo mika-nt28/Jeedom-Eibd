@@ -85,7 +85,7 @@ class eibd extends eqLogic {
 		}
 	}
 	public static function cronDaily() {
-		/*foreach(eqLogic::byType('eibd') as $Equipement){		
+		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily"){
@@ -98,7 +98,7 @@ class eibd extends eqLogic {
 					}
 				}
 			}
-		}*/
+		}
 	}
 	public function preInsert() {
 		if (is_object(eqLogic::byLogicalId($this->getLogicalId(),'eibd')))     
