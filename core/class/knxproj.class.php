@@ -256,7 +256,7 @@ class knxproj {
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
 					if($AdressePhysique == '')
-						$AdressePhysique = $this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdressePhysique'];
+						$AdressePhysique = $this->Devices[$DeviceProductRefId]['AdressePhysique'];
 					if($DataPointType == '')
 						$DataPointType = $this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['DataPointType'];
 				}
