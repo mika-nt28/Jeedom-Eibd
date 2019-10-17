@@ -414,7 +414,7 @@ class eibd extends eqLogic {
 			$val = ($val + 0) & 0x3f;
 			$val |= 0x0040;
 			$data = pack ("n", $val);
-		}	else {
+		}else {
 			$header = 0x0040;
 			$data = pack ("n", $header);
 			for ($i = 0; $i < count ($val); $i++)
@@ -487,11 +487,14 @@ class eibd extends eqLogic {
 		$buf = new EIBBuffer();		
 		if ($conBusMonitor->EIBOpen_GroupSocket(0) == -1)
 			log::add('eibd', 'error',$conBusMonitor->getLastError);		
+		self::InitInformation();
 		while(true) {    
 			$src = new EIBAddr;
 			$dest = new EIBAddr;
-			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);
-			if ($len != -1 && $len >= 2) {
+			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);      
+			if ($len == -1) 
+              break;
+			if ($len >= 2) {
 				$mon = self::parseread($len,$buf);
 				$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
 				$Traitement->run(); 
@@ -607,10 +610,7 @@ class eibd extends eqLogic {
 		config::save('lastDependancyInstallTime', date('Y-m-d H:i:s'),'eibd');
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
-           			if(exec("command -v knxd") !='')
-					$cmd = 'sudo /bin/bash ' . dirname(__FILE__) . '/../../ressources/update-knxd.sh';
-				else
-					$cmd = 'sudo /bin/bash ' . dirname(__FILE__) . '/../../ressources/install-knxd.sh';
+            	$cmd = 'sudo /bin/bash ' . dirname(__FILE__) . '/../../ressources/install-knxd.sh';
 			break;
 			case 'eibd':
 				$cmd = 'sudo /bin/bash ' . dirname(__FILE__) . '/../../ressources/install-eibd.sh';
@@ -763,8 +763,6 @@ class eibd extends eqLogic {
 		}
 		$cron->start();
 		$cron->run();
-		sleep(10);
-		self::InitInformation();
 	}
 	public static function deamon_stop() {
 		switch(config::byKey('KnxSoft', 'eibd')){
