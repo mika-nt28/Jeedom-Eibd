@@ -248,15 +248,13 @@ class knxproj {
 		return $Level;
 	}
 	private function updateDeviceGad($id,$name,$addr){
-		$AdressePhysique='';
+		$AdressePhysique = $this->Devices[$DeviceProductRefId]['AdressePhysique'];
 		$DataPointType='';
 		foreach($this->Devices as $DeviceProductRefId => $Device){
 			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
 				if($GroupAddressRefId == $id){
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
-					if($AdressePhysique == '')
-						$AdressePhysique = $this->Devices[$DeviceProductRefId]['AdressePhysique'];
 					if($DataPointType == '')
 						$DataPointType = $this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['DataPointType'];
 				}
