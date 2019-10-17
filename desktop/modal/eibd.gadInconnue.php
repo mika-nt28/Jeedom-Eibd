@@ -296,6 +296,7 @@ $('body').on('click', '.GadInsert tbody tr', function(){
 	$('.GadInsert tr').css('font-weight','unset');
 	$(this).css('font-weight','bold');
 	SelectGad=$(this).attr('data-AdresseGroupe');
+	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
 	SelectDpt=$(this).attr('data-DataPointType');
 	$(this).closest('.modal-content').find('button[data-bb-handler=success]').trigger('click');
 });
@@ -350,8 +351,21 @@ function CreateArboressance(data, Arboressance, first){
 		if(typeof Parameter.AdresseGroupe == "undefined") {
 			Arboressance.append($('<li class="Level">').text(Niveau).append(CreateArboressance(Parameter, $('<ul>').hide(),false)));
 		}else{
-			var DataPointType = Parameter.DataPointType.replace(/\./g, '-');
-			Arboressance.append($('<li class="AdresseGroupe" data-AdresseGroupe="'+Parameter.AdresseGroupe+'" data-DataPointType="'+DataPointType+'">').text(' (' + Parameter.AdresseGroupe + ') '+Niveau));
+			var li =$('<li class="AdresseGroupe">');
+			if(typeof Parameter.AdresseGroupe != "undefined"){
+				var AdresseGroupe =Parameter.AdresseGroupe;
+				li.attr('data-AdresseGroupe',AdresseGroupe);
+			}
+			if(typeof Parameter.AdressePhysique != "undefined"){
+				var AdressePhysique =Parameter.AdressePhysique.replace(/\./g, '-');
+				li.attr('data-AdressePhysique',AdressePhysique);
+			}
+			if(typeof Parameter.DataPointType != "undefined"){
+				var DataPointType =Parameter.DataPointType.replace(/\./g, '-');
+				li.attr('data-DataPointType',DataPointType);
+			}
+			li.text(' (' + Parameter.AdresseGroupe + ') '+Niveau);
+			Arboressance.append(li);
 		}
 	});
 	if (first){
@@ -367,7 +381,8 @@ function CreateArboressance(data, Arboressance, first){
 			$('.GadInsert tr').css('font-weight','unset');
 			$(this).css('font-weight','bold');
 			SelectGad=$(this).attr('data-AdresseGroupe');
-			SelectDpt=$(this).attr('data-DataPointType');
+			SelectAddr=$(this).attr('data-AdressePhysique').replace(/\-/g, '.');;
+			SelectDpt=$(this).attr('data-DataPointType').replace(/\-/g, '.');;
 			e.stopPropagation();
 		})
 		.on('dblclick','.AdresseGroupe',function(e){
@@ -375,10 +390,21 @@ function CreateArboressance(data, Arboressance, first){
 			$('.GadInsert tr').css('font-weight','unset');
 			$(this).css('font-weight','bold');
 			SelectGad=$(this).attr('data-AdresseGroupe');
-			SelectDpt=$(this).attr('data-DataPointType');
+			SelectAddr=$(this).attr('data-AdressePhysique').replace(/\-/g, '.');
+			SelectDpt=$(this).attr('data-DataPointType').replace(/\-/g, '.');;
 			e.stopPropagation();
 			$(this).closest('.modal-content').find('button[data-bb-handler=success]').trigger('click');
 		});
+		if(SelectAddr != ''){
+			$.each(Arboressance.find(".AdresseGroupe"),function() {
+				if($(this).attr("data-AdressePhysique") == SelectAddr.replace(/\./g, '-')){
+					$(this).css('background-color','blue');
+					$(this).css('color','white');
+					$(this).parent().show();
+					$(this).parent().parent().parent().show();
+				}
+			});
+		}
 		if(SelectDpt != ''){
 			var SelectDptId = SelectDpt.replace(/\./g, '-');
 			$.each(Arboressance.find(".AdresseGroupe"),function() {
