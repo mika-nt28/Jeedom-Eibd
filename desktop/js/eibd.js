@@ -132,7 +132,7 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 								eqLogic.object_id=$('.EqLogicTemplateAttr[data-l1key=object_id]').value();
 								
 								$.each(eqLogic.cmd,function(index, value){
-									eqLogic.cmd[index].logicalId=searchSameCmd(eqLogic,index);
+									eqLogic.cmd[index].logicalId=searchSameCmd(eqLogic,index,'');
 									if (typeof(eqLogic.cmd[index].value) !== 'undefined')
 										eqLogic.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object_id] option:selected').text()+"]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
 								});
