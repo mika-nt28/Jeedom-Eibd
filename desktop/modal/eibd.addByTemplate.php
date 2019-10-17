@@ -88,6 +88,7 @@ if (!isConnect('admin')) {
 				global: true,
 				error: function(request, status, error) {},
 				success: function(data) {
+					var cmdindex = 0;
 					$.each(data.result.cmd,function(index, value){
 						var isExist = false;
 						if(typeof value.SameCmd != "undefined") {
@@ -109,15 +110,19 @@ if (!isConnect('admin')) {
 							}
 							cmd.append($('<div class="col-md-5">')
 								.append($('<div class="input-group">')
-									.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'" data-l2key="SameCmd">')
+									.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="name">')
+										.val(value.name))
+									.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="SameCmd">')
 										.val(value.SameCmd))
-									.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'" data-l2key="KnxObjectType">')
-										.val(value.configuration.KnxObjectType))
-									.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'" data-l2key="logicalId">'))
+									.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="KnxObjectType">')
+										.val(value.configuration.KnxObjectType)))
+								.append($('<div class="input-group">')
+									.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="logicalId">'))
 									.append($('<span class="input-group-btn">')
 										.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
 											.append($('<i class="fa fa-list-alt">'))))));
 							cmds.append(cmd);
+							cmdindex++;
 						}
 					});
 					$.each(data.result.options,function(id, options){
@@ -147,15 +152,19 @@ if (!isConnect('admin')) {
 								}
 								cmd.append($('<div class="col-md-5">')
 									.append($('<div class="input-group">')
-										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'" data-l2key="SameCmd">')
+										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="name">')
+											.val(value.name))
+										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="SameCmd">')
 											.val(value.SameCmd))
-										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'" data-l2key="KnxObjectType">')
-											.val(value.configuration.KnxObjectType))
-										.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+index+'" data-l2key="logicalId">'))
+										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="KnxObjectType">')
+											.val(value.configuration.KnxObjectType)))
+									.append($('<div class="input-group">')
+										.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="logicalId">'))
 										.append($('<span class="input-group-btn">')
 											.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
 												.append($('<i class="fa fa-list-alt">'))))));
 								cmds.append(cmd.hide());
+								cmdindex++;
 							}
 						});
 						$('.TemplateOption[data-l1key='+id+']').off().on('change',function(){

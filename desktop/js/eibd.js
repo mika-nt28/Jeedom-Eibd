@@ -1,6 +1,6 @@
 function searchSameCmd(eqLogic,index,option){
+      	var GAD='';
 	if (typeof(eqLogic.cmd[index].SameCmd) !== 'undefined'){
-      		var GAD='';
 		$('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
 			if($(this).val() == eqLogic.cmd[index].SameCmd){
 				GAD =  $(option + ' .CmdEqLogicTemplateAttr[data-l1key='+$(this).attr('data-l1key')+'][data-l2key=logicalId]').val();
@@ -9,7 +9,13 @@ function searchSameCmd(eqLogic,index,option){
          	});
          	return GAD;
 	}
-	return $(option + ' .CmdEqLogicTemplateAttr[data-l1key='+index+'][data-l2key=logicalId]').value();									
+	$('.CmdEqLogicTemplateAttr[data-l2key=name]').each(function(){
+		if($(this).val() == eqLogic.cmd[index].name){
+			GAD =  $(option + ' .CmdEqLogicTemplateAttr[data-l1key='+$(this).attr('data-l1key')+'][data-l2key=logicalId]').val();
+			return GAD;
+		}
+	});
+	return GAD;								
 }
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $('.Template[data-action=add]').off().on('click', function () {
