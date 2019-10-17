@@ -289,15 +289,16 @@ $('body').on('click', '.GadInsert tbody tr', function(){
 	$('.GadInsert tr').css('font-weight','unset');
 	$(this).closest('tr').css('font-weight','bold');
 	SelectGad = $(this).closest('tr').find('.AdresseGroupe').text();
-	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
+	SelectAddr = $(this).closest('tr').find('.AdressePhysique').text();
+	SelectDpt=$(this).closest('tr').find('.DataPointType').text();
 })
 .on('dblclick','.AdresseGroupe',function(e){
 	$('.AdresseGroupe').css('font-weight','unset');
 	$('.GadInsert tr').css('font-weight','unset');
 	$(this).css('font-weight','bold');
 	SelectGad=$(this).attr('data-AdresseGroupe');
-	SelectAddr=$(this).closest('tr').find('.DataPointType').text();
-	SelectDpt=$(this).attr('data-DataPointType');
+	SelectAddr=$(this).attr('data-AdressePhysique').replace(/\-/g, '.');
+	SelectDpt=$(this).attr('data-DataPointType').replace(/\-/g, '.');
 	$(this).closest('.modal-content').find('button[data-bb-handler=success]').trigger('click');
 });
 function removeInCache(gad){
@@ -381,8 +382,8 @@ function CreateArboressance(data, Arboressance, first){
 			$('.GadInsert tr').css('font-weight','unset');
 			$(this).css('font-weight','bold');
 			SelectGad=$(this).attr('data-AdresseGroupe');
-			SelectAddr=$(this).attr('data-AdressePhysique').replace(/\-/g, '.');;
-			SelectDpt=$(this).attr('data-DataPointType').replace(/\-/g, '.');;
+			SelectAddr=$(this).attr('data-AdressePhysique').replace(/\-/g, '.');
+			SelectDpt=$(this).attr('data-DataPointType').replace(/\-/g, '.');
 			e.stopPropagation();
 		})
 		.on('dblclick','.AdresseGroupe',function(e){
@@ -391,7 +392,7 @@ function CreateArboressance(data, Arboressance, first){
 			$(this).css('font-weight','bold');
 			SelectGad=$(this).attr('data-AdresseGroupe');
 			SelectAddr=$(this).attr('data-AdressePhysique').replace(/\-/g, '.');
-			SelectDpt=$(this).attr('data-DataPointType').replace(/\-/g, '.');;
+			SelectDpt=$(this).attr('data-DataPointType').replace(/\-/g, '.');
 			e.stopPropagation();
 			$(this).closest('.modal-content').find('button[data-bb-handler=success]').trigger('click');
 		});
