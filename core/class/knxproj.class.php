@@ -37,7 +37,6 @@ class knxproj {
 			case "ETS":
 				$ProjetFile=$this->SearchETSFolder("P-");
 				$this->myProject=simplexml_load_file($ProjetFile.'/0.xml');
-
 				$this->ParserETSDevice();
 				$this->ParserETSGroupAddresses();
 				$this->CheckOptions();
@@ -177,7 +176,7 @@ class knxproj {
 				if($GroupRange->getName() == 'config')
 					$Level[$GroupName]=$this->getTX100Level($GroupRange,$NbLevel);
 			}
-        }
+        	}
 		return $Level;
 	}
 	private function getTX100ProductCmd($ProductId){
@@ -240,8 +239,9 @@ class knxproj {
 				config::save('level',$NbLevel,'eibd');
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRange, 'Address'));
 				$GroupId=$this->xml_attribute($GroupRange, 'Id');
-				$DataPointType=$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
-				$Level[$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+				list($AdresseGroupe,$DataPointType)=$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
+				
+				$Level[$GroupName]=array('AdresseGroupe ' => $AdresseGroupe ,'DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
 			}else{
 				$Level[$GroupName]=$this->getETSLevel($GroupRange,$NbLevel);
 			}
@@ -255,12 +255,13 @@ class knxproj {
 				if($GroupAddressRefId == $id){
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
+					$AdresseGroupe = $this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe'];
 					if($DPT == '')
 						$DPT = $this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['DataPointType'];
 				}
 			}
 		}
-		return $DPT;
+		return array($AdresseGroupe,$DPT);
 	}
 	private function ParserETSDevice(){
 		log::add('eibd','debug','[Import ETS] Recherche de device');
