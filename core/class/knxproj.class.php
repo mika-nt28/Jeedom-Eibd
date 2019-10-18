@@ -64,7 +64,14 @@ class knxproj {
 		fclose($file);	
 	}
 	public function getAll(){
-		$myKNX['Devices']=$this->Devices;
+		foreach($this->Devices as $DeviceProductRefId => $Device){
+			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
+				$myKNX['Devices'][$Device['DeviceName'].' ('.$Device['AdressePhysique'].')'][$Cmd['cmdName']]['AdressePhysique']=$Device['AdressePhysique'];
+				$myKNX['Devices'][$Device['DeviceName'].' ('.$Device['AdressePhysique'].')'][$Cmd['cmdName']]['AdresseGroupe']=$Cmd['AdresseGroupe'];
+				$myKNX['Devices'][$Device['DeviceName'].' ('.$Device['AdressePhysique'].')'][$Cmd['cmdName']]['DataPointType']=$Cmd['DataPointType'];
+			}
+		}
+		//$myKNX['Devices']=$this->Devices;
 		$myKNX['GAD']=$this->GroupAddresses;
 		$myKNX['Locations']=$this->Locations;
 		return json_encode($myKNX,JSON_PRETTY_PRINT);
@@ -250,8 +257,8 @@ class knxproj {
 				$GroupId=$this->xml_attribute($GroupRange, 'Id');
 				list($AdressePhysique,$DataPointType)=$this->updateDeviceInfo($GroupId,$GroupName,$AdresseGroupe);				
 				$Level[$GroupName]=array('AdressePhysique' => $AdressePhysique ,'DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
-			}elseif($GroupRange->getName() == 'DeviceInstanceRef'){		
-				array_push($Level[$GroupName], $this->getDeviceGad($this->xml_attribute($GroupRange, 'RefId')));
+			}elseif($GroupRange->getName() == 'DeviceInstanceRef'){	
+				$Level += $this->getDeviceGad($this->xml_attribute($GroupRange, 'RefId'));    
 			}else{
 				$Level[$GroupName]=$this->getETSLevel($GroupRange,$NbLevel);
 			}
@@ -267,6 +274,7 @@ class knxproj {
 					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['AdresseGroupe']=$Cmd['AdresseGroupe'];
 					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['DataPointType']=$Cmd['DataPointType'];
 				}
+             			break;
 			}
 		}
 		return $DeviceGad;
