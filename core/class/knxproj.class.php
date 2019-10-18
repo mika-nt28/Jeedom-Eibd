@@ -65,6 +65,7 @@ class knxproj {
 	}
 	public function getAll(){
 		foreach($this->Devices as $DeviceProductRefId => $Device){
+			$myKNX['Devices'][$Device['DeviceName'].' ('.$Device['AdressePhysique'].')'] = null;
 			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
 				$myKNX['Devices'][$Device['DeviceName'].' ('.$Device['AdressePhysique'].')'][$Cmd['cmdName']]['AdressePhysique']=$Device['AdressePhysique'];
 				$myKNX['Devices'][$Device['DeviceName'].' ('.$Device['AdressePhysique'].')'][$Cmd['cmdName']]['AdresseGroupe']=$Cmd['AdresseGroupe'];
