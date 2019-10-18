@@ -263,9 +263,9 @@ class knxproj {
 		foreach($this->Devices as $DeviceProductRefId => $Device){
 			if($DeviceProductRefId == $id){
 				foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
-					$DeviceGad[$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']]['AdressePhysique']=$this->Devices[$DeviceProductRefId]['AdressePhysique'];
-					$DeviceGad[$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']]['AdresseGroupe']=$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe'];
-					$DeviceGad[$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']]['DataPointType']=$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['DataPointType'];
+					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['AdressePhysique']=$Device['AdressePhysique'];
+					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['AdresseGroupe']=$Cmd['AdresseGroupe'];
+					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['DataPointType']=$Cmd['DataPointType'];
 				}
 			}
 		}
