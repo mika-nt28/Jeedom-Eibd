@@ -4,6 +4,7 @@ class knxproj {
 	private $options;
 	private $Devices=array();
 	private $GroupAddresses=array();
+	private $Locations=array();
 	private $Templates=array();
 	private $myProject=array();
 	public static function ExtractTX100ProjectFile($File){
@@ -37,9 +38,9 @@ class knxproj {
 			case "ETS":
 				$ProjetFile=$this->SearchETSFolder("P-");
 				$this->myProject=simplexml_load_file($ProjetFile.'/0.xml');
-
 				$this->ParserETSDevice();
 				$this->ParserETSGroupAddresses();
+				$this->ParserLocations();
 				$this->CheckOptions();
 			break;
 			case "TX100":
@@ -63,8 +64,17 @@ class knxproj {
 		fclose($file);	
 	}
 	public function getAll(){
-		$myKNX['Devices']=$this->Devices;
+		foreach($this->Devices as $DeviceProductRefId => $Device){
+			$myKNX['Devices'][$Device['DeviceName'].' ('.$Device['AdressePhysique'].')'] = null;
+			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
+				$myKNX['Devices'][$Device['DeviceName'].' ('.$Device['AdressePhysique'].')'][$Cmd['cmdName']]['AdressePhysique']=$Device['AdressePhysique'];
+				$myKNX['Devices'][$Device['DeviceName'].' ('.$Device['AdressePhysique'].')'][$Cmd['cmdName']]['AdresseGroupe']=$Cmd['AdresseGroupe'];
+				$myKNX['Devices'][$Device['DeviceName'].' ('.$Device['AdressePhysique'].')'][$Cmd['cmdName']]['DataPointType']=$Cmd['DataPointType'];
+			}
+		}
+		//$myKNX['Devices']=$this->Devices;
 		$myKNX['GAD']=$this->GroupAddresses;
+		$myKNX['Locations']=$this->Locations;
 		return json_encode($myKNX,JSON_PRETTY_PRINT);
 	}
 	private function SearchTX100Folder($path){
@@ -177,7 +187,7 @@ class knxproj {
 				if($GroupRange->getName() == 'config')
 					$Level[$GroupName]=$this->getTX100Level($GroupRange,$NbLevel);
 			}
-        }
+        	}
 		return $Level;
 	}
 	private function getTX100ProductCmd($ProductId){
@@ -226,10 +236,16 @@ class knxproj {
 		}
 		return array($DataPointType,$GroupName);
 	}
+	
+	private function ParserLocations(){
+		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de gad');
+		$Level = $this->myProject->Project->Installations->Installation->Locations->Space ;
+		$this->Locations = $this->getETSLevel($Level);
+	}
 	private function ParserETSGroupAddresses(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de gad');
-		$GroupRanges = $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges;
-		$this->GroupAddresses = $this->getETSLevel($GroupRanges);
+		$Level= $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges;
+		$this->GroupAddresses = $this->getETSLevel($Level);
 	}
 	private function getETSLevel($GroupRanges,$NbLevel=0){
 		$Level = array();
@@ -240,27 +256,45 @@ class knxproj {
 				config::save('level',$NbLevel,'eibd');
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRange, 'Address'));
 				$GroupId=$this->xml_attribute($GroupRange, 'Id');
-				$DataPointType=$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
-				$Level[$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+				list($AdressePhysique,$DataPointType)=$this->updateDeviceInfo($GroupId,$GroupName,$AdresseGroupe);				
+				$Level[$GroupName]=array('AdressePhysique' => $AdressePhysique ,'DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+			}elseif($GroupRange->getName() == 'DeviceInstanceRef'){	
+				$Level += $this->getDeviceGad($this->xml_attribute($GroupRange, 'RefId'));    
 			}else{
 				$Level[$GroupName]=$this->getETSLevel($GroupRange,$NbLevel);
 			}
 		}
 		return $Level;
 	}
-	private function updateDeviceGad($id,$name,$addr){
-		$DPT='';
+	private function getDeviceGad($id){	
+		$DeviceGad =array();
+		foreach($this->Devices as $DeviceProductRefId => $Device){
+			if($DeviceProductRefId == $id){
+				foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
+					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['AdressePhysique']=$Device['AdressePhysique'];
+					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['AdresseGroupe']=$Cmd['AdresseGroupe'];
+					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['DataPointType']=$Cmd['DataPointType'];
+				}
+             			break;
+			}
+		}
+		return $DeviceGad;
+	}
+	private function updateDeviceInfo($id,$name,$addr){
+		$AdressePhysique='';
+		$DataPointType='';
 		foreach($this->Devices as $DeviceProductRefId => $Device){
 			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
 				if($GroupAddressRefId == $id){
+					$AdressePhysique = $this->Devices[$DeviceProductRefId]['AdressePhysique'];
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
-					if($DPT == '')
-						$DPT = $this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['DataPointType'];
+					if($DataPointType == '')
+						$DataPointType = $this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['DataPointType'];
 				}
 			}
 		}
-		return $DPT;
+		return array($AdressePhysique,$DataPointType);
 	}
 	private function ParserETSDevice(){
 		log::add('eibd','debug','[Import ETS] Recherche de device');

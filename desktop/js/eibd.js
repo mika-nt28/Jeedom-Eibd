@@ -203,12 +203,12 @@ $('.eqLogicAction[data-action=gotoLog]').on('click', function () {
 	});
 });
 $('body').on('click','.bt_selectGadInconnue', function () {
-	var SelectAddr=$(this).closest('body').find('.form-control[data-l1key=logicalId]').val();	
+	var AddrPhy=$(this).closest('body').find('.form-control[data-l1key=logicalId]');
 	var SelectDpt=$(this).closest('.form-group').parent().find('.form-control[data-l2key=KnxObjectType]').val();	
 	var input=$(this).closest('.input-group').find('input');
 	bootbox.dialog({
 		title: "{{Choisir un Gad}}",
-		message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd&SelectAddr='+SelectAddr+'&SelectDpt='+SelectDpt+'&param'),
+		message: $('<div>').load('index.php?v=d&modal=eibd.gadInconnue&plugin=eibd&type=eibd&SelectAddr='+AddrPhy.val()+'&SelectDpt='+SelectDpt+'&param'),
 		onEscape:  function () {
 			clearTimeout(KnxGadInconueRefresh);			
 		},
@@ -225,6 +225,7 @@ $('body').on('click','.bt_selectGadInconnue', function () {
 				callback: function () {
 					clearTimeout(KnxGadInconueRefresh);		
 					input.val(SelectGad);
+					AddrPhy.val(SelectAddr);
 				}
 			},
 		}
