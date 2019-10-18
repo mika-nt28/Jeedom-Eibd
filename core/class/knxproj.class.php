@@ -250,11 +250,26 @@ class knxproj {
 				$GroupId=$this->xml_attribute($GroupRange, 'Id');
 				list($AdressePhysique,$DataPointType)=$this->updateDeviceInfo($GroupId,$GroupName,$AdresseGroupe);				
 				$Level[$GroupName]=array('AdressePhysique' => $AdressePhysique ,'DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+			}elseif($GroupRange->getName() == 'DeviceInstanceRef'){			
+				$Level[$GroupName]=getDeviceGad($this->xml_attribute($GroupRange, 'RefId'));
 			}else{
 				$Level[$GroupName]=$this->getETSLevel($GroupRange,$NbLevel);
 			}
 		}
 		return $Level;
+	}
+	private function getDeviceGad($id){	
+		$DeviceGad =array();
+		foreach($this->Devices as $DeviceProductRefId => $Device){
+			if($DeviceProductRefId == $id){
+				foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
+					$DeviceGad[$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']]['AdressePhysique']=$this->Devices[$DeviceProductRefId]['AdressePhysique'];
+					$DeviceGad[$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']]['AdresseGroupe']=$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe'];
+					$DeviceGad[$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']]['DataPointType']=$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['DataPointType'];
+				}
+			}
+		}
+		return $DeviceGad;
 	}
 	private function updateDeviceInfo($id,$name,$addr){
 		$AdressePhysique='';
