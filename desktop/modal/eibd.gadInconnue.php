@@ -79,7 +79,7 @@ else
 				{{Importer projet KNX}}
 			</a> 
 		</span>
-		<table id="table_Devices" class="table table-bordered table-condensed tablesorter GadInsert">
+		<!--table id="table_Devices" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
 					<th>{{Equipement}}</th>
@@ -90,7 +90,8 @@ else
 				</tr>
 			</thead>
 			<tbody></tbody>
-		</table>
+		</table-->
+		<ul class="MyDeviceGroup"></ul>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="AdressTab">
 		<span class="pull-right">
@@ -203,7 +204,8 @@ $('.Ets4Parser').on('click', function() {
 							if($('body .EtsParserDiv .EtsParseParameter[data-l1key=createEqLogic]').is(':checked')){
 								window.location.reload();
 							}else{
-								UpdateDeviceTable(data.result.Devices)
+								//UpdateDeviceTable(data.result.Devices);
+								CreateArboressance(data.result.Devices,$('.MyDeviceGroup'),true);
 								CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true);
 								CreateArboressance(data.result.Locations,$('.MyLocationsGroup'),true);
 							}
@@ -261,8 +263,8 @@ function getKnxGadInconue () {
 		}
 	});
 }
-$("#table_Devices .tablesorter-filter[data-column=1]").val(SelectAddr);
-$("#table_Devices .tablesorter-filter[data-column=4]").val(SelectDpt);
+//$("#table_Devices .tablesorter-filter[data-column=1]").val(SelectAddr);
+//$("#table_Devices .tablesorter-filter[data-column=4]").val(SelectDpt);
 getEtsProj();
 function getEtsProj () {
 	$.ajax({
@@ -284,8 +286,10 @@ function getEtsProj () {
 			}
 			if (data.result == false) 
 				return;
-			UpdateDeviceTable(data.result.Devices);
+			//UpdateDeviceTable(data.result.Devices);
+			CreateArboressance(data.result.Devices,$('.MyDeviceGroup'),true);
 			CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true);
+			CreateArboressance(data.result.Locations,$('.MyLocationsGroup'),true);
 		}
 	});
 }
@@ -335,7 +339,7 @@ function removeInCache(gad){
 		}
 	});
 }
-function UpdateDeviceTable(Devices){	
+/*function UpdateDeviceTable(Devices){	
 	$('#table_Devices tbody').html('');
 	jQuery.each(Devices,function(EquipementId, Equipement) {
 		jQuery.each(Equipement.Cmd,function(CmdId, Cmd) {
@@ -357,7 +361,7 @@ function UpdateDeviceTable(Devices){
 	$('#table_Devices').trigger('update');
 	$("#table_Devices .tablesorter-filter[data-column=1]").trigger('keyup');
 	$("#table_Devices .tablesorter-filter[data-column=4]").trigger('keyup');
-}
+}*/
 function CreateArboressance(data, Arboressance, first){
 	if (first)
 		Arboressance.html('');
