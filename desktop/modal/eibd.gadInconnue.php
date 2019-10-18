@@ -366,8 +366,9 @@ function CreateArboressance(data, Arboressance, first){
 	if (first)
 		Arboressance.html('');
 	jQuery.each(data,function(Niveau, Parameter) {
-		//if(typeof(Parameter) == 'object'){
-		if(typeof Parameter.AdresseGroupe == "undefined") {
+		if(Parameter == null) {
+			Arboressance.append($('<li class="Level">').text(Niveau));
+		}else if(typeof Parameter.AdresseGroupe == "undefined") {
 			Arboressance.append($('<li class="Level">').text(Niveau).append(CreateArboressance(Parameter, $('<ul>').hide(),false)));
 		}else{
 			var li =$('<li class="AdresseGroupe">');
