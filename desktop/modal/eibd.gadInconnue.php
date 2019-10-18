@@ -43,6 +43,10 @@ else
 		<a href="#AdressTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
 			<i class="fa fa-list-alt"></i> {{Adresse de groupes}}</a>
 	</li>
+	<li role="presentation" class="">
+		<a href="#LocationsTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+			<i class="fa fa-list-alt"></i> {{Localisation}}</a>
+	</li>
 </ul>
 <div class="tab-content" style="height: 500px;overflow: auto;">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
@@ -96,6 +100,15 @@ else
 			</a> 
 		</span>
 		<ul class="MyAdressGroup"></ul>
+	</div>
+	<div role="tabpanel" class="tab-pane" id="LocationsTab">
+		<span class="pull-right">
+			<a class="btn btn-warning btn-xs Ets4Parser" >
+				<i class="fa fa-cloud-upload"></i>
+				{{Importer projet KNX}}
+			</a> 
+		</span>
+		<ul class="MyLocationsGroup"></ul>
 	</div>
 </div>
 
@@ -192,6 +205,7 @@ $('.Ets4Parser').on('click', function() {
 							}else{
 								UpdateDeviceTable(data.result.Devices)
 								CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true);
+								CreateArboressance(data.result.Locations,$('.MyLocationsGroup'),true);
 							}
 						}
 					});
