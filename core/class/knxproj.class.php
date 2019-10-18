@@ -4,6 +4,7 @@ class knxproj {
 	private $options;
 	private $Devices=array();
 	private $GroupAddresses=array();
+	private $Locations=array();
 	private $Templates=array();
 	private $myProject=array();
 	public static function ExtractTX100ProjectFile($File){
@@ -39,6 +40,7 @@ class knxproj {
 				$this->myProject=simplexml_load_file($ProjetFile.'/0.xml');
 				$this->ParserETSDevice();
 				$this->ParserETSGroupAddresses();
+				$this->ParserLocations();
 				$this->CheckOptions();
 			break;
 			case "TX100":
@@ -64,6 +66,7 @@ class knxproj {
 	public function getAll(){
 		$myKNX['Devices']=$this->Devices;
 		$myKNX['GAD']=$this->GroupAddresses;
+		$myKNX['Locations']=$this->Locations;
 		return json_encode($myKNX,JSON_PRETTY_PRINT);
 	}
 	private function SearchTX100Folder($path){
@@ -225,10 +228,16 @@ class knxproj {
 		}
 		return array($DataPointType,$GroupName);
 	}
+	
+	private function ParserLocations(){
+		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de gad');
+		$Level = $this->myProject->Project->Installations->Installation->Locations->Space ;
+		$this->Locations = $this->getETSLevel($Level);
+	}
 	private function ParserETSGroupAddresses(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de gad');
-		$GroupRanges = $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges;
-		$this->GroupAddresses = $this->getETSLevel($GroupRanges);
+		$Level= $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges;
+		$this->GroupAddresses = $this->getETSLevel($Level);
 	}
 	private function getETSLevel($GroupRanges,$NbLevel=0){
 		$Level = array();
