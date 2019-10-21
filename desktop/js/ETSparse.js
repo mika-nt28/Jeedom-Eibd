@@ -1,5 +1,5 @@
 function ImportEts(merge){
-	var html $('<form class="form-horizontal" onsubmit="return false;">  ')
+	var html = $('<form class="form-horizontal" onsubmit="return false;">  ')
 		.append($('<div class="form-group">')
 			.append($('<label class="col-md-4 control-label">')
 				.append('{{Type de fichier}}')
