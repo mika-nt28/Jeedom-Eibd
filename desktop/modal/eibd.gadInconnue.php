@@ -333,7 +333,7 @@ function CreatebyTemplate(_el){
 				callback: function () {
 					_el.append($('<span class="label label-success cursor">')
 						   .attr('data-type','template')
-						   .text($('.EqLogicTemplateAttr[data-l1key=template]).val())
+						   .text($('.EqLogicTemplateAttr[data-l1key=template]').val())
 				}
 			},
 		}
