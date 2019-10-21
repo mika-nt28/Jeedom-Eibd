@@ -53,7 +53,7 @@ else
 <div class="tab-content" style="height: 500px;overflow: auto;">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
 		<div class="col-xs-12 input-group pull-right" style="display:inline-flex">
-			<span class="input-group-btn">roundedRight
+			<span class="input-group-btn">
 				<a class="btn btn-danger btn-xs roundedRight removeAllGad" style="margin-bottom : 5px;">
 					<i class="fa fa-trash-o"></i>
 					{{ Supprimer}}
@@ -290,35 +290,73 @@ function removeInCache(gad){
 		}
 	});
 }
+function CreateObject(object){
+	$.ajax({
+		type: 'POST',
+		async: false,
+		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
+		data: {
+			action: 'CreateObject',
+			name:object,
+		},
+		dataType: 'json',
+		global: false,
+		error: function(request, status, error) {},
+		success: function(data) {
+			if (data.state != 'ok') {
+				$('#div_alert').showAlert({message: data.result, level: 'danger'});
+				return;
+			}
+		}
+	});
+}
 
-function CreatebyTemplate(){	
-	var html = $('<span class="pull-right">');
+function CreatebyTemplate(_el){	
 	var select = $('<select class="EqLogicTemplateAttr form-control" data-l1key="template">');
 	$.each(templates,function(id,template){
 		select.append($('<option>')
 			.attr('value',id)
 			.append(template.name));
 	});
-	html.append(select);
+	bootbox.dialog({
+		title: "{{Selectionner le template}}",
+		message: select,
+		buttons: {
+			"Annuler": {
+				className: "btn-default",
+				callback: function () {
+				}
+			},
+			success: {
+				label: "Valider",
+				className: "btn-primary",
+				callback: function () {
+					_el.append($('<span class="label label-success cursor">')
+						   .attr('data-type','template')
+						   .text($('.EqLogicTemplateAttr[data-l1key=template]).val())
+				}
+			},
+		}
+	});
 }
 function CreateArboressance(data, Arboressance, first){
 	if (first)
 		Arboressance.html('');
 	jQuery.each(data,function(Niveau, Parameter) {
 		if(Parameter == null) {
-			Arboressance.append($('<li class="Level">').text(Niveau));
+			Arboressance.append($('<li class="col-sm-11 Level">').text(Niveau));
 		}else if(typeof Parameter.AdresseGroupe == "undefined") {
-			Arboressance.append($('<li class="Level">')
-				.text(Niveau)
-				.append($('<div class="col-xs-12 input-group pull-right" style="display:inline-flex">')
+			Arboressance.append($('<li class="col-sm-11 Level">')
+				.append($('<div class="input-group pull-right" style="display:inline-flex">')
 					.append($('<span class="input-group-btn">')
 						.append($('<a class="btn btn-success btn-xs roundedRight createObject">')
 							.append($('<i class="far fa-object-group">')))
 						.append($('<a class="btn btn-warning btn-xs roundedRight createTemplate">')
-							.append($('<i class="fas fa-address-card">'))))
-					.append(CreateArboressance(Parameter, $('<ul>').hide(),false))));
+							.append($('<i class="fas fa-address-card">')))))
+				.append(Niveau)
+				.append(CreateArboressance(Parameter, $('<ul>').hide(),false)));
 		}else{
-			var li =$('<li class="AdresseGroupe">');
+			var li =$('<li class="col-sm-11 AdresseGroupe">');
 			if(typeof Parameter.AdresseGroupe != "undefined"){
 				var AdresseGroupe =Parameter.AdresseGroupe;
 				li.attr('data-AdresseGroupe',AdresseGroupe);
@@ -361,6 +399,12 @@ function CreateArboressance(data, Arboressance, first){
 			SelectDpt=$(this).attr('data-DataPointType').replace(/\-/g, '.');
 			e.stopPropagation();
 			$(this).closest('.modal-content').find('button[data-bb-handler=success]').trigger('click');
+		})
+		.on('click','.createObject',function(e){
+			CreateObject($(this).closest('.Level').text());
+		})
+		.on('click','.createTemplate',function(e){
+			 CreatebyTemplate($(this).closest('.Level'));
 		});
 		if(SelectAddr != ''){
 			$.each(Arboressance.find(".AdresseGroupe"),function() {
