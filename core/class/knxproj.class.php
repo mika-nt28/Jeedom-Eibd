@@ -246,7 +246,12 @@ class knxproj {
 	private function ParserLocations(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de localisation');
 		$Level = $this->myProject->Project->Installations->Installation->Locations->Space ;
-		$this->Locations = $this->getETSLevel($Level);
+		$Locations = $this->getETSLevel($Level);
+		if(!$Locations){
+			$Level = $this->myProject->Project->Installations->Installation->Buildings ;
+			$Locations = $this->getETSLevel($Level);
+		}
+		$this->Locations = $Locations;
 	}
 	private function ParserETSGroupAddresses(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance d\'adresse de groupe');
@@ -257,7 +262,7 @@ class knxproj {
 		$Level = array();
 		$NbLevel++;
 		if($GroupRanges == null)
-			return $Level;
+			return false;
 		foreach ($GroupRanges->children() as $GroupRange) {
 			$GroupName = $this->xml_attribute($GroupRange, 'Name');
 			if($GroupRange->getName() == 'GroupAddress'){
@@ -308,7 +313,7 @@ class knxproj {
 		log::add('eibd','debug','[Import ETS] Recherche de device');
 		$Topology = $this->myProject->Project->Installations->Installation->Topology;
 		if($Topology == null)
-			return;
+			return false;
 		foreach($Topology->children() as $Area){
 			$AreaAddress=$this->xml_attribute($Area, 'Address');
 			foreach ($Area->children() as $Line)  {
