@@ -103,6 +103,18 @@ try {
 		}
 		ajax::success(true);
 	}
+  	if (init('action') == 'CreateObject') {
+		$Object = jeeObject::byName(init('name')); 
+		if (!is_object($Object)) {
+			log::add('eibd','info','[Import ETS] Nous allons cree l\'objet : '.init('name'));
+			$Object = new jeeObject(); 
+			$Object->setName(init('name'));
+			$Object->setIsVisible(true);
+			$Object->save();
+		}
+		ajax::success(true);
+	}
+	
    throw new Exception(__('Aucune methode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */
 } catch (Exception $e) {
