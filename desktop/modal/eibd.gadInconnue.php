@@ -5,6 +5,7 @@ if (!isConnect('admin')) {
 include_file('3rdparty', 'jquery.tablesorter/theme.bootstrap', 'css');
 include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.min', 'js');
 include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'js');
+include_file('desktop', 'ETSparse', 'js', 'eibd');
 if(isset($_REQUEST['SelectAddr']))
 	echo '<script>var SelectAddr="'.$_REQUEST['SelectAddr'].'";</script>';
 else
@@ -112,7 +113,6 @@ else
 		<ul class="MyLocationsGroup"></ul>
 	</div>
 </div>
-
 <script>
 var KnxGadInconueRefresh = null;
 $.ajax({
@@ -172,8 +172,9 @@ $('.Include').off().on('click', function () {
 		}
 	});
 });
-$('.Ets4Parser').on('click', function() {
-	bootbox.dialog({
+$('.Ets4Parser').off().on('click', function() {
+	ImportEts(false);
+/*	bootbox.dialog({
 		title: "{{Importer votre projet KNX}}",
 		height: "800px",
 		width: "auto",
@@ -214,7 +215,7 @@ $('.Ets4Parser').on('click', function() {
 				}
 			},
 		}
-	});
+	});*/
 });
 var SelectGad='';
 initTableSorter();

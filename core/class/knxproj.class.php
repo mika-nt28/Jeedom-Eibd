@@ -1,7 +1,7 @@
 <?php
 class knxproj {
 	private $path;
-	private $options;
+	private $ProjetType;
 	private $Devices=array();
 	private $GroupAddresses=array();
 	private $Locations=array();
@@ -28,20 +28,26 @@ class knxproj {
 		}
 		log::add('eibd','debug','[Import ETS] Extraction des fichiers de projets');
 	}
- 	public function __construct($_options){
+ 	public function __construct($_Merge,$_ProjetType){
 		$this->path = dirname(__FILE__) . '/../config/knxproj/';
 		$this->Templates=eibd::devicesParameters();
-		$this->options=$_options[0];
-		
+		$this->ProjetType=$_ProjetType;
+		if($_Merge){
+			$filename=dirname(__FILE__) . '/../config/KnxProj.json';
+			$myKNX=json_decode(file_get_contents($filename),true);
+			$this->Devices=$myKNX['DevicesAll'];
+			$this->GroupAddresses=$myKNX['GAD'];
+			$this->Locations=$myKNX['Locations'];
+		}
 		//log::add('eibd','debug','[Import ETS]'.json_encode($_options));
-		switch($this->options['ProjetType']){
+		switch($this->ProjetType){
 			case "ETS":
 				$ProjetFile=$this->SearchETSFolder("P-");
 				$this->myProject=simplexml_load_file($ProjetFile.'/0.xml');
 				$this->ParserETSDevice();
 				$this->ParserETSGroupAddresses();
 				$this->ParserLocations();
-				$this->CheckOptions();
+				//$this->CheckOptions();
 			break;
 			case "TX100":
 				$ProjetFile=$this->SearchTX100Folder($this->path);
@@ -72,7 +78,7 @@ class knxproj {
 				$myKNX['Devices'][$Device['DeviceName'].' ('.$Device['AdressePhysique'].')'][$Cmd['cmdName']]['DataPointType']=$Cmd['DataPointType'];
 			}
 		}
-		//$myKNX['Devices']=$this->Devices;
+		$myKNX['DevicesAll']=$this->Devices;
 		$myKNX['GAD']=$this->GroupAddresses;
 		$myKNX['Locations']=$this->Locations;
 		return json_encode($myKNX,JSON_PRETTY_PRINT);
@@ -238,18 +244,20 @@ class knxproj {
 	}
 	
 	private function ParserLocations(){
-		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de gad');
+		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de localisation');
 		$Level = $this->myProject->Project->Installations->Installation->Locations->Space ;
 		$this->Locations = $this->getETSLevel($Level);
 	}
 	private function ParserETSGroupAddresses(){
-		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de gad');
+		log::add('eibd','debug','[Import ETS] Création de l\'arboressance d\'adresse de groupe');
 		$Level= $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges;
 		$this->GroupAddresses = $this->getETSLevel($Level);
 	}
 	private function getETSLevel($GroupRanges,$NbLevel=0){
 		$Level = array();
 		$NbLevel++;
+		if($GroupRanges == null)
+			return $Level;
 		foreach ($GroupRanges->children() as $GroupRange) {
 			$GroupName = $this->xml_attribute($GroupRange, 'Name');
 			if($GroupRange->getName() == 'GroupAddress'){
@@ -299,6 +307,8 @@ class knxproj {
 	private function ParserETSDevice(){
 		log::add('eibd','debug','[Import ETS] Recherche de device');
 		$Topology = $this->myProject->Project->Installations->Installation->Topology;
+		if($Topology == null)
+			return;
 		foreach($Topology->children() as $Area){
 			$AreaAddress=$this->xml_attribute($Area, 'Address');
 			foreach ($Area->children() as $Line)  {
@@ -349,7 +359,7 @@ class knxproj {
 		return $Architecture;
 	}
 		
-	private function CheckOptions(){
+	/*private function CheckOptions(){
 		$ObjetLevel= $this->checkLevel('object');
 		$TemplateLevel= $this->checkLevel('function');
 		$CommandeLevel= $this->checkLevel('cmd');
@@ -489,7 +499,7 @@ class knxproj {
 			}
 		}
 		return false;
-	}
+	}*/
 	private function formatgaddr($addr){
 		switch(config::byKey('level', 'eibd')){
 			case '3':
