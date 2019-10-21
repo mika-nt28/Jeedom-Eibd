@@ -303,8 +303,12 @@ function CreateArboressance(data, Arboressance, first){
 			Arboressance.append($('<li class="Level">').text(Niveau));
 		}else if(typeof Parameter.AdresseGroupe == "undefined") {
 			Arboressance.append($('<li class="Level">')
-					    .text(Niveau)
-					    .append(CreatebyTemplate())
+				.text(Niveau)
+				.append($('<span class="pull-right">')
+					.append($('<a class="btn btn-warning btn-xs createObject">')
+						.append($('<i class="far fa-object-group">')))
+					.append($('<a class="btn btn-warning btn-xs createTemplate">')
+						.append($('<i class="fas fa-address-card">'))))
 					    .append(CreateArboressance(Parameter, $('<ul>').hide(),false)));
 		}else{
 			var li =$('<li class="AdresseGroupe">');
