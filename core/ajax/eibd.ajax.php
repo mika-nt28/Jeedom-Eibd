@@ -83,7 +83,7 @@ try {
 		}
 	}
 	if (init('action') == 'AnalyseEtsProj') {
-		$knxproj=new knxproj(init('option'));
+		$knxproj=new knxproj(init('merge'),init('ProjetType'));
 		$knxproj->WriteJsonProj();
 		ajax::success(json_decode($knxproj->getAll(),true));
 	}
