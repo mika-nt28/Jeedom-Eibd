@@ -52,15 +52,15 @@ else
 </ul>
 <div class="tab-content" style="height: 500px;overflow: auto;">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
-		<span class="pull-right">
-			<a class="btn btn-danger btn-xs pull-right removeAllGad" style="margin-bottom : 5px;">
-				<i class="fa fa-trash-o"></i>
-				{{ Supprimer}}
-			</a>
-		</span>
-		<span class="pull-right">
-			<a class="btn btn-warning btn-xs pull-right Include" data-validation=true style="margin-bottom : 5px;" ></a> 
-		</span>
+		<div class="col-xs-12 input-group pull-right" style="display:inline-flex">
+			<span class="input-group-btn">roundedRight
+				<a class="btn btn-danger btn-xs roundedRight removeAllGad" style="margin-bottom : 5px;">
+					<i class="fa fa-trash-o"></i>
+					{{ Supprimer}}
+				</a>
+				<a class="btn btn-warning btn-xs roundedRight Include" data-validation=true style="margin-bottom : 5px;" ></a> 
+			</span>
+		</div>	
 		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
@@ -75,30 +75,36 @@ else
 		</table>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="DeviceTab">
-		<span class="pull-right">
-			<a class="btn btn-warning btn-xs Ets4Parser" >
-				<i class="fa fa-cloud-upload"></i>
-				{{Importer projet KNX}}
-			</a> 
-		</span>
+		<div class="col-xs-12 input-group pull-right" style="display:inline-flex">
+			<span class="input-group-btn">
+				<a class="btn btn-warning btn-xs roundedRight Ets4Parser" >
+					<i class="fa fa-cloud-upload"></i>
+					{{Importer projet KNX}}
+				</a> 
+			</span>
+		</div>
 		<ul class="MyDeviceGroup"></ul>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="AdressTab">
-		<span class="pull-right">
-			<a class="btn btn-warning btn-xs Ets4Parser" >
-				<i class="fa fa-cloud-upload"></i>
-				{{Importer projet KNX}}
-			</a> 
-		</span>
+		<div class="col-xs-12 input-group pull-right" style="display:inline-flex">
+			<span class="input-group-btn">
+				<a class="btn btn-warning btn-xs roundedRight Ets4Parser" >
+					<i class="fa fa-cloud-upload"></i>
+					{{Importer projet KNX}}
+				</a> 
+			</span>
+		</div>
 		<ul class="MyAdressGroup"></ul>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="LocationsTab">
-		<span class="pull-right">
-			<a class="btn btn-warning btn-xs Ets4Parser" >
-				<i class="fa fa-cloud-upload"></i>
-				{{Importer projet KNX}}
-			</a> 
-		</span>
+		<div class="col-xs-12 input-group pull-right" style="display:inline-flex">
+			<span class="input-group-btn">
+				<a class="btn btn-warning btn-xs roundedRight Ets4Parser" >
+					<i class="fa fa-cloud-upload"></i>
+					{{Importer projet KNX}}
+				</a> 
+			</span>
+		</div>
 		<ul class="MyLocationsGroup"></ul>
 	</div>
 </div>
@@ -304,12 +310,13 @@ function CreateArboressance(data, Arboressance, first){
 		}else if(typeof Parameter.AdresseGroupe == "undefined") {
 			Arboressance.append($('<li class="Level">')
 				.text(Niveau)
-				.append($('<span class="pull-right">')
-					.append($('<a class="btn btn-warning btn-xs createObject">')
-						.append($('<i class="far fa-object-group">')))
-					.append($('<a class="btn btn-warning btn-xs createTemplate">')
-						.append($('<i class="fas fa-address-card">'))))
-					    .append(CreateArboressance(Parameter, $('<ul>').hide(),false)));
+				.append($('<div class="col-xs-12 input-group pull-right" style="display:inline-flex">')
+					.append($('<span class="input-group-btn">')
+						.append($('<a class="btn btn-success btn-xs roundedRight createObject">')
+							.append($('<i class="far fa-object-group">')))
+						.append($('<a class="btn btn-warning btn-xs roundedRight createTemplate">')
+							.append($('<i class="fas fa-address-card">'))))
+					.append(CreateArboressance(Parameter, $('<ul>').hide(),false))));
 		}else{
 			var li =$('<li class="AdresseGroupe">');
 			if(typeof Parameter.AdresseGroupe != "undefined"){
