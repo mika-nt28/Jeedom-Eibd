@@ -1,16 +1,21 @@
 function ImportEts(merge){
-	var html = $('<form class="form-horizontal" onsubmit="return false;">  ')
-		.append($('<div class="form-group">')
-			.append($('<label class="col-md-4 control-label">')
-				.append('{{Type de fichier}}')
-				.append($('<sup>')
-					.append($('<i class="fa fa-question-circle tooltips" title="{{Sélectioner le type de fichier}}">'))))
-			.append($('<select class=" EtsParseParameter" data-l1key="ProjetType">')
-				.append($('<option value="ETS">')
-					.append('{{ETS}}'))
-				.append($('<option value="TX100">')
-					.append('{{TX100}}'))));
-
+	var html = $('<form class="form-horizontal" onsubmit="return false;">');
+	html.append($('<div class="form-group">')
+		.append($('<label class="col-md-4 control-label">')
+			.append('{{Type de fichier}}')
+			.append($('<sup>')
+				.append($('<i class="fa fa-question-circle tooltips" title="{{Sélectioner le type de fichier}}">'))))
+		.append($('<select class=" EtsParseParameter" data-l1key="ProjetType">')
+			.append($('<option value="ETS">')
+				.append('{{ETS}}'))
+			.append($('<option value="TX100">')
+				.append('{{TX100}}'))));
+	html.append($('<div class="form-group">')
+		.append($('<label class="col-md-4 control-label">')
+			.append('{{Importer votre projet}}')
+			.append($('<sup>')
+				.append($('<i class="fa fa-question-circle tooltips" title="{{Uploader votre projet ETS (*.knxproj)}}">'))))
+		.append($('<input type="file" name="Knxproj" id="Knxproj" data-url="plugins/eibd/core/ajax/eibd.ajax.php?action=EtsParser" placeholder="{{Ficher export ETS}}" class="form-control input-md"/>')));
 	bootbox.dialog({
 		title: "{{Importer votre projet KNX}}",
 		message: html,
@@ -66,3 +71,16 @@ function ImportEts(merge){
 		}
 	});
 }
+$('#Knxproj').fileupload({
+	dataType: 'json',
+	replaceFileInput: false,
+	//done: function (data) {
+	success: function(data) {
+		if (data.state != 'ok') {
+			$('#div_alert').showAlert({message: data.result, level: 'danger'});
+			return;
+		}
+		$('#div_alert').showAlert({message: "Import ETS complet.</br>Vous pouvez commancer la configuration des equipements", level: 'success'});
+		//$('.EtsImportData').append(data.result);
+	}
+});
