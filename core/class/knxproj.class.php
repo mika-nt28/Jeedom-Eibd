@@ -307,6 +307,8 @@ class knxproj {
 	private function ParserETSDevice(){
 		log::add('eibd','debug','[Import ETS] Recherche de device');
 		$Topology = $this->myProject->Project->Installations->Installation->Topology;
+		if($Topology == null)
+			return;
 		foreach($Topology->children() as $Area){
 			$AreaAddress=$this->xml_attribute($Area, 'Address');
 			foreach ($Area->children() as $Line)  {
