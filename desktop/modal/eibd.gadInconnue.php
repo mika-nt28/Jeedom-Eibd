@@ -331,9 +331,9 @@ function CreatebyTemplate(_el){
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
-					_el.append($('<span class="label label-success cursor">')
+					_el.after($('<span class="label label-success cursor">')
 						   .attr('data-type','template')
-						   .text($('.EqLogicTemplateAttr[data-l1key=template]').val())
+						   .text($('.EqLogicTemplateAttr[data-l1key=template]').val()));
 				}
 			},
 		}
@@ -353,7 +353,8 @@ function CreateArboressance(data, Arboressance, first){
 							.append($('<i class="far fa-object-group">')))
 						.append($('<a class="btn btn-warning btn-xs roundedRight createTemplate">')
 							.append($('<i class="fas fa-address-card">')))))
-				.append(Niveau)
+				.append($('<label>')
+					.append(Niveau))
 				.append(CreateArboressance(Parameter, $('<ul>').hide(),false)));
 		}else{
 			var li =$('<li class="col-sm-11 AdresseGroupe">');
@@ -401,10 +402,12 @@ function CreateArboressance(data, Arboressance, first){
 			$(this).closest('.modal-content').find('button[data-bb-handler=success]').trigger('click');
 		})
 		.on('click','.createObject',function(e){
-			CreateObject($(this).closest('.Level').text());
+			e.stopPropagation();
+			CreateObject($(this).parents('.Level').find('label:first').text());
 		})
 		.on('click','.createTemplate',function(e){
-			 CreatebyTemplate($(this).closest('.Level'));
+			e.stopPropagation();
+			CreatebyTemplate($(this).parents('.Level').find('label:first'));
 		});
 		if(SelectAddr != ''){
 			$.each(Arboressance.find(".AdresseGroupe"),function() {
