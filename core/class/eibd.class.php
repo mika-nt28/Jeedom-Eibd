@@ -487,7 +487,7 @@ class eibd extends eqLogic {
 		$buf = new EIBBuffer();		
 		if ($conBusMonitor->EIBOpen_GroupSocket(0) == -1)
 			log::add('eibd', 'error',$conBusMonitor->getLastError);		
-		self::InitInformation();
+		//self::InitInformation();
 		while(true) {    
 			$src = new EIBAddr;
 			$dest = new EIBAddr;
