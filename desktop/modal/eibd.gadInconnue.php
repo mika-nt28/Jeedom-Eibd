@@ -350,7 +350,7 @@ function CreatebyTemplate(_el,_template){
 function CreateArboressance(data, Arboressance, first){
 	if (first)
 		Arboressance.html('');
-	jQuery.each(data,function(Niveau, Parameter) {
+	jQuery.each(data.sort(),function(Niveau, Parameter) {
 		if(Parameter == null) {
 			Arboressance.append($('<li class="col-sm-11 Level">').text(Niveau));
 		}else if(typeof Parameter.AdresseGroupe == "undefined") {
