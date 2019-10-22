@@ -487,13 +487,17 @@ class eibd extends eqLogic {
 		$buf = new EIBBuffer();		
 		if ($conBusMonitor->EIBOpen_GroupSocket(0) == -1)
 			log::add('eibd', 'error',$conBusMonitor->getLastError);		
-		//self::InitInformation();
+		$src = new EIBAddr;
+		$dest = new EIBAddr;
+		while($conBusMonitor->EIBGetGroup_Src($buf, $src, $dest) == -1)
+			usleep(1000);
+		self::InitInformation();
 		while(true) {    
 			$src = new EIBAddr;
 			$dest = new EIBAddr;
 			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);      
 			if ($len == -1) 
-              break;
+              			break;
 			if ($len >= 2) {
 				$mon = self::parseread($len,$buf);
 				$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
