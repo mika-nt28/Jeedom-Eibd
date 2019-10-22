@@ -311,9 +311,12 @@ function CreateObject(object){
 	});
 }
 
-function CreatebyTemplate(_el){	
+function CreatebyTemplate(_el,_template){	
 	var select = $('<select class="EqLogicTemplateAttr form-control" data-l1key="template">');
-	$.each(templates,function(id,template){
+	var liste = templates;
+	if(_template != '')
+		liste = templates[_template].cmd;
+	$.each(liste,function(id,template){
 		select.append($('<option>')
 			.attr('value',id)
 			.append(template.name));
@@ -331,9 +334,14 @@ function CreatebyTemplate(_el){
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
+					var type = 'template';
+					if(_template != '')
+						type =  'cmd';
+					_template = $('.EqLogicTemplateAttr[data-l1key=template]').val();
 					_el.after($('<span class="label label-success cursor">')
-						   .attr('data-type','template')
-						   .text($('.EqLogicTemplateAttr[data-l1key=template]').val()));
+						   .attr('data-type',type)
+						   .attr('data-id',_template)
+						   .text(templates[_template].name));
 				}
 			},
 		}
@@ -407,7 +415,14 @@ function CreateArboressance(data, Arboressance, first){
 		})
 		.on('click','.createTemplate',function(e){
 			e.stopPropagation();
-			CreatebyTemplate($(this).parents('.Level').find('label:first'));
+			$(this).parents('.Level').find('label').each(function(){
+				var id = $(this).find('.label[data-type=template]').attr('data-id');
+				if(id != ''){
+					CreatebyTemplate($(this),id);
+					return;
+				}
+			});
+			CreatebyTemplate($(this).parents('.Level').find('label:first'),'');
 		});
 		if(SelectAddr != ''){
 			$.each(Arboressance.find(".AdresseGroupe"),function() {
