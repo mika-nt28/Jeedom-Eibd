@@ -45,7 +45,7 @@ function ImportEts(merge){
 						error: function(request, status, error) {},
 						success: function(data) {
 							bootbox.confirm({
-								message: "This is a confirm with custom button text and color! Do you like it?",
+								message: "{{Voulez vous importer un autre fichier projet?}}",
 								buttons: {
 									confirm: {
 										label: '{{Oui}}',
