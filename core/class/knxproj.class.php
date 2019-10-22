@@ -270,7 +270,7 @@ class knxproj {
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRange, 'Address'));
 				$GroupId=$this->xml_attribute($GroupRange, 'Id');
 				list($AdressePhysique,$DataPointType)=$this->updateDeviceInfo($GroupId,$GroupName,$AdresseGroupe);				
-				$Level[$GroupName]=array('AdressePhysique' => $AdressePhysique ,'DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+				$Level[$GroupName.' ('.$AdresseGroupe.')']=array('AdressePhysique' => $AdressePhysique ,'DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
 			}elseif($GroupRange->getName() == 'DeviceInstanceRef'){	
 				$Level += $this->getDeviceGad($this->xml_attribute($GroupRange, 'RefId'));    
 			}else{
@@ -342,7 +342,7 @@ class knxproj {
 			}
 		}
 	}
-	private function getOptionLevel($GroupLevel,$NbLevel=0){
+	/*private function getOptionLevel($GroupLevel,$NbLevel=0){
 		$Architecture = array();
 		$NbLevel++;
 		foreach ($GroupLevel as $Name => $Level) {
@@ -364,7 +364,7 @@ class knxproj {
 		return $Architecture;
 	}
 		
-	/*private function CheckOptions(){
+	private function CheckOptions(){
 		$ObjetLevel= $this->checkLevel('object');
 		$TemplateLevel= $this->checkLevel('function');
 		$CommandeLevel= $this->checkLevel('cmd');
