@@ -378,7 +378,7 @@ function CreateArboressance(data, Arboressance, first){
 				var DataPointType =Parameter.DataPointType.replace(/\./g, '-');
 				li.attr('data-DataPointType',DataPointType);
 			}
-			li.text(' (' + Parameter.AdresseGroupe + ') '+Niveau);
+			li.text(Niveau);
 			Arboressance.append(li);
 		}
 	});
