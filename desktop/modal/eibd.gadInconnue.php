@@ -338,7 +338,7 @@ function CreatebyTemplate(_el,_template){
 					if(_template != '')
 						type =  'cmd';
 					_template = $('.EqLogicTemplateAttr[data-l1key=template]').val();
-					_el.after($('<span class="label label-success cursor">')
+					_el.after($('<span class="template label label-success cursor">')
 						   .attr('data-type',type)
 						   .attr('data-id',_template)
 						   .text(templates[_template].name));
@@ -350,7 +350,7 @@ function CreatebyTemplate(_el,_template){
 function CreateArboressance(data, Arboressance, first){
 	if (first)
 		Arboressance.html('');
-	jQuery.each(data.sort(),function(Niveau, Parameter) {
+	jQuery.each(data,function(Niveau, Parameter) {
 		if(Parameter == null) {
 			Arboressance.append($('<li class="col-sm-11 Level">').text(Niveau));
 		}else if(typeof Parameter.AdresseGroupe == "undefined") {
@@ -415,8 +415,8 @@ function CreateArboressance(data, Arboressance, first){
 		})
 		.on('click','.createTemplate',function(e){
 			e.stopPropagation();
-			$(this).parents('.Level').find('label').each(function(){
-				var id = $(this).find('.label[data-type=template]').attr('data-id');
+			$(this).parents('.Level').each(function(){
+				var id = $(this).find('.template[data-type=template]').attr('data-id');
 				if(id != ''){
 					CreatebyTemplate($(this),id);
 					return;
