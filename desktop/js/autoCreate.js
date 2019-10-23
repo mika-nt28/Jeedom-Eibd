@@ -1,7 +1,9 @@
-function getLevelSelect(){
+function getLevelSelect(Level){
 	var html = $('<div class="col-sm-7 control-label">');
-	for(var loop = 0; loop < GadLevel; loop++){
-		html.append($('<select class=" autoCreateParameter" data-l1key="'+loop+'">')
+	for(var loop = 0; loop < Level; loop++){
+		html.append($('<select class="autoCreateParameter" data-l1key="'+loop+'">')
+			.append($('<option value="">')
+				  .append('{{Aucun}}'))
 			.append($('<option value="object">')
 				  .append('{{Objet}}'))
 			.append($('<option value="function">')
@@ -13,6 +15,19 @@ function getLevelSelect(){
 }
 function autoCreate(){
 	var html = $('<form class="autoCreate form-horizontal" onsubmit="return false;">');
+  	html.append($('<div class="form-group">') 
+		.append($('<label class="col-sm-4 control-label">') 
+        		.append('{{Sur quel arboressance choisir}}') 
+			.append($('<sup>') 
+				.append($('<i class="fa fa-question-circle tooltips" title="{{Cette option permet de choisir l\'arboresance sur lequel on vas cree nos objet / equipement / commande}}" >'))))
+		.append($('<div class="col-sm-7 control-label">') 
+			.append($('<select class="autoCreateParameter" data-l1key="arboresance">')
+			.append($('<option value="gad">')
+				  .append('{{Adresse de groupe}}'))
+			.append($('<option value="device">')
+				  .append('{{Equipement}}'))
+			.append($('<option value="locations">')
+				  .append('{{Localisation}}')))));
   	html.append($('<div class="form-group">') 
 		.append($('<label class="col-sm-4 control-label">') 
         		.append('{{Créer les objets}}') 
@@ -32,7 +47,7 @@ function autoCreate(){
 		        .append('{{Arborescence des groupes}}') 
 			.append($('<sup>') 
 				.append($('<i class="fa fa-question-circle tooltips" title="{{La définition de l\'arboressance de groupe permet au parser de connaitre ou se situe le nom a prendre pour la creation automatique des objets ou des equipemnt}}">'))))
-			.append(getLevelSelect).hide());
+			.append($('<div class="col-sm-7 control-label level">')).hide());
 	html.append($('<div class="form-group withCreateEqLogic">') 
 		.append($('<label class="col-sm-4 control-label">')
        			.append('{{Uniquement correspondant a un Template}}')
@@ -72,20 +87,47 @@ bootbox.dialog({
 			},
 		}
 	});
+	$('.autoCreateParameter[data-l1key=arboresance]').change(function() {
+		var arbo = null;		
+		switch($(this).val()){
+			case 'gad':
+				arbo = KnxProject.GAD;
+			break;
+			case 'device':
+				arbo = KnxProject.Devices;
+			break;
+			case 'locations':
+				arbo = KnxProject.Locations;
+			break;
+		}
+		var nbLevel = 0;
+		if(arbo != null){
+			$('.autoCreate .level').append(getLevelSelect(getNbLevel(arbo,0)));
+		}		
+	});
 	$('.autoCreateParameter[data-l1key=createEqLogic]').change(function() {
  		if(this.checked) {
-			$('.withCreate').show();
-			$('.withCreateEqLogic').show();
+			$('.autoCreate .withCreate').show();
+			$('.autoCreate .withCreateEqLogic').show();
 		}else{
-			$('.withCreate').hide();
-			$('.withCreateEqLogic').hide();
+			$('.autoCreate .withCreate').hide();
+			$('.autoCreate .withCreateEqLogic').hide();
 		}
 	});
 	$('.autoCreateParameter[data-l1key=createObjet]').change(function() {
  		if(this.checked) {
-			$('.withCreate').show();
+			$('.autoCreate .withCreate').show();
 		}else{
-			$('.withCreate').hide();
+			$('.autoCreate .withCreate').hide();
 		}
 	});
+}
+function getNbLevel(arbo,nbLevel){
+	$.each(arbo, function(Niveau, Parameter){
+		if(typeof Parameter.AdresseGroupe == "undefined")
+			getNbLevel(nbLevel++,arbo);
+		else
+			return nbLevel;
+	});
+	return nbLevel;
 }
