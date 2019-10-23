@@ -1,14 +1,14 @@
 function getLevelSelect(){
-		    /*<?php
-				for($loop = 0; $loop < config::byKey('level','eibd'); $loop++){
-					echo '<select class=" autoCreateParameter" data-l1key="'.$loop.'">';
-					echo '	<option value="object">{{Objet}}</option>';
-					echo '	<option value="function">{{Fonction}}</option>';
-					echo '	<option value="cmd">{{Commande}}</option>';
-					echo '</select>';
-				}
-				?>
-			</div> */
+	var html='';
+	for(var loop = 0; loop < GadLevel; loop++){
+		html.append($('<select class=" autoCreateParameter" data-l1key="'+loop+'">')
+			.append($('<option value="object">')
+				  .append($('{{Objet}}'))
+			.append($('<option value="function">')
+				.append($('{{Fonction}}'))
+			.append($('<option value="cmd">')
+				.append($('{{Commande}}')));
+	}
 }
 function autoCreate(){
 	var html = $('<form class="autoCreate form-horizontal" onsubmit="return false;">');
