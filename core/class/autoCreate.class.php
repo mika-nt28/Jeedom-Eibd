@@ -24,38 +24,30 @@ class autoCreate {
 			break;
 		}
 	}
-  	private function getOptionLevel($GroupLevel,$NbLevel=0){
-		$Architecture = array();
+  	private function getOptionLevel($GroupLevel,$Groupe,$NbLevel=0){
 		foreach ($GroupLevel as $Name => $Level) {
-			$ObjectName = '';
-			$TemplateName = '';
-			$CmdName = '';
-			if($this->ObjetLevel == $NbLevel)
-				$ObjectName=$Name;
+			if($this->ObjetLevel == $NbLevel){
+				$Object=$this->createObject($Name,$Groupe['Object']);
+				$Groupe['Object']=$Object->getId();
+			}
 			elseif($this->TemplateLevel == $NbLevel)
-				$TemplateName=$Name;
+				$Groupe['Template']=$Name;
 			elseif($this->CommandeLevel == $NbLevel)
-				$CmdName=$Name;
+				$Groupe['Commande']=$Name;
 			if(is_array($Level)){
-				$Architecture[$GroupName]=$this->getOptionLevel($Level,$NbLevel++);
+				$this->getOptionLevel($Level,$Groupe,$NbLevel++);
 			}else{
-				$Architecture[$ObjectName][$TemplateName][$CmdName]=$Level;
+				$this->createEqLogic($Groupe['Object'],$Groupe['Template'],$Level)
+				$Groupe['Object'] = '';
+				$Groupe['Template'] = '';
 			}
 		}
-		return $Architecture;
 	}
-		
 	public function CheckOptions(){
-		$this->ObjetLevel= $this->checkLevel('object');
-		$this->TemplateLevel= $this->checkLevel('function');
-		$this->CommandeLevel= $this->checkLevel('cmd');
-		$Architecture= $this->getOptionLevel($this->Arboresance);
-		foreach($Architecture as $ObjectName => $Template){
-			$Object=$this->createObject($ObjectName);
-			foreach($Template as $TemplateName => $Cmds){
-				$this->createEqLogic($ObjectName,$TemplateName,$Cmds);
-			}
-		}
+		$Groupe['Object'] = '';
+		$Groupe['Template'] = '';
+		$GroupName['Commande'] = '';
+		$Architecture= $this->getOptionLevel($this->Arboresance,$Groupe);
 	}
 	private function checkLevel($search){
 		foreach($this->options as $level =>$options){
@@ -63,7 +55,7 @@ class autoCreate {
 				return $level;
 		}
 	}
-	private function createObject($Name){
+	private function createObject($Name,$Father){
 		if(!$this->options['createObjet'])
 			return null;
 		$Object = jeeObject::byName($Name); 
@@ -71,24 +63,20 @@ class autoCreate {
 			log::add('eibd','info','[Création automatique] Nous allons cree l\'objet : '.$Name);
 			$Object = new jeeObject(); 
 			$Object->setName($Name);
+			$Object->setFather_id($Father);
 			$Object->setIsVisible(true);
 			$Object->save();
 		}
 		return $Object;
 	}
-	private function createEqLogic($ObjectName,$TemplateName,$Cmds){
+	private function createEqLogic($Object,$Name,$Cmds){
 		if(!$this->options['createEqLogic'])
 			return;
-		$Object=$this->createObject($ObjectName);
-		if (is_object($Object))
-			$ObjectId = $Object->getId();
-		else
-			$ObjectId = null;
-		$TemplateId=$this->getTemplateName($TemplateName);
+		$TemplateId=$this->getTemplateName($Name);
 		if($TemplateId != false){
 			$TemplateOptions=$this->getTemplateOptions($TemplateId,$Cmds);
-			log::add('eibd','info','[Création automatique] Le template ' .$TemplateName.' existe, nous créons un equipement');
-			$EqLogic=eibd::AddEquipement($TemplateName,'',$ObjectId);
+			log::add('eibd','info','[Création automatique] Le template ' .$Name.' existe, nous créons un equipement');
+			$EqLogic=eibd::AddEquipement($Name,'',$Object);
 			$EqLogic->applyModuleConfiguration($TemplateId,$TemplateOptions);
 			foreach($EqLogic->getCmd() as $Cmd){
 				$TemplateCmdName=$this->getTemplateCmdName($TemplateId,$Cmd->getName());
@@ -99,8 +87,8 @@ class autoCreate {
 			}
 		}else{
 			if(!$this->options['createTemplate']){				
-				log::add('eibd','info','[Création automatique] Il n\'exite aucun template ' .$TemplateName.', nous créons un equipement basique qu\'il faudra mettre a jours');
-				$EqLogic=eibd::AddEquipement($TemplateName,'',$ObjectId);
+				log::add('eibd','info','[Création automatique] Il n\'exite aucun template ' .$Name.', nous créons un equipement basique qu\'il faudra mettre a jours');
+				$EqLogic=eibd::AddEquipement($Name,'',$Object);
 				foreach($Cmds as $Name => $Cmd){
 					if($Cmd['DataPointType'] == ".000" ||$Cmd['DataPointType'] == ".000")
 						$Cmd['DataPointType']= "1.xxx";
