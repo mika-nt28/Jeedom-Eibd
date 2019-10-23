@@ -10,7 +10,7 @@ function getLevelSelect(){
 				?>
 			</div> */
 }
-function autoCreate(merge){
+function autoCreate(){
 	var html = $('<form class="autoCreate form-horizontal" onsubmit="return false;">');
   	html.append($('<div class="form-group">') 
 		.append($('<label class="col-md-4 control-label">') 
