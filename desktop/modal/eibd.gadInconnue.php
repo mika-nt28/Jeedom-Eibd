@@ -111,6 +111,7 @@ else
 </div>
 <script>
 var KnxGadInconueRefresh = null;
+var KnxProject = null;
 $.ajax({
 	type: 'POST',
 	async: false,
@@ -239,6 +240,7 @@ function getEtsProj () {
 			}
 			if (data.result == false) 
 				return;
+			KnxProject = data.result;
 			CreateArboressance(data.result.Devices,$('.MyDeviceGroup'),true);
 			CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true);
 			CreateArboressance(data.result.Locations,$('.MyLocationsGroup'),true);
