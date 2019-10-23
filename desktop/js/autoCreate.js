@@ -1,5 +1,5 @@
 function getLevelSelect(){
-	var html=$('<div class="col-sm-9 control-label">');
+	var html = $('<div class="col-sm-9 control-label">');
 	for(var loop = 0; loop < GadLevel; loop++){
 		html.append($('<select class=" autoCreateParameter" data-l1key="'+loop+'">')
 			.append($('<option value="object">')
@@ -9,6 +9,7 @@ function getLevelSelect(){
 			.append($('<option value="cmd">')
 				.append('{{Commande}}')));
 	}
+	return html;
 }
 function autoCreate(){
 	var html = $('<form class="autoCreate form-horizontal" onsubmit="return false;">');
