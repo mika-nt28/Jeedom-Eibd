@@ -7,7 +7,7 @@ class autoCreate {
 	private $Templates=array();
  	public function __construct($_options){
 		$this->Templates=eibd::devicesParameters();
-		$this->options=$_options;
+		$this->options=$_options[0];
 		
 		$myKNX=json_decode(file_get_contents(dirname(__FILE__) . '/../config/KnxProj.json'),true);
 		$this->Devices=$myKNX['Devices'];
@@ -36,7 +36,7 @@ class autoCreate {
 		return $Architecture;
 	}
 		
-	private function CheckOptions(){
+	public function CheckOptions(){
 		$ObjetLevel= $this->checkLevel('object');
 		$TemplateLevel= $this->checkLevel('function');
 		$CommandeLevel= $this->checkLevel('cmd');
@@ -96,7 +96,7 @@ class autoCreate {
 			return null;
 		$Object = jeeObject::byName($Name); 
 		if (!is_object($Object)) {
-			log::add('eibd','info','[Import ETS] Nous allons cree l\'objet : '.$Name);
+			log::add('eibd','info','[Création automatique] Nous allons cree l\'objet : '.$Name);
 			$Object = new jeeObject(); 
 			$Object->setName($Name);
 			$Object->setIsVisible(true);
@@ -115,7 +115,7 @@ class autoCreate {
 		$TemplateId=$this->getTemplateName($TemplateName);
 		if($TemplateId != false){
 			$TemplateOptions=$this->getTemplateOptions($TemplateId,$Cmds);
-			log::add('eibd','info','[Import ETS] Le template ' .$TemplateName.' existe, nous créons un equipement');
+			log::add('eibd','info','[Création automatique] Le template ' .$TemplateName.' existe, nous créons un equipement');
 			$EqLogic=eibd::AddEquipement($TemplateName,'',$ObjectId);
 			$EqLogic->applyModuleConfiguration($TemplateId,$TemplateOptions);
 			foreach($EqLogic->getCmd() as $Cmd){
@@ -127,7 +127,7 @@ class autoCreate {
 			}
 		}else{
 			if(!$this->options['createTemplate']){				
-				log::add('eibd','info','[Import ETS] Il n\'exite aucun template ' .$TemplateName.', nous créons un equipement basique qu\'il faudra mettre a jours');
+				log::add('eibd','info','[Création automatique] Il n\'exite aucun template ' .$TemplateName.', nous créons un equipement basique qu\'il faudra mettre a jours');
 				$EqLogic=eibd::AddEquipement($TemplateName,'',$ObjectId);
 				foreach($Cmds as $Name => $Cmd){
 					if($Cmd['DataPointType'] == ".000" ||$Cmd['DataPointType'] == ".000")

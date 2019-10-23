@@ -421,12 +421,12 @@ class eibd extends eqLogic {
 				$data .= pack ("C", $val[$i]);
 		}
 		$addr = self::gaddrparse ($addr);
-		$r = $EibdConnexion->EIBOpenT_Group ($addr, 1);
-		if ($r == -1)
-			return -1;
-		$r = $EibdConnexion->EIBSendAPDU($data);
-		if ($r == -1)
-			return -1;
+		$len = $EibdConnexion->EIBOpenT_Group ($addr, 1);
+		if ($len == -1)
+          		return false;
+		$len = $EibdConnexion->EIBSendAPDU($data);
+		if ($len == -1)
+          		return false;
 		$EibdConnexion->EIBClose();
 		return true;
 	}
@@ -446,11 +446,11 @@ class eibd extends eqLogic {
 				$data .= pack ("C", $val[$i]);
 		}
 		$addr = self::gaddrparse ($addr);
-		$r = $EibdConnexion->EIBOpenT_Group ($addr, 1);
-		if ($r == -1)
+		$len = $EibdConnexion->EIBOpenT_Group ($addr, 1);
+		if ($len == -1)
 			return -1;
-		$r = $EibdConnexion->EIBSendAPDU($data);
-		if ($r == -1)
+		$len = $EibdConnexion->EIBSendAPDU($data);
+		if ($len == -1)
 			return -1;
 		$EibdConnexion->EIBClose();
 		return true;
