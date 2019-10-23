@@ -63,6 +63,24 @@ function ImportEts(merge){
 										CreateArboressance(data.result.Devices,$('.MyDeviceGroup'),true);
 										CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true);
 										CreateArboressance(data.result.Locations,$('.MyLocationsGroup'),true);
+										bootbox.confirm({
+											message: "{{Voulez vous créer automatiquement les equipemnts?}}",
+											buttons: {
+												confirm: {
+													label: '{{Oui}}',
+													className: 'btn-success'
+												},
+												cancel: {
+													label: '{{Non}}',
+													className: 'btn-danger'
+												}
+											},
+											callback: function (result) {
+												if(result){
+													autoCreate();
+												}
+											}
+										});
 									}
 								}
 							});
