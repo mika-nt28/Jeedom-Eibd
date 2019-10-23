@@ -54,8 +54,7 @@ bootbox.dialog({
 						url: 'plugins/eibd/core/ajax/eibd.ajax.php',
 						data:
 						{
-							action: 'AnalyseEtsProj',
-							merge: merge,
+							action: 'autoCreate',
 							option: $('.autoCreate').getValues('.autoCreateParameter')
 						},
 						dataType: 'json',
