@@ -1,34 +1,43 @@
 <?php
 class autoCreate {
 	private $options;
-	private $Devices=array();
-	private $GroupAddresses=array();
-	private $Locations=array();
+	private $Arboresance=array();
 	private $Templates=array();
+	private $ObjetLevel;
+	private $TemplateLevel;
+	private $CommandeLevel;
  	public function __construct($_options){
 		$this->Templates=eibd::devicesParameters();
 		$this->options=$_options[0];
 		
 		$myKNX=json_decode(file_get_contents(dirname(__FILE__) . '/../config/KnxProj.json'),true);
-		$this->Devices=$myKNX['Devices'];
-		$this->GroupAddresses=$myKNX['GAD'];
-		$this->Locations=$myKNX['Locations'];
+		
+		switch($this->options['arboresance']){
+			case 'gad':
+				$this->Arboresance=$myKNX['GAD'];
+			break;
+			case 'device':
+				$this->Arboresance=$myKNX['Devices'];
+			break;
+			case 'locations':
+				$this->Arboresance=$myKNX['Locations'];
+			break;
+		}
 	}
   	private function getOptionLevel($GroupLevel,$NbLevel=0){
 		$Architecture = array();
-		$NbLevel++;
 		foreach ($GroupLevel as $Name => $Level) {
 			$ObjectName = '';
 			$TemplateName = '';
 			$CmdName = '';
-			if($ObjetLevel == $NbLevel)
+			if($this->ObjetLevel == $NbLevel)
 				$ObjectName=$Name;
-			elseif($TemplateLevel == $NbLevel)
+			elseif($this->TemplateLevel == $NbLevel)
 				$TemplateName=$Name;
-			elseif($CommandeLevel == $NbLevel)
+			elseif($this->CommandeLevel == $NbLevel)
 				$CmdName=$Name;
 			if(is_array($Level)){
-				$Architecture[$GroupName]=$this->getOptionLevel($Level,$NbLevel);
+				$Architecture[$GroupName]=$this->getOptionLevel($Level,$NbLevel++);
 			}else{
 				$Architecture[$ObjectName][$TemplateName][$CmdName]=$Level;
 			}
@@ -37,47 +46,10 @@ class autoCreate {
 	}
 		
 	public function CheckOptions(){
-		$ObjetLevel= $this->checkLevel('object');
-		$TemplateLevel= $this->checkLevel('function');
-		$CommandeLevel= $this->checkLevel('cmd');
-		//$Architecture= $this->getOptionLevel($this->GroupAddresses);
-		$Architecture=array();
-		foreach($this->GroupAddresses as $Name1 => $Level1){
-			$ObjectName = '';
-			$TemplateName = '';
-			$CmdName = '';
-			if($ObjetLevel == 0)
-				$ObjectName=$Name1;
-			elseif($TemplateLevel == 0)
-				$TemplateName=$Name1;
-			elseif($CommandeLevel == 0)
-				$CmdName=$Name1;
-			if(is_array($Level1)){
-				foreach($Level1 as $Name2 => $Level2){
-					if($ObjetLevel == 1)
-						$Object=$Name2;
-					elseif($TemplateLevel == 1)
-						$TemplateName=$Name2;
-					elseif($CommandeLevel == 1)
-						$CmdName=$Name2;
-					if(is_array($Level2)){
-						foreach($Level2 as $Name3 => $Gad){
-							if($ObjetLevel == 2)
-								$ObjectName=$Name3;
-							elseif($TemplateLevel == 2)
-								$TemplateName=$Name3;
-							elseif($CommandeLevel == 2)
-								$CmdName=$Name3;
-							$Architecture[$ObjectName][$TemplateName][$CmdName]=$Gad;
-						}
-					}else{
-						$Architecture[$ObjectName][$TemplateName][$CmdName]=$Gad;
-					}
-				}
-			}else{
-				$Architecture[$ObjectName][$TemplateName][$CmdName]=$Gad;
-			}
-		}
+		$this->ObjetLevel= $this->checkLevel('object');
+		$this->TemplateLevel= $this->checkLevel('function');
+		$this->CommandeLevel= $this->checkLevel('cmd');
+		$Architecture= $this->getOptionLevel($this->Arboresance);
 		foreach($Architecture as $ObjectName => $Template){
 			$Object=$this->createObject($ObjectName);
 			foreach($Template as $TemplateName => $Cmds){
