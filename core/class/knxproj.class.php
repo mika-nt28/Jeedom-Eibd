@@ -245,10 +245,10 @@ class knxproj {
 	
 	private function ParserLocations(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de localisation');
-		$Level = $this->myProject->Project->Installations->Installation->Locations->Space ;
+		$Level = $this->myProject->Project->Installations->Installation->Locations->Space;
 		$Locations = $this->getETSLevel($Level);
 		if(!$Locations){
-			$Level = $this->myProject->Project->Installations->Installation->Buildings ;
+			$Level = $this->myProject->Project->Installations->Installation->Buildings->BuildingPart;
 			$Locations = $this->getETSLevel($Level);
 		}
 		$this->Locations = $Locations;
