@@ -83,7 +83,7 @@ try {
 					ajax::success(false);
 			}
 		break;
-		case 'AnalyseEtsProj'):
+		case 'AnalyseEtsProj':
 			$knxproj=new knxproj(init('merge'),init('ProjetType'));
 			$knxproj->WriteJsonProj();
 			ajax::success(json_decode($knxproj->getAll(),true));
