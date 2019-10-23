@@ -1,5 +1,5 @@
 function getLevelSelect(){
-	var html = $('<div class="col-sm-9 control-label">');
+	var html = $('<div class="col-sm-7 control-label">');
 	for(var loop = 0; loop < GadLevel; loop++){
 		html.append($('<select class=" autoCreateParameter" data-l1key="'+loop+'">')
 			.append($('<option value="object">')
@@ -18,14 +18,14 @@ function autoCreate(){
         		.append('{{Créer les objets}}') 
 			.append($('<sup>') 
 				.append($('<i class="fa fa-question-circle tooltips" title="{{Cette option autorise le parser a créer automatiquement les objets trouvés selon la definition des level defini precedement dans l\'arboresance de groupe}}" >'))))
-		.append($('<div class="col-sm-9 control-label">') 
+		.append($('<div class="col-sm-7 control-label">') 
 			.append($('<input type="checkbox" class="autoCreateParameter" data-l1key="createObjet"/>'))));
 	html.append($('<div class="form-group">') 
 		.append($('<label class="col-sm-4 control-label">') 
       			.append('{{Créer les equipements}}') 
 			.append($('<sup>') 
 				.append($('<i class="fa fa-question-circle tooltips" title="{{Cette option autorise le parser a créer automatiquement les equipements trouvés selon la definition des level defini precedement dans l\'arboresance de groupe}}">'))))
-		.append($('<div class="col-sm-9 control-label">') 
+		.append($('<div class="col-sm-7 control-label">') 
 			.append($('<input type="checkbox" class="autoCreateParameter" data-l1key="createEqLogic"/>'))));
 	html.append($('<div class="form-group withCreate">') 
 		.append($('<label class="col-sm-4 control-label">') 
@@ -38,7 +38,7 @@ function autoCreate(){
        			.append('{{Uniquement correspondant a un Template}}')
 			.append($('<sup>')
 				.append($('<i class="fa fa-question-circle tooltips" title="{{Cette option permet de filtrer la creation d\'equipement a ceux qui corresponde a un Template (Nom du Template et des commandes}}">'))))
-		.append($('<div class="col-sm-9 control-label">') 
+		.append($('<div class="col-sm-7 control-label">') 
 			.append($('<input type="checkbox" class="autoCreateParameter" data-l1key="createTemplate"/>'))).hide());
 bootbox.dialog({
 		title: "{{Creation automatique des equipements KNX}}",
