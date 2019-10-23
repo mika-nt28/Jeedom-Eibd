@@ -359,8 +359,8 @@ function CreateArboressance(data, Arboressance, first){
 					.append($('<span class="input-group-btn">')
 						.append($('<a class="btn btn-success btn-xs roundedRight createObject">')
 							.append($('<i class="far fa-object-group">')))
-						.append($('<a class="btn btn-warning btn-xs roundedRight createTemplate">')
-							.append($('<i class="fas fa-address-card">')))))
+						/*.append($('<a class="btn btn-warning btn-xs roundedRight createTemplate">')
+							.append($('<i class="fas fa-address-card">')))*/))
 				.append($('<label>')
 					.append(Niveau))
 				.append(CreateArboressance(Parameter, $('<ul>').hide(),false)));
