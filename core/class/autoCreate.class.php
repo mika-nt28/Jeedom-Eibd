@@ -8,13 +8,13 @@ class autoCreate {
  	public function __construct($_options){
 		$this->Templates=eibd::devicesParameters();
 		$this->options=$_options;
-			$filename=dirname(__FILE__) . '/../config/KnxProj.json';
-			$myKNX=json_decode(file_get_contents($filename),true);
-			$this->Devices=$myKNX['DevicesAll'];
-			$this->GroupAddresses=$myKNX['GAD'];
-			$this->Locations=$myKNX['Locations'];
+		
+		$myKNX=json_decode(file_get_contents(dirname(__FILE__) . '/../config/KnxProj.json'),true);
+		$this->Devices=$myKNX['Devices'];
+		$this->GroupAddresses=$myKNX['GAD'];
+		$this->Locations=$myKNX['Locations'];
 	}
-  private function getOptionLevel($GroupLevel,$NbLevel=0){
+  	private function getOptionLevel($GroupLevel,$NbLevel=0){
 		$Architecture = array();
 		$NbLevel++;
 		foreach ($GroupLevel as $Name => $Level) {
