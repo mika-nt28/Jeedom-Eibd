@@ -6,6 +6,7 @@ include_file('3rdparty', 'jquery.tablesorter/theme.bootstrap', 'css');
 include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.min', 'js');
 include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'js');
 include_file('desktop', 'ETSparse', 'js', 'eibd');
+include_file('desktop', 'autoCreate', 'js', 'eibd');
 sendVarToJS('templates',eibd::devicesParameters());
 if(isset($_REQUEST['SelectAddr']))
 	echo '<script>var SelectAddr="'.$_REQUEST['SelectAddr'].'";</script>';
@@ -310,7 +311,6 @@ function CreateObject(object){
 		}
 	});
 }
-
 function CreatebyTemplate(_el,_template){	
 	var select = $('<select class="EqLogicTemplateAttr form-control" data-l1key="template">');
 	var liste = templates;
