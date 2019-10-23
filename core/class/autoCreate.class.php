@@ -37,7 +37,7 @@ class autoCreate {
 			if(is_array($Level)){
 				$this->getOptionLevel($Level,$Groupe,$NbLevel++);
 			}else{
-				$this->createEqLogic($Groupe['Object'],$Groupe['Template'],$Level)
+				$this->createEqLogic($Groupe['Object'],$Groupe['Template'],$Level);
 				$Groupe['Object'] = '';
 				$Groupe['Template'] = '';
 			}
