@@ -4,6 +4,7 @@ try {
     	include_file('core', 'authentification', 'php');
 	include_file('core', 'dpt', 'class', 'eibd');
 	include_file('core', 'knxproj', 'class', 'eibd');
+	include_file('core', 'autoCreate', 'class', 'eibd');
 
     	if (!isConnect('admin')) {
         	throw new Exception(__('401 - Accès non autorisé', __FILE__));
