@@ -3,11 +3,11 @@ function getLevelSelect(){
 	for(var loop = 0; loop < GadLevel; loop++){
 		html.append($('<select class=" autoCreateParameter" data-l1key="'+loop+'">')
 			.append($('<option value="object">')
-				  .append($('{{Objet}}'))
+				  .append('{{Objet}}'))
 			.append($('<option value="function">')
-				.append($('{{Fonction}}'))
+				.append('{{Fonction}}'))
 			.append($('<option value="cmd">')
-				.append($('{{Commande}}')));
+				.append('{{Commande}}')));
 	}
 }
 function autoCreate(){
