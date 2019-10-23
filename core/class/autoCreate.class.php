@@ -36,7 +36,7 @@ class autoCreate {
 		return $Architecture;
 	}
 		
-	private function CheckOptions(){
+	public function CheckOptions(){
 		$ObjetLevel= $this->checkLevel('object');
 		$TemplateLevel= $this->checkLevel('function');
 		$CommandeLevel= $this->checkLevel('cmd');
