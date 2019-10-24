@@ -103,13 +103,6 @@ try {
 		case 'getTemplate':
 			ajax::success(eibd::devicesParameters()[init('template')]);
 		break;
-		case 'AppliTemplate':
-			$EqLogic=eqLogic::byId(init('id'));
-			if (is_object($EqLogic)){
-				$EqLogic->applyModuleConfiguration(init('template'));
-			}
-			ajax::success(true);
-		break;
 		case 'CreateObject':
 			$Object = jeeObject::byName(init('name')); 
 			if (!is_object($Object)) {
