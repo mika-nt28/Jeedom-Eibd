@@ -141,4 +141,5 @@ function autoCreate(){
 			$('.autoCreate .withCreate').hide();
 		}
 	});
+	$('.autoCreateParameter[data-l1key=arboresance]').trigger('change);
 }
