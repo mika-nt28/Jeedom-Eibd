@@ -33,6 +33,23 @@ else
 	    overflow: auto;
 	}
 </style>
+<div class="input-group pull-right" style="display:inline-flex">
+	<span class="input-group-btn">
+		<a class="btn btn-danger btn-xs roundedRight removeAllGad">
+			<i class="fa fa-trash-o"></i>
+			{{ Supprimer}}
+		</a>
+		<a class="btn btn-warning btn-xs roundedRight Include" data-validation=true></a> 
+		<a class="btn btn-warning btn-xs roundedRight Ets4Parser" >
+			<i class="fa fa-cloud-upload"></i>
+			{{Importer projet KNX}}
+		</a> 
+		<a class="btn btn-warning btn-xs roundedRight bt_autoCreate" >
+			<i class="fa fa-cloud-upload"></i>
+			{{Creation automatique}}
+		</a> 
+	</span>
+</div>
 <ul class="nav nav-tabs" role="tablist">
 	<li role="presentation" class="active">
 		<a href="#InconueTab" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">
@@ -53,15 +70,6 @@ else
 </ul>
 <div class="tab-content" style="height: 500px;overflow: auto;">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
-		<div class="col-xs-12 input-group pull-right" style="display:inline-flex">
-			<span class="input-group-btn">
-				<a class="btn btn-danger btn-xs roundedRight removeAllGad" style="margin-bottom : 5px;">
-					<i class="fa fa-trash-o"></i>
-					{{ Supprimer}}
-				</a>
-				<a class="btn btn-warning btn-xs roundedRight Include" data-validation=true style="margin-bottom : 5px;" ></a> 
-			</span>
-		</div>	
 		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
@@ -76,36 +84,12 @@ else
 		</table>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="DeviceTab">
-		<div class="col-xs-12 input-group pull-right" style="display:inline-flex">
-			<span class="input-group-btn">
-				<a class="btn btn-warning btn-xs roundedRight Ets4Parser" >
-					<i class="fa fa-cloud-upload"></i>
-					{{Importer projet KNX}}
-				</a> 
-			</span>
-		</div>
 		<ul class="MyDeviceGroup"></ul>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="AdressTab">
-		<div class="col-xs-12 input-group pull-right" style="display:inline-flex">
-			<span class="input-group-btn">
-				<a class="btn btn-warning btn-xs roundedRight Ets4Parser" >
-					<i class="fa fa-cloud-upload"></i>
-					{{Importer projet KNX}}
-				</a> 
-			</span>
-		</div>
 		<ul class="MyAdressGroup"></ul>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="LocationsTab">
-		<div class="col-xs-12 input-group pull-right" style="display:inline-flex">
-			<span class="input-group-btn">
-				<a class="btn btn-warning btn-xs roundedRight Ets4Parser" >
-					<i class="fa fa-cloud-upload"></i>
-					{{Importer projet KNX}}
-				</a> 
-			</span>
-		</div>
 		<ul class="MyLocationsGroup"></ul>
 	</div>
 </div>
@@ -171,6 +155,9 @@ $('.Include').off().on('click', function () {
 });
 $('.Ets4Parser').off().on('click', function() {
 	ImportEts(false);
+});
+$('.bt_autoCreate').off().on('click', function() {
+	autoCreate();
 });
 var SelectGad='';
 initTableSorter();
