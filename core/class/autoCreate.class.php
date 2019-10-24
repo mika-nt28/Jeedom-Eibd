@@ -99,16 +99,12 @@ class autoCreate {
 			return;
 		$TemplateId=$this->getTemplateName($Name);
 		if($TemplateId != false){
-			$TemplateOptions=$this->getTemplateOptions($TemplateId,$Cmds);
 			log::add('eibd','info','[Création automatique] Le template ' .$Name.' existe, nous créons un equipement');
 			$EqLogic=eibd::AddEquipement($Name,'',$Object);
-			$EqLogic->applyModuleConfiguration($TemplateId,$TemplateOptions);
-			foreach($EqLogic->getCmd() as $Cmd){
-				$TemplateCmdName=$this->getTemplateCmdName($TemplateId,$Cmd->getName());
-				if($TemplateCmdName === false)
-					return;
-				$Cmd->setLogicalId($Cmds[$TemplateCmdName]['AdresseGroupe']);
-				$Cmd->save();
+			foreach($Cmds as $Name => $Cmd){
+				$Commande = $this->createTemplateCmdByName($EqLogic,$TemplateId,$Name);
+				$Commande->setLogicalId($Cmd['AdresseGroupe']);
+				$Commande->save();
 			}
 		}else{
 			if(!$this->options['createTemplate']){				
@@ -147,17 +143,36 @@ class autoCreate {
 		}
 		return $Options;
 	}
-	private function getTemplateCmdName($TemplateId,$CmdName){
-		foreach($this->Templates[$TemplateId]['cmd'] as $TemplateCmdName){
-			if($TemplateCmdName['name'] == $CmdName)
-				return $TemplateCmdName['name'];
-			foreach(explode('|',$TemplateCmdName['SameCmd']) as $SameCmd){
-				if($SameCmd == $CmdName)
-					return $TemplateCmdName['name'];
+	private function createTemplateCmdByName($EqLogic,$TemplateId,$CmdName){
+		foreach($this->Templates[$TemplateId]['cmd'] as $Commande){
+			if($CmdName == $Commande['name']){
+				$cmd = null;
+				foreach ($EqLogic->getCmd() as $liste_cmd) {
+					if (isset($Commande['name']) && $liste_cmd->getName() == $Commande['name']) {
+						$cmd = $liste_cmd;	
+						break;
+					}
+				}
+				return $EqLogic->createTemplateCmd($cmd,$Commande);
 			}
-			foreach($TemplateCmdName['Synonyme'] as $SynonymeName){
-				if($SynonymeName == $CmdName)
-					return $SynonymeName;
+		}
+		foreach ($this->Templates[$TemplateId]['options'] as $DeviceOptionsId => $DeviceOptions) {
+			if(isset($TemplateOptions[$DeviceOptionsId])){
+				$typeTemplate.='_'.$DeviceOptionsId;
+				foreach ($DeviceOptions['cmd'] as $Commande) {
+					if($CmdName == $Commande['name']){
+						$cmd = null;
+						foreach ($EqLogic->getCmd() as $liste_cmd) {
+							if (isset($Commande['name']) && $liste_cmd->getName() == $Commande['name']) {
+								$cmd = $liste_cmd;	
+								break;
+							}
+						}
+						$EqLogic->setConfiguration('typeTemplate',$typeTemplate);
+						$EqLogic->save();
+						return $EqLogic->createTemplateCmd($cmd,$Commande);
+					}
+				}
 			}
 		}
 		return false;
