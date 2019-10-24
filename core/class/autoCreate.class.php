@@ -23,6 +23,21 @@ class autoCreate {
 				$this->Arboresance=$myKNX['Locations'];
 			break;
 		}
+		foreach($this->options['levelType'] as $key => $type){
+			switch($type){
+				default:
+				break;
+				case "object":
+					$this->ObjetLevel = $key;
+				break;
+				case "function":
+					$this->TemplateLevel = $key;
+				break;
+				case "cmd":
+					$this->CommandeLevel = $key;
+				break;
+			}
+		}
 	}
   	private function getOptionLevel($GroupLevel,$Groupe,$NbLevel=0){
 		foreach ($GroupLevel as $Name => $Level) {
