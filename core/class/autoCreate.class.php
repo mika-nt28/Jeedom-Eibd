@@ -1,6 +1,7 @@
 <?php
 class autoCreate {
 	private $options;
+	private $Architecture=array();
 	private $Arboresance=array();
 	private $Templates=array();
 	private $ObjetLevel;
@@ -40,29 +41,38 @@ class autoCreate {
 		}
 	}
   	private function getOptionLevel($GroupLevel,$Groupe,$NbLevel=0){
+        	$NbLevel++;
 		foreach ($GroupLevel as $Name => $Level) {
-			if($this->ObjetLevel == $NbLevel){
-				$Object=$this->createObject($Name,$Groupe['Object']);
-				$Groupe['Object']=$Object->getId();
-			}
-			elseif($this->TemplateLevel == $NbLevel)
-				$Groupe['Template']=$Name;
-			elseif($this->CommandeLevel == $NbLevel)
-				$Groupe['Commande']=$Name;
-			if(is_array($Level)){
-				$this->getOptionLevel($Level,$Groupe,$NbLevel++);
-			}else{
-				$this->createEqLogic($Groupe['Object'],$Groupe['Template'],$Level);
-				$Groupe['Object'] = '';
-				$Groupe['Template'] = '';
-			}
+			switch($NbLevel - 1){
+		      		case $this->ObjetLevel:
+					$Object=$this->createObject($Name,$Groupe['Object']);
+					$Groupe['Object']=$Object->getId();
+				break;
+		      		case $this->TemplateLevel:
+					$Groupe['Template']=$Name;
+				break;
+		      		case $this->CommandeLevel:
+			 		$Groupe['Commande'] = $Name;
+		      		break;
+		    	}
+			if(!isset($Level['AdresseGroupe']))
+				$this->getOptionLevel($Level,$Groupe,$NbLevel);
+			else
+                		$this->Architecture[$Groupe['Object']][$Groupe['Template']][$Groupe['Commande']]=$Level;
 		}
+		return;
 	}
 	public function CheckOptions(){
-		$Groupe['Object'] = '';
-		$Groupe['Template'] = '';
-		$GroupName['Commande'] = '';
-		$Architecture= $this->getOptionLevel($this->Arboresance,$Groupe);
+		$Groupe['Object'] = null;
+		$Groupe['Template'] = null;
+		$Groupe['Commande'] = null;
+		$Groupe['Commande'] = null;
+		$this->getOptionLevel($this->Arboresance,$Groupe);
+		foreach($this->Architecture as $Object => $Template){
+			foreach($Template as $TemplateName => $Cmds){
+				$this->createEqLogic($Object,$TemplateName,$Cmds);
+			}
+		}   
 	}
 	private function checkLevel($search){
 		foreach($this->options as $level =>$options){
