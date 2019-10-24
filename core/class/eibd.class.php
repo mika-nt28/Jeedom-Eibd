@@ -147,52 +147,6 @@ class eibd extends eqLogic {
 		}
 		return $return;
 	}
-	public function applyModuleConfiguration($template, $TemplateOptions=null) {
-		if ($template == '') {
-			$this->save();
-			return true;
-		}
-		$typeTemplate=$template;
-		$device = self::devicesParameters($template);
-		if (!is_array($device) || !isset($device['cmd'])) {
-			return true;
-		}
-		if (isset($device['configuration'])) {
-			foreach ($device['configuration'] as $key => $value) {
-				$this->setConfiguration($key, $value);
-			}
-		}
-		$link_cmds = array();
-		foreach ($device['cmd'] as $command) {
-			$cmd = null;
-			foreach ($this->getCmd() as $liste_cmd) {
-				if (isset($command['name']) && $liste_cmd->getName() == $command['name']) {
-					$cmd = $liste_cmd;	
-					break;
-				}
-			}
-			$this->createTemplateCmd($cmd,$command);
-		}
-		if(is_array($TemplateOptions)){
-			foreach ($device['options'] as $DeviceOptionsId => $DeviceOptions) {
-				if(isset($TemplateOptions[$DeviceOptionsId])){
-					$typeTemplate.='_'.$DeviceOptionsId;
-					foreach ($DeviceOptions['cmd'] as $command) {
-						$cmd = null;
-						foreach ($this->getCmd() as $liste_cmd) {
-							if (isset($command['name']) && $liste_cmd->getName() == $command['name']) {
-								$cmd = $liste_cmd;	
-								break;
-							}
-						}
-						$this->createTemplateCmd($cmd,$command);
-					}
-				}
-			}
-		}
-		$this->setConfiguration('typeTemplate',$typeTemplate);
-		$this->save();
-	}
 	public function createTemplateCmd($cmd,$command) {		
 		try {
 			if ($cmd == null || !is_object($cmd)) {
@@ -220,8 +174,10 @@ class eibd extends eqLogic {
 				$cmd->setConfiguration('option',$options);
 			}
 			$cmd->save();
+			return $cmd;
 		} catch (Exception $exc) {
 			error_log($exc->getMessage());
+			return false;
 		}
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
