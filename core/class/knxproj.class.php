@@ -260,7 +260,7 @@ class knxproj {
 		$this->GroupAddresses = $this->getETSLevel($Level,$this->GroupAddresses);
 	}
 	private function getETSLevel($GroupRanges,$Level=null,$NbLevel=0){
-    	if($Level == null)
+    		if($Level == null)
 			$Level = array();
 		$NbLevel++;
 		if($GroupRanges == null)
@@ -276,9 +276,8 @@ class knxproj {
 			}elseif($GroupRange->getName() == 'DeviceInstanceRef'){	
 				$Level += $this->getDeviceGad($this->xml_attribute($GroupRange, 'RefId'));    
 			}else{
-              	if(count($Level[$GroupName]) == 0){
+				if(count($Level[$GroupName]) == 0)
 					$Level[$GroupName]=$this->getETSLevel($GroupRange,null,$NbLevel);
-                }
 			}
 		}
 		return $Level;
