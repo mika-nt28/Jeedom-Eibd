@@ -35,18 +35,14 @@ else
 </style>
 <div class="input-group pull-right" style="display:inline-flex">
 	<span class="input-group-btn">
-		<a class="btn btn-danger btn-xs roundedRight removeAllGad">
-			<i class="fa fa-trash-o"></i>
-			{{ Supprimer}}
-		</a>
-		<a class="btn btn-warning btn-xs roundedRight Include" data-validation=true></a> 
-		<a class="btn btn-warning btn-xs roundedRight Ets4Parser" >
-			<i class="fa fa-cloud-upload"></i>
-			{{Importer projet KNX}}
+		<a class="btn btn-success btn-xs roundedRight Include" data-validation=true></a> 
+		<a class="btn btn-default btn-xs roundedRight Ets4Parser" >
+			<i class="fas fa-cloud-upload"></i>
+			{{ Importer}}
 		</a> 
 		<a class="btn btn-warning btn-xs roundedRight bt_autoCreate" >
-			<i class="fa fa-cloud-upload"></i>
-			{{Creation automatique}}
+			<i class="fas fa-plus-circle"></i>
+			{{ Créer}}
 		</a> 
 	</span>
 </div>
@@ -57,19 +53,27 @@ else
 	</li>
 	<li role="presentation" class="">
 		<a href="#DeviceTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-			<i class="fa fa-list-alt"></i> {{Equipement}}</a>
+			<i class="fa fa-list-alt"></i> {{Equipements}}</a>
 	</li>
 	<li role="presentation" class="">
 		<a href="#AdressTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-			<i class="fa fa-list-alt"></i> {{Adresse de groupes}}</a>
+			<i class="fa fa-list-alt"></i> {{Adresses de groupes}}</a>
 	</li>
 	<li role="presentation" class="">
 		<a href="#LocationsTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-			<i class="fa fa-list-alt"></i> {{Localisation}}</a>
+			<i class="fa fa-list-alt"></i> {{Localisations}}</a>
 	</li>
 </ul>
 <div class="tab-content" style="height: 500px;overflow: auto;">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
+		<div class="input-group pull-right" style="display:inline-flex">
+			<span class="input-group-btn">
+				<a class="btn btn-danger btn-xs roundedRight removeAllGad">
+					<i class="fas fa-trash-o"></i>
+					{{ Nettoyer}}
+				</a>
+			</span>
+		</div>
 		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
@@ -114,12 +118,12 @@ $.ajax({
 		}
 		if(data.result == "false"){
 			$('.Include').attr('data-validation',"true");
-			$('.Include').html($('<i class="fa fa-bullseye">'))
-				.append(' {{Activer  l\'inculsion}}');
+			$('.Include').html($('<i class="fas fa-bullseye">'))
+				.append(' {{Activer}}');
 		}else{
 			$('.Include').attr('data-validation',"false");
-			$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
-				.append(' {{Désactiver l\'inculsion}}');
+			$('.Include').html($('<i class="fas fa-spinner fa-pulse">'))
+				.append(' {{Désactiver}}');
 		}
 	}
 });
