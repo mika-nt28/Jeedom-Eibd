@@ -243,7 +243,6 @@ class knxproj {
 		}
 		return array($DataPointType,$GroupName);
 	}
-	
 	private function ParserLocations(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de localisation');
 		$Level = $this->myProject->Project->Installations->Installation->Locations;
@@ -251,8 +250,9 @@ class knxproj {
 		if(!$Locations){
 			$Level = $this->myProject->Project->Installations->Installation->Buildings;
 			$Locations = $this->getETSLevel($Level,$this->Locations);
+
 		}
-		$this->Locations = $Locations;
+		array_merge($this->Locations,$Locations);
 	}
 	private function ParserETSGroupAddresses(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance d\'adresse de groupe');
