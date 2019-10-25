@@ -462,17 +462,19 @@ class eibd extends eqLogic {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static function InitInformation() { 
 		log::add('eibd', 'debug', 'Initialisation de valeur des objets KNX');
-		
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd() as $Commande){
+					if($Commande->getLogicalId() == ''){
+						message::add('info',$Commande->getHumanName().'[Initialisation]: Pas d\'adresse de groupe','','');
+						continue;
+					}
 					if ($Commande->getConfiguration('FlagInit')){
-						$ga=$Commande->getLogicalId();
 						$BusValue = $Commande->execute();
 						if($Commande->getType() == 'info')			
-							log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Lecture du GAD: '.$ga.' = '.$BusValue);
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Lecture du GAD: '.$Commande->getLogicalId().' = '.$BusValue);
 						else
-							log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Envoi sur le GAD: '.$ga);
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Envoi sur le GAD: '.$Commande->getLogicalId());
 					}
 				}
 			}
@@ -490,7 +492,8 @@ class eibd extends eqLogic {
 		while(true){	
 			$src = new EIBAddr;
 			$dest = new EIBAddr;
-			if($conBusMonitor->EIBGetGroup_Src($buf, $src, $dest) != -1)
+			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);  
+			if($len != -1)
 				break;
 			sleep(1);
 		}
@@ -500,7 +503,7 @@ class eibd extends eqLogic {
 			$dest = new EIBAddr;
 			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);      
 			if ($len == -1) 
-              			break;
+              		break;
 			if ($len >= 2) {
 				$mon = self::parseread($len,$buf);
 				$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
