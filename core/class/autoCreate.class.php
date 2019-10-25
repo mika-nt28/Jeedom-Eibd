@@ -156,15 +156,15 @@ class autoCreate {
 		}
 		return false;
 	}
-}
-private function CheckAndCreateCmd($EqLogic,$Commande){
-	$cmd = null;
-	foreach ($EqLogic->getCmd() as $liste_cmd) {
-		if (isset($Commande['name']) && $liste_cmd->getName() == $Commande['name']) {
-			$cmd = $liste_cmd;	
-			break;
+	private function CheckAndCreateCmd($EqLogic,$Commande){
+		$cmd = null;
+		foreach ($EqLogic->getCmd() as $liste_cmd) {
+			if (isset($Commande['name']) && $liste_cmd->getName() == $Commande['name']) {
+				$cmd = $liste_cmd;	
+				break;
+			}
 		}
+		return $EqLogic->createTemplateCmd($cmd,$Commande);
 	}
-	return $EqLogic->createTemplateCmd($cmd,$Commande);
 }
 ?>
