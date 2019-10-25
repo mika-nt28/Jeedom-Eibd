@@ -120,62 +120,51 @@ class autoCreate {
 	}
 	private function getTemplateName($TemplateName){
 		foreach($this->Templates as $TemplateId => $Template){
-			if($Template['name'] == $TemplateName)
+			if(strpos($TemplateName,$Template['name']) >= 0)
 				return $TemplateId;
 			foreach($Template['Synonyme'] as $SynonymeName){
-				if($SynonymeName == $TemplateName)
+				if(strpos($TemplateName,$SynonymeName) >= 0)
 					return $TemplateId;
 			}
 		}
 		return false;
 	}
-	private function getTemplateOptions($TemplateId,$Cmds){
-		$Options=array();
-		foreach($Cmds as $Name => $Cmd){
-			foreach($this->Templates[$TemplateId]['options'] as $TemplateOptionId =>$TemplateOption){	      
-				foreach($TemplateOption['cmd'] as $OptionCmd){
-					if($OptionCmd['name'] == $Name){
-						$Options[$TemplateOptionId]=true;
-						break;
-					}
-				}
-			}
-		}
-		return $Options;
-	}
 	private function createTemplateCmdByName($EqLogic,$TemplateId,$CmdName){
 		foreach($this->Templates[$TemplateId]['cmd'] as $Commande){
-			if($CmdName == $Commande['name']){
-				$cmd = null;
-				foreach ($EqLogic->getCmd() as $liste_cmd) {
-					if (isset($Commande['name']) && $liste_cmd->getName() == $Commande['name']) {
-						$cmd = $liste_cmd;	
-						break;
-					}
-				}
-				return $EqLogic->createTemplateCmd($cmd,$Commande);
-			}
+			if(strpos($CmdName,$Commande['name']) >= 0)
+				return $this->CheckAndCreateCmd($EqLogic,$Commande);
+		}
+		foreach($this->Templates[$TemplateId]['Synonyme'] as $SynonymeName){
+			if(strpos($CmdName,$SynonymeName) >= 0)
+				return $this->CheckAndCreateCmd($EqLogic,$Commande);
 		}
 		foreach ($this->Templates[$TemplateId]['options'] as $DeviceOptionsId => $DeviceOptions) {
 			if(isset($TemplateOptions[$DeviceOptionsId])){
 				$typeTemplate.='_'.$DeviceOptionsId;
 				foreach ($DeviceOptions['cmd'] as $Commande) {
-					if($CmdName == $Commande['name']){
-						$cmd = null;
-						foreach ($EqLogic->getCmd() as $liste_cmd) {
-							if (isset($Commande['name']) && $liste_cmd->getName() == $Commande['name']) {
-								$cmd = $liste_cmd;	
-								break;
-							}
-						}
+					if(strpos($CmdName,$Commande['name']) >= 0){
 						$EqLogic->setConfiguration('typeTemplate',$typeTemplate);
 						$EqLogic->save();
-						return $EqLogic->createTemplateCmd($cmd,$Commande);
+						return $this->CheckAndCreateCmd($EqLogic,$Commande);
 					}
+				}
+				foreach($DeviceOptions['Synonyme'] as $SynonymeName){
+					if(strpos($CmdName,$SynonymeName) >= 0)
+						return $this->CheckAndCreateCmd($EqLogic,$Commande);
 				}
 			}
 		}
 		return false;
 	}
+}
+private function CheckAndCreateCmd($EqLogic,$Commande){
+	$cmd = null;
+	foreach ($EqLogic->getCmd() as $liste_cmd) {
+		if (isset($Commande['name']) && $liste_cmd->getName() == $Commande['name']) {
+			$cmd = $liste_cmd;	
+			break;
+		}
+	}
+	return $EqLogic->createTemplateCmd($cmd,$Commande);
 }
 ?>
