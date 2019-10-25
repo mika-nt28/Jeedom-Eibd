@@ -46,7 +46,7 @@ class autoCreate {
 			switch($NbLevel - 1){
 		      		case $this->ObjetLevel:
 					$Object=$this->createObject($Name,$Groupe['Object']);
-					$Groupe['Object']=$Object->getId();
+					$Groupe['Object']=$Object;
 				break;
 		      		case $this->TemplateLevel:
 					$Groupe['Template']=$Name;
@@ -81,10 +81,10 @@ class autoCreate {
 		}
 	}
 	private function createObject($Name,$Father){
-		if(!$this->options['createObjet'])
-			return null;
 		$Object = jeeObject::byName($Name); 
 		if (!is_object($Object)) {
+			if(!$this->options['createObjet'])
+				return null;
 			log::add('eibd','info','[Création automatique] Nous allons cree l\'objet : '.$Name);
 			$Object = new jeeObject(); 
 			$Object->setName($Name);
@@ -92,19 +92,26 @@ class autoCreate {
 			$Object->setIsVisible(true);
 			$Object->save();
 		}
-		return $Object;
+		return $Object->getId();
 	}
 	private function createEqLogic($Object,$Name,$Cmds){
 		if(!$this->options['createEqLogic'])
 			return;
 		$TemplateId=$this->getTemplateName($Name);
 		if($TemplateId != false){
-			log::add('eibd','info','[Création automatique] Le template ' .$Name.' existe, nous créons un equipement');
+			$TemplateOptions=$this->getTemplateOptions($TemplateId,$Cmds);
+			log::add('eibd','info','[Création automatique] L\'equipemement ' .$Name.' est reconnue sur le template '.$this->Templates[$TemplateId]['name']);
 			$EqLogic=eibd::AddEquipement($Name,'',$Object);
+			$EqLogic->applyModuleConfiguration($TemplateId,$TemplateOptions);
 			foreach($Cmds as $Name => $Cmd){
-				$Commande = $this->createTemplateCmdByName($EqLogic,$TemplateId,$Name);
-				$Commande->setLogicalId($Cmd['AdresseGroupe']);
-				$Commande->save();
+				$TemplateName = $this->getTemplateCmdByName($TemplateId,$Name);
+				foreach($EqLogic->getCmd() as $Commande){
+					$TemplateCmdName=$this->getTemplateCmdName($TemplateId,$Commande->getName());
+					if($Commande->getName() != $TemplateName)
+						continue;
+					$Commande->setLogicalId($Cmd['AdresseGroupe']);
+					$Commande->save();
+				}
 			}
 		}else{
 			if(!$this->options['createTemplate']){				
@@ -120,51 +127,60 @@ class autoCreate {
 	}
 	private function getTemplateName($TemplateName){
 		foreach($this->Templates as $TemplateId => $Template){
-			if(strpos($TemplateName,$Template['name']) >= 0)
+			if(strpos($TemplateName,$Template['name']) !== false)
 				return $TemplateId;
 			foreach($Template['Synonyme'] as $SynonymeName){
-				if(strpos($TemplateName,$SynonymeName) >= 0)
+				if(strpos($TemplateName,$SynonymeName) !== false)
 					return $TemplateId;
 			}
 		}
 		return false;
 	}
-	private function createTemplateCmdByName($EqLogic,$TemplateId,$CmdName){
-		foreach($this->Templates[$TemplateId]['cmd'] as $Commande){
-			if(strpos($CmdName,$Commande['name']) >= 0)
-				return $this->CheckAndCreateCmd($EqLogic,$Commande);
+	private function getTemplateOptions($TemplateId,$Cmds){
+		$Options=array();
+		foreach($Cmds as $Name => $Cmd){
+			foreach($this->Templates[$TemplateId]['options'] as $TemplateOptionId =>$TemplateOption){	      
+				foreach($TemplateOption['cmd'] as $OptionCmd){
+					if($OptionCmd['name'] == $Name){
+						$Options[$TemplateOptionId]=true;
+						break;
+					}
+				}
+			}
 		}
-		foreach($this->Templates[$TemplateId]['Synonyme'] as $SynonymeName){
-			if(strpos($CmdName,$SynonymeName) >= 0)
-				return $this->CheckAndCreateCmd($EqLogic,$Commande);
+		return $Options;
+	}
+	private function getTemplateCmdByName($TemplateId,$CmdName){
+		foreach($this->Templates[$TemplateId]['cmd'] as $Commande){
+			if(strpos($CmdName,$Commande['name']) !== false){
+				log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvé  ' .$Commande['name']);
+				return $Commande['name'];
+			}
+			foreach($Commande['Synonyme'] as $Synonyme){
+				if(strpos($CmdName,$Synonyme) !== false){
+					log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvé en synonyme de ' .$Commande['name']);
+					return $Commande['name'];
+				}
+			}
 		}
 		foreach ($this->Templates[$TemplateId]['options'] as $DeviceOptionsId => $DeviceOptions) {
 			if(isset($TemplateOptions[$DeviceOptionsId])){
 				$typeTemplate.='_'.$DeviceOptionsId;
 				foreach ($DeviceOptions['cmd'] as $Commande) {
-					if(strpos($CmdName,$Commande['name']) >= 0){
-						$EqLogic->setConfiguration('typeTemplate',$typeTemplate);
-						$EqLogic->save();
-						return $this->CheckAndCreateCmd($EqLogic,$Commande);
+					if(strpos($CmdName,$Commande['name']) !== false){
+						log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvé  ' .$Commande['name']);
+						return $Commande['name'];
 					}
-				}
-				foreach($DeviceOptions['Synonyme'] as $SynonymeName){
-					if(strpos($CmdName,$SynonymeName) >= 0)
-						return $this->CheckAndCreateCmd($EqLogic,$Commande);
+					foreach($Commande['Synonyme'] as $Synonyme){
+						if(strpos($CmdName,$Synonyme) !== false){
+							log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvé en synonyme de ' .$Commande['name']);
+							return $Commande['name'];
+						}
+					}
 				}
 			}
 		}
 		return false;
-	}
-	private function CheckAndCreateCmd($EqLogic,$Commande){
-		$cmd = null;
-		foreach ($EqLogic->getCmd() as $liste_cmd) {
-			if (isset($Commande['name']) && $liste_cmd->getName() == $Commande['name']) {
-				$cmd = $liste_cmd;	
-				break;
-			}
-		}
-		return $EqLogic->createTemplateCmd($cmd,$Commande);
 	}
 }
 ?>
