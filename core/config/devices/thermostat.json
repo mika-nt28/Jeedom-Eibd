@@ -35,7 +35,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Température ambiante",
-				"Synonyme":['Température réel'],
+				"Synonyme":["Température réel"],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"1",
