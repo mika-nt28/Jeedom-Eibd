@@ -60,6 +60,7 @@ function ImportEts(merge){
 									if(result){
 										ImportEts(true);
 									}else{
+										KnxProject = data.result;
 										CreateArboressance(data.result.Devices,$('.MyDeviceGroup'),true);
 										CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true);
 										CreateArboressance(data.result.Locations,$('.MyLocationsGroup'),true);

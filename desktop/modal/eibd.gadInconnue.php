@@ -33,6 +33,19 @@ else
 	    overflow: auto;
 	}
 </style>
+<div class="input-group pull-right" style="display:inline-flex">
+	<span class="input-group-btn">
+		<a class="btn btn-success btn-xs roundedRight Include" data-validation=true></a> 
+		<a class="btn btn-default btn-xs roundedRight Ets4Parser" >
+			<i class="fas fa-cloud-upload"></i>
+			{{ Importer}}
+		</a> 
+		<a class="btn btn-warning btn-xs roundedRight bt_autoCreate" >
+			<i class="fas fa-plus-circle"></i>
+			{{ Créer}}
+		</a> 
+	</span>
+</div>
 <ul class="nav nav-tabs" role="tablist">
 	<li role="presentation" class="active">
 		<a href="#InconueTab" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">
@@ -40,28 +53,27 @@ else
 	</li>
 	<li role="presentation" class="">
 		<a href="#DeviceTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-			<i class="fa fa-list-alt"></i> {{Equipement}}</a>
+			<i class="fa fa-list-alt"></i> {{Equipements}}</a>
 	</li>
 	<li role="presentation" class="">
 		<a href="#AdressTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-			<i class="fa fa-list-alt"></i> {{Adresse de groupes}}</a>
+			<i class="fa fa-list-alt"></i> {{Adresses de groupes}}</a>
 	</li>
 	<li role="presentation" class="">
 		<a href="#LocationsTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-			<i class="fa fa-list-alt"></i> {{Localisation}}</a>
+			<i class="fa fa-list-alt"></i> {{Localisations}}</a>
 	</li>
 </ul>
 <div class="tab-content" style="height: 500px;overflow: auto;">
 	<div role="tabpanel" class="tab-pane active" id="InconueTab">
-		<div class="col-xs-12 input-group pull-right" style="display:inline-flex">
+		<div class="input-group pull-right" style="display:inline-flex">
 			<span class="input-group-btn">
-				<a class="btn btn-danger btn-xs roundedRight removeAllGad" style="margin-bottom : 5px;">
-					<i class="fa fa-trash-o"></i>
-					{{ Supprimer}}
+				<a class="btn btn-danger btn-xs roundedRight removeAllGad">
+					<i class="fas fa-trash-o"></i>
+					{{ Nettoyer}}
 				</a>
-				<a class="btn btn-warning btn-xs roundedRight Include" data-validation=true style="margin-bottom : 5px;" ></a> 
 			</span>
-		</div>	
+		</div>
 		<table id="table_GadInconue" class="table table-bordered table-condensed tablesorter GadInsert">
 			<thead>
 				<tr>
@@ -76,41 +88,18 @@ else
 		</table>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="DeviceTab">
-		<div class="col-xs-12 input-group pull-right" style="display:inline-flex">
-			<span class="input-group-btn">
-				<a class="btn btn-warning btn-xs roundedRight Ets4Parser" >
-					<i class="fa fa-cloud-upload"></i>
-					{{Importer projet KNX}}
-				</a> 
-			</span>
-		</div>
 		<ul class="MyDeviceGroup"></ul>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="AdressTab">
-		<div class="col-xs-12 input-group pull-right" style="display:inline-flex">
-			<span class="input-group-btn">
-				<a class="btn btn-warning btn-xs roundedRight Ets4Parser" >
-					<i class="fa fa-cloud-upload"></i>
-					{{Importer projet KNX}}
-				</a> 
-			</span>
-		</div>
 		<ul class="MyAdressGroup"></ul>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="LocationsTab">
-		<div class="col-xs-12 input-group pull-right" style="display:inline-flex">
-			<span class="input-group-btn">
-				<a class="btn btn-warning btn-xs roundedRight Ets4Parser" >
-					<i class="fa fa-cloud-upload"></i>
-					{{Importer projet KNX}}
-				</a> 
-			</span>
-		</div>
 		<ul class="MyLocationsGroup"></ul>
 	</div>
 </div>
 <script>
 var KnxGadInconueRefresh = null;
+var KnxProject = null;
 $.ajax({
 	type: 'POST',
 	async: false,
@@ -129,12 +118,12 @@ $.ajax({
 		}
 		if(data.result == "false"){
 			$('.Include').attr('data-validation',"true");
-			$('.Include').html($('<i class="fa fa-bullseye">'))
-				.append(' {{Activer  l\'inculsion}}');
+			$('.Include').html($('<i class="fas fa-bullseye">'))
+				.append(' {{Activer}}');
 		}else{
 			$('.Include').attr('data-validation',"false");
-			$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
-				.append(' {{Désactiver l\'inculsion}}');
+			$('.Include').html($('<i class="fas fa-spinner fa-pulse">'))
+				.append(' {{Désactiver}}');
 		}
 	}
 });
@@ -170,6 +159,9 @@ $('.Include').off().on('click', function () {
 });
 $('.Ets4Parser').off().on('click', function() {
 	ImportEts(false);
+});
+$('.bt_autoCreate').off().on('click', function() {
+	autoCreate();
 });
 var SelectGad='';
 initTableSorter();
@@ -239,6 +231,7 @@ function getEtsProj () {
 			}
 			if (data.result == false) 
 				return;
+			KnxProject = data.result;
 			CreateArboressance(data.result.Devices,$('.MyDeviceGroup'),true);
 			CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true);
 			CreateArboressance(data.result.Locations,$('.MyLocationsGroup'),true);

@@ -32,7 +32,8 @@ class knxproj {
 		$this->path = dirname(__FILE__) . '/../config/knxproj/';
 		$this->Templates=eibd::devicesParameters();
 		$this->ProjetType=$_ProjetType;
-		if($_Merge){
+		if($_Merge != 'false'){
+			log::add('eibd','debug','[Import ETS] Chargement du fichier projet');
 			$filename=dirname(__FILE__) . '/../config/KnxProj.json';
 			$myKNX=json_decode(file_get_contents($filename),true);
 			$this->Devices=$myKNX['DevicesAll'];
@@ -71,7 +72,7 @@ class knxproj {
 	}
 	public function getAll(){
 		foreach($this->Devices as $DeviceProductRefId => $Device){
-			$myKNX['Devices'][$Device['DeviceName'].' ('.$Device['AdressePhysique'].')'] = null;
+			$myKNX['Devices']['('.$Device['AdressePhysique'].') '.$Device['DeviceName']] = null;
 			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
 				$myKNX['Devices']['('.$Device['AdressePhysique'].') '.$Device['DeviceName']][$Cmd['cmdName']]['AdressePhysique']=$Device['AdressePhysique'];
 				$myKNX['Devices']['('.$Device['AdressePhysique'].') '.$Device['DeviceName']][$Cmd['cmdName']]['AdresseGroupe']=$Cmd['AdresseGroupe'];
@@ -242,24 +243,25 @@ class knxproj {
 		}
 		return array($DataPointType,$GroupName);
 	}
-	
 	private function ParserLocations(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de localisation');
-		$Level = $this->myProject->Project->Installations->Installation->Locations->Space;
-		$Locations = $this->getETSLevel($Level);
+		$Level = $this->myProject->Project->Installations->Installation->Locations;
+		$Locations = $this->getETSLevel($Level,$this->Locations);
 		if(!$Locations){
-			$Level = $this->myProject->Project->Installations->Installation->Buildings->BuildingPart;
-			$Locations = $this->getETSLevel($Level);
+			$Level = $this->myProject->Project->Installations->Installation->Buildings;
+			$Locations = $this->getETSLevel($Level,$this->Locations);
+
 		}
 		array_merge($this->Locations,$Locations);
 	}
 	private function ParserETSGroupAddresses(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance d\'adresse de groupe');
 		$Level= $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges;
-		array_merge($this->GroupAddresses,$this->getETSLevel($Level));
+		$this->GroupAddresses = $this->getETSLevel($Level,$this->GroupAddresses);
 	}
-	private function getETSLevel($GroupRanges,$NbLevel=0){
-		$Level = array();
+	private function getETSLevel($GroupRanges,$Level=null,$NbLevel=0){
+    		if($Level == null)
+			$Level = array();
 		$NbLevel++;
 		if($GroupRanges == null)
 			return false;
@@ -274,7 +276,8 @@ class knxproj {
 			}elseif($GroupRange->getName() == 'DeviceInstanceRef'){	
 				$Level += $this->getDeviceGad($this->xml_attribute($GroupRange, 'RefId'));    
 			}else{
-				$Level[$GroupName]=$this->getETSLevel($GroupRange,$NbLevel);
+				if(count($Level[$GroupName]) == 0)
+					$Level[$GroupName]=$this->getETSLevel($GroupRange,null,$NbLevel);
 			}
 		}
 		return $Level;

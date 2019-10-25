@@ -486,11 +486,14 @@ class eibd extends eqLogic {
 		$conBusMonitor = new EIBConnection($host,$port);
 		$buf = new EIBBuffer();		
 		if ($conBusMonitor->EIBOpen_GroupSocket(0) == -1)
-			log::add('eibd', 'error',$conBusMonitor->getLastError);		
-		$src = new EIBAddr;
-		$dest = new EIBAddr;
-		while($conBusMonitor->EIBGetGroup_Src($buf, $src, $dest) == -1)
-			usleep(1000);
+			log::add('eibd', 'error',$conBusMonitor->getLastError);	
+		while(true){	
+			$src = new EIBAddr;
+			$dest = new EIBAddr;
+			if($conBusMonitor->EIBGetGroup_Src($buf, $src, $dest) != -1)
+				break;
+			sleep(1);
+		}
 		self::InitInformation();
 		while(true) {    
 			$src = new EIBAddr;
@@ -792,7 +795,6 @@ class eibd extends eqLogic {
 			exec("sudo rm /var/log/knx.log");
 			
 	}
-
   }
 class eibdCmd extends cmd {
 	public function preSave() { 
