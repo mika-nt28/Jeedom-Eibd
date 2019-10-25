@@ -1,9 +1,10 @@
 <?php
 class knxproj {
 	private $path;
-	private $options;
+	private $ProjetType;
 	private $Devices=array();
 	private $GroupAddresses=array();
+	private $Locations=array();
 	private $Templates=array();
 	private $myProject=array();
 	public static function ExtractTX100ProjectFile($File){
@@ -27,20 +28,27 @@ class knxproj {
 		}
 		log::add('eibd','debug','[Import ETS] Extraction des fichiers de projets');
 	}
- 	public function __construct($_options){
+ 	public function __construct($_Merge,$_ProjetType){
 		$this->path = dirname(__FILE__) . '/../config/knxproj/';
 		$this->Templates=eibd::devicesParameters();
-		$this->options=$_options[0];
-		
+		$this->ProjetType=$_ProjetType;
+		if($_Merge != 'false'){
+			log::add('eibd','debug','[Import ETS] Chargement du fichier projet');
+			$filename=dirname(__FILE__) . '/../config/KnxProj.json';
+			$myKNX=json_decode(file_get_contents($filename),true);
+			$this->Devices=$myKNX['DevicesAll'];
+			$this->GroupAddresses=$myKNX['GAD'];
+			$this->Locations=$myKNX['Locations'];
+		}
 		//log::add('eibd','debug','[Import ETS]'.json_encode($_options));
-		switch($this->options['ProjetType']){
+		switch($this->ProjetType){
 			case "ETS":
 				$ProjetFile=$this->SearchETSFolder("P-");
 				$this->myProject=simplexml_load_file($ProjetFile.'/0.xml');
-
 				$this->ParserETSDevice();
 				$this->ParserETSGroupAddresses();
-				$this->CheckOptions();
+				$this->ParserLocations();
+				//$this->CheckOptions();
 			break;
 			case "TX100":
 				$ProjetFile=$this->SearchTX100Folder($this->path);
@@ -63,8 +71,17 @@ class knxproj {
 		fclose($file);	
 	}
 	public function getAll(){
-		$myKNX['Devices']=$this->Devices;
+		foreach($this->Devices as $DeviceProductRefId => $Device){
+			$myKNX['Devices']['('.$Device['AdressePhysique'].') '.$Device['DeviceName']] = null;
+			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
+				$myKNX['Devices']['('.$Device['AdressePhysique'].') '.$Device['DeviceName']][$Cmd['cmdName']]['AdressePhysique']=$Device['AdressePhysique'];
+				$myKNX['Devices']['('.$Device['AdressePhysique'].') '.$Device['DeviceName']][$Cmd['cmdName']]['AdresseGroupe']=$Cmd['AdresseGroupe'];
+				$myKNX['Devices']['('.$Device['AdressePhysique'].') '.$Device['DeviceName']][$Cmd['cmdName']]['DataPointType']=$Cmd['DataPointType'];
+			}
+		}
+		$myKNX['DevicesAll']=$this->Devices;
 		$myKNX['GAD']=$this->GroupAddresses;
+		$myKNX['Locations']=$this->Locations;
 		return json_encode($myKNX,JSON_PRETTY_PRINT);
 	}
 	private function SearchTX100Folder($path){
@@ -177,7 +194,7 @@ class knxproj {
 				if($GroupRange->getName() == 'config')
 					$Level[$GroupName]=$this->getTX100Level($GroupRange,$NbLevel);
 			}
-        }
+        	}
 		return $Level;
 	}
 	private function getTX100ProductCmd($ProductId){
@@ -226,45 +243,80 @@ class knxproj {
 		}
 		return array($DataPointType,$GroupName);
 	}
-	private function ParserETSGroupAddresses(){
-		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de gad');
-		$GroupRanges = $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges;
-		$this->GroupAddresses = $this->getETSLevel($GroupRanges);
+	private function ParserLocations(){
+		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de localisation');
+		$Level = $this->myProject->Project->Installations->Installation->Locations;
+		$Locations = $this->getETSLevel($Level,$this->Locations);
+		if(!$Locations){
+			$Level = $this->myProject->Project->Installations->Installation->Buildings;
+			$Locations = $this->getETSLevel($Level,$this->Locations);
+
+		}
+		array_merge($this->Locations,$Locations);
 	}
-	private function getETSLevel($GroupRanges,$NbLevel=0){
-		$Level = array();
+	private function ParserETSGroupAddresses(){
+		log::add('eibd','debug','[Import ETS] Création de l\'arboressance d\'adresse de groupe');
+		$Level= $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges;
+		$this->GroupAddresses = $this->getETSLevel($Level,$this->GroupAddresses);
+	}
+	private function getETSLevel($GroupRanges,$Level=null,$NbLevel=0){
+    		if($Level == null)
+			$Level = array();
 		$NbLevel++;
+		if($GroupRanges == null)
+			return false;
 		foreach ($GroupRanges->children() as $GroupRange) {
 			$GroupName = $this->xml_attribute($GroupRange, 'Name');
 			if($GroupRange->getName() == 'GroupAddress'){
 				config::save('level',$NbLevel,'eibd');
 				$AdresseGroupe=$this->formatgaddr($this->xml_attribute($GroupRange, 'Address'));
 				$GroupId=$this->xml_attribute($GroupRange, 'Id');
-				$DataPointType=$this->updateDeviceGad($GroupId,$GroupName,$AdresseGroupe);
-				$Level[$GroupName]=array('DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+				list($AdressePhysique,$DataPointType)=$this->updateDeviceInfo($GroupId,$GroupName,$AdresseGroupe);				
+				$Level['('.$AdresseGroupe.') '.$GroupName]=array('AdressePhysique' => $AdressePhysique ,'DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
+			}elseif($GroupRange->getName() == 'DeviceInstanceRef'){	
+				$Level += $this->getDeviceGad($this->xml_attribute($GroupRange, 'RefId'));    
 			}else{
-				$Level[$GroupName]=$this->getETSLevel($GroupRange,$NbLevel);
+				if(count($Level[$GroupName]) == 0)
+					$Level[$GroupName]=$this->getETSLevel($GroupRange,null,$NbLevel);
 			}
 		}
 		return $Level;
 	}
-	private function updateDeviceGad($id,$name,$addr){
-		$DPT='';
+	private function getDeviceGad($id){	
+		$DeviceGad =array();
+		foreach($this->Devices as $DeviceProductRefId => $Device){
+			if($DeviceProductRefId == $id){
+				foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
+					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['AdressePhysique']=$Device['AdressePhysique'];
+					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['AdresseGroupe']=$Cmd['AdresseGroupe'];
+					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['DataPointType']=$Cmd['DataPointType'];
+				}
+             			break;
+			}
+		}
+		return $DeviceGad;
+	}
+	private function updateDeviceInfo($id,$name,$addr){
+		$AdressePhysique='';
+		$DataPointType='';
 		foreach($this->Devices as $DeviceProductRefId => $Device){
 			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
 				if($GroupAddressRefId == $id){
+					$AdressePhysique = $this->Devices[$DeviceProductRefId]['AdressePhysique'];
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
-					if($DPT == '')
-						$DPT = $this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['DataPointType'];
+					if($DataPointType == '')
+						$DataPointType = $this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['DataPointType'];
 				}
 			}
 		}
-		return $DPT;
+		return array($AdressePhysique,$DataPointType);
 	}
 	private function ParserETSDevice(){
 		log::add('eibd','debug','[Import ETS] Recherche de device');
 		$Topology = $this->myProject->Project->Installations->Installation->Topology;
+		if($Topology == null)
+			return false;
 		foreach($Topology->children() as $Area){
 			$AreaAddress=$this->xml_attribute($Area, 'Address');
 			foreach ($Area->children() as $Line)  {
@@ -292,169 +344,6 @@ class knxproj {
 				}
 			}
 		}
-	}
-	private function getOptionLevel($GroupLevel,$NbLevel=0){
-		$Architecture = array();
-		$NbLevel++;
-		foreach ($GroupLevel as $Name => $Level) {
-			$ObjectName = '';
-			$TemplateName = '';
-			$CmdName = '';
-			if($ObjetLevel == $NbLevel)
-				$ObjectName=$Name;
-			elseif($TemplateLevel == $NbLevel)
-				$TemplateName=$Name;
-			elseif($CommandeLevel == $NbLevel)
-				$CmdName=$Name;
-			if(is_array($Level)){
-				$Architecture[$GroupName]=$this->getOptionLevel($Level,$NbLevel);
-			}else{
-				$Architecture[$ObjectName][$TemplateName][$CmdName]=$Level;
-			}
-		}
-		return $Architecture;
-	}
-		
-	private function CheckOptions(){
-		$ObjetLevel= $this->checkLevel('object');
-		$TemplateLevel= $this->checkLevel('function');
-		$CommandeLevel= $this->checkLevel('cmd');
-		//$Architecture= $this->getOptionLevel($this->GroupAddresses);
-		$Architecture=array();
-		foreach($this->GroupAddresses as $Name1 => $Level1){
-			$ObjectName = '';
-			$TemplateName = '';
-			$CmdName = '';
-			if($ObjetLevel == 0)
-				$ObjectName=$Name1;
-			elseif($TemplateLevel == 0)
-				$TemplateName=$Name1;
-			elseif($CommandeLevel == 0)
-				$CmdName=$Name1;
-			if(is_array($Level1)){
-				foreach($Level1 as $Name2 => $Level2){
-					if($ObjetLevel == 1)
-						$Object=$Name2;
-					elseif($TemplateLevel == 1)
-						$TemplateName=$Name2;
-					elseif($CommandeLevel == 1)
-						$CmdName=$Name2;
-					if(is_array($Level2)){
-						foreach($Level2 as $Name3 => $Gad){
-							if($ObjetLevel == 2)
-								$ObjectName=$Name3;
-							elseif($TemplateLevel == 2)
-								$TemplateName=$Name3;
-							elseif($CommandeLevel == 2)
-								$CmdName=$Name3;
-							$Architecture[$ObjectName][$TemplateName][$CmdName]=$Gad;
-						}
-					}else{
-						$Architecture[$ObjectName][$TemplateName][$CmdName]=$Gad;
-					}
-				}
-			}else{
-				$Architecture[$ObjectName][$TemplateName][$CmdName]=$Gad;
-			}
-		}
-		foreach($Architecture as $ObjectName => $Template){
-			$Object=$this->createObject($ObjectName);
-			foreach($Template as $TemplateName => $Cmds){
-				$this->createEqLogic($ObjectName,$TemplateName,$Cmds);
-			}
-		}
-	}
-	private function checkLevel($search){
-		foreach($this->options as $level =>$options){
-			if($options == $search)
-				return $level;
-		}
-	}
-	private function createObject($Name){
-		if(!$this->options['createObjet'])
-			return null;
-		$Object = jeeObject::byName($Name); 
-		if (!is_object($Object)) {
-			log::add('eibd','info','[Import ETS] Nous allons cree l\'objet : '.$Name);
-			$Object = new jeeObject(); 
-			$Object->setName($Name);
-			$Object->setIsVisible(true);
-			$Object->save();
-		}
-		return $Object;
-	}
-	private function createEqLogic($ObjectName,$TemplateName,$Cmds){
-		if(!$this->options['createEqLogic'])
-			return;
-		$Object=$this->createObject($ObjectName);
-		if (is_object($Object))
-			$ObjectId = $Object->getId();
-		else
-			$ObjectId = null;
-		$TemplateId=$this->getTemplateName($TemplateName);
-		if($TemplateId != false){
-			$TemplateOptions=$this->getTemplateOptions($TemplateId,$Cmds);
-			log::add('eibd','info','[Import ETS] Le template ' .$TemplateName.' existe, nous créons un equipement');
-			$EqLogic=eibd::AddEquipement($TemplateName,'',$ObjectId);
-			$EqLogic->applyModuleConfiguration($TemplateId,$TemplateOptions);
-			foreach($EqLogic->getCmd() as $Cmd){
-				$TemplateCmdName=$this->getTemplateCmdName($TemplateId,$Cmd->getName());
-				if($TemplateCmdName === false)
-					return;
-				$Cmd->setLogicalId($Cmds[$TemplateCmdName]['AdresseGroupe']);
-				$Cmd->save();
-			}
-		}else{
-			if(!$this->options['createTemplate']){				
-				log::add('eibd','info','[Import ETS] Il n\'exite aucun template ' .$TemplateName.', nous créons un equipement basique qu\'il faudra mettre a jours');
-				$EqLogic=eibd::AddEquipement($TemplateName,'',$ObjectId);
-				foreach($Cmds as $Name => $Cmd){
-					if($Cmd['DataPointType'] == ".000" ||$Cmd['DataPointType'] == ".000")
-						$Cmd['DataPointType']= "1.xxx";
-					$EqLogic->AddCommande($Name,$Cmd['AdresseGroupe'],"info", $Cmd['DataPointType']);
-				}
-			}
-		}
-	}
-	private function getTemplateName($TemplateName){
-		foreach($this->Templates as $TemplateId => $Template){
-			if($Template['name'] == $TemplateName)
-				return $TemplateId;
-			foreach($Template['Synonyme'] as $SynonymeName){
-				if($SynonymeName == $TemplateName)
-					return $TemplateId;
-			}
-		}
-		return false;
-	}
-	private function getTemplateOptions($TemplateId,$Cmds){
-		$Options=array();
-		foreach($Cmds as $Name => $Cmd){
-			foreach($this->Templates[$TemplateId]['options'] as $TemplateOptionId =>$TemplateOption){	      
-				foreach($TemplateOption['cmd'] as $OptionCmd){
-					if($OptionCmd['name'] == $Name){
-						$Options[$TemplateOptionId]=true;
-						break;
-					}
-				}
-			}
-		}
-		return $Options;
-	}
-	private function getTemplateCmdName($TemplateId,$CmdName){
-		foreach($this->Templates[$TemplateId]['cmd'] as $TemplateCmdName){
-			if($TemplateCmdName['name'] == $CmdName)
-				return $TemplateCmdName['name'];
-			foreach(explode('|',$TemplateCmdName['SameCmd']) as $SameCmd){
-				if($SameCmd == $CmdName)
-					return $TemplateCmdName['name'];
-			}
-			foreach($TemplateCmdName['Synonyme'] as $SynonymeName){
-				if($SynonymeName == $CmdName)
-					return $SynonymeName;
-			}
-		}
-		return false;
 	}
 	private function formatgaddr($addr){
 		switch(config::byKey('level', 'eibd')){
