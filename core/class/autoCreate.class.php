@@ -141,9 +141,15 @@ class autoCreate {
 		foreach($Cmds as $Name => $Cmd){
 			foreach($this->Templates[$TemplateId]['options'] as $TemplateOptionId =>$TemplateOption){	      
 				foreach($TemplateOption['cmd'] as $OptionCmd){
-					if($OptionCmd['name'] == $Name){
+					if(strpos($Name,$OptionCmd['name']) !== false){
 						$Options[$TemplateOptionId]=true;
 						break;
+					}
+					foreach($OptionCmd['Synonyme'] as $Synonyme){
+						if(strpos($Name,$Synonyme) !== false){
+							$Options[$TemplateOptionId]=true;
+							break;
+						}
 					}
 				}
 			}
