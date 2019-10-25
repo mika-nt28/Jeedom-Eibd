@@ -103,14 +103,14 @@ class autoCreate {
 			log::add('eibd','info','[Création automatique] L\'equipemement ' .$Name.' est reconnue sur le template '.$this->Templates[$TemplateId]['name']);
 			$EqLogic=eibd::AddEquipement($Name,'',$Object);
 			$EqLogic->applyModuleConfiguration($TemplateId,$TemplateOptions);
-			foreach($Cmds as $Name => $Cmd){
-				$TemplateName = $this->getTemplateCmdByName($TemplateId,$Name);
-				foreach($EqLogic->getCmd() as $Commande){
-					$TemplateCmdName=$this->getTemplateCmdName($TemplateId,$Commande->getName());
+			foreach($EqLogic->getCmd() as $Commande){
+				foreach($Cmds as $Name => $Cmd){
+					$TemplateName = $this->getTemplateCmdByName($TemplateId,$Name);
 					if($Commande->getName() != $TemplateName)
 						continue;
 					$Commande->setLogicalId($Cmd['AdresseGroupe']);
 					$Commande->save();
+					break;
 				}
 			}
 		}else{
