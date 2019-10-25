@@ -127,10 +127,10 @@ class autoCreate {
 	}
 	private function getTemplateName($TemplateName){
 		foreach($this->Templates as $TemplateId => $Template){
-			if(strpos($TemplateName,$Template['name']) !== false)
+			if(strpos($TemplateName,$Template['name']) !== false || strpos($Template['name'],$TemplateName) !== false)
 				return $TemplateId;
 			foreach($Template['Synonyme'] as $SynonymeName){
-				if(strpos($TemplateName,$SynonymeName) !== false)
+				if(strpos($TemplateName,$SynonymeName) !== false || strpos($SynonymeName,$TemplateName) !== false)
 					return $TemplateId;
 			}
 		}
@@ -141,12 +141,12 @@ class autoCreate {
 		foreach($Cmds as $Name => $Cmd){
 			foreach($this->Templates[$TemplateId]['options'] as $TemplateOptionId =>$TemplateOption){	      
 				foreach($TemplateOption['cmd'] as $OptionCmd){
-					if(strpos($Name,$OptionCmd['name']) !== false){
+					if(strpos($Name,$OptionCmd['name']) !== false || strpos($OptionCmd['name'],$Name) !== false){
 						$Options[$TemplateOptionId]=true;
 						break;
 					}
 					foreach($OptionCmd['Synonyme'] as $Synonyme){
-						if(strpos($Name,$Synonyme) !== false){
+						if(strpos($Name,$Synonyme) !== false || strpos($Synonyme,$Name) !== false){
 							$Options[$TemplateOptionId]=true;
 							break;
 						}
@@ -158,12 +158,12 @@ class autoCreate {
 	}
 	private function getTemplateCmdByName($TemplateId,$CmdName){
 		foreach($this->Templates[$TemplateId]['cmd'] as $Commande){
-			if(strpos($CmdName,$Commande['name']) !== false){
+			if(strpos($CmdName,$Commande['name']) !== false || strpos($Commande['name'],$CmdName) !== false){
 				log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvé  ' .$Commande['name']);
 				return $Commande['name'];
 			}
 			foreach($Commande['Synonyme'] as $Synonyme){
-				if(strpos($CmdName,$Synonyme) !== false){
+				if(strpos($CmdName,$Synonyme) !== false || strpos($Synonyme,$CmdName) !== false){
 					log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvé en synonyme de ' .$Commande['name']);
 					return $Commande['name'];
 				}
@@ -173,12 +173,12 @@ class autoCreate {
 			if(isset($TemplateOptions[$DeviceOptionsId])){
 				$typeTemplate.='_'.$DeviceOptionsId;
 				foreach ($DeviceOptions['cmd'] as $Commande) {
-					if(strpos($CmdName,$Commande['name']) !== false){
+					if(strpos($CmdName,$Commande['name']) !== false || strpos($Commande['name'],$CmdName) !== false){
 						log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvé  ' .$Commande['name']);
 						return $Commande['name'];
 					}
 					foreach($Commande['Synonyme'] as $Synonyme){
-						if(strpos($CmdName,$Synonyme) !== false){
+						if(strpos($CmdName,$Synonyme) !== false || strpos($Synonyme,$CmdName) !== false){
 							log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvé en synonyme de ' .$Commande['name']);
 							return $Commande['name'];
 						}
