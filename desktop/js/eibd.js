@@ -85,7 +85,7 @@ $('.Template[data-action=add]').off().on('click', function () {
     	});
  	dialog.modal("show");
 });
-$('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
+$('.eqLogicAction[data-action=addByTemplate]').off().on('click', function () {
   	bootbox.dialog({
 		title: "{{Ajout d'un équipement avec template}}",
 		message: $('<div>').load('index.php?v=d&modal=eibd.addByTemplate&plugin=eibd&type=eibd'),
@@ -169,7 +169,7 @@ $('.eqLogicAction[data-action=addByTemplate]').on('click', function () {
 		}
 	});
 });
-$('.eqLogicAction[data-action=gotoHealth]').on('click', function () {
+$('.eqLogicAction[data-action=gotoHealth]').off().on('click', function () {
   	bootbox.dialog({
 		title: "{{Santé des équpements KNX}}",
 		size: "large",
@@ -177,7 +177,7 @@ $('.eqLogicAction[data-action=gotoHealth]').on('click', function () {
 		
 	});
 });
-$('.eqLogicAction[data-action=gotoAdressGroup]').on('click', function () {
+$('.eqLogicAction[data-action=gotoAdressGroup]').off().on('click', function () {
   	bootbox.dialog({
 		title: "{{Gestion des adresses de groupe}}",
 		size: "large",
@@ -187,7 +187,7 @@ $('.eqLogicAction[data-action=gotoAdressGroup]').on('click', function () {
 		}		
 	});
 });
-$('.eqLogicAction[data-action=gotoBusMoniteur]').on('click', function () {	
+$('.eqLogicAction[data-action=gotoBusMoniteur]').off().on('click', function () {	
   	bootbox.dialog({
 		title: "{{Moniteur de Bus}}",
 		size: "large",
@@ -195,7 +195,7 @@ $('.eqLogicAction[data-action=gotoBusMoniteur]').on('click', function () {
 		
 	});
 });
-$('.eqLogicAction[data-action=gotoLog]').on('click', function () {	
+$('.eqLogicAction[data-action=gotoLog]').off().on('click', function () {	
   	bootbox.dialog({
 		title: "{{Log du démon}}",
 		size: "large",
@@ -203,7 +203,7 @@ $('.eqLogicAction[data-action=gotoLog]').on('click', function () {
 		
 	});
 });
-$('body').on('click','.bt_selectGadInconnue', function () {
+$('body').off('.bt_selectGadInconnue').on('click','.bt_selectGadInconnue', function () {
 	var AddrPhy=$(this).closest('body').find('.form-control[data-l1key=logicalId]');
 	var SelectDpt=$(this).closest('.form-group').parent().find('.form-control[data-l2key=KnxObjectType]').val();	
 	var input=$(this).closest('.input-group').find('input');
@@ -602,14 +602,14 @@ function addCmdToTable(_cmd) {
 	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');	
 	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
-$('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]', function() {
+$('body').off('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]', function() {
 	DptOption($(this).val(),$(this).closest('.cmd').find('.option'));
 	if ($(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val() == '')
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val(DptUnit($(this).val()));
 	DptValue($(this).val(),$(this).closest('.cmd').find('.cmdAttr[data-l2key=KnxObjectValue]'));
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
 }); 
-$('body').on('change','.cmdAttr[data-l1key=type]', function() {
+$('body').off('.cmdAttr[data-l1key=type]').on('change','.cmdAttr[data-l1key=type]', function() {
 	switch ($(this).val()){
 		case "info":
 			$(this).closest('.cmd').find('.RetourEtat').hide();
@@ -628,7 +628,7 @@ $('body').on('change','.cmdAttr[data-l1key=type]', function() {
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
 	}.bind(this), 500);
 });			
-$('body').on('change','.cmdAttr[data-l1key=subType]', function() {
+$('body').off('.cmdAttr[data-l1key=subType]').on('change','.cmdAttr[data-l1key=subType]', function() {
 	var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
 	var type=$(this).closest('.cmd').find('.cmdAttr[data-l1key=type]').val();
 	var value=$(this).val();
@@ -698,7 +698,7 @@ $('body').on('change','.cmdAttr[data-l1key=subType]', function() {
 		break;
 	}
 });			
-$('body').on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
+$('body').off(.'cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]).on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
 	if($(this).is(':checked')){
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',true);
 	}else
