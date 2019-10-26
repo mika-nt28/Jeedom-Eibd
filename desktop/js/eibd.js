@@ -698,7 +698,7 @@ $('body').off('.cmdAttr[data-l1key=subType]').on('change','.cmdAttr[data-l1key=s
 		break;
 	}
 });			
-$('body').off(.'cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]).on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
+$('body').off('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]).on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
 	if($(this).is(':checked')){
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',true);
 	}else
