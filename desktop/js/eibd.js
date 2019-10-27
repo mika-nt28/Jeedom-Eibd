@@ -1,6 +1,6 @@
 function searchSameCmd(eqLogic,index,option){
       	var GAD='';
-	if (typeof(eqLogic.cmd[index].SameCmd) !== 'undefined'){
+	if (typeof(eqLogic.cmd[index].SameCmd) !== 'undefined'){o
 		$('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
 			if($(this).val() == eqLogic.cmd[index].SameCmd){
 				GAD =  $(option + ' .CmdEqLogicTemplateAttr[data-l1key='+$(this).attr('data-l1key')+'][data-l2key=logicalId]').val();
@@ -78,7 +78,7 @@ $('.Template[data-action=add]').off().on('click', function () {
 			},
 		}
 	});
-	dialog.on('shown.bs.modal', function(e){
+	dialog.off('shown.bs.modal').on('shown.bs.modal', function(e){
   		$(".EqLogicTemplateAttr[data-l1key=name]").val($(".eqLogicAttr[data-l1key=name]").val()).attr("disabled","true");
   		$(".EqLogicTemplateAttr[data-l1key=logicalId]").val($(".eqLogicAttr[data-l1key=logicalId]").val()).attr("disabled","true");
   		$(".EqLogicTemplateAttr[data-l1key=object_id]").val($(".eqLogicAttr[data-l1key=object_id]").val()).attr("disabled","true");
