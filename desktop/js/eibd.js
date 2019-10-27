@@ -78,7 +78,7 @@ $('.Template[data-action=add]').off().on('click', function () {
 			},
 		}
 	});
-	dialog.on('shown.bs.modal', function(e){
+	dialog.off('shown.bs.modal').on('shown.bs.modal', function(e){
   		$(".EqLogicTemplateAttr[data-l1key=name]").val($(".eqLogicAttr[data-l1key=name]").val()).attr("disabled","true");
   		$(".EqLogicTemplateAttr[data-l1key=logicalId]").val($(".eqLogicAttr[data-l1key=logicalId]").val()).attr("disabled","true");
   		$(".EqLogicTemplateAttr[data-l1key=object_id]").val($(".eqLogicAttr[data-l1key=object_id]").val()).attr("disabled","true");
@@ -203,7 +203,7 @@ $('.eqLogicAction[data-action=gotoLog]').off().on('click', function () {
 		
 	});
 });
-$('body').off('.bt_selectGadInconnue').on('click','.bt_selectGadInconnue', function () {
+$('body').off('click','.bt_selectGadInconnue').on('click','.bt_selectGadInconnue', function () {
 	var AddrPhy=$(this).closest('body').find('.form-control[data-l1key=logicalId]');
 	var SelectDpt=$(this).closest('.form-group').parent().find('.form-control[data-l2key=KnxObjectType]').val();	
 	var input=$(this).closest('.input-group').find('input');
@@ -602,14 +602,14 @@ function addCmdToTable(_cmd) {
 	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');	
 	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
-$('body').off('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]', function() {
+$('body').off('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').on('change','.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]', function() {
 	DptOption($(this).val(),$(this).closest('.cmd').find('.option'));
 	if ($(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val() == '')
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=unite]').val(DptUnit($(this).val()));
 	DptValue($(this).val(),$(this).closest('.cmd').find('.cmdAttr[data-l2key=KnxObjectValue]'));
 	$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
 }); 
-$('body').off('.cmdAttr[data-l1key=type]').on('change','.cmdAttr[data-l1key=type]', function() {
+$('body').off('change','.cmdAttr[data-l1key=type]').on('change','.cmdAttr[data-l1key=type]', function() {
 	switch ($(this).val()){
 		case "info":
 			$(this).closest('.cmd').find('.RetourEtat').hide();
@@ -628,7 +628,7 @@ $('body').off('.cmdAttr[data-l1key=type]').on('change','.cmdAttr[data-l1key=type
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').trigger('change');
 	}.bind(this), 500);
 });			
-$('body').off('.cmdAttr[data-l1key=subType]').on('change','.cmdAttr[data-l1key=subType]', function() {
+$('body').off('change','.cmdAttr[data-l1key=subType]').on('change','.cmdAttr[data-l1key=subType]', function() {
 	var Dpt=$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectType]').val();
 	var type=$(this).closest('.cmd').find('.cmdAttr[data-l1key=type]').val();
 	var value=$(this).val();
@@ -698,7 +698,7 @@ $('body').off('.cmdAttr[data-l1key=subType]').on('change','.cmdAttr[data-l1key=s
 		break;
 	}
 });			
-$('body').off('.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
+$('body').off('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]').on('change','.cmdAttr[data-l1key=configuration][data-l2key=subTypeAuto]', function() {
 	if($(this).is(':checked')){
 		$(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').attr('disabled',true);
 	}else
