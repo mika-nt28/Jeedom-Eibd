@@ -1,7 +1,7 @@
 Voici la définition de chaque template.
-Desormais une template peut contenir des options (par exemple pour un point de lumiere qui peut etre simple, varriateur ou couleur).
-Pour simplifier la creation, un template est rassemble les commande indentique (On / Off, Ouvrir / Fermer,...)
-Pour donner plus de souplesse a l'import ETS, la notion de synonyme est integer.
+Désormais un template peut contenir des options (par exemple pour un point de lumière qui peut être simple, variateur ou couleur).
+Pour simplifier la creation, un template rassemble les commandes identiques (On / Off, Ouvrir / Fermer,...)
+Pour donner plus de souplesse à l'import ETS, la notion de synonyme est intégrée.
 
 Thermostat
 ==========
@@ -12,7 +12,7 @@ Pas pour le moment
 
 Commandes
 --------
-* Etat *[Pas de Synonyme]
+* État *[Pas de Synonyme]
 * Température ambiante *[Pas de Synonyme]
 * Température consigne *[Pas de Synonyme]
 * Consigne *[Pas de Synonyme]
@@ -21,7 +21,7 @@ Commandes
 
 Options Verrouillage
 -------------------
-* Etat Verrouillage *[Pas de Synonyme]
+* État Verrouillage *[Pas de Synonyme]
 * Activer le verrouillage *[Pas de Synonyme]
 * Désactiver le verrouillage *[Pas de Synonyme]
 
@@ -31,11 +31,11 @@ Portail
 Synonyme
 --------
 * Portillon
-* barriere
+* Barrière
 
 Commandes
 --------
- * Etat *[Pas de Synonyme]
+ * État *[Pas de Synonyme]
  * Ouvrir *[Pas de Synonyme]
  * Fermer *[Pas de Synonyme]
  
@@ -48,14 +48,14 @@ Synonyme
 
 Commandes
 --------
-* Position Etat *[Pas de Synonyme]
+* Position État *[Pas de Synonyme]
 * Haut *[Pas de Synonyme]
 * Stop *[Pas de Synonyme]
 * Bas *[Pas de Synonyme]
 
 Options BSO
 -----------
-* Lames Etat *[Pas de Synonyme]
+* Lames État *[Pas de Synonyme]
 * Lames Montée *[Pas de Synonyme]
 * Lames descente *[Pas de Synonyme]
 
@@ -65,13 +65,13 @@ Citerne eau de pluie
 Synonyme
 --------
 * Citerne
-* Puie
+* Pluie
 
 Commandes
 --------
 * valeur *[Pas de Synonyme]
 
-Detecteur Fumée
+Détecteur Fumée
 ==============
 
 Synonyme
@@ -100,17 +100,17 @@ Lumière
 Synonyme
 --------
 * Dimmer
-* Varriateur
+* Variateur
 * Couleur ambiance
 * Ambiance
 
 Commandes
 --------
-* Etat *[Pas de Synonyme]
+* État *[Pas de Synonyme]
 * On *[Pas de Synonyme]
 * Off *[Pas de Synonyme]
 
-Options varriation
+Options variation
 -------------------
 * Luminosité *[Pas de Synonyme]
 * Augmenter *[Pas de Synonyme]
@@ -119,23 +119,23 @@ Options varriation
 
 Options Couleur RGB
 --------------------
-* Etat Couleur *[Pas de Synonyme]
+* État Couleur *[Pas de Synonyme]
 * Couleur *[Pas de Synonyme]
 
 Options Couleur RGBW
 --------------------
 
-* Etat R *[Pas de Synonyme]
-* Etat G *[Pas de Synonyme]
-* Etat B *[Pas de Synonyme]
-* Etat W *[Pas de Synonyme]
+* État R *[Pas de Synonyme]
+* État G *[Pas de Synonyme]
+* État B *[Pas de Synonyme]
+* État W *[Pas de Synonyme]
 * Luminosité  R *[Pas de Synonyme]
 * Luminosité  G *[Pas de Synonyme]
 * Luminosité  B *[Pas de Synonyme]
 * Luminosité  W *[Pas de Synonyme]
 * Vitesse de regulation 1 *[Pas de Synonyme]
 * Vitesse de regulation 2 *[Pas de Synonyme]
-* Varriation de couleur" *[Pas de Synonyme]
+* Variation de couleur" *[Pas de Synonyme]
 
 Options Couleur Lumento
 --------------------
@@ -151,7 +151,7 @@ Pas pour le moment
 
 Commandes
 --------
-* Etat *[Pas de Synonyme]
+* État *[Pas de Synonyme]
 * Ouvrir *[Pas de Synonyme]
 * Fermer *[Pas de Synonyme]
 
@@ -173,7 +173,7 @@ Synonyme
 
 Commandes
 --------
-* Etat *[Pas de Synonyme]
+* État *[Pas de Synonyme]
 * Ouvrir *[Pas de Synonyme]
 * Fermer *[Pas de Synonyme]
 
@@ -188,7 +188,7 @@ Commandes
 --------
 * valeur *[Pas de Synonyme]
 
-Detecteur Mouvement
+Détecteur Mouvement
 ==================
 
 Synonyme
@@ -223,7 +223,7 @@ Pas pour le moment
 
 Commandes
 --------
-* Etat *[Pas de Synonyme]
+* État *[Pas de Synonyme]
 * On *[Pas de Synonyme]
 * Off *[Pas de Synonyme]
 
@@ -236,7 +236,7 @@ Pas pour le moment
 
 Commandes
 --------
-* Etat *[Pas de Synonyme]
+* État *[Pas de Synonyme]
 * On *[Pas de Synonyme]
 * Off *[Pas de Synonyme]
 

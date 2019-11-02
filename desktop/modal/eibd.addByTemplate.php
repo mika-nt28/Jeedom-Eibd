@@ -5,7 +5,7 @@ if (!isConnect('admin')) {
 ?>
 <div class="row">
 	<form class="form-horizontal" onsubmit="return false;">
-		<legend>{{Définition de l'equipement}}</legend>
+		<legend>{{Définition de l’équipement}}</legend>
 		<div class="col-md-12">
 			<div class="form-group">
 				<label class="col-md-5 control-label">
@@ -22,7 +22,7 @@ if (!isConnect('admin')) {
 				<label class="col-md-5 control-label ">
 					{{Adresse Physique de l'équipement}}
 					<sup>
-						<i class="fa fa-question-circle tooltips" title="{{Indiquez l'adresse physique de votre équipement. Cette information n'est pas obigatoire mais peut etre utile dans certain cas. Pour la trouver, il faut la retrouver sur le logiciel ETS}}" style="font-size : 1em;color:grey;"></i>
+						<i class="fa fa-question-circle tooltips" title="{{Indiquez l'adresse physique de votre équipement. Cette information n'est pas obligatoire mais peut etre utile dans certain cas. Pour la trouver, il faut la retrouver sur le logiciel ETS}}" style="font-size : 1em;color:grey;"></i>
 					</sup>
 				</label>
 				<div class="col-md-5">
@@ -33,7 +33,7 @@ if (!isConnect('admin')) {
 				<label class="col-md-5 control-label" >
 					{{Objet parent}}
 					<sup>
-						<i class="fa fa-question-circle tooltips" title="{{Indiquez l'objet dans lequel le widget de cette equipement apparaiterai sur le dashboard}}" style="font-size : 1em;color:grey;"></i>
+						<i class="fa fa-question-circle tooltips" title="{{Indiquez l'objet dans quel widget de cet équipement il apparaîtra sur le Dashboard}}" style="font-size : 1em;color:grey;"></i>
 					</sup>
 				</label>
 				<div class="col-md-5">
@@ -51,12 +51,12 @@ if (!isConnect('admin')) {
 				<label class="col-md-5 control-label" >
 					{{Template de votre équipement}}
 					<sup>
-						<i class="fa fa-question-circle tooltips" title="{{Choisir le template de votre nouvelle equipement}}" style="font-size : 1em;color:grey;"></i>
+						<i class="fa fa-question-circle tooltips" title="{{Choisir le template de votre nouvel équipement}}" style="font-size : 1em;color:grey;"></i>
 					</sup>
 				</label>
 				<div class="col-md-5">
 					<select class="EqLogicTemplateAttr form-control" data-l1key="template">
-						<option value="">{{Séléctioner votre template}}</option>
+						<option value="">{{Sélectionner votre template}}</option>
 						<?php
 						foreach (eibd::devicesParameters() as $id => $template) {		
 							echo '<option value="' . $id . '">' . $template['name'] . '</option>';

@@ -53,7 +53,7 @@ else
 	</li>
 	<li role="presentation" class="">
 		<a href="#DeviceTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-			<i class="fa fa-list-alt"></i> {{Equipements}}</a>
+			<i class="fa fa-list-alt"></i> {{Équipements}}</a>
 	</li>
 	<li role="presentation" class="">
 		<a href="#AdressTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
@@ -80,7 +80,7 @@ else
 					<th>{{Source}}</th>
 					<th>{{Destination}}</th>
 					<th>{{Data Point Type}}</th>
-					<th>{{Derniere valeur}}</th>
+					<th>{{Dernière valeur}}</th>
 					<th>{{Action sur cette adresse de groupe}}</th>
 				</tr>
 			</thead>
