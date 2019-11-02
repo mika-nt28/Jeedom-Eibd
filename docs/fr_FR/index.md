@@ -241,14 +241,14 @@ En cliquant sur un des ses bouton vous allez obtenir cette fenêtre.
 Inconnue
 --------
 
-Cette onglet permet de remonter les GAD inconnue vue par le Bus Monitor.
-En activant l'inclusion, le Bus Monitor vas mettre en cache également tous les GAD qu'il voit et qui sont inconnue a votre installation.
+Cet onglet permet de remonter les GAD inconnue vue par le Bus Monitor.
+En activant l'inclusion, le Bus Monitor va mettre en cache également tous les GAD qu'il voit et qui sont inconnus sur votre installation.
 De même, si vous avez configurer les DPT dans votre projet ETS, et l'adresse physique de votre équipement dans votre configuration Jeedom, un filtre sera automatiquement ajouté pour faciliter les recherches
 
 Équipement
 ----------
 
-Cette onglet permet de lister tous les GAD avec leurs équipements.
+Cet onglet permet de lister tous les GAD avec leurs équipements.
 Pour que remplir ce tableau, il est impératif d'utiliser le parseur ETS.
 Si vous avez ouvert cette fenêtre depuis un bouton de selection de GAD, alors vous aurez la possibilité de sélectionner le bon GAD (qui se mettra en gras) et de valider pour retourner à la page de configuration.
 De même, si vous avez configuré les DPT dans votre projet ETS, et l'adresse physique de votre équipement dans votre configuration Jeedom, un filtre sera automatiquement ajouté pour faciliter les recherches
@@ -257,7 +257,7 @@ De même, si vous avez configuré les DPT dans votre projet ETS, et l'adresse ph
 Adresse de groupes
 ------------------
 
-Cette onglet permet de récréer l'arborescence de GAD tel qu'elle est défini dans ETS.
+Cet onglet permet de récréer l'arborescence de GAD tel qu'elle est défini dans ETS.
 Pour que remplir ce tableau, il est impératif d'utiliser le parseur ETS.
 
 Si vous avez ouvert cette fenêtre depuis un bouton de selection de GAD, alors vous aurez la possibilité de sélectionner le bon GAD (qui se mettra en gras) et de valider pour retourner à la page de configuration.

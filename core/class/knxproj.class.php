@@ -89,7 +89,7 @@ class knxproj {
 			log::add('eibd','debug','[Import TX100] overture de  '.$path);
 			while (($file = readdir($dh)) !== false){
 				if($file != '.' && $file != '..'){
-					log::add('eibd','debug','[Import TX100] Rechecher dans '.$path.$file);
+					log::add('eibd','debug','[Import TX100] Rechercher dans '.$path.$file);
 					if ($file == 'configuration'){
 						$this->path = $path.$file.'/';
 						log::add('eibd','debug','[Import TX100] Dossier courant '.$this->path);
@@ -169,7 +169,7 @@ class knxproj {
 		}
 	}
 	private function ParserTX100GroupAddresses(){
-		log::add('eibd','debug','[Import TX100] Création de l\'arboressance de gad');
+		log::add('eibd','debug','[Import TX100] Création de l\'arborescence d\'adresse de groupe');
 		$GroupLinks=simplexml_load_file($this->path . 'GroupLinks.xml');
 		$this->GroupAddresses = $this->getTX100Level($GroupLinks);
 	}
@@ -244,7 +244,7 @@ class knxproj {
 		return array($DataPointType,$GroupName);
 	}
 	private function ParserLocations(){
-		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de localisation');
+		log::add('eibd','debug','[Import ETS] Création de l\'arborescence de localisation');
 		$Level = $this->myProject->Project->Installations->Installation->Locations;
 		$Locations = $this->getETSLevel($Level,$this->Locations);
 		if(!$Locations){
@@ -255,7 +255,7 @@ class knxproj {
 		array_merge($this->Locations,$Locations);
 	}
 	private function ParserETSGroupAddresses(){
-		log::add('eibd','debug','[Import ETS] Création de l\'arboressance d\'adresse de groupe');
+		log::add('eibd','debug','[Import ETS] Création de l\'arborescence d\'adresse de groupe');
 		$Level= $this->myProject->Project->Installations->Installation->GroupAddresses->GroupRanges;
 		$this->GroupAddresses = $this->getETSLevel($Level,$this->GroupAddresses);
 	}

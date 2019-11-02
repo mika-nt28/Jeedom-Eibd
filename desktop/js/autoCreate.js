@@ -30,46 +30,46 @@ function autoCreate(){
 	var html = $('<form class="autoCreate form-horizontal" onsubmit="return false;">');
   	html.append($('<div class="form-group">') 
 		.append($('<label class="col-sm-4 control-label">') 
-        		.append('{{Sur quel arboressance choisir}}') 
+        		.append('{{Quelle arborescence choisir ?}}') 
 			.append($('<sup>') 
-				.append($('<i class="fa fa-question-circle tooltips" title="{{Cette option permet de choisir l\'arboresance sur lequel on vas cree nos objet / equipement / commande}}" >'))))
+				.append($('<i class="fa fa-question-circle tooltips" title="{{Cette option permet de choisir l\'arborescence sur lequel on va créer nos objet / équipement / commande}}" >'))))
 		.append($('<div class="col-sm-7 control-label">') 
-			.append($('<select class="autoCreateParameter" data-l1key="arboresance">')
+			.append($('<select class="autoCreateParameter" data-l1key="arborescence">')
 			.append($('<option value="gad">')
 				  .append('{{Adresse de groupe}}'))
 			.append($('<option value="device">')
-				  .append('{{Equipement}}'))
+				  .append('{{Équipement}}'))
 			.append($('<option value="locations">')
 				  .append('{{Localisation}}')))));
   	html.append($('<div class="form-group">') 
 		.append($('<label class="col-sm-4 control-label">') 
         		.append('{{Créer les objets}}') 
 			.append($('<sup>') 
-				.append($('<i class="fa fa-question-circle tooltips" title="{{Cette option autorise le parser a créer automatiquement les objets trouvés selon la definition des level defini precedement dans l\'arboresance de groupe}}" >'))))
+				.append($('<i class="fa fa-question-circle tooltips" title="{{Cette option autorise le parseur à créer automatiquement les objets trouvés selon la definition des niveaux definis précédemment dans l\'arborescence de groupe}}" >'))))
 		.append($('<div class="col-sm-7 control-label">') 
 			.append($('<input type="checkbox" class="autoCreateParameter" data-l1key="createObjet"/>'))));
 	html.append($('<div class="form-group">') 
 		.append($('<label class="col-sm-4 control-label">') 
-      			.append('{{Créer les equipements}}') 
+      			.append('{{Créer les équipements}}') 
 			.append($('<sup>') 
-				.append($('<i class="fa fa-question-circle tooltips" title="{{Cette option autorise le parser a créer automatiquement les equipements trouvés selon la definition des level defini precedement dans l\'arboresance de groupe}}">'))))
+				.append($('<i class="fa fa-question-circle tooltips" title="{{Cette option autorise le parseur à créer automatiquement les équipements trouvés selon la definition des niveaux definis précédemment dans l\'arborescence de groupe}}">'))))
 		.append($('<div class="col-sm-7 control-label">') 
 			.append($('<input type="checkbox" class="autoCreateParameter" data-l1key="createEqLogic"/>'))));
 	html.append($('<div class="form-group withCreate">') 
 		.append($('<label class="col-sm-4 control-label">') 
 		        .append('{{Arborescence des groupes}}') 
 			.append($('<sup>') 
-				.append($('<i class="fa fa-question-circle tooltips" title="{{La définition de l\'arboressance de groupe permet au parser de connaitre ou se situe le nom a prendre pour la creation automatique des objets ou des equipemnt}}">'))))
+				.append($('<i class="fa fa-question-circle tooltips" title="{{La définition de l\'arborescence de groupe permet au parseur de connaitre où se situe le nom à prendre pour la creation automatique des objets ou des équipements}}">'))))
 			.append($('<div class="level">')).hide());
 	html.append($('<div class="form-group withCreateEqLogic">') 
 		.append($('<label class="col-sm-4 control-label">')
-       			.append('{{Uniquement correspondant a un Template}}')
+       			.append('{{Uniquement correspondant à un Template}}')
 			.append($('<sup>')
-				.append($('<i class="fa fa-question-circle tooltips" title="{{Cette option permet de filtrer la creation d\'equipement a ceux qui corresponde a un Template (Nom du Template et des commandes}}">'))))
+				.append($('<i class="fa fa-question-circle tooltips" title="{{Cette option permet de filtrer la creation d\'équipement à ceux qui corresponde à un Template (Nom du Template et des Commandes}}">'))))
 		.append($('<div class="col-sm-7 control-label">') 
 			.append($('<input type="checkbox" class="autoCreateParameter" data-l1key="createTemplate"/>'))).hide());
 	bootbox.dialog({
-		title: "{{Creation automatique des equipements KNX}}",
+		title: "{{Creation automatique des équipements KNX}}",
 		message: html,
 		buttons: {
 			"Annuler": {
@@ -100,7 +100,7 @@ function autoCreate(){
 			},
 		}
 	});
-	$('.autoCreateParameter[data-l1key=arboresance]').off().on('change',function() {
+	$('.autoCreateParameter[data-l1key=arborescence]').off().on('change',function() {
 		var arbo = null;		
 		switch($(this).val()){
 			case 'gad':
@@ -119,7 +119,7 @@ function autoCreate(){
 				if($(this).val() != 'object' && $(this).val() != ''){
 					if($('.autoCreateParameter[data-l1key=levelType] option[value='+$(this).val()+']:selected').length > 1){
 						$(this).val('');
-						alert('{{Impossible d\'avoir plusieur champs Equipement ou commmandes}}');
+						alert('{{Impossible d\'avoir plusieurs champs Équipement ou Commandes}}');
 					}
 				}
 			});
@@ -141,5 +141,5 @@ function autoCreate(){
 			$('.autoCreate .withCreate').hide();
 		}
 	});
-	$('.autoCreateParameter[data-l1key=arboresance]').trigger('change');
+	$('.autoCreateParameter[data-l1key=arborescence]').trigger('change');
 }
