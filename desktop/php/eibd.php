@@ -101,7 +101,7 @@
 							<label class="col-sm-3 control-label">
 								{{Adresse Physique de l'équipement}}
 								<sup>
-									<i class="fa fa-question-circle tooltips" title="{{Indiquez l'adresse physique de votre équipement. Cette information n'est pas obigatoire mais peut etre utile dans certain cas.}}"></i>
+									<i class="fa fa-question-circle tooltips" title="{{Indiquez l'adresse physique de votre équipement. Cette information n'est pas obligatoire mais peut être utile dans certain cas.}}"></i>
 								</sup>
 							</label>
 							<div class="col-sm-3">
@@ -135,11 +135,11 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 control-label">
-								{{Etat du widget}}
+								{{État du widget}}
 								<sup>
 									<i class="fa fa-question-circle tooltips" title="{{Choisissez les options de visibilité et d'activation
-									Si l'equipement n'est pas activé il ne sera pas utilisable dans jeedom, mais visible sur le dashboard
-									Si l'equipement n'est pas visible il ne sera caché sur le dashbord, mais utilisable dans jeedom" style="font-size : 1em;color:grey;}}"></i>
+									Si l’équipement n'est pas activé il ne sera pas utilisable dans jeedom, mais visible sur le dashboard
+									Si l’équipement n'est pas visible il ne sera caché sur le Dashbord, mais utilisable dans jeedom" style="font-size : 1em;color:grey;}}"></i>
 								</sup>
 							</label>
 							<div class="col-sm-9">
@@ -151,7 +151,7 @@
 							<label class="col-sm-3 control-label">
 								{{Délai max entre 2 messages}}
 								<sup>
-									<i class="fa fa-question-circle tooltips" title="{{Cette information est optionnel et permet de définir si un équipement est fonctionnel ou non. Il ne peut etre utilisé que si votre équipement envoi régulierement des information (sonde de température, horloge, ...)}}"></i>
+									<i class="fa fa-question-circle tooltips" title="{{Cette information est optionnelle et permet de définir si un équipement est fonctionnel ou non. Elle ne peut être utilisée que si votre équipement envoie régulièrement des informations (sonde de température, horloge, ...)}}"></i>
 								</sup>
 							</label>
 							<div class="col-sm-3">

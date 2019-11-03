@@ -53,7 +53,7 @@ else
 	</li>
 	<li role="presentation" class="">
 		<a href="#DeviceTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-			<i class="fa fa-list-alt"></i> {{Equipements}}</a>
+			<i class="fa fa-list-alt"></i> {{Équipements}}</a>
 	</li>
 	<li role="presentation" class="">
 		<a href="#AdressTab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
@@ -80,7 +80,7 @@ else
 					<th>{{Source}}</th>
 					<th>{{Destination}}</th>
 					<th>{{Data Point Type}}</th>
-					<th>{{Derniere valeur}}</th>
+					<th>{{Dernière valeur}}</th>
 					<th>{{Action sur cette adresse de groupe}}</th>
 				</tr>
 			</thead>
@@ -148,11 +148,11 @@ $('.Include').off().on('click', function () {
 			if($('.Include').attr('data-validation') == "false"){
 				$('.Include').attr('data-validation',"true");
 				$('.Include').html($('<i class="fa fa-bullseye">'))
-					.append(' {{Activer  l\'inculsion}}');
+					.append(' {{Activer  l\'inclusion}}');
 			}else{
 				$('.Include').attr('data-validation',"false");
 				$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
-					.append(' {{Désactiver l\'inculsion}}');
+					.append(' {{Désactiver l\'inclusion}}');
 			}
 		}
 	});

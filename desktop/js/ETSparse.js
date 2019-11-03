@@ -45,7 +45,7 @@ function ImportEts(merge){
 						error: function(request, status, error) {},
 						success: function(data) {
 							bootbox.confirm({
-								message: "{{Voulez vous importer un autre fichier projet?}}",
+								message: "{{Voulez-vous importer un autre fichier ?}}",
 								buttons: {
 									confirm: {
 										label: '{{Oui}}',
@@ -65,7 +65,7 @@ function ImportEts(merge){
 										CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true);
 										CreateArboressance(data.result.Locations,$('.MyLocationsGroup'),true);
 										bootbox.confirm({
-											message: "{{Voulez vous créer automatiquement les equipemnts?}}",
+											message: "{{Voulez-vous créer automatiquement les équipements ?}}",
 											buttons: {
 												confirm: {
 													label: '{{Oui}}',
@@ -100,7 +100,7 @@ function ImportEts(merge){
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
 			}
-			$('#div_alert').showAlert({message: "Import ETS complet.</br>Vous pouvez commancer la configuration des equipements", level: 'success'});
+			$('#div_alert').showAlert({message: "Import ETS complet.</br>Vous pouvez commencer la configuration des équipements", level: 'success'});
 			//$('.EtsImportData').append(data.result);
 		}
 	});
