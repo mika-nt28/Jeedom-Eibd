@@ -148,11 +148,11 @@ $('.Include').off().on('click', function () {
 			if($('.Include').attr('data-validation') == "false"){
 				$('.Include').attr('data-validation',"true");
 				$('.Include').html($('<i class="fa fa-bullseye">'))
-					.append(' {{Activer  l\'inculsion}}');
+					.append(' {{Activer  l\'inclusion}}');
 			}else{
 				$('.Include').attr('data-validation',"false");
 				$('.Include').html($('<i class="fa fa-spinner fa-pulse">'))
-					.append(' {{Désactiver l\'inculsion}}');
+					.append(' {{Désactiver l\'inclusion}}');
 			}
 		}
 	});
