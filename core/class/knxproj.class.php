@@ -246,13 +246,12 @@ class knxproj {
 	private function ParserLocations(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance de localisation');
 		$Level = $this->myProject->Project->Installations->Installation->Locations;
-		$Locations = $this->getETSLevel($Level,$this->Locations);
-		if(!$Locations){
+		$this->Locations = $this->getETSLevel($Level,$this->Locations);
+		if(!$this->Locations){
 			$Level = $this->myProject->Project->Installations->Installation->Buildings;
-			$Locations = $this->getETSLevel($Level,$this->Locations);
+			$this->Locations = $this->getETSLevel($Level,$this->Locations);
 
 		}
-		array_merge($this->Locations,$Locations);
 	}
 	private function ParserETSGroupAddresses(){
 		log::add('eibd','debug','[Import ETS] Création de l\'arboressance d\'adresse de groupe');
