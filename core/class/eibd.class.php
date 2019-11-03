@@ -812,11 +812,11 @@ class eibdCmd extends cmd {
 			$CmdState=cmd::byId(str_replace('#','',$this->getValue()));
 			if(is_object($CmdState) && $CmdState->getEqType_name() == 'eibd'){
 				if($CmdState->getLogicalId() == $this->getLogicalId())
-					throw new Exception(__('{{Il est impossible de transmetre retransmetre un etat sur le meme GAD}}', __FILE__));
+					throw new Exception(__('{{Il est impossible de transmettre / retransmettre un état sur le même GAD}}', __FILE__));
 			}
 		}
 		if ($this->getConfiguration('KnxObjectType') == '') 
-			throw new Exception(__('Le type de commande ne peut etre vide', __FILE__));
+			throw new Exception(__('Le type de commande ne peut être vide', __FILE__));
 		$this->setLogicalId(trim($this->getLogicalId()));    
 	}
 	public function postSave() {	
@@ -905,7 +905,7 @@ class eibdCmd extends cmd {
 			case 'info':
 				$DataBus=eibd::EibdRead($ga);
 				if($DataBus === false){
-					message::add('info',$this->getHumanName().'[READ]: Aucune reponse','',$ga);
+					message::add('info',$this->getHumanName().'[READ]: Aucune réponse','',$ga);
 					return;
 				}
 				$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
@@ -929,14 +929,14 @@ class eibdCmd extends cmd {
 			if(is_object($Listener)) {
 				$inverse=$Listener->getConfiguration('inverse');
 				if($Listener->getLogicalId() == $this->getLogicalId()){
-					log::add('eibd', 'debug', $this->getHumanName().'[Lecture]: Impossible de repondre avec le meme GAD');
+					log::add('eibd', 'debug', $this->getHumanName().'[Lecture]: Impossible de répondre avec le même GAD');
 					return false;
 				}
 			}
 			$valeur = $this->getOtherActionValue();
 			if($valeur != false && $valeur != ''){
 				$data= Dpt::DptSelectEncode($dpt, $valeur, $inverse,$Option);
-				log::add('eibd', 'info',$this->getHumanName().'[Reponse]: Reponse avec la valeur : '.$valeur.$unite);
+				log::add('eibd', 'info',$this->getHumanName().'[Reponse]: Réponse avec la valeur : '.$valeur.$unite);
 				eibd::EibdReponse($this->getLogicalId(), $data);
 			}
 		}else{
@@ -964,7 +964,7 @@ class eibdCmd extends cmd {
 					$this->getEqlogic()->batteryStatus($valeur,date('Y-m-d H:i:s'));
 				}
 				if($this->getType() == 'info'){
-					log::add('eibd', 'info',$this->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
+					log::add('eibd', 'info',$this->getHumanName().' : Mise à jour de la valeur : '.$valeur.$unite);
 					$this->event($valeur);
 					$this->setCache('collectDate', date('Y-m-d H:i:s'));
 				}
@@ -975,14 +975,14 @@ class eibdCmd extends cmd {
 		return $valeur.$unite ;
 	}
 	public function UpdateCmdOption($_options) { 
-		log::add('eibd', 'Info', 'Mise a jours d\'une commande par ses options');
+		log::add('eibd', 'Info', 'Mise à jour d\'une commande par ses options');
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
 		$Option["id"]=$this->getId();
 		$valeur=Dpt::DptSelectDecode($dpt, null, $inverse, $Option);
 		if($this->getType() == 'info' && $valeur !== false){
-			log::add('eibd', 'info',$this->getHumanName().' : Mise a jours de la valeur : '.$valeur.$unite);
+			log::add('eibd', 'info',$this->getHumanName().' : Mise à jour de la valeur : '.$valeur.$unite);
 			$this->event($valeur);
 			$this->setCache('collectDate', date('Y-m-d H:i:s'));
 		}

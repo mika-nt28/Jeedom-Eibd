@@ -361,13 +361,13 @@ class Dpt{
 				break;
 			case "18":
 				if ($option != null)	{
-					//Mise a jours de l'objet Jeedom ValInfField
+					//Mise à jour de l'objet Jeedom ValInfField
 					if ($option["control"] !=''){	
-						//log::add('eibd', 'debug', 'Mise a jours de l\'objet Jeedom ValInfField: '.$option["ValInfField"]);
+						//log::add('eibd', 'debug', 'Mise à jour de l\'objet Jeedom ValInfField: '.$option["ValInfField"]);
 						$control=cmd::byId(str_replace('#','',$option["control"]));
 						if (is_object($control)){
 							$ctrl = ($data[0] >> 7) & 0x01;
-							log::add('eibd', 'debug', 'L\'objet '.$control->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $ctrl);
+							log::add('eibd', 'debug', 'L\'objet '.$control->getName().' à été trouvé et va être mis à jour avec la valeur '. $ctrl);
 							$control->event($ctrl);
 							$control->setCache('collectDate', date('Y-m-d H:i:s'));
 						}
@@ -422,7 +422,7 @@ class Dpt{
 							$bits=str_split($data[$byte],1);
 							$InfoCmd=cmd::byId(str_replace('#','',$Info[$bit]));
 							if (is_object($InfoCmd)){
-								log::add('eibd', 'debug', 'Nous allons mettre a jours l\'objet: '. $InfoCmd->getHumanName);
+								log::add('eibd', 'debug', 'Nous allons mettre à jour l\'objet: '. $InfoCmd->getHumanName);
 								$InfoCmd->event($bits[$bit]);
 								$InfoCmd->setCache('collectDate', date('Y-m-d H:i:s'));
 							}
@@ -435,11 +435,11 @@ class Dpt{
 					$value = $data[0];    
 					if ($option != null){
 						if ($option["ValInfField"] !='' /*&& is_numeric($data[4])&& $data[4]!=''*/){	
-							//log::add('eibd', 'debug', 'Mise a jours de l\'objet Jeedom ValInfField: '.$option["ValInfField"]);
+							//log::add('eibd', 'debug', 'Mise à jour de l\'objet Jeedom ValInfField: '.$option["ValInfField"]);
 							$TimePeriode=cmd::byId(str_replace('#','',$option["TimePeriode"]));
 							if (is_object($TimePeriode)){
 								$valeur = $data[0] << 8 | $data[1];
-								log::add('eibd', 'debug', 'L\'objet '.$TimePeriode->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $valeur);
+								log::add('eibd', 'debug', 'L\'objet '.$TimePeriode->getName().' à été trouvé et va être mis à jour avec la valeur '. $valeur);
 								$TimePeriode->event($valeur);
 								$TimePeriode->setCache('collectDate', date('Y-m-d H:i:s'));
 							}
@@ -459,24 +459,24 @@ class Dpt{
 					if ($value >= 0x80000000)
 						$value = -(($value - 1) ^ 0xffffffff);  # invert twos complement       
 					if ($option != null){
-						//Mise a jours de l'objet Jeedom ValInfField
+						//Mise à jour de l'objet Jeedom ValInfField
 						if ($option["ValInfField"] !='' /*&& is_numeric($data[4])&& $data[4]!=''*/){	
-							//log::add('eibd', 'debug', 'Mise a jours de l\'objet Jeedom ValInfField: '.$option["ValInfField"]);
+							//log::add('eibd', 'debug', 'Mise à jour de l\'objet Jeedom ValInfField: '.$option["ValInfField"]);
 							$ValInfField=cmd::byId(str_replace('#','',$option["ValInfField"]));
 							if (is_object($ValInfField)){
 								$valeur=$data[4];
-								log::add('eibd', 'debug', 'L\'objet '.$ValInfField->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $valeur);
+								log::add('eibd', 'debug', 'L\'objet '.$ValInfField->getName().' à été trouvé et va être mis à jour avec la valeur '. $valeur);
 								$ValInfField->event($valeur);
 								$ValInfField->setCache('collectDate', date('Y-m-d H:i:s'));
 							}
 						}
-						//Mise a jours de l'objet Jeedom StatusCommande
+						//Mise à jour de l'objet Jeedom StatusCommande
 						if ($option["StatusCommande"] !='' /*&& is_numeric(($data[5]>>1) & 0x01)&& $data[5]!=''*/){
-							//log::add('eibd', 'debug', 'Mise a jours de l\'objet Jeedom StatusCommande: '.$option["StatusCommande"]);
+							//log::add('eibd', 'debug', 'Mise à jour de l\'objet Jeedom StatusCommande: '.$option["StatusCommande"]);
 							$StatusCommande=cmd::byId(str_replace('#','',$option["StatusCommande"]));
 							if (is_object($StatusCommande)){
 								$valeur=($data[5]>>1) & 0x01;
-								log::add('eibd', 'debug', 'L\'objet '.$StatusCommande->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $valeur);
+								log::add('eibd', 'debug', 'L\'objet '.$StatusCommande->getName().' à été trouvé et va être mis à jour avec la valeur '. $valeur);
 								$StatusCommande->event($valeur);
 								$StatusCommande->setCache('collectDate', date('Y-m-d H:i:s'));
 							}
@@ -501,13 +501,13 @@ class Dpt{
 						if ($option["ActiveElectricalEnergy"] !=''){	
 							$ActiveElectricalEnergy=explode('|',$option["ActiveElectricalEnergy"]);
 							$Tarif=$data[4];
-							log::add('eibd', 'debug', 'Nous allons mettre a jours le tarif '. $Tarif);	
+							log::add('eibd', 'debug', 'Nous allons mettre à jour le tarif '. $Tarif);	
 							$ActiveElectricalEnergyCommande=cmd::byId(str_replace('#','',$ActiveElectricalEnergy[$Tarif]));
 							if (is_object($ActiveElectricalEnergyCommande)){
 								$valeur =$data[0] << 24 | $data[1] << 16 | $data[2] << 8 | $data[3] ;
 								if ($valeur >= 0x80000000)
 									$valeur = -(($valeur - 1) ^ 0xffffffff);  # invert twos complement    
-								log::add('eibd', 'debug', 'L\'objet '.$ActiveElectricalEnergyCommande->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $valeur);
+								log::add('eibd', 'debug', 'L\'objet '.$ActiveElectricalEnergyCommande->getName().' à été trouvé et va être mis à jour avec la valeur '. $valeur);
 								$ActiveElectricalEnergyCommande->event($valeur);
 								$ActiveElectricalEnergyCommande->setCache('collectDate', date('Y-m-d H:i:s'));
 							}
@@ -519,7 +519,7 @@ class Dpt{
 				$Temperature=cmd::byId(str_replace('#','',$option["Température"]));
 				if (is_object($Temperature)){
 					$valeur=$data[0];
-					log::add('eibd', 'debug', 'L\'objet '.$Temperature->getName().' à été trouvé et vas etre mis a jours avec la valeur '. $valeur);
+					log::add('eibd', 'debug', 'L\'objet '.$Temperature->getName().' à été trouvé et va être mis à jour avec la valeur '. $valeur);
 					$Temperature->event($valeur);
 					$Temperature->setCache('collectDate', date('Y-m-d H:i:s'));
 				}	
@@ -586,7 +586,7 @@ class Dpt{
 					case "x.001":
 						$value = $data[0]& 0x01;      
 						if ($option != null){
-							//Mise a jours de l'objet Jeedom Mode
+							//Mise à jour de l'objet Jeedom Mode
 							if ($option["Mode"] !=''){		
 								$Mode=cmd::byId(str_replace('#','',$option["Mode"]));
 								if (is_object($Mode)){
