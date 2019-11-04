@@ -285,7 +285,7 @@ class knxproj {
 		if($DeviceGad == null)
 			$DeviceGad =array();
 		foreach($this->Devices as $DeviceProductRefId => $Device){
-			if($DeviceProductRefId == $id){
+			if(strrpos($id,$DeviceProductRefId) !== false){
 				foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
 					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['AdressePhysique']=$Device['AdressePhysique'];
 					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['AdresseGroupe']=$Cmd['AdresseGroupe'];
@@ -301,7 +301,7 @@ class knxproj {
 		$DataPointType='';
 		foreach($this->Devices as $DeviceProductRefId => $Device){
 			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
-				if($GroupAddressRefId == $id){
+				if(strrpos($id,$GroupAddressRefId) !== false){
 					$AdressePhysique = $this->Devices[$DeviceProductRefId]['AdressePhysique'];
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
@@ -333,9 +333,13 @@ class knxproj {
 							if($ComObjectInstanceRefs->getName() == 'ComObjectInstanceRefs'){
 								foreach($ComObjectInstanceRefs->children() as $ComObjectInstanceRef){
 									$DataPointType=explode('-',$this->xml_attribute($ComObjectInstanceRef, 'DatapointType'));
-									foreach($ComObjectInstanceRef->children() as $Connector){
-										foreach($Connector->children() as $Commande)
-											$this->Devices[$DeviceId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
+									if(isset($this->xml_attribute($ComObjectInstanceRef, 'Links')){
+										$this->Devices[$DeviceId]['Cmd'][$this->xml_attribute($ComObjectInstanceRef, 'Links')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
+									}else{
+										foreach($ComObjectInstanceRef->children() as $Connector){
+											foreach($Connector->children() as $Commande)
+												$this->Devices[$DeviceId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
+										}
 									}
 								}
 							}
