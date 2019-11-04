@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 function eibd_update() {
-	log::add('eibd','debug','Lancement du script de mise a jours'); 
+	log::add('eibd','debug','Lancement du script de mise à jour'); 
 	if(exec("command -v eibd") !='')
 		config::save('KnxSoft', 'eibd','eibd');
 	else{
@@ -37,7 +37,7 @@ function eibd_update() {
 		}
 		$eqLogic->save();
 	}
-	log::add('eibd','debug','Fin du script de mise a jours'); 
+	log::add('eibd','debug','Fin du script de mise à jour'); 
 }
 function eibd_remove() {
 	while(is_object($listener=listener::byClassAndFunction('eibd', 'TransmitValue')))

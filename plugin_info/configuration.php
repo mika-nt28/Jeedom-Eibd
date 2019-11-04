@@ -14,13 +14,13 @@ if (!isConnect()) {
 				<label class="col-lg-4 control-label" >
 					{{Interface de communication :}}
 					<sup>
-						<i class="fa fa-question-circle tooltips" title="{{Choisir le demon de connexion au reseau knx.}}"></i>
+						<i class="fa fa-question-circle tooltips" title="{{Choisir le démon de connexion au réseau KNX.}}"></i>
 					</sup>
 				</label>
 				<div class="col-lg-4">
 					<select class="configKey form-control" data-l1key="KnxSoft" >
-						<option value="knxd">KNXd (Recommandée)</option>
-						<option value="eibd">EIBD (Déprecier)</option>
+						<option value="knxd">KNXd (Recommandé)</option>
+						<option value="eibd">EIBD (Déprécié)</option>
 						<option value="manual">Manuel</option>
 					</select>
 				</div>
@@ -29,7 +29,7 @@ if (!isConnect()) {
 				<label class="col-lg-4 control-label">
 					{{Adresse IP :}}
 					<sup>
-						<i class="fa fa-question-circle tooltips" title="{{Saisir l'adresse IP du demon distant.}}"></i>
+						<i class="fa fa-question-circle tooltips" title="{{Saisir l'adresse IP du démon distant.}}"></i>
 					</sup>
 				</label>
 				<div class="col-lg-4">
@@ -40,7 +40,7 @@ if (!isConnect()) {
 				<label class="col-lg-4 control-label">
 					{{Port :}}
 					<sup>
-						<i class="fa fa-question-circle tooltips" title="{{Saisir le port du demon distant.}}"></i>
+						<i class="fa fa-question-circle tooltips" title="{{Saisir le port du démon distant.}}"></i>
 					</sup>
 				</label>
 				<div class="col-lg-4">
@@ -56,16 +56,16 @@ if (!isConnect()) {
 		<fieldset>
 			<div class="form-group">
 				<label class="col-lg-4 control-label" >
-					{{Niveau de Gad}}
+					{{Niveau de GAD}}
 					<sup>
 						<i class="fa fa-question-circle tooltips" title="{{Choisir le nombre de niveau de votre configuration ETS.}}"></i>
 					</sup>
 				</label>
 				<div class="col-lg-4">
 					<select class="configKey form-control" data-l1key="level">
-						<option value="1">{{Gad a 1 niveau}}</option>
-						<option value="2">{{Gad a 2 niveaux}}</option>
-						<option value="3">{{Gad a 3 niveaux}}</option>
+						<option value="1">{{GAD à 1 niveau}}</option>
+						<option value="2">{{GAD à 2 niveaux}}</option>
+						<option value="3">{{GAD à 3 niveaux}}</option>
 					</select>
 				</div>
 			</div>
@@ -85,7 +85,7 @@ if (!isConnect()) {
 				</label>
 				<div class="col-lg-4">
 					<select class="configKey form-control" data-l1key="TypeKNXgateway" >
-						<option value="ft12">{{FT12 - Ligne serie}}</option>
+						<option value="ft12">{{FT12 - Ligne série}}</option>
 						<option value="bcu1s">{{BCU1 - kernel driver}}</option>
 						<option value="tpuarts">{{TPUART - kernel driver Linux 2.6}}</option>
 						<option value="ip">{{IP - EIBnet/IP Routing protocol}}</option>
@@ -99,7 +99,7 @@ if (!isConnect()) {
 				<label class="col-lg-4 control-label">
 					{{Adresse de la passerelle}}
 					<sup>
-						<i class="fa fa-question-circle tooltips" title="{{Saisir l'adresse de passerelle.}}"></i>
+						<i class="fa fa-question-circle tooltips" title="{{Saisir l'adresse IP de votre passerelle.}}"></i>
 					</sup>
 				</label>
 				<div class="col-lg-4">
@@ -112,7 +112,7 @@ if (!isConnect()) {
 </div>
  <div class="Soft">
 	<form class="form-horizontal">
-		<legend><i class="icon fas fa-cog"></i> {{Configuration du démon avancée}} <i class="fas fa-plus-circle" data-toggle="collapse" href="#OptionsCollapse" role="button" aria-expanded="false" aria-controls="OptionsCollapse"></i></legend>
+		<legend><i class="icon fas fa-cog"></i> {{Configuration avancée du démon}} <i class="fas fa-plus-circle" data-toggle="collapse" href="#OptionsCollapse" role="button" aria-expanded="false" aria-controls="OptionsCollapse"></i></legend>
 		<fieldset>
 			<div class="collapse" id="OptionsCollapse">
 				<div class="form-group">
@@ -128,9 +128,9 @@ if (!isConnect()) {
 				</div>
 				<div class="form-group">
 					<label class="col-lg-4 control-label">
-						{{Adresse physique du demon}}
+						{{Adresse physique du démon}}
 						<sup>
-							<i class="fa fa-question-circle tooltips" title="{{Saisir une adresse physique libre sur votre reseau KNX.}}"></i>
+							<i class="fa fa-question-circle tooltips" title="{{Saisir une adresse physique libre sur votre réseau KNX.}}"></i>
 						</sup>
 					</label>
 					<div class="col-lg-4">
@@ -139,13 +139,13 @@ if (!isConnect()) {
 				</div>
 				<div class="form-group">
 					<label class="col-lg-4 control-label">
-						{{Nombres de connexions autorisé sur le serveur du demon}}
+						{{Nombres de connexions autorisé sur le serveur du démon}}
 						<sup>
-							<i class="fa fa-question-circle tooltips" title="{{Saisir le nombre de connexion maximum sur le serveur Jeedom. Attention les n adresse physique suivant l'adresse precedement configurer doit etre libre egalement}}"></i>
+							<i class="fa fa-question-circle tooltips" title="{{Saisir le nombre de connexion maximum sur le serveur Jeedom. Attention les n adresses physiques suivant l'adresse précédemment configurée doit être libre également}}"></i>
 						</sup>
 					</label>
 					<div class="col-lg-4">
-						<input class="configKey form-control" data-l1key="EibdNbAddr" placeholder="{{Nombre de connexion simultané}}"/>
+						<input class="configKey form-control" data-l1key="EibdNbAddr" placeholder="{{Nombre de connexions simultanées}}"/>
 					</div>
 			</div>
 				<div class="form-group">
@@ -183,13 +183,13 @@ if (!isConnect()) {
 				</div>
 				<div class="form-group">
 					<label class="col-lg-4 control-label">
-						{{Temps d'attente entre 2 envoie (ms)}}
+						{{Temps d'attente entre 2 envois (ms)}}
 						<sup>
-							<i class="fa fa-question-circle tooltips" title="{{Saisir un temps en miliseconde qui sera executé entre 2 commandes.}}"></i>
+							<i class="fa fa-question-circle tooltips" title="{{Saisir un temps d'attente en milliseconde entre 2 envois.}}"></i>
 						</sup>
 					</label>
 					<div class="col-lg-4">
-						<input class="configKey form-control" data-l1key="SendSleep" placeholder="{{Temps d'attente entre 2 envoie (ms)}}"/>
+						<input class="configKey form-control" data-l1key="SendSleep" placeholder="{{Temps d'attente entre 2 envois (ms)}}"/>
 					</div>
 				</div>
 			</div>

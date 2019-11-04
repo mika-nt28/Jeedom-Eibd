@@ -2,7 +2,7 @@
 class autoCreate {
 	private $options;
 	private $Architecture=array();
-	private $Arboresance=array();
+	private $Arborescence=array();
 	private $Templates=array();
 	private $ObjetLevel;
 	private $TemplateLevel;
@@ -13,15 +13,15 @@ class autoCreate {
 		
 		$myKNX=json_decode(file_get_contents(dirname(__FILE__) . '/../config/KnxProj.json'),true);
 		
-		switch($this->options['arboresance']){
+		switch($this->options['arborescence']){
 			case 'gad':
-				$this->Arboresance=$myKNX['GAD'];
+				$this->Arborescence=$myKNX['GAD'];
 			break;
 			case 'device':
-				$this->Arboresance=$myKNX['Devices'];
+				$this->Arborescence=$myKNX['Devices'];
 			break;
 			case 'locations':
-				$this->Arboresance=$myKNX['Locations'];
+				$this->Arborescence=$myKNX['Locations'];
 			break;
 		}
 		foreach($this->options['levelType'] as $key => $type){
@@ -67,7 +67,7 @@ class autoCreate {
 		$Groupe['Template'] = null;
 		$Groupe['Commande'] = null;
 		$Groupe['Commande'] = null;
-		$this->getOptionLevel($this->Arboresance,$Groupe);
+		$this->getOptionLevel($this->Arborescence,$Groupe);
 		foreach($this->Architecture as $Object => $Template){
 			foreach($Template as $TemplateName => $Cmds){
 				$this->createEqLogic($Object,$TemplateName,$Cmds);
@@ -85,7 +85,7 @@ class autoCreate {
 		if (!is_object($Object)) {
 			if(!$this->options['createObjet'])
 				return null;
-			log::add('eibd','info','[Création automatique] Nous allons cree l\'objet : '.$Name);
+			log::add('eibd','info','[Création automatique] Nous allons créer l\'objet : '.$Name);
 			$Object = new jeeObject(); 
 			$Object->setName($Name);
 			$Object->setFather_id($Father);
@@ -100,7 +100,7 @@ class autoCreate {
 		$TemplateId=$this->getTemplateName($Name);
 		if($TemplateId != false){
 			$TemplateOptions=$this->getTemplateOptions($TemplateId,$Cmds);
-			log::add('eibd','info','[Création automatique] L\'equipemement ' .$Name.' est reconnue sur le template '.$this->Templates[$TemplateId]['name']);
+			log::add('eibd','info','[Création automatique] L\'équipement ' .$Name.' est reconnu sur le template '.$this->Templates[$TemplateId]['name']);
 			$EqLogic=eibd::AddEquipement($Name,'',$Object);
 			$EqLogic->applyModuleConfiguration($TemplateId,$TemplateOptions);
 			foreach($EqLogic->getCmd() as $Commande){
@@ -115,7 +115,7 @@ class autoCreate {
 			}
 		}else{
 			if(!$this->options['createTemplate']){				
-				log::add('eibd','info','[Création automatique] Il n\'exite aucun template ' .$Name.', nous créons un equipement basique qu\'il faudra mettre a jours');
+				log::add('eibd','info','[Création automatique] Il n\'existe aucun template ' .$Name.', nous créons un équipement basique qu\'il faudra mettre à jour');
 				$EqLogic=eibd::AddEquipement($Name,'',$Object);
 				foreach($Cmds as $Name => $Cmd){
 					if($Cmd['DataPointType'] == ".000" ||$Cmd['DataPointType'] == ".000")
@@ -159,12 +159,12 @@ class autoCreate {
 	private function getTemplateCmdByName($TemplateId,$CmdName){
 		foreach($this->Templates[$TemplateId]['cmd'] as $Commande){
 			if(strpos($CmdName,$Commande['name']) !== false || strpos($Commande['name'],$CmdName) !== false){
-				log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvé  ' .$Commande['name']);
+				log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvée  ' .$Commande['name']);
 				return $Commande['name'];
 			}
 			foreach($Commande['Synonyme'] as $Synonyme){
 				if(strpos($CmdName,$Synonyme) !== false || strpos($Synonyme,$CmdName) !== false){
-					log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvé en synonyme de ' .$Commande['name']);
+					log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvée en synonyme de ' .$Commande['name']);
 					return $Commande['name'];
 				}
 			}
@@ -174,12 +174,12 @@ class autoCreate {
 				$typeTemplate.='_'.$DeviceOptionsId;
 				foreach ($DeviceOptions['cmd'] as $Commande) {
 					if(strpos($CmdName,$Commande['name']) !== false || strpos($Commande['name'],$CmdName) !== false){
-						log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvé  ' .$Commande['name']);
+						log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvée  ' .$Commande['name']);
 						return $Commande['name'];
 					}
 					foreach($Commande['Synonyme'] as $Synonyme){
 						if(strpos($CmdName,$Synonyme) !== false || strpos($Synonyme,$CmdName) !== false){
-							log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvé en synonyme de ' .$Commande['name']);
+							log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvée en synonyme de ' .$Commande['name']);
 							return $Commande['name'];
 						}
 					}
