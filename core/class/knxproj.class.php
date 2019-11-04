@@ -128,6 +128,7 @@ class knxproj {
 	private function xml_attribute($object, $attribute){
 		if(isset($object[$attribute]))
 			return (string) $object[$attribute];
+		return false;
 	}
 	private function getTX100Topology($id){
 		$Topology=simplexml_load_file($this->path . 'Topology.xml');
@@ -333,7 +334,7 @@ class knxproj {
 							if($ComObjectInstanceRefs->getName() == 'ComObjectInstanceRefs'){
 								foreach($ComObjectInstanceRefs->children() as $ComObjectInstanceRef){
 									$DataPointType=explode('-',$this->xml_attribute($ComObjectInstanceRef, 'DatapointType'));
-									if(isset($this->xml_attribute($ComObjectInstanceRef, 'Links')){
+									if($this->xml_attribute($ComObjectInstanceRef, 'Links') !== false){
 										$this->Devices[$DeviceId]['Cmd'][$this->xml_attribute($ComObjectInstanceRef, 'Links')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
 									}else{
 										foreach($ComObjectInstanceRef->children() as $Connector){
