@@ -128,6 +128,7 @@ class knxproj {
 	private function xml_attribute($object, $attribute){
 		if(isset($object[$attribute]))
 			return (string) $object[$attribute];
+		return false;
 	}
 	private function getTX100Topology($id){
 		$Topology=simplexml_load_file($this->path . 'Topology.xml');
@@ -273,7 +274,7 @@ class knxproj {
 				list($AdressePhysique,$DataPointType)=$this->updateDeviceInfo($GroupId,$GroupName,$AdresseGroupe);				
 				$Level['('.$AdresseGroupe.') '.$GroupName]=array('AdressePhysique' => $AdressePhysique ,'DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
 			}elseif($GroupRange->getName() == 'DeviceInstanceRef'){	
-				$Level += $this->getDeviceGad($this->xml_attribute($GroupRange, 'RefId'));    
+				$Level = $this->getDeviceGad($Level,$this->xml_attribute($GroupRange, 'RefId'));    
 			}else{
 				if(count($Level[$GroupName]) == 0)
 					$Level[$GroupName]=$this->getETSLevel($GroupRange,null,$NbLevel);
@@ -281,10 +282,11 @@ class knxproj {
 		}
 		return $Level;
 	}
-	private function getDeviceGad($id){	
-		$DeviceGad =array();
+	private function getDeviceGad($DeviceGad,$id){	
+		if($DeviceGad == null)
+			$DeviceGad =array();
 		foreach($this->Devices as $DeviceProductRefId => $Device){
-			if($DeviceProductRefId == $id){
+			if(strrpos($id,$DeviceProductRefId) !== false){
 				foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
 					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['AdressePhysique']=$Device['AdressePhysique'];
 					$DeviceGad[$Cmd['cmdName'].' ('.$Device['AdressePhysique'].')']['AdresseGroupe']=$Cmd['AdresseGroupe'];
@@ -300,7 +302,7 @@ class knxproj {
 		$DataPointType='';
 		foreach($this->Devices as $DeviceProductRefId => $Device){
 			foreach($Device['Cmd'] as $GroupAddressRefId=> $Cmd){
-				if($GroupAddressRefId == $id){
+				if(strrpos($id,$GroupAddressRefId) !== false){
 					$AdressePhysique = $this->Devices[$DeviceProductRefId]['AdressePhysique'];
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['cmdName']=$name;
 					$this->Devices[$DeviceProductRefId]['Cmd'][$GroupAddressRefId]['AdresseGroupe']=$addr;
@@ -332,9 +334,13 @@ class knxproj {
 							if($ComObjectInstanceRefs->getName() == 'ComObjectInstanceRefs'){
 								foreach($ComObjectInstanceRefs->children() as $ComObjectInstanceRef){
 									$DataPointType=explode('-',$this->xml_attribute($ComObjectInstanceRef, 'DatapointType'));
-									foreach($ComObjectInstanceRef->children() as $Connector){
-										foreach($Connector->children() as $Commande)
-											$this->Devices[$DeviceId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
+									if($this->xml_attribute($ComObjectInstanceRef, 'Links') !== false){
+										$this->Devices[$DeviceId]['Cmd'][$this->xml_attribute($ComObjectInstanceRef, 'Links')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
+									}else{
+										foreach($ComObjectInstanceRef->children() as $Connector){
+											foreach($Connector->children() as $Commande)
+												$this->Devices[$DeviceId]['Cmd'][$this->xml_attribute($Commande, 'GroupAddressRefId')]['DataPointType']=$DataPointType[1].'.'.sprintf('%1$03d',$DataPointType[2]);
+										}
 									}
 								}
 							}
