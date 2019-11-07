@@ -198,7 +198,7 @@ if (!isConnect()) {
 </div>
 <script>
 	
-$('.configKey[data-l1key=KnxSoft]').on('change',function(){
+$('.configKey[data-l1key=KnxSoft]').off().on('change',function(){
 	switch($(this).val()){
 		case 'knxd':
 		case 'eibd':
@@ -213,9 +213,9 @@ $('.configKey[data-l1key=KnxSoft]').on('change',function(){
 		break;
 	}
 });
-$('.SearchGatway').on('click',function(){
+$('.SearchGatway').off().on('click',function(){
+	var _el = $(this).parent();
 	$.ajax({
-		async: false,
 		type: 'POST',
 		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
 		data:
@@ -224,7 +224,8 @@ $('.SearchGatway').on('click',function(){
 			type: $('.configKey[data-l1key=TypeKNXgateway]').val(),
 			},
 		dataType: 'json',
-		global: false,
+		async: true,
+		global: true,
 		error: function(request, status, error) {},
 		success: function(data) {
 			if (data.state != 'ok') {
@@ -235,11 +236,35 @@ $('.SearchGatway').on('click',function(){
 				var format = '';
 				switch($('.configKey[data-l1key=TypeKNXgateway]').val()){
 					case 'ip':
-						format = '%(KnxIpGateway)';
-					break;
 					case 'ipt':
 					case 'iptn':
-						format = '%(KnxIpGateway):%(KnxPortGateway)';
+						var Detect = $('<tbody>');
+						$.each(data.result,function(index, value){
+							Detect.append($('<tr>')
+								      .append($('<td class="DeviceName">')
+									      .append(value.DeviceName))
+								      .append($('<td class="IndividualAddressGateWay">')
+									      .append(value.IndividualAddressGateWay))
+								      .append($('<td class="KnxIpGateway">')
+									      .append(value.KnxIpGateway))
+								      .append($('<td class="KnxPortGateway">')
+									      .append(value.KnxPortGateway)));
+						});
+						_el.append($('<table id="table_KNXgateway" class="table table-bordered table-condensed ui-sortable">')
+							.append($('<thead>')
+								.append($('<tr>')
+									.append($('<th>')
+										.append('{{Nom}}'))
+									.append($('<th>')
+										.append('{{Adresse physique}}'))
+									.append($('<th>')
+										.append('{{Ip}}'))
+									.append($('<th>')
+										.append('{{Port}}'))))
+							.append(Detect));
+						$('#table_KNXgateway tbody tr').off().on('click',function(){
+							$('.configKey[data-l1key=KNXgateway]').val($(this).find('.KnxIpGateway').text());
+						});
 					break;
 					/*case 'ft12':
 					break;
@@ -248,20 +273,12 @@ $('.SearchGatway').on('click',function(){
 					case 'tpuarts':
 					break;*/
 					case 'usb':
-						format = '{}';
+						$('.configKey[data-l1key=KNXgateway]').val(data.result);
 					break;
-				}
-				if(!data.result.isArray){
-					$('.configKey[data-l1key=KNXgateway]').val(sprintf(format ,data.result));
-				}else{
-					var html = $('<select class="configKey" data-l1key="KNXgateway" >');
-					$.each(data.result,function(index, value){
-						html.append($('<option>').attr('value',sprintf(format ,data.result)).text(data.result.DeviceName));
-					})
-					$('.configKey[data-l1key=KNXgateway]').parent().html(html);
 				}
 			}
 		}
 	});
 });
+	
 </script>
