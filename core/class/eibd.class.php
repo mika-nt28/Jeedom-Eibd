@@ -248,9 +248,12 @@ class eibd extends eqLogic {
 		}
 	}
 	public static function SearchBroadcastGateway(){	
-		$result=array();
+		$result[0]['KnxIpGateway'] ="";
+		$result[0]['KnxPortGateway'] ="";
+		$result[0]['IndividualAddressGateWay']="";
+		$result[0]['DeviceName']="";
 		$ServerPort=1024;
-		$ServerAddr=config::byKey('internalAddr','eibd');
+		$ServerAddr = network::getNetworkAccess('internal','ip');
 		set_time_limit(0); 
 		$BroadcastSocket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 		if (!$BroadcastSocket) {
@@ -280,9 +283,9 @@ class eibd extends eqLogic {
 		sprintf('%04x', $ServerPort);						//portnumberofcontrolendpoint
 		
 		$hex_msg = hex2bin($msg);
-		$dataBrute='0x';
+		$dataBrute='';
 		foreach (unpack("C*", $hex_msg) as $Byte)
-			$dataBrute.=sprintf('%02x',$Byte).' ';
+			$dataBrute.=sprintf('0x%02x ',$Byte);
 		log::add('eibd', 'debug', 'Data emise: ' . $dataBrute);
 		if (!$len = socket_sendto($BroadcastSocket, $hex_msg, strlen($hex_msg), 0, "224.0.23.12", 3671)) {
 			$lastError = "socket_sendto() failed: reason: " . socket_strerror(socket_last_error($BroadcastSocket));
@@ -293,9 +296,9 @@ class eibd extends eqLogic {
 			$buf = '';
 			socket_recvfrom($BroadcastSocket, $buf , 2048, 0, $name, $port);
 			$ReadFrame= unpack("C*", $buf);
-			$dataBrute='0x';
+			$dataBrute='';
 			foreach ($ReadFrame as $Byte)
-				$dataBrute.=sprintf('%02x',$Byte).' ';
+				$dataBrute.=sprintf('05%02x',$Byte);
 			log::add('eibd', 'debug', 'Data recus: ' . $dataBrute);		
 			
 			$HeaderSize=array_slice($ReadFrame,0,1)[0];
@@ -305,17 +308,20 @@ class eibd extends eqLogic {
 				case 0x02:
 					switch (array_slice($Header,3,1)[0]){
 						case 0x02:
-							$result[]['KnxIpGateway'] =	array_slice($Body,2,1)[0]
+							$result[$NbLoop]['KnxIpGateway'] =	array_slice($Body,2,1)[0]
 											.".".	array_slice($Body,3,1)[0]
 											.".".	array_slice($Body,4,1)[0]
 											.".".	array_slice($Body,5,1)[0];
 							$KnxPortGateway =	array_slice($Body,6,2);
-							$result[]['KnxPortGateway'] =$KnxPortGateway[0]<<8|$KnxPortGateway[1];
-							$result[]['IndividualAddressGateWay']=array_slice($Body,12,1)[0]<<8|array_slice($Body,13,1);
-							$string='';
-							foreach (array_slice($Body,32,4) as $hexcar)
+							$result[$NbLoop]['KnxPortGateway'] =$KnxPortGateway[0]<<8|$KnxPortGateway[1];
+							$addr = array_slice($Body,12,1)[0]<<8|array_slice($Body,13,1);
+							$result[$NbLoop]['IndividualAddressGateWay']=sprintf ("%d.%d.%d", ($addr >> 12) & 0x0f, ($addr >> 8) & 0x0f, $addr & 0xff);$string='';
+							foreach (array_slice($Body,32) as $hexcar){
+								if($hexcar == 0)
+									break;
 								$string .= chr($hexcar);
-							$result[]['DeviceName'] = $string;
+							}
+							$result[$NbLoop]['DeviceName'] = $string;
 						break;
 					}
 				break;
@@ -323,12 +329,6 @@ class eibd extends eqLogic {
 			$NbLoop++;
 		}
 		socket_close($BroadcastSocket);
-		if(count($result) == 0){
-			$result['KnxIpGateway'] ="";
-			$result['KnxPortGateway'] ="";
-			$result['IndividualAddressGateWay']="";
-			$result['DeviceName']="";
-		}	
 		return $result;
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
