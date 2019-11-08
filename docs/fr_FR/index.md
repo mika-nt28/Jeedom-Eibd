@@ -4,12 +4,12 @@ Ce plugin permet de communiquer entre Jeedom et votre installation KNX.
 Jeedom deviendra donc un équipement de votre installation.
 Des fonctions d'auto-configuration (auto-include, parser ETS5) ont été implémentées pour permettre une mise en place rapide.
 
-Installation et configuration
-===========
+Installation et configuration général
+======================================
 
 Configuration du plugin et de ses dépendances
 ----------------------------------------------
-![introduction01](../images/eibd_screenshot_Configuration.jpg)
+![Page de configuration général](../images/eibd_screenshot_Configuration.jpg)
 
 * `Interface de communication` : Choisir l'interface avec laquelle nous allons nous connecter au bus
   * `EIBD` : N'est plus maintenu (non recommandé)
@@ -23,7 +23,6 @@ Configuration du plugin et de ses dépendances
 ### KNXd ou EIBD
 * `Type de passerelle` : Indiquez le type de passerelle
 * `Adresse de la passerelle` : Indiquez l'adresse IP de la passerelle
-* `Adressage des connexions` : Personnalisez l'adresse physique du démon sur votre réseau KNX
 
 ### Options
 * `Niveau d'adresse de groupe (GAD)` : Sélectionnez le niveau de GAD choisi lors de la programmation des équipements
@@ -35,15 +34,12 @@ Configuration avancée
 ![Paramètre de configuration avancée](../images/ConfigurationAvance.png)
 
 * `Nom du serveur KNX` : donne un nom au service KNXd quand il est utilisé (uniquement pour KNXd donc)
-
 * `Adresse Physique du démon (PA)` : permet de fixer le début d'une plage d'adresses physiques (libres !) au démon sur votre bus KNX.
 Le paramètre suivant défini aussi la taille de cette plage
 * `Nombres de connexions autorisées sur le serveur du démon` : donne le nombre de connexions autorisées.
 Attention, ces connexions sont aussi mappées sur votre bus KNX (voir paramètre précédent)
-
 * `Visibilité du serveur KNX` : le serveur KNX virtuel répond a une requête permettant de découvrir les passerelles par un multicast IP dédié au KNX (224.0.23.12).
 Cette fonctionnalité est présente dans ETS et liste automatiquement toutes les passerelles sur le réseau locale. En désactivant cette option, le démon ne répondra plus.
-
 * `Mode Routing` et `Mode Tunnelling` : permet au démon de devenir un router KNX virtuel.
 Le mode Routing permet d’écouter et de réponde au multicast IP dédié au KNX (224.0.23.12)
 Le mode Tunnelling permet de se connecter depuis un client IP comme ETS vers le BUS en passant par le démon. 
@@ -58,17 +54,31 @@ Vous avez aussi la possibilité de consulter le log d'installation en temps rée
 L'installation d'EIBD/KNXd peut être longue en fonction des performances de la machine qui l'exécute.
 Attention, la compilation est gourmande en ressources et peut entrainer des ralentissements dans votre Jeedom
 
-![introduction01](../images/Installation_dependance.jpg)
+![Installation des dependances](../images/Installation_dependance.jpg)
 
-![introduction01](../images/Status_Demon.jpg)
+![Status](../images/Status_Demon.jpg)
 Si tous les voyants sont au vert, nous pouvons passer à la suite...
 
+Configuration des équipements 
+==============================
+
+![Page principal qui liste tous les equipemements configurer](../images/eibd_screenshot_equipements.jpg)
+
+Sur cette page nous retrouvons tous nos equipement ainsi que quelques raccourcis important
+* `Ajouter` : Permet de cree un equipement manuelement
+* `Template` : Permet de cree par un template un equipement
+*` Configuration` : Permet d'afficher la configuration général
+* `Moniteur de bus` : Permet d'afficher les trame sur vue par le bus monitor
+* `Adresses de groupe` : Permet de géré ses Ardresse de groupe (soit par decouvert du bus monitor ou par import ETS)
+* `Log du démon` : Permet de voir ce qu'il se passe sur le demon
+* `Santé` : Permet d'avoir une idée sytetique de l'etat de ses equipements
+
 Équipement
-===========
+==========
 Dans un premier temps, il faut créer un nouvelle équipement et le nommer.
 Comme dans tous les plugins Jeedom, vous avez un bouton "Ajouter" sur la gauche de votre fenêtre.
 
-![introduction01](../images/Configuration_equipement.jpg)
+![Configuration général d'un equipement](../images/Configuration_equipement.jpg)
 
 Ce nouvel équipement a besoin d'être paramétré.
 
@@ -88,7 +98,7 @@ Pour une bonne intégration, il est recommandé d’utiliser les templates qui c
 
 Exemple de configuration
 
-![introduction01](../images/Configuration_commande.jpg)
+![Configuration des commandes](../images/Configuration_commande.jpg)
 
 
 Nommer votre commande de manière à la retrouver facilement dans Jeedom
@@ -99,7 +109,7 @@ Ces champs de configuration sont importants pour la communication
 * Data Point Type (DPT) : ce champ est important et indispensable pour l'encodage et décodage de la valeur.
 * Groupe d’adresse : ce champs identifie la commande sur le bus et sur Jeedom
 
-![introduction01](../images/Configuration_commande_knx.jpg)
+![Spécificité d'une commande](../images/Configuration_commande_knx.jpg)
 
 
 Valeur
@@ -125,19 +135,12 @@ Ceux-ci vous permettent de configurer rapidement un équipement.
 
 Création d'un équipement par template
 ---
-![introduction01](../images/Configuration_equipement_tempate.jpg)
+![Création d'un equipement par template](../images/Configuration_equipement_tempate.jpg)
 
 Sur la page principale, un bouton "Template" permet d'ajouter un équipement .
 Il vous suffit de sélectionner le template et de saisir les GAD, ou d’aller chercher les GAD importés par ETS ou dans l'onglet "Inconnue".
+Certain Template, comme celui présenté on des options, pour ajouter une option il suffit de le coché et de complété ses groupes supplémentaire
 
-Création de commandes par template
----
-![introduction01](../images/Configuration_commande_tempate.jpg)
-
-Sélectionner une template et appliquez le.
-Le plugin ajoutera et configurera les commandes définies par le template, il ne vous restera plus qu'à configurer les GAD
-
-Ce mode est pratique si, par exemple, dans un même équipement vous voulez ajouter plusieurs templates
 
 Flags
 =====
@@ -213,7 +216,7 @@ Exemples d'objets pour lesquels le flag "Read-on-Init/Initialisation" est géné
 * Tous les commande qui ont le flag "Lecture/Read" actif.
 * Tous les commande qui ont un type action
 
-![introduction01](../images/Configuration_commande_flag.jpg)
+![Configuration des Flags](../images/Configuration_commande_flag.jpg)
 
 Utilisation du Bus Monitor
 ==========================
@@ -221,7 +224,7 @@ Utilisation du Bus Monitor
 En cliquant sur l'icône ci-dessous, vous allez pouvoir visualiser l'activité qui se passe sur votre bus.
 Pour le débogage d'une configuration défaillante, il est aussi possible de filtrer les messages enregistrés en mémoire cache.
 
-![introduction01](../images/eibd_screenshot_BusMonitor.jpg)
+![Affichage du bus monitor](../images/eibd_screenshot_BusMonitor.jpg)
 Avec le Bus Monitor vous allez pouvoir analyser ce qui se passe sur votre bus et ce que comprend Jeedom au bus.
 
 Le Bus Monitor affiche l'adresse physique de l’équipement, l'adresse de groupe, la data en hexa et sa conversion
@@ -230,13 +233,20 @@ Adresses de groupe
 ==================
 
 Cette fenêtre est disponible à plusieurs endroits.
-![introduction01](../images/AdressesGroupeSelection.jpg)
+![Affichage des adresses de groupes](../images/AdressesGroupeSelection1.jpg)
+![Bouton pour selectier une adresse de groupe](../images/AdressesGroupeSelection2.jpg)
 
 * Sur la page principal
 * Sur chaque bouton pour la sélection (Template et commande)
 
 En cliquant sur un des ses bouton vous allez obtenir cette fenêtre.
-![introduction01](../images/eidb_screenshot_ConfigParameter.jpg)
+![Selection d'une adresse de groupe](../images/eidb_screenshot_ConfigParameter.jpg)
+
+Sur cette ecran, il sera possible de
+* Activer / desactiver la recherche d'adresse de groupe inconue
+* Importer un projet ETS ou TX100
+* Cree des objets ou des commande par rapport au arborressance
+
 
 Inconnue
 --------
@@ -245,39 +255,60 @@ Cet onglet permet de remonter les GAD inconnue vue par le Bus Monitor.
 En activant l'inclusion, le Bus Monitor va mettre en cache également tous les GAD qu'il voit et qui sont inconnus sur votre installation.
 De même, si vous avez configurer les DPT dans votre projet ETS, et l'adresse physique de votre équipement dans votre configuration Jeedom, un filtre sera automatiquement ajouté pour faciliter les recherches
 
-Équipement
+Équipements
 ----------
 
-Cet onglet permet de lister tous les GAD avec leurs équipements.
+Cet onglet permet de lister tous les équipements avec tous leur Adresse de groupe associé.
 Pour que remplir ce tableau, il est impératif d'utiliser le parseur ETS.
 Si vous avez ouvert cette fenêtre depuis un bouton de selection de GAD, alors vous aurez la possibilité de sélectionner le bon GAD (qui se mettra en gras) et de valider pour retourner à la page de configuration.
 De même, si vous avez configuré les DPT dans votre projet ETS, et l'adresse physique de votre équipement dans votre configuration Jeedom, un filtre sera automatiquement ajouté pour faciliter les recherches
 
-
 Adresse de groupes
 ------------------
 
-Cet onglet permet de récréer l'arborescence de GAD tel qu'elle est défini dans ETS.
+Cet onglet permet de récréer l'arborescence des adresse de groupes tel qu'elle est défini dans ETS.
+Pour que remplir ce tableau, il est impératif d'utiliser le parseur ETS.
+
+Si vous avez ouvert cette fenêtre depuis un bouton de selection de GAD, alors vous aurez la possibilité de sélectionner le bon GAD (qui se mettra en gras) et de valider pour retourner à la page de configuration.
+De même, si vous avez configuré les DPT dans votre projet ETS, le plugin vous soulignera en bleu lorsque le DPT est identique et en jaune lorsqu'il est compatible
+
+Localisations
+-------------
+
+Cet onglet permet de récréer l'arborescence du baptiment tel qu'elle est défini dans ETS.
 Pour que remplir ce tableau, il est impératif d'utiliser le parseur ETS.
 
 Si vous avez ouvert cette fenêtre depuis un bouton de selection de GAD, alors vous aurez la possibilité de sélectionner le bon GAD (qui se mettra en gras) et de valider pour retourner à la page de configuration.
 De même, si vous avez configuré les DPT dans votre projet ETS, le plugin vous soulignera en bleu lorsque le DPT est identique et en jaune lorsqu'il est compatible
 
 
-Utilisation du parseur ETS
-==========================
+Utilisation du parseur
+======================
 
-En téléchargeant votre projet ETS (.KNXproj), vous allez permettre à Jeedom de charger dans son cache, tout les GAD de votre installation.
+En téléchargeant votre projet ETS (.KNXproj), ou le zip de votre porjet TX100, vous allez permettre à Jeedom de charger, tout les arborescences de votre installation.
 
-![ParserETS](../images/eidb_screenshot_ImportETS.jpg)
+![Chargment du fichier projet](../images/eidb_screenshot_ImportETS.jpg)
 
-Avec le parseur vous pouvez lui demander des actions supplémentaires
+Apres avoir charger votre fichier, le plugin vous demandera si vous voulez en charger un autre.
+Ce mecanisme est tres utile pour les personnes ayant une licence demo ou lite d'ETS et qui veulent reconstruir les arborescences sous jeedom.
 
-* Arborescence des groupes : Défini, pour chaque rang de votre arborescence de vos GAD, un type d'information. Cette configuration est obligatoire si vous voulez qu'il crée automatiquement vos objets et équipements
-* Créer les objets : Le parseur crée automatiquement, s'ils n'existent pas, les objets définis dans le rang d'arborescence de vos GAD
-* Créer les équipements  : Le parseur crée automatiquement, s'il n'existe pas, vos équipements tels que définis dans le rang d'arborescence de vos GAD. Il sera toutefois impératif de reprendre la configuration de chacun car le fichier ETS ne le définit pas tout.
+![Demande de chargement d'un autres fichier projet](../images/otherProjectFile.jpg)
+
+Apres le chargement de tous vos projet le plugin vous propose d'utiliser la creation automatique des equipement
+
+![Demande de chargement d'un autres fichier projet](../images/autoCreateConfirm.jpg)
+
+Creation automatique des equipements
+=====================================
+
+
+![Demande de chargement d'un autres fichier projet](../images/eidb_screenshot_autoCreate.jpg)
+
+* Quelle arborescence choisir : Choisi sur quel arboresance se base la creation automatique
+* Arborescence des groupes : Défini, pour chaque rang de votre arborescence, un type d'information. Cette configuration est obligatoire si vous voulez qu'il crée automatiquement vos objets et équipements
+* Créer les objets : crée automatiquement, s'ils n'existent pas, les objets définis dans le rang d'arborescence si plusieur rang objet selectioné alors il mettera le precédent en parent
+* Créer les équipements  : crée automatiquement, s'il n'existe pas, vos équipements tels que définis dans le rang d'arborescence. Il sera toutefois impératif de reprendre la configuration de chacun car le fichier projet ne le définit pas tout.
 * Uniquement correspondant a un Template : Cette option permet de créer un équipement qui corresponde à un Template. Pour que le plugin puisse identifier le template et ses commandes, l'architecture de GAD de votre projet doit correspondre exactement au projet ETS.[Voici un exemple]: https://github.com/mika-nt28/Jeedom-EIBD/raw/master/docs/images/Jeedom_Template.KNXproj
-* Importer votre projet : Champs d'import de votre projet ETS (.KNXproj)
 
 Utilisation de la passerelle Jeedom/KNX
 =======================================
