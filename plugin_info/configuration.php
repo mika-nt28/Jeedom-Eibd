@@ -103,8 +103,15 @@ if (!isConnect()) {
 					</sup>
 				</label>
 				<div class="col-lg-4">
-					<input class="configKey form-control" data-l1key="KNXgateway" />
-					<a class="btn btn-primary SearchGatway"><i class="fa fa-search"></i>{{Rechercher}}</a>
+					<div class="input-group">
+						<input class="configKey form-control input-sm roundedLeft tooltipstered" data-l1key="KNXgateway" placeholder="Adresse IP de la passerelle">
+						<span class="input-group-btn roundedRight">
+							<a class="btn btn-primary btn-sm SearchGatway">
+								<i class="fas fa-search">{{Rechercher}}</i>
+							</a>
+						</span>
+					</div>
+					<div class="KNXgateway"></div>
 				</div>
 			</div>
 		</fieldset>
@@ -147,7 +154,7 @@ if (!isConnect()) {
 					<div class="col-lg-4">
 						<input class="configKey form-control" data-l1key="EibdNbAddr" placeholder="{{Nombre de connexions simultanées}}"/>
 					</div>
-			</div>
+				</div>
 				<div class="form-group">
 					<label class="col-lg-4 control-label">
 						{{Visibilité du serveur KNX}}
@@ -214,7 +221,6 @@ $('.configKey[data-l1key=KnxSoft]').off().on('change',function(){
 	}
 });
 $('.SearchGatway').off().on('click',function(){
-	var _el = $(this).parent();
 	$.ajax({
 		type: 'POST',
 		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
@@ -250,8 +256,8 @@ $('.SearchGatway').off().on('click',function(){
 								      .append($('<td class="KnxPortGateway">')
 									      .append(value.KnxPortGateway)));
 						});
-						_el.find('#table_KNXgateway').remove();
-						_el.append($('<table id="table_KNXgateway" class="table table-bordered table-condensed ui-sortable">')
+						$('.KNXgateway').find('#table_KNXgateway').remove();
+						$('.KNXgateway').append($('<table id="table_KNXgateway" class="table table-bordered table-condensed ui-sortable">')
 							.append($('<thead>')
 								.append($('<tr>')
 									.append($('<th>')
