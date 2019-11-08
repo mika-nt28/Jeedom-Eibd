@@ -292,13 +292,16 @@ class eibd extends eqLogic {
 			return false;
 		}
 		$NbLoop=0;
-		while($NbLoop < 10) { 
+		while(true) { 
 			$buf = '';
 			socket_recvfrom($BroadcastSocket, $buf , 2048, 0, $name, $port);
+			if($buf == '') 
+				break;
 			$ReadFrame= unpack("C*", $buf);
+			
 			$dataBrute='';
 			foreach ($ReadFrame as $Byte)
-				$dataBrute.=sprintf('05%02x',$Byte);
+				$dataBrute.=sprintf('0x%02x ',$Byte);
 			log::add('eibd', 'debug', 'Data recus: ' . $dataBrute);		
 			
 			$HeaderSize=array_slice($ReadFrame,0,1)[0];
@@ -325,7 +328,7 @@ class eibd extends eqLogic {
 						break;
 					}
 				break;
-			}		
+			}	
 			$NbLoop++;
 		}
 		socket_close($BroadcastSocket);
