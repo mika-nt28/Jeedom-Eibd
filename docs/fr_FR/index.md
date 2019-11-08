@@ -233,13 +233,16 @@ Adresses de groupe
 ==================
 
 Cette fenêtre est disponible à plusieurs endroits.
+
 ![Affichage des adresses de groupes](../images/AdressesGroupeSelection1.jpg)
+
 ![Bouton pour selectier une adresse de groupe](../images/AdressesGroupeSelection2.jpg)
 
 * Sur la page principal
 * Sur chaque bouton pour la sélection (Template et commande)
 
 En cliquant sur un des ses bouton vous allez obtenir cette fenêtre.
+
 ![Selection d'une adresse de groupe](../images/eidb_screenshot_ConfigParameter.jpg)
 
 Sur cette ecran, il sera possible de
