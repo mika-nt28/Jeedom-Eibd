@@ -301,7 +301,7 @@ class eibd extends eqLogic {
 			
 			$dataBrute='';
 			foreach ($ReadFrame as $Byte)
-				$dataBrute.=sprintf('05%02x',$Byte);
+				$dataBrute.=sprintf('0x%02x ',$Byte);
 			log::add('eibd', 'debug', 'Data recus: ' . $dataBrute);		
 			
 			$HeaderSize=array_slice($ReadFrame,0,1)[0];
