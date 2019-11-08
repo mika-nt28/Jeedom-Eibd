@@ -250,6 +250,7 @@ $('.SearchGatway').off().on('click',function(){
 								      .append($('<td class="KnxPortGateway">')
 									      .append(value.KnxPortGateway)));
 						});
+						_el.find('#table_KNXgateway').remove();
 						_el.append($('<table id="table_KNXgateway" class="table table-bordered table-condensed ui-sortable">')
 							.append($('<thead>')
 								.append($('<tr>')
