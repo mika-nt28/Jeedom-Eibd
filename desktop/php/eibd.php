@@ -109,7 +109,12 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" >{{Objet parent}}</label>
+							<label class="col-sm-3 control-label" >
+								{{Objet parent}}
+								<sup>
+									<i class="fa fa-question-circle tooltips" title="{{Séléctioner l'objet dans lequel doit apparaitre cette equipement.}}"></i>
+								</sup>
+							</label>
 							<div class="col-sm-3">
 								<select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
 									<option value="">{{Aucun}}</option>
@@ -122,7 +127,12 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label">{{Catégorie}}</label>
+							<label class="col-sm-3 control-label">
+								{{Catégorie}}								
+								<sup>
+									<i class="fa fa-question-circle tooltips" title="{{Choisir une ou plusieurs catégorie.}}"></i>
+								</sup>
+							</label>
 							<div class="col-sm-9">
 								<?php
 									foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
@@ -139,7 +149,7 @@
 								<sup>
 									<i class="fa fa-question-circle tooltips" title="{{Choisissez les options de visibilité et d'activation
 									Si l’équipement n'est pas activé il ne sera pas utilisable dans jeedom, mais visible sur le dashboard
-									Si l’équipement n'est pas visible il ne sera caché sur le Dashbord, mais utilisable dans jeedom" style="font-size : 1em;color:grey;}}"></i>
+									Si l’équipement n'est pas visible il ne sera caché sur le Dashbord, mais utilisable dans jeedom"}}"></i>
 								</sup>
 							</label>
 							<div class="col-sm-9">
