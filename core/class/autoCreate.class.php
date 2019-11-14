@@ -4,9 +4,9 @@ class autoCreate {
 	private $Architecture=array();
 	private $Arborescence=array();
 	private $Templates=array();
-	private $ObjetLevel=array(0);
-	private $TemplateLevel=0;
-	private $CommandeLevel=0;
+	private $ObjetLevel=array();
+	private $TemplateLevel=null;
+	private $CommandeLevel=null;
  	public function __construct($_options){
 		$this->Templates=eibd::devicesParameters();
 		$this->options=$_options[0];
@@ -41,28 +41,23 @@ class autoCreate {
 		}
 	}
   	private function getOptionLevel($GroupLevel,$Groupe,$NbLevel=0){
-        	$NbLevel++;
+        	$NextLevel = $NbLevel + 1;
+		if($Groupe['Object'] != null)
+			$parents =$Groupe['Object'];
 		foreach ($GroupLevel as $Name => $Level) {
-			switch($NbLevel - 1){
-		      		case :
-				break;
-		      		case $this->TemplateLevel:
-					$Groupe['Template']=$Name;
-				break;
-		      		case $this->CommandeLevel:
-			 		$Groupe['Commande'] = $Name;
-		      		break;
-				default:
-					foreach($this->ObjetLevel as $ObjetLevel){
-						if($NbLevel - 1 == $ObjetLevel){
-							$Object=$this->createObject($Name,$Groupe['Object']);
-							$Groupe['Object']=$Object;
-						}
+			if($NbLevel == $this->TemplateLevel && $this->TemplateLevel != null)
+				$Groupe['Template']=$Name;
+			if($NbLevel == $this->CommandeLevel && $this->CommandeLevel != null)
+				$Groupe['Commande'] = $Name;
+			else{
+				foreach($this->ObjetLevel as $ObjetLevel){
+					if($NbLevel == $ObjetLevel){
+						$Groupe['Object']=$this->createObject($Name,$parents);
 					}
-				break;
+				}
 		    	}
 			if(!isset($Level['AdresseGroupe']))
-				$this->getOptionLevel($Level,$Groupe,$NbLevel);
+				$this->getOptionLevel($Level,$Groupe,$NextLevel);
 			else
                 		$this->Architecture[$Groupe['Object']][$Groupe['Template']][$Groupe['Commande']]=$Level;
 		}
