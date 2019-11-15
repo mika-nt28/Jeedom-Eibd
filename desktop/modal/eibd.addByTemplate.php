@@ -73,6 +73,7 @@ if (!isConnect('admin')) {
 		</div>
 	</form>		
 	<script>
+    	var _optionsMultiple=null;
 		$('.EqLogicTemplateAttr[data-l1key=template]').off().on('change', function () {
 			var cmds=$('.CmdsTempates');
 			cmds.html('');
@@ -132,8 +133,9 @@ if (!isConnect('admin')) {
 									.append($('<a class="btn btn-warning btn-xs roundedRight bt_'+id+'" >')
 										.append($('<i class="fas fa-plus-circle">'))
 										.text(options.name))));
+                            _optionsMultiple=options;
 							$('.bt_'+id).off().on('click',function(){
-								$.each(options.cmd,function(index, value){
+								$.each(_optionsMultiple.cmd,function(index, value){
 									var isExist = false;
 									if(typeof value.SameCmd != "undefined") {
 										$('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
@@ -165,7 +167,7 @@ if (!isConnect('admin')) {
 												.append($('<span class="input-group-btn">')
 													.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
 														.append($('<i class="fa fa-list-alt">'))))));
-										cmds.append(cmd.hide());
+										cmds.append(cmd);
 										cmdindex++;
 									}
 								});
