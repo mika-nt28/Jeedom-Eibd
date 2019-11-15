@@ -342,7 +342,7 @@ class eibd extends eqLogic {
 	private static function parseread ($len,$buf){
 		$buf = unpack("C*", $buf->buffer);
 		if ($buf[1] & 0x3 || ($buf[2] & 0xC0) == 0xC0)
-			log::add('eibd', 'error', "Error: Unknown APDU: ".$buf[1]."X".$buf[2]);
+			return false;
 		else if (($buf[2] & 0xC0) == 0x00)
 			return array ("Read", null);
 		else if (($buf[2] & 0xC0) == 0x40){
@@ -357,7 +357,6 @@ class eibd extends eqLogic {
 				return array ("Write", array_slice($buf, 2));
 		}else{
 			return array ("Read", null);
-			log::add('eibd','debug','Valeur du Header '.$buf[2] & 0xC0);
 		}
 	}
    	private static function gaddrparse ($addr)	{
@@ -386,7 +385,7 @@ class eibd extends eqLogic {
           		return false;
 		$loop=0;
 		$return=null;
-		while (1){
+		while (1){ 
 			$data = new EIBBuffer();
 			$src = new EIBAddr();
 			$len = $EibdConnexion->EIBGetAPDU_Src($data, $src);
@@ -396,7 +395,7 @@ class eibd extends eqLogic {
 				return false;
 			$buf = unpack("C*", $data->buffer);
 			if ($buf[1] & 0x3 || ($buf[2] & 0xC0) == 0xC0){
-				throw new Exception(__("Error: Unknown APDU: ".$buf[1]."X".$buf[2], __FILE__));
+				throw new Exception(__("Type de data non prise en charge par la plugin (".$src->addr.")", __FILE__));
 			}
 			else if (($buf[2] & 0xC0) == 0x40){
 				if ($len == 2)                     
@@ -516,8 +515,11 @@ class eibd extends eqLogic {
 			if ($len >= 2) {
 				$nbError = 0;
 				$mon = self::parseread($len,$buf);
-				$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
-				$Traitement->run(); 
+				if($mon !== false){
+					$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
+					$Traitement->run(); 
+				}else
+					log::add('eibd', 'debug', "Type de data non prise en charge par la plugin (".$src->addr." - ".$dest->addr.")");
 			}
 		}
 		$conBusMonitor->EIBClose();		
