@@ -1,7 +1,7 @@
 {
-	"light":{
-		"name":"Lumière",
-		"Synonyme":["Dimmer","Varriateur","Couleur ambiance","Ambiance"],
+	"airzone":{
+		"name":"AirZone",
+		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":[
@@ -27,34 +27,10 @@
 				"display":{
 					"generic_type":"DONT"
 				},
-				"isVisible":"0"
-			},{
-				"name":"Erreur Système",
-				"Synonyme":[],
-				"SameCmd":"",
-				"type":"info",
-				"subType":"binary",
-				"isHistorized":"0",
-				"configuration":{
-					"FlagInit":"0",
-					"FlagRead":"0",
-					"FlagTransmit":"0",
-					"FlagUpdate":"1",
-					"FlagWrite":"1",
-					"KnxObjectType":"1.005",
-					"KnxObjectValue":"",
-					"inverse":"0",
-					"subTypeAuto":"1",
-					"noBatterieCheck":"0"
-				},
-				"display":{
-					"generic_type":"DONT"
-				},
 				"isVisible":"1"
 			},{
 				"name":"Mode",
 				"Synonyme":[],
-				"SameCmd":"",
 				"type":"action",
 				"subType":"select",
 				"isHistorized":"0",
@@ -75,6 +51,28 @@
 					"generic_type":"DONT"
 				},
 				"value":"AirZone",
+				"isVisible":"1"
+			},{
+				"name":"Erreur Système",
+				"Synonyme":[],
+				"type":"info",
+				"subType":"binary",
+				"isHistorized":"0",
+				"configuration":{
+					"FlagInit":"0",
+					"FlagRead":"0",
+					"FlagTransmit":"0",
+					"FlagUpdate":"1",
+					"FlagWrite":"1",
+					"KnxObjectType":"1.005",
+					"KnxObjectValue":"",
+					"inverse":"0",
+					"subTypeAuto":"1",
+					"noBatterieCheck":"0"
+				},
+				"display":{
+					"generic_type":"DONT"
+				},
 				"isVisible":"1"
 			}
 		],
