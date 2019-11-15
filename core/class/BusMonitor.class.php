@@ -53,10 +53,10 @@ class BusMonitorTraitement /*extends Thread*/{
 		$monitor['datetime'] = date('d-m-Y H:i:s');
 		event::add('eibd::monitor', json_encode($monitor));
 	}
-	private function formatiaddr ($addr){
+	public function formatiaddr ($addr){
 		return sprintf ("%d.%d.%d", ($addr >> 12) & 0x0f, ($addr >> 8) & 0x0f, $addr & 0xff);
 	}
-	private function formatgaddr ($addr)	{
+	public function formatgaddr ($addr)	{
 		switch(config::byKey('level', 'eibd')){
 			case '3':
 				return sprintf ("%d/%d/%d", ($addr >> 11) & 0x1f, ($addr >> 8) & 0x07,$addr & 0xff);
