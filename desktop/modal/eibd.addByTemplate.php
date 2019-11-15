@@ -126,53 +126,99 @@ if (!isConnect('admin')) {
 						}
 					});
 					$.each(data.result.options,function(id, options){
-						cmds.append($('<div class="form-group">')
-							.append($('<label class="col-md-5 control-label" >')
-								.text(options.name))
-							.append($('<div class="col-md-5">')
-								.append($('<input type="checkbox" class="TemplateOption" data-l1key="'+id+'">'))));
-						$.each(options.cmd,function(index, value){
-							var isExist = false;
-							if(typeof value.SameCmd != "undefined") {
-								$('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
-									if($(this).val() == value.SameCmd){
-										isExist = true;
-										return;
+						if(options.type == "Multiple"){
+							cmds.append($('<div class="input-group pull-right" style="display:inline-flex">')
+								.append($('<span class="input-group-btn">')
+									.append($('<a class="btn btn-warning btn-xs roundedRight bt_'+id+'" >')
+										.append($('<i class="fas fa-plus-circle">'))
+										.text(options.name))));
+							$('.bt_'+id).off().on('click',function(){
+								$.each(options.cmd,function(index, value){
+									var isExist = false;
+									if(typeof value.SameCmd != "undefined") {
+										$('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
+											if($(this).val() == value.SameCmd){
+												isExist = true;
+												return;
+											}
+										});							
 									}
-								});							
-							}
-							if(isExist == false){
-								var cmd = $('<div class="form-group '+id+'">');
-								if(typeof  value.SameCmd == 'undefined'){
-									cmd.append($('<label class="col-md-5 control-label" >')
-										.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"));
-								}else{
-									cmd.append($('<label class="col-md-5 control-label" >')
-										.text(value.SameCmd + " (DPT: " + value.configuration.KnxObjectType + ")"));
+									if(isExist == false){
+										var cmd = $('<div class="form-group '+id+'">');
+										if(typeof  value.SameCmd == 'undefined'){
+											cmd.append($('<label class="col-md-5 control-label" >')
+												.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"));
+										}else{
+											cmd.append($('<label class="col-md-5 control-label" >')
+												.text(value.SameCmd + " (DPT: " + value.configuration.KnxObjectType + ")"));
+										}
+										cmd.append($('<div class="col-md-5">')
+											.append($('<div class="input-group">')
+												.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="name">')
+													.val(value.name))
+												.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="SameCmd">')
+													.val(value.SameCmd))
+												.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="KnxObjectType">')
+													.val(value.configuration.KnxObjectType)))
+											.append($('<div class="input-group">')
+												.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="logicalId">'))
+												.append($('<span class="input-group-btn">')
+													.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
+														.append($('<i class="fa fa-list-alt">'))))));
+										cmds.append(cmd.hide());
+										cmdindex++;
+									}
+								});
+							});
+						}else{
+							cmds.append($('<div class="form-group">')
+								.append($('<label class="col-md-5 control-label" >')
+									.text(options.name))
+								.append($('<div class="col-md-5">')
+									.append($('<input type="checkbox" class="TemplateOption" data-l1key="'+id+'">'))));
+							$.each(options.cmd,function(index, value){
+								var isExist = false;
+								if(typeof value.SameCmd != "undefined") {
+									$('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
+										if($(this).val() == value.SameCmd){
+											isExist = true;
+											return;
+										}
+									});							
 								}
-								cmd.append($('<div class="col-md-5">')
-									.append($('<div class="input-group">')
-										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="name">')
-											.val(value.name))
-										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="SameCmd">')
-											.val(value.SameCmd))
-										.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="KnxObjectType">')
-											.val(value.configuration.KnxObjectType)))
-									.append($('<div class="input-group">')
-										.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="logicalId">'))
-										.append($('<span class="input-group-btn">')
-											.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
-												.append($('<i class="fa fa-list-alt">'))))));
-								cmds.append(cmd.hide());
-								cmdindex++;
-							}
-						});
-						$('.TemplateOption[data-l1key='+id+']').off().on('change',function(){
-							if($(this).is(':checked'))
-								$('.'+$(this).attr('data-l1key')).show();
-							else
-								$('.'+$(this).attr('data-l1key')).hide();
-						});
+								if(isExist == false){
+									var cmd = $('<div class="form-group '+id+'">');
+									if(typeof  value.SameCmd == 'undefined'){
+										cmd.append($('<label class="col-md-5 control-label" >')
+											.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"));
+									}else{
+										cmd.append($('<label class="col-md-5 control-label" >')
+											.text(value.SameCmd + " (DPT: " + value.configuration.KnxObjectType + ")"));
+									}
+									cmd.append($('<div class="col-md-5">')
+										.append($('<div class="input-group">')
+											.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="name">')
+												.val(value.name))
+											.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="SameCmd">')
+												.val(value.SameCmd))
+											.append($('<input type="hidden" class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="KnxObjectType">')
+												.val(value.configuration.KnxObjectType)))
+										.append($('<div class="input-group">')
+											.append($('<input class="CmdEqLogicTemplateAttr form-control input-sm" data-l1key="'+cmdindex+'" data-l2key="logicalId">'))
+											.append($('<span class="input-group-btn">')
+												.append($('<a class="btn btn-success btn-sm bt_selectGadInconnue">')
+													.append($('<i class="fa fa-list-alt">'))))));
+									cmds.append(cmd.hide());
+									cmdindex++;
+								}
+							});
+							$('.TemplateOption[data-l1key='+id+']').off().on('change',function(){
+								if($(this).is(':checked'))
+									$('.'+$(this).attr('data-l1key')).show();
+								else
+									$('.'+$(this).attr('data-l1key')).hide();
+							});
+						}
 					});
 				}
 			});
