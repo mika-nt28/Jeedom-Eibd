@@ -80,7 +80,7 @@
 			"zone":{
 				"name":"Zone",
 				"type":"eqLogic",
-				"template":{"thermostat"}
+				"template":"thermostat"
 			}
 		}
 	}
