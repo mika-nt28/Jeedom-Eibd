@@ -519,7 +519,7 @@ class eibd extends eqLogic {
 					$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
 					$Traitement->run(); 
 				}else
-					log::add('eibd', 'debug', "Type de data non prise en charge par la plugin (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr);.")");
+					log::add('eibd', 'debug', "Type de data non prise en charge par la plugin (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr).")");
 			}
 		}
 		$conBusMonitor->EIBClose();		
