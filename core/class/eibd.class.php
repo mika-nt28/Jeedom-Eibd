@@ -824,7 +824,14 @@ class eibdCmd extends cmd {
 			throw new Exception(__('Le type de commande ne peut être vide', __FILE__));
 		$this->setLogicalId(trim($this->getLogicalId()));    
 	}
-	public function postSave() {	
+	public function postSave() {			
+		if ($this->getConfiguration('FlagInit')){
+			$BusValue = $this->execute();
+			if($this->getType() == 'info')			
+				log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Lecture du GAD: '.$this->getLogicalId().' = '.$BusValue);
+			else
+				log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Envoi sur le GAD: '.$this->getLogicalId());
+		}
 		$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $this->getId()));
 		if($this->getConfiguration('FlagTransmit') && $this->getValue() != ''){
 			if (!is_object($listener)){
