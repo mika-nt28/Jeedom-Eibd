@@ -3,8 +3,8 @@ class BusMonitorTraitement /*extends Thread*/{
 	public function __construct($Mode,$Data,$AdrSource,$AdrGroup){
 		$this->Mode=$Mode;
 		$this->Data=$Data;
-		$this->AdrSource=$this->formatiaddr($AdrSource);
-		$this->AdrGroup=$this->formatgaddr($AdrGroup);
+		$this->AdrSource=self::formatiaddr($AdrSource);
+		$this->AdrGroup=self::formatgaddr($AdrGroup);
 	}
 	public function run(){
 		$monitor=array();
@@ -53,10 +53,10 @@ class BusMonitorTraitement /*extends Thread*/{
 		$monitor['datetime'] = date('d-m-Y H:i:s');
 		event::add('eibd::monitor', json_encode($monitor));
 	}
-	public function formatiaddr ($addr){
+	public static function formatiaddr ($addr){
 		return sprintf ("%d.%d.%d", ($addr >> 12) & 0x0f, ($addr >> 8) & 0x0f, $addr & 0xff);
 	}
-	public function formatgaddr ($addr)	{
+	public static function formatgaddr ($addr)	{
 		switch(config::byKey('level', 'eibd')){
 			case '3':
 				return sprintf ("%d/%d/%d", ($addr >> 11) & 0x1f, ($addr >> 8) & 0x07,$addr & 0xff);
