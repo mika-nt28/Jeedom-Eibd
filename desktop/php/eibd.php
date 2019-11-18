@@ -194,5 +194,6 @@
 </div>
 <?php 
 include_file('desktop', 'eibd', 'js', 'eibd');
+include_file('desktop', 'Template', 'js', 'eibd');
 include_file('core', 'plugin.template', 'js'); 
 ?>
