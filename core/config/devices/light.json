@@ -442,7 +442,7 @@
 					{
 						"name":"Couleur Direct",
 						"Synonyme":[],
-						"type":"info",
+						"type":"action",
 						"subType":"select",
 						"isHistorized":"0",
 						"unite":"",
