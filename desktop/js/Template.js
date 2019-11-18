@@ -1,10 +1,10 @@
 $('.Template[data-action=add]').off().on('click', function () {
-  	TemplateDialog('updateEqLogic');
+  	TemplateDialog('updateEqLogic','');
 });
 $('.eqLogicAction[data-action=addByTemplate]').off().on('click', function () {
-  	TemplateDialog('newEqLogic');
+	TemplateDialog('newEqLogic','');
 });
-function TemplateDialog(type){
+function TemplateDialog(type,template){
   	var dialog = bootbox.dialog({
 		title: "{{Ajout d'un équipement avec template}}",
 		message: $('<div>').load('index.php?v=d&modal=eibd.addByTemplate&plugin=eibd&type=eibd'),
@@ -77,13 +77,15 @@ function TemplateDialog(type){
 			},
 		}
 	});
-	if(type == 'updateEqLogic'){
-		dialog.off('shown.bs.modal').on('shown.bs.modal', function(e){
-			$(".EqLogicTemplateAttr[data-l1key=name]").val($(".eqLogicAttr[data-l1key=name]").val()).attr("disabled","true");
+	dialog.off('shown.bs.modal').on('shown.bs.modal', function(e){
+		if(type == 'updateEqLogic'){
+			$((".EqLogicTemplateAttr[data-l1key=name]").val($(".eqLogicAttr[data-l1key=name]").val()).attr("disabled","true");
 			$(".EqLogicTemplateAttr[data-l1key=logicalId]").val($(".eqLogicAttr[data-l1key=logicalId]").val()).attr("disabled","true");
 			$(".EqLogicTemplateAttr[data-l1key=object_id]").val($(".eqLogicAttr[data-l1key=object_id]").val()).attr("disabled","true");
-		});
-	}
+		}
+		if(template != '')
+			$(".EqLogicTemplateAttr[data-l1key=template]").val(template).trigger('change').attr("disabled","true");
+	});
  	dialog.modal("show");
 };
 function SaveTemplate(eqLogic){
@@ -228,7 +230,7 @@ function addBtOptionTemplate(id,name){
 	
 	$('body').off('.bt_'+id).on('click','.bt_'+id,function(){
 		if(_optionsMultiple.type == "eqLogic"){
-			//Lancer une nouvelle instance de template _optionsMultiple.template
+			TemplateDialog('newEqLogic',_optionsMultiple.template);
 		}
 		if(_optionsMultiple.type == "cmd"){
 			$.each(_optionsMultiple.cmd,function(index, value){
