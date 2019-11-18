@@ -7,60 +7,7 @@
 		"cmd":
 		[
 			{
-				"name":"Tarif_1",
-				"Synonyme":[],
-				"logicalId":"255/255/255",
-				"type":"info",
-				"subType":"numeric",
-				"isHistorized":"0",
-				"unite":"W/H",
-				"configuration":{
-					"FlagInit":"0",
-					"FlagRead":"0",
-					"FlagTransmit":"0",
-					"FlagUpdate":"1",
-					"FlagWrite":"1",
-					"KnxObjectType":"13.010",
-					"subTypeAuto":"1"
-				},
-				"isVisible":"1"
-			},{
-				"name":"Tarif_2",
-				"Synonyme":[],
-				"logicalId":"255/255/255",
-				"type":"info",
-				"subType":"numeric",
-				"isHistorized":"0",
-				"unite":"W/H",
-				"configuration":{
-					"FlagInit":"0",
-					"FlagRead":"0",
-					"FlagTransmit":"0",
-					"FlagUpdate":"1",
-					"FlagWrite":"1",
-					"KnxObjectType":"13.010",
-					"subTypeAuto":"1"
-				},
-				"isVisible":"1"
-			},{
-				"name":"Tarif_3",
-				"Synonyme":[],
-				"logicalId":"255/255/255",
-				"type":"info",
-				"subType":"numeric",
-				"unite":"W/H",
-				"configuration":{
-					"FlagInit":"0",
-					"FlagRead":"0",
-					"FlagTransmit":"0",
-					"FlagUpdate":"1",
-					"FlagWrite":"1",
-					"KnxObjectType":"13.010",
-					"subTypeAuto":"1"
-				},
-				"isVisible":"1"
-			},{
-				"name":"Vilidité",
+				"name":"Validité",
 				"Synonyme":[],
 				"type":"info",
 				"subType":"numeric",
@@ -72,11 +19,40 @@
 					"FlagUpdate":"1",
 					"FlagWrite":"1",
 					"KnxObjectType":"235.001",
-					"option":{"ActiveElectricalEnergy":"Tarif_1|Tarif_2|Tarif_3"},
+					"option":{"ActiveElectricalEnergy":"#ActiveElectricalEnergy#"},
 					"subTypeAuto":"1"
 				},
 				"isVisible":"1"
 			}
-		]
+		],
+		"options":{
+			"zone":{
+				"name":"Tarif",
+				"type":"cmd",
+				"tag":"ActiveElectricalEnergy",
+				"separateur":"|",
+				"cmd":[
+					{
+						"name":"Tarif",
+						"Synonyme":[],
+						"logicalId":"255/255/255",
+						"type":"info",
+						"subType":"numeric",
+						"isHistorized":"0",
+						"unite":"W/H",
+						"configuration":{
+							"FlagInit":"0",
+							"FlagRead":"0",
+							"FlagTransmit":"0",
+							"FlagUpdate":"1",
+							"FlagWrite":"1",
+							"KnxObjectType":"13.010",
+							"subTypeAuto":"1"
+						},
+						"isVisible":"1"
+					}
+				]
+			}
+		}
 	}
 }
