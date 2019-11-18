@@ -11,6 +11,5 @@
 	"require" : "3.3.16",
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
 	"category" : "automation protocol",
- 	"changelog" : "https://github.com/mika-nt28/Jeedom-Eibd/commits/stable",
  	"documentation" : "http://mika-nt28.github.io/Jeedom-Eibd/"
 }
