@@ -26,7 +26,7 @@
 			}
 		],
 		"options":{
-			"tarif":{
+			"zone":{
 				"name":"Tarif",
 				"type":"cmd",
 				"tag":"ActiveElectricalEnergy",
