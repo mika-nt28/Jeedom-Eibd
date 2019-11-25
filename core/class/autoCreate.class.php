@@ -172,7 +172,6 @@ class autoCreate {
 		}
 		foreach ($this->Templates[$TemplateId]['options'] as $DeviceOptionsId => $DeviceOptions) {
 			if(isset($TemplateOptions[$DeviceOptionsId])){
-				$typeTemplate.='_'.$DeviceOptionsId;
 				foreach ($DeviceOptions['cmd'] as $Commande) {
 					if(strpos($CmdName,$Commande['name']) !== false || strpos($Commande['name'],$CmdName) !== false){
 						log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvée  ' .$Commande['name']);

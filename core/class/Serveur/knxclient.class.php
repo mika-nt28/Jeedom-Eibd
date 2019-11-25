@@ -471,7 +471,7 @@ class KNXnet{
 			self::DisconnectRequest();
 		socket_close($this->socket);
 		}
-	private function Send($msg){
+	public function Send($msg){
 		if (is_resource($this->socket)) {
 			$hex_msg = hex2bin($msg);
 			$this->SendFrame=unpack("C*", $hex_msg);
