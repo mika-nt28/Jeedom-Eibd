@@ -69,6 +69,7 @@ if (!isConnect('admin')) {
 		<legend>{{Définition des commandes}}</legend>
 		<div class="col-md-12">
 			<div class="form-horizontal CmdsTempates">
+				<div class="option_bt"></div>
 			</div>
 		</div>
 	</form>		
