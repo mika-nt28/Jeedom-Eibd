@@ -43,11 +43,18 @@ function TemplateDialog(type,template){
 									if (typeof(eqLogic.configuration) === 'undefined')
 										eqLogic.configuration=new Object();
 									$.each(eqLogic.options,function(id, option){
-										if(_el.find('.TemplateOption[data-l1key='+id+']').is(':checked')){
-											typeTemplate = typeTemplate + "_" + id;
-											$.each(option.cmd,function(idCmd, cmd){
-												eqLogic.cmd.push(cmd);
-											});
+										if(typeof option.type == "undefined") {
+											if(_el.find('.TemplateOption[data-l1key='+id+']').is(':checked')){
+												typeTemplate = typeTemplate + "_" + id;
+												$.each(option.cmd,function(idCmd, cmd){
+													eqLogic.cmd.push(cmd);
+												});
+											}
+										}else{
+											if(option.type == "cmd"){
+												/*_el.find('.'+option.tag).each(function(){
+												});*/
+											}
 										}
 									});
 
@@ -134,7 +141,7 @@ function searchSameCmd(eqLogic,index,option){
 var _optionsMultiple=null;
 $('body').off('.EqLogicTemplateAttr[data-l1key=template]').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	var cmds=$(this).closest('.bootbox-body').find('.CmdsTempates');
-	cmds.html('');
+	cmds.html($('<div class="option_bt">'));
 	$.ajax({
 		type: 'POST',   
 		url: 'plugins/eibd/core/ajax/eibd.ajax.php',
@@ -212,12 +219,10 @@ $('body').off('.EqLogicTemplateAttr[data-l1key=template]').on('change','.EqLogic
 				}else{
 					_optionsMultiple=options;
 					if(options.type == "eqLogic"){
-						cmds.append(addBtOptionTemplate(id,options.name));
+						cmds.find('.option_bt').append(addBtOptionTemplate(id,options.name));
 					}
 					if(options.type == "cmd"){
-						$.each(options.cmd,function(index, value){
-							cmds.append(addBtOptionTemplate(index,value.name));
-						});
+						cmds.find('.option_bt').append(addBtOptionTemplate(id,options.name));
 					}
 				}
 			});
@@ -227,23 +232,24 @@ $('body').off('.EqLogicTemplateAttr[data-l1key=template]').on('change','.EqLogic
 function addBtOptionTemplate(id,name){
 	var html = $('<div class="input-group pull-right" style="display:inline-flex">')
 		.append($('<span class="input-group-btn">')
-			.append($('<a class="btn btn-warning btn-xs roundedRight bt_'+id+'" >')
+			.append($('<a class="btn btn-warning btn-xs roundedRight bt_addOptionTemplate" data-cmd-id="'+id+'" >')
 				.append($('<i class="fas fa-plus-circle">'))
 				.text(name)));
 	
-	$('body').off('.bt_'+id).on('click','.bt_'+id,function(){
+	$('body').off('.bt_addOptionTemplate').on('click','.bt_addOptionTemplate',function(){
 		if(_optionsMultiple.type == "eqLogic"){
 			TemplateDialog('newEqLogic',_optionsMultiple.template);
 		}
 		if(_optionsMultiple.type == "cmd"){
-			$.each(_optionsMultiple.cmd,function(index, value){
-				$('.CmdsTempates').append(addCmdTemplate(index,value));
-			});
+			var cmds=$(this).closest('.bootbox-body').find('.CmdsTempates')
+			
+				//if($(this).attr('data-cmd-id') == index)
+				addCmdTemplate(cmds);
 		}
 	});
 	return html;
 }
-function addCmdTemplate(index,value){
+function addCmdTemplate(cmds){
 	bootbox.dialog({
 		title: "{{Nom de la nouvelle commande}}",
 		message: $('<div>').append($('<input class="form-control input-sm" data-l1key="name">')),
@@ -258,8 +264,22 @@ function addCmdTemplate(index,value){
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
-					value.name= $(this).find('input[data-l1key=name]').val();
-					return addCmdEqLogicTemplateAttr(index,value);
+					var optionHtml = $('<div class="'+_optionsMultiple.tag+'">');
+					var name = $(this).find('input[data-l1key=name]').val();
+					$.each(_optionsMultiple.cmd,function(index, value){
+						value.name = name;
+						var cmd = $('<div class="form-group '+index+'">');
+						if(typeof  value.SameCmd == 'undefined'){
+							cmd.append($('<label class="col-md-5 control-label" >')
+								.text(value.name + " (DPT: " + value.configuration.KnxObjectType + ")"));
+						}else{
+							cmd.append($('<label class="col-md-5 control-label" >')
+								.text(value.SameCmd + " (DPT: " + value.configuration.KnxObjectType + ")"));
+						}
+						cmd.append(addCmdEqLogicTemplateAttr(index,value));
+						optionHtml.append(cmd);
+					});
+					cmds.append(optionHtml);
 				}
 			},
 		}
