@@ -364,3 +364,19 @@ Le script de démarrage fonctionne mal avec cette passerelle.
 Il faut utiliser cette ligne pour lancer EIBD
 
 > EIBD -D -S -T -t1023 -i usb:1:6:1:0:0 -e 1.1.128 -R -u
+
+ChangeLog
+=========
+
+Stable
+------
+
+Beta
+----
+
+# 26/11/2019
+
+* Refonte de moteur de template pour simplifié la maintenance
+* Ajout du template AireZone
+* Correction de bug
+* Initialisation des valeur a la sauvegarde (si FlagInit est actif)
