@@ -40,17 +40,17 @@ class EIBAddr {
 	}
 }
 class EIBInt8 {
-public $data;
+	public $data;
 	function _construct($val=0)
 	{
-		$this->val=$a;
+		$this->data=$val;
 	}
 }
 class EIBInt16 {
-public $data;
+	public $data;
 	function _construct($val=0)
 	{
-		$this->val=$a;
+		$this->data=$val;
 	}
 }
 class EIBConnection {
@@ -1031,7 +1031,7 @@ class EIBConnection {
 		return 0;
 	} 
 	public function EIB_MC_Read ( $addr , $buf_len, EIBBuffer $buf ) {
-		if ($this->EIB_MC_Read_async ($addr , $buf_len, $name ) == -1) 
+		if ($this->EIB_MC_Read_async ($addr , $buf_len, $buf ) == -1)
 			return -1;
 		return $this->EIBComplete ();
 	}

@@ -1,62 +1,38 @@
 {
-	"prise":{
-		"name":"Prise",
+	"airzone":{
+		"name":"AirZone",
 		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":[
-			{
-				"name":"Etat",
+          		{
+				"name":"AirZone",
 				"Synonyme":[],
 				"type":"info",
-				"subType":"string",
+				"subType":"other",
 				"isHistorized":"0",
 				"unite":"",
 				"configuration":{
-					"FlagInit":"1",
+					"FlagInit":"0",
 					"FlagRead":"0",
 					"FlagTransmit":"0",
 					"FlagUpdate":"1",
 					"FlagWrite":"1",
-					"KnxObjectType":"1.001",
+					"KnxObjectType":"20.105",
 					"inverse":"0",
 					"subTypeAuto":"1",
+					"CycliqueSend":"cron15",
 					"noBatterieCheck":"0"
 				},
 				"display":{
-					"generic_type":"ENERGY_STATE"
+					"generic_type":"DONT"
 				},
-				"isVisible":"0"
-			},{
-				"name":"On",
-				"Synonyme":[],
-				"SameCmd":"On|Off",
-				"type":"action",
-				"subType":"other",
-				"isHistorized":"0",
-				"configuration":{
-					"FlagInit":"0",
-					"FlagRead":"0",
-					"FlagTransmit":"0",
-					"FlagUpdate":"0",
-					"FlagWrite":"0",
-					"KnxObjectType":"1.001",
-					"KnxObjectValue":"1",
-					"inverse":"0",
-					"subTypeAuto":"1",
-					"noBatterieCheck":"0"
-				},
-				"display":{
-					"generic_type":"ENERGY_ON"
-				},
-				"value":"Etat",
 				"isVisible":"1"
 			},{
-				"name":"Off",
+				"name":"Mode",
 				"Synonyme":[],
-				"SameCmd":"On|Off",
 				"type":"action",
-				"subType":"other",
+				"subType":"select",
 				"isHistorized":"0",
 				"configuration":{
 					"FlagInit":"0",
@@ -64,18 +40,48 @@
 					"FlagTransmit":"0",
 					"FlagUpdate":"0",
 					"FlagWrite":"0",
-					"KnxObjectType":"1.001",
+					"KnxObjectType":"20.105",
 					"KnxObjectValue":"0",
 					"inverse":"0",
 					"subTypeAuto":"1",
+					"noBatterieCheck":"0",
+          				"listValue":"Heat|Chauffage; Cool|Climatisation; Off|Arrêt; Fan only|Ventilation; Dehumidification|Déshumidification"
+				},
+				"display":{
+					"generic_type":"DONT"
+				},
+				"value":"AirZone",
+				"isVisible":"1"
+			},{
+				"name":"Erreur Système",
+				"Synonyme":[],
+				"type":"info",
+				"subType":"binary",
+				"isHistorized":"0",
+				"configuration":{
+					"FlagInit":"0",
+					"FlagRead":"0",
+					"FlagTransmit":"0",
+					"FlagUpdate":"1",
+					"FlagWrite":"1",
+					"KnxObjectType":"1.005",
+					"KnxObjectValue":"",
+					"inverse":"0",
+					"subTypeAuto":"1",
 					"noBatterieCheck":"0"
 				},
 				"display":{
-					"generic_type":"ENERGY_OFF"
+					"generic_type":"DONT"
 				},
-				"value":"Etat",
 				"isVisible":"1"
 			}
-		]
+		],
+		"options":{
+			"zone":{
+				"name":"Zone",
+				"type":"eqLogic",
+				"template":"thermostat"
+			}
+		}
 	}
 }

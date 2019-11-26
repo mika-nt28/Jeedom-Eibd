@@ -10,7 +10,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron"){
 						$ga=$Commande->getLogicalId();
-						$Commande->execute();
+						$BusValue = $Commande->execute();
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
 						else
@@ -26,7 +26,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron5"){
 						$ga=$Commande->getLogicalId();
-						$Commande->execute();
+						$BusValue = $Commande->execute();
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
 						else
@@ -42,7 +42,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron15"){
 						$ga=$Commande->getLogicalId();
-						$Commande->execute();
+						$BusValue = $Commande->execute();
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
 						else
@@ -58,7 +58,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron30"){
 						$ga=$Commande->getLogicalId();
-						$Commande->execute();
+						$BusValue = $Commande->execute();
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
 						else
@@ -74,7 +74,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronHourly"){
 						$ga=$Commande->getLogicalId();
-						$Commande->execute();
+						$BusValue = $Commande->execute();
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
 						else
@@ -90,7 +90,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily"){
 						$ga=$Commande->getLogicalId();
-						$Commande->execute();
+						$BusValue = $Commande->execute();
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
 						else
@@ -162,7 +162,6 @@ class eibd extends eqLogic {
 				$this->setConfiguration($key, $value);
 			}
 		}
-		$link_cmds = array();
 		foreach ($device['cmd'] as $command) {
 			$cmd = null;
 			foreach ($this->getCmd() as $liste_cmd) {
@@ -395,7 +394,7 @@ class eibd extends eqLogic {
 				return false;
 			$buf = unpack("C*", $data->buffer);
 			if ($buf[1] & 0x3 || ($buf[2] & 0xC0) == 0xC0){
-				throw new Exception(__("Type de data non prise en charge par la plugin (".$src->addr.")", __FILE__));
+				throw new Exception(__("Type de data non prise en charge par la plugin (".BusMonitorTraitement::formatiaddr($src->addr).")", __FILE__));
 			}
 			else if (($buf[2] & 0xC0) == 0x40){
 				if ($len == 2)                     
@@ -519,7 +518,7 @@ class eibd extends eqLogic {
 					$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
 					$Traitement->run(); 
 				}else
-					log::add('eibd', 'debug', "Type de data non prise en charge par la plugin (".$src->addr." - ".$dest->addr.")");
+					log::add('eibd', 'debug', "Type de data non prise en charge par la plugin (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr).")");
 			}
 		}
 		$conBusMonitor->EIBClose();		
@@ -579,7 +578,7 @@ class eibd extends eqLogic {
 			$Commande->setName($VerifName);
 			$Commande->setIsVisible(1);
 			$Commande->setType($Type);
-			$Commande->setUnite($unite);
+
 			if ($Dpt!=''){
 				if($Type=='info')
 					$Commande->setSubType(Dpt::getDptInfoType($Dpt));
@@ -587,6 +586,9 @@ class eibd extends eqLogic {
 					$Commande->setSubType(Dpt::getDptActionType($Dpt));
 				$Commande->setUnite(Dpt::getDptUnite($Dpt));
 				$Commande->setConfiguration('KnxObjectType',$Dpt);
+
+				$unite=Dpt::getDptUnite($Dpt);
+				$Commande->setUnite($unite);
 			}
 			else{
 				if($Type=='info')
@@ -594,6 +596,7 @@ class eibd extends eqLogic {
 				else
 					$Commande->setSubType('other');
 				$Commande->setConfiguration('KnxObjectType','1.xxx');
+				$Commande->setUnite('');
 			}
 			$Commande->save();
 		}
@@ -824,7 +827,14 @@ class eibdCmd extends cmd {
 			throw new Exception(__('Le type de commande ne peut être vide', __FILE__));
 		$this->setLogicalId(trim($this->getLogicalId()));    
 	}
-	public function postSave() {	
+	public function postSave() {			
+		if ($this->getConfiguration('FlagInit')){
+			$BusValue = $this->execute();
+			if($this->getType() == 'info')			
+				log::add('eibd', 'debug', $this->getHumanName().'[Initialisation] Lecture du GAD: '.$this->getLogicalId().' = '.$BusValue);
+			else
+				log::add('eibd', 'debug', $this->getHumanName().'[Initialisation] Envoi sur le GAD: '.$this->getLogicalId());
+		}
 		$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $this->getId()));
 		if($this->getConfiguration('FlagTransmit') && $this->getValue() != ''){
 			if (!is_object($listener)){
@@ -908,7 +918,11 @@ class eibdCmd extends cmd {
 				usleep(config::byKey('SendSleep','eibd')*1000);
 			break;
 			case 'info':
-				$DataBus=eibd::EibdRead($ga);
+				try {
+					$DataBus = eibd::EibdRead($ga);
+				} catch (Exception $exception) {
+					$DataBus = false;
+				}
 				if($DataBus === false){
 					message::add('info',$this->getHumanName().'[READ]: Aucune réponse','',$ga);
 					return;
@@ -985,6 +999,7 @@ class eibdCmd extends cmd {
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
 		$Option["id"]=$this->getId();
+		$unite=Dpt::getDptUnite($dpt);
 		$valeur=Dpt::DptSelectDecode($dpt, null, $inverse, $Option);
 		if($this->getType() == 'info' && $valeur !== false){
 			log::add('eibd', 'info',$this->getHumanName().' : Mise à jour de la valeur : '.$valeur.$unite);

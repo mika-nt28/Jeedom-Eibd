@@ -167,6 +167,7 @@ class Dpt{
 			case "27":
 				foreach(explode('|',$option["Info"]) as $bit => $Info){
 					$value=cmd::byId(str_replace('#','',$Info))->execCmd();
+					$data= array();
 					if($bit < 8)
 						$data[0].=$value>>$bit;
 					elseif($bit < 16)
@@ -236,7 +237,8 @@ class Dpt{
 			default:
 				switch($dpt){
 					case "x.001":
-						if ($option["Mode"] !=''){		
+						if ($option["Mode"] !=''){
+							$data= array();
 							$Mode=cmd::byId(str_replace('#','',$option["Mode"]));
 							if (is_object($Mode)){
 								$Mode->event(($data[0]>>1) & 0xEF);
