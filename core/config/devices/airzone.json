@@ -80,29 +80,7 @@
 			"zone":{
 				"name":"Zone",
 				"type":"eqLogic",
-				"template":"thermostat",
-				"cmd":[
-					{
-						"name":"Humidité",
-						"Synonyme":[],
-						"type":"info",
-						"subType":"numeric",
-						"isHistorized":"0",
-						"unite":"%",
-						"configuration":{
-							"FlagInit":"1",
-							"FlagRead":"0",
-							"FlagTransmit":"0",
-							"FlagUpdate":"1",
-							"FlagWrite":"1",
-							"KnxObjectType":"9.007",
-							"inverse":"0",
-							"subTypeAuto":"1",
-							"noBatterieCheck":"0"
-						},
-						"isVisible":"1"
-					}
-				]
+				"template":"thermostat"
 			}
 		}
 	}
