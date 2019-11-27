@@ -1,4 +1,12 @@
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+$('.eqLogicAction[data-action=Thumbnail]').off().on('click', function () {
+  	$('.eqLogicThumbnailContainer').show();
+  	$('.eqLogicListContainer').hide();  	
+});
+$('.eqLogicAction[data-action=List]').off().on('click', function () {
+  	$('.eqLogicThumbnailContainer').hide();
+  	$('.eqLogicListContainer').show();
+});
 $('.eqLogicAction[data-action=gotoHealth]').off().on('click', function () {
   	bootbox.dialog({
 		title: "{{Santé des équpements KNX}}",
