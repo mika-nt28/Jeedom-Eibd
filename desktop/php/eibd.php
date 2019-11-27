@@ -49,9 +49,12 @@
 				<span>{{Santé}}</span>
 			</div>
 		</div>
-		<legend><i class="fas fa-table"></i> {{Mes Modules KNX}}</legend>
-		<a class="btn btn-default btn-sm eqLogicAction pull-right" data-action="Thumbnail" style="margin-top:5px;"><i class="fas fa-th-large"></i></a>
-		<a class="btn btn-default btn-sm eqLogicAction pull-right" data-action="List" style="margin-top:5px;"><i class="fas fa-list-alt"></i></a>		
+		<legend>
+			<i class="fas fa-table"></i> 
+			{{Mes Modules KNX}}
+			<a class="btn btn-default btn-sm eqLogicAction pull-right" data-action="Thumbnail" style="margin-top:5px;"><i class="fas fa-th-large"></i></a>
+			<a class="btn btn-default btn-sm eqLogicAction pull-right" data-action="List" style="margin-top:5px;"><i class="fas fa-list-alt"></i></a>		
+		</legend>
 		<input class="form-control" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
 		<div class="eqLogicThumbnailContainer">
 			<?php
