@@ -77,7 +77,7 @@
 			<table id="table_eqLogicList" class="table table-bordered table-condensed tablesorter">
 				<thead>
 					<tr>
-						<th></th>
+						<th>{{Template}}</th>
 						<th>{{Nom}}</th>
 						<th>{{Adresse Physique}}</th>
 						<th>{{Catégorie}}</th>
