@@ -96,7 +96,7 @@
 							else
 								echo '<td><img src="plugins/eibd/plugin_info/eibd_icon.png" height="45" /></td>';
 							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="name">' . $eqLogic->getName() . '</span></td>';
-							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="logicalId">' . $eqLogic->getLogicalId() . '</span></td>';
+							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="logicalId"> ' . $eqLogic->getLogicalId() . '</span></td>';
 							echo '<td>';
 							$Categorie=$eqLogic->getCategory();
 							foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
