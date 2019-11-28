@@ -98,19 +98,22 @@
 							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="name">' . $eqLogic->getName() . '</span></td>';
 							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="logicalId">' . $eqLogic->getLogicalId() . '</span></td>';
 							echo '<td>';
-							foreach($eqLogic->getCategory() as $categorie => $value){
-								if($value != 0)	
-									echo '<span class="label label-info">' . $categorie . '</span>';
+							$Categorie=$eqLogic->getCategory();
+							foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
+								if ($Categorie[$key]) 
+									echo '<span class="label label-success eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '">' . $value['name'] . '</span>';
+								else
+									echo '<span class="label label-danger eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '">' . $value['name'] . '</span>';
 							}
 							echo '</td>';
-							echo '<td><span class="label label-infoeqLogicDisplayAttr" data-l1key="object">' . $eqLogic->getObject()->getName() . '</span></td>';
+							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="object">' . $eqLogic->getObject()->getName() . '</span></td>';
 							$active = '<span class="label label-success eqLogicDisplayAttr" data-l1key="isEnable">{{OK}}</span>';
-							if ($eqLogic->getIsEnable() == 'nok') {
+							if (!$eqLogic->getIsEnable()) {
 								$active = '<span class="label label-danger eqLogicDisplayAttr" data-l1key="isEnable">{{NOK}}</span>';
 							}
 							echo '<td>' . $active . '</td>';
 							$visible = '<span class="label label-success eqLogicDisplayAttr" data-l1key="isVisible">{{OK}}</span>';
-							if ($eqLogic->getIsVisible() == 'nok') {
+							if (!$eqLogic->getIsVisible()) {
 								$visible = '<span class="label label-danger eqLogicDisplayAttr" data-l1key="isVisible">{{NOK}}</span>';
 							}
 							echo '<td>' . $visible . '</td>';
