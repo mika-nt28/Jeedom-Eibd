@@ -89,29 +89,29 @@
 				<tbody>
 					<?php
 						foreach ($eqLogics as $eqLogic) {
-							echo '<tr class="eqLogicDisplayCard" data-eqLogic_id="' . $eqLogic->getId() . '">';
+							echo '<tr class="eqLogicDisplay" data-eqLogic_id="' . $eqLogic->getId() . '">';
 							$file='plugins/eibd/core/config/devices/'.$eqLogic->getConfiguration('typeTemplate').'.png';
 							if(file_exists($file))
 								echo '<td><img src="'.$file.'" height="45"  /></td>';
 							else
 								echo '<td><img src="plugins/eibd/plugin_info/eibd_icon.png" height="45" /></td>';
-							echo '<td><span class="label label-info">' . $eqLogic->getName() . '</span></td>';
-							echo '<td><span class="label label-info">' . $eqLogic->getLogicalId() . '</span></td>';
+							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="name">' . $eqLogic->getName() . '</span></td>';
+							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="logicalId">' . $eqLogic->getLogicalId() . '</span></td>';
 							echo '<td>';
 							foreach($eqLogic->getCategory() as $categorie => $value){
 								if($value != 0)	
 									echo '<span class="label label-info">' . $categorie . '</span>';
 							}
 							echo '</td>';
-							echo '<td><span class="label label-info">' . $eqLogic->getObject()->getName() . '</span></td>';
-							$active = '<span class="label label-success">{{OK}}</span>';
+							echo '<td><span class="label label-infoeqLogicDisplayAttr" data-l1key="object">' . $eqLogic->getObject()->getName() . '</span></td>';
+							$active = '<span class="label label-success eqLogicDisplayAttr" data-l1key="isEnable">{{OK}}</span>';
 							if ($eqLogic->getIsEnable() == 'nok') {
-								$active = '<span class="label label-danger">{{NOK}}</span>';
+								$active = '<span class="label label-danger eqLogicDisplayAttr" data-l1key="isEnable">{{NOK}}</span>';
 							}
 							echo '<td>' . $active . '</td>';
-							$visible = '<span class="label label-success">{{OK}}</span>';
+							$visible = '<span class="label label-success eqLogicDisplayAttr" data-l1key="isVisible">{{OK}}</span>';
 							if ($eqLogic->getIsVisible() == 'nok') {
-								$visible = '<span class="label label-danger">{{NOK}}</span>';
+								$visible = '<span class="label label-danger eqLogicDisplayAttr" data-l1key="isVisible">{{NOK}}</span>';
 							}
 							echo '<td>' . $visible . '</td>';
 							echo '</tr>';
