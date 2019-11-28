@@ -49,7 +49,12 @@
 				<span>{{Santé}}</span>
 			</div>
 		</div>
-		<legend><i class="fas fa-table"></i> {{Mes Modules KNX}}</legend>
+		<legend>
+			<i class="fas fa-table"></i> 
+			{{Mes Modules KNX}}
+			<a class="btn btn-default btn-sm eqLogicAction pull-right" data-action="Thumbnail" style="margin-top:5px;"><i class="fas fa-th-large"></i></a>
+			<a class="btn btn-default btn-sm eqLogicAction pull-right" data-action="List" style="margin-top:5px;"><i class="fas fa-list-alt"></i></a>		
+		</legend>
 		<input class="form-control" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
 		<div class="eqLogicThumbnailContainer">
 			<?php
@@ -67,17 +72,68 @@
 				}
 			?>
 		</div>
+		
+		<div class="eqLogicListContainer" style="display: none;">
+			<table id="table_eqLogicList" class="table table-bordered table-condensed tablesorter">
+				<thead>
+					<tr>
+						<th>{{Template}}</th>
+						<th>{{Nom}}</th>
+						<th>{{Adresse Physique}}</th>
+						<th>{{Catégorie}}</th>
+						<th>{{Objet parent}}</th>
+						<th>{{Activer}}</th>
+						<th>{{Visible}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+						foreach ($eqLogics as $eqLogic) {
+							echo '<tr class="eqLogicDisplay" data-eqLogic_id="' . $eqLogic->getId() . '">';
+							$file='plugins/eibd/core/config/devices/'.$eqLogic->getConfiguration('typeTemplate').'.png';
+							if(file_exists($file))
+								echo '<td><img src="'.$file.'" height="45"  /></td>';
+							else
+								echo '<td><img src="plugins/eibd/plugin_info/eibd_icon.png" height="45" /></td>';
+							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="name">' . $eqLogic->getName() . '</span></td>';
+							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="logicalId">' . $eqLogic->getLogicalId() . '</span></td>';
+							echo '<td>';
+							$Categorie=$eqLogic->getCategory();
+							foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
+								if ($Categorie[$key]) 
+									echo '<span class="label label-success eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '">' . $value['name'] . '</span>';
+								else
+									echo '<span class="label label-danger eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '">' . $value['name'] . '</span>';
+							}
+							echo '</td>';
+							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="object">' . $eqLogic->getObject()->getName() . '</span></td>';
+							$active = '<span class="label label-success eqLogicDisplayAttr" data-l1key="isEnable">{{OK}}</span>';
+							if (!$eqLogic->getIsEnable()) {
+								$active = '<span class="label label-danger eqLogicDisplayAttr" data-l1key="isEnable">{{NOK}}</span>';
+							}
+							echo '<td>' . $active . '</td>';
+							$visible = '<span class="label label-success eqLogicDisplayAttr" data-l1key="isVisible">{{OK}}</span>';
+							if (!$eqLogic->getIsVisible()) {
+								$visible = '<span class="label label-danger eqLogicDisplayAttr" data-l1key="isVisible">{{NOK}}</span>';
+							}
+							echo '<td>' . $visible . '</td>';
+							echo '</tr>';
+						}
+					?>
+				</tbody>
+			</table>
+		</div>
 	</div>
 	<div class="col-xs-12 eqLogic" style="display: none;">
 		<div class="input-group pull-right" style="display:inline-flex">
 			<span class="input-group-btn">
-				<a class="btn btn-default btn-sm eqLogicAction roundedLeft" data-action="configure"><i class="fa fa-cogs"></i> {{Configuration avancée}}</a><a class="btn btn-default btn-sm eqLogicAction" data-action="copy"><i class="fas fa-copy"></i> {{Dupliquer}}</a><a class="btn btn-sm btn-success eqLogicAction" data-action="save"><i class="fas fa-check-circle"></i> {{Sauvegarder}}</a><a class="btn btn-danger btn-sm eqLogicAction roundedRight" data-action="remove"><i class="fas fa-minus-circle"></i> {{Supprimer}}</a>
+				<a class="btn btn-default btn-sm eqLogicAction roundedLeft" data-action="configure"><i class="fas fa-cogs"></i> {{Configuration avancée}}</a><a class="btn btn-default btn-sm eqLogicAction" data-action="copy"><i class="fas fa-copy"></i> {{Dupliquer}}</a><a class="btn btn-sm btn-success eqLogicAction" data-action="save"><i class="fas fa-check-circle"></i> {{Sauvegarder}}</a><a class="btn btn-danger btn-sm eqLogicAction roundedRight" data-action="remove"><i class="fas fa-minus-circle"></i> {{Supprimer}}</a>
 			</span>
 		</div>
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fa fa-arrow-circle-left"></i></a></li>
-			<li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-tachometer"></i> {{Equipement}}</a></li>
-			<li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-list-alt"></i> {{Commandes}}</a></li>
+			<li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer"></i> {{Equipement}}</a></li>
+			<li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fas fa-list-alt"></i> {{Commandes}}</a></li>
 		</ul>
 		<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
 			<div role="tabpanel" class="tab-pane active" id="eqlogictab">
@@ -88,7 +144,7 @@
 							<label class="col-sm-3 control-label">
 								{{Nom de l'équipement KNX}}
 								<sup>
-									<i class="fa fa-question-circle tooltips" title="{{Indiquez le nom de votre équipement}}"></i>
+									<i class="fas fa-question-circle tooltips" title="{{Indiquez le nom de votre équipement}}"></i>
 								</sup>
 							</label>
 							<div class="col-sm-3">
@@ -101,7 +157,7 @@
 							<label class="col-sm-3 control-label">
 								{{Adresse Physique de l'équipement}}
 								<sup>
-									<i class="fa fa-question-circle tooltips" title="{{Indiquez l'adresse physique de votre équipement. Cette information n'est pas obligatoire mais peut être utile dans certain cas.}}"></i>
+									<i class="fas fa-question-circle tooltips" title="{{Indiquez l'adresse physique de votre équipement. Cette information n'est pas obligatoire mais peut être utile dans certain cas.}}"></i>
 								</sup>
 							</label>
 							<div class="col-sm-3">
@@ -112,7 +168,7 @@
 							<label class="col-sm-3 control-label" >
 								{{Objet parent}}
 								<sup>
-									<i class="fa fa-question-circle tooltips" title="{{Séléctioner l'objet dans lequel doit apparaitre cette equipement.}}"></i>
+									<i class="fas fa-question-circle tooltips" title="{{Séléctioner l'objet dans lequel doit apparaitre cette equipement.}}"></i>
 								</sup>
 							</label>
 							<div class="col-sm-3">
@@ -130,7 +186,7 @@
 							<label class="col-sm-3 control-label">
 								{{Catégorie}}								
 								<sup>
-									<i class="fa fa-question-circle tooltips" title="{{Choisir une ou plusieurs catégorie.}}"></i>
+									<i class="fas fa-question-circle tooltips" title="{{Choisir une ou plusieurs catégorie.}}"></i>
 								</sup>
 							</label>
 							<div class="col-sm-9">
@@ -147,7 +203,7 @@
 							<label class="col-sm-3 control-label">
 								{{État du widget}}
 								<sup>
-									<i class="fa fa-question-circle tooltips" title="{{Choisissez les options de visibilité et d'activation
+									<i class="fas fa-question-circle tooltips" title="{{Choisissez les options de visibilité et d'activation
 									Si l’équipement n'est pas activé il ne sera pas utilisable dans jeedom, mais visible sur le dashboard
 									Si l’équipement n'est pas visible il ne sera caché sur le Dashbord, mais utilisable dans jeedom"}}"></i>
 								</sup>
@@ -161,7 +217,7 @@
 							<label class="col-sm-3 control-label">
 								{{Délai max entre 2 messages}}
 								<sup>
-									<i class="fa fa-question-circle tooltips" title="{{Cette information est optionnelle et permet de définir si un équipement est fonctionnel ou non. Elle ne peut être utilisée que si votre équipement envoie régulièrement des informations (sonde de température, horloge, ...)}}"></i>
+									<i class="fas fa-question-circle tooltips" title="{{Cette information est optionnelle et permet de définir si un équipement est fonctionnel ou non. Elle ne peut être utilisée que si votre équipement envoie régulièrement des informations (sonde de température, horloge, ...)}}"></i>
 								</sup>
 							</label>
 							<div class="col-sm-3">
@@ -172,8 +228,8 @@
 				</form>
 			</div>
 			<div role="tabpanel" class="tab-pane" id="commandtab">
-				<a class="btn btn-success btn-sm cmdAction pull-right" data-action="add" style="margin-top:5px;"><i class="fa fa-plus-circle"></i> {{Commandes}}</a>
-				<a class="btn btn-primary btn-sm Template pull-right" data-action="add" style="margin-top:5px;"><i class="fa fa-plus-circle"></i> {{Template}}</a><br/><br/>
+				<a class="btn btn-success btn-sm cmdAction pull-right" data-action="add" style="margin-top:5px;"><i class="fas fa-plus-circle"></i> {{Commandes}}</a>
+				<a class="btn btn-primary btn-sm Template pull-right" data-action="add" style="margin-top:5px;"><i class="fas fa-plus-circle"></i> {{Template}}</a><br/><br/>
 				<table id="table_cmd" class="table table-bordered table-condensed">
 					<thead>
 						<tr>
