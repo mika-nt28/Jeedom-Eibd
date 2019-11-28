@@ -374,7 +374,7 @@ Stable
 Beta
 ----
 
-# 26/11/2019
+#26/11/2019
 
 * Refonte de moteur de template pour simplifié la maintenance
 * Ajout du template AireZone
