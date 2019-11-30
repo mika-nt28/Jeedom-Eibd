@@ -64,7 +64,10 @@ $('.eqLogicDisplayAttr[data-l1key=object]').off().on('click', function () {
 		jeedom.object.all({success:function(objects){ 
 			var html = $('<select>');
 			$.each(objects, function(key, object){
-				html.append($('<option value="' + object.id + '">' + object.name + '</option>'));
+				var option = $('<option>').attr('value',object.id);
+				if(_el.text() == object.name)
+					option.attr('selected',true);
+				html.append(option.append(object.name));
 			});
 			bootbox.dialog({
 				title: "{{Nom de la nouvelle commande}}",
