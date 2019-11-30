@@ -1,12 +1,12 @@
 
 $('.eqLogicAction[data-action=Thumbnail]').off().on('click', function () {
-	$('.eqLogicThumbnailContainer').show();
+	$('.eqLogicThumbnail').show();	
 	$('.eqLogicThumbnailContainer').packery();
-	$('.eqLogicListContainer').hide();  	
+	$('.eqLogicList').hide();  	
 });
 $('.eqLogicAction[data-action=List]').off().on('click', function () {
-	$('.eqLogicThumbnailContainer').hide();
-	$('.eqLogicListContainer').show();
+	$('.eqLogicThumbnail').hide();
+	$('.eqLogicList').show();
 });
 $('.eqLogicDisplayAttr[data-l1key=name]').off().on('click', function () {
 	var _el = $(this);
