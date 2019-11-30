@@ -1,12 +1,12 @@
 
 $('.eqLogicAction[data-action=Thumbnail]').off().on('click', function () {
-	$('.eqLogicThumbnailContainer').show();
+	$('.eqLogicThumbnail').show();	
 	$('.eqLogicThumbnailContainer').packery();
-	$('.eqLogicListContainer').hide();  	
+	$('.eqLogicList').hide();  	
 });
 $('.eqLogicAction[data-action=List]').off().on('click', function () {
-	$('.eqLogicThumbnailContainer').hide();
-	$('.eqLogicListContainer').show();
+	$('.eqLogicThumbnail').hide();
+	$('.eqLogicList').show();
 });
 $('.eqLogicDisplayAttr[data-l1key=name]').off().on('click', function () {
 	var _el = $(this);
@@ -64,7 +64,10 @@ $('.eqLogicDisplayAttr[data-l1key=object]').off().on('click', function () {
 		jeedom.object.all({success:function(objects){ 
 			var html = $('<select>');
 			$.each(objects, function(key, object){
-				html.append($('<option value="' + object.id + '">' + object.name + '</option>'));
+				var option = $('<option>').attr('value',object.id);
+				if(_el.text() == object.name)
+					option.attr('selected',true);
+				html.append(option.append(object.name));
 			});
 			bootbox.dialog({
 				title: "{{Nom de la nouvelle commande}}",
@@ -115,7 +118,7 @@ $('.eqLogicDisplayAttr[data-l1key=category]').off().on('click', function () {
 				if(_data.category[_el.attr('data-l2key')])
 					_el.removeClass('label-danger').addClass('label-success');
 				else
-					_el.removeClass('label-success').addClass('label-danger');
+					_el.removeClass('label-success').addClass('label-default');
 			}
 		});
 	}});

@@ -55,25 +55,27 @@
 			<a class="btn btn-default btn-sm eqLogicAction pull-right" data-action="Thumbnail" style="margin-top:5px;"><i class="fas fa-th-large"></i></a>
 			<a class="btn btn-default btn-sm eqLogicAction pull-right" data-action="List" style="margin-top:5px;"><i class="fas fa-list-alt"></i></a>		
 		</legend>
-		<input class="form-control" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
-		<div class="eqLogicThumbnailContainer">
-			<?php
-				foreach ($eqLogics as $eqLogic) {
-					$opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
-					echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
-					$file='plugins/eibd/core/config/devices/'.$eqLogic->getConfiguration('typeTemplate').'.png';
-					if(file_exists($file))					
-						echo '<img src="'.$file.'" height="105" width="95" />';
-					else
-						echo '<img src="' . $plugin->getPathImgIcon() . '"/>';
-					echo '<br>';
-					echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
-					echo '</div>';
-				}
-			?>
+		<div class="eqLogicThumbnail">
+			<input class="form-control" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
+			<div class="eqLogicThumbnailContainer">
+				<?php
+					foreach ($eqLogics as $eqLogic) {
+						$opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
+						echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
+						$file='plugins/eibd/core/config/devices/'.$eqLogic->getConfiguration('typeTemplate').'.png';
+						if(file_exists($file))					
+							echo '<img src="'.$file.'" height="105" width="95" />';
+						else
+							echo '<img src="' . $plugin->getPathImgIcon() . '"/>';
+						echo '<br>';
+						echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
+						echo '</div>';
+					}
+				?>
+			</div>
+
 		</div>
-		
-		<div class="eqLogicListContainer" style="display: none;">
+		<div class="eqLogicList" style="display: none;">
 			<table id="table_eqLogicList" class="table table-bordered table-condensed tablesorter">
 				<thead>
 					<tr>
@@ -92,18 +94,18 @@
 							echo '<tr class="eqLogicDisplay" data-eqLogic_id="' . $eqLogic->getId() . '">';
 							$file='plugins/eibd/core/config/devices/'.$eqLogic->getConfiguration('typeTemplate').'.png';
 							if(file_exists($file))
-								echo '<td><img src="'.$file.'" height="45"  /></td>';
+								echo '<td><div style="display: none;">'.$eqLogic->getConfiguration('typeTemplate').'</div><img src="'.$file.'" height="45"  /></td>';
 							else
 								echo '<td><img src="plugins/eibd/plugin_info/eibd_icon.png" height="45" /></td>';
 							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="name">' . $eqLogic->getName() . '</span></td>';
-							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="logicalId">' . $eqLogic->getLogicalId() . '</span></td>';
+							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="logicalId"> ' . $eqLogic->getLogicalId() . '</span></td>';
 							echo '<td>';
 							$Categorie=$eqLogic->getCategory();
 							foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
 								if ($Categorie[$key]) 
 									echo '<span class="label label-success eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '">' . $value['name'] . '</span>';
 								else
-									echo '<span class="label label-danger eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '">' . $value['name'] . '</span>';
+									echo '<span class="label label-default eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '">' . $value['name'] . '</span>';
 							}
 							echo '</td>';
 							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="object">' . $eqLogic->getObject()->getName() . '</span></td>';
