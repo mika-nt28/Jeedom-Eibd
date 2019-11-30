@@ -103,7 +103,7 @@
 								if ($Categorie[$key]) 
 									echo '<span class="label label-success eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '">' . $value['name'] . '</span>';
 								else
-									echo '<span class="label label-danger eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '">' . $value['name'] . '</span>';
+									echo '<span class="label label-dafault eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '">' . $value['name'] . '</span>';
 							}
 							echo '</td>';
 							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="object">' . $eqLogic->getObject()->getName() . '</span></td>';
