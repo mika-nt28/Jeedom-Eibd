@@ -115,7 +115,7 @@ $('.eqLogicDisplayAttr[data-l1key=category]').off().on('click', function () {
 				if(_data.category[_el.attr('data-l2key')])
 					_el.removeClass('label-danger').addClass('label-success');
 				else
-					_el.removeClass('label-success').addClass('label-danger');
+					_el.removeClass('label-success').addClass('label-default');
 			}
 		});
 	}});
