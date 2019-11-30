@@ -373,6 +373,14 @@ Stable
 
 Beta
 ----
+### 30/11/2019
+
+* Correction vue liste
+** Categorie non selectionée en couleur default
+** Selection de la categorie courante dans sont edition
+** filtre par template (id du template)
+** Correction affichage du bandeau outil
+
 ### 28/11/2019
 
 * Ajout d'une vue liste pous simplifier la configuration de base
