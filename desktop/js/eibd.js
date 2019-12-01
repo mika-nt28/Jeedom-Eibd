@@ -1,4 +1,3 @@
-
 $('.eqLogicAction[data-action=Thumbnail]').off().on('click', function () {
 	$('.eqLogicThumbnail').show();	
 	$('.eqLogicThumbnailContainer').packery();
@@ -13,7 +12,7 @@ $('.eqLogicDisplayAttr[data-l1key=name]').off().on('click', function () {
 	jeedom.eqLogic.byId({id:$(this).closest('.eqLogicDisplay').attr('data-eqLogic_id'),success:function(eqLogic){
 		bootbox.prompt({
 			size: 'small',
-			value : $('.eqLogicDisplayAttr[data-l1key=name]').value(),
+			value : _el.closest('.eqLogicDisplay').find('.eqLogicDisplayAttr[data-l1key=name]').value(),
 			title:'{{Nom de l\'équipement ?}}',
 			callback : function (result) {
 				if (result !== null) {
@@ -38,7 +37,7 @@ $('.eqLogicDisplayAttr[data-l1key=logicalId]').off().on('click', function () {
 	jeedom.eqLogic.byId({id:$(this).closest('.eqLogicDisplay').attr('data-eqLogic_id'),success:function(eqLogic){
 		bootbox.prompt({
 			size: 'small',
-			value : $('.eqLogicDisplayAttr[data-l1key=logicalId]').value(),
+			value : _el.closest('.eqLogicDisplay').find('.eqLogicDisplayAttr[data-l1key=logicalId]').value(),
 			title:'{{Identifiant de l\'équipement ?}}',
 			callback : function (result) {
 				if (result !== null) {
@@ -126,7 +125,7 @@ $('.eqLogicDisplayAttr[data-l1key=category]').off().on('click', function () {
 $('.eqLogicDisplayAttr[data-l1key=isEnable]').off().on('click', function () {
 	var _el = $(this);
 	jeedom.eqLogic.byId({id:$(this).closest('.eqLogicDisplay').attr('data-eqLogic_id'),success:function(eqLogic){
-		if(_el.text() == "OK")
+		if(_el.attr('data-enable'))
 			eqLogic.isEnable = false;
 		else
 			eqLogic.isEnable = true;
@@ -138,9 +137,9 @@ $('.eqLogicDisplayAttr[data-l1key=isEnable]').off().on('click', function () {
 			},
 			success: function (_data) {
 				if(_data.isEnable)
-					_el.removeClass('label-danger').addClass('label-success').text("{{OK}}");
+					_el.removeClass('label-danger').addClass('label-success').text("{{Oui}}");
 				else
-					_el.removeClass('label-success').addClass('label-danger').text("{{NOK}}");
+					_el.removeClass('label-success').addClass('label-danger').text("{{Non}}");
 			}
 		});
 	}});
@@ -148,7 +147,7 @@ $('.eqLogicDisplayAttr[data-l1key=isEnable]').off().on('click', function () {
 $('.eqLogicDisplayAttr[data-l1key=isVisible]').off().on('click', function () {
 	var _el = $(this);
 	jeedom.eqLogic.byId({id:$(this).closest('.eqLogicDisplay').attr('data-eqLogic_id'),success:function(eqLogic){
-		if(_el.text() == "OK")
+		if(_el.attr('data-enable'))
 			eqLogic.isVisible = false;
 		else
 			eqLogic.isVisible = true;
@@ -160,9 +159,9 @@ $('.eqLogicDisplayAttr[data-l1key=isVisible]').off().on('click', function () {
 			},
 			success: function (_data) {
 				if(_data.isVisible)
-					_el.removeClass('label-danger').addClass('label-success').text("{{OK}}");
+					_el.removeClass('label-danger').addClass('label-success').text("{{Oui}}");
 				else
-					_el.removeClass('label-success').addClass('label-danger').text("{{NOK}}");
+					_el.removeClass('label-success').addClass('label-danger').text("{{Non}}");
 			}
 		});
 	}});
