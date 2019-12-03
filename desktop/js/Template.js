@@ -59,7 +59,7 @@ function TemplateDialog(type,template){
 									});
 
 									$.each(eqLogic.cmd,function(index, value){
-										eqLogic.cmd[index].logicalId=searchSameCmd(eqLogic,index,'');
+										eqLogic.cmd[index].logicalId=searchSameCmd(_el,eqLogic,index,'');
 										if (typeof(eqLogic.cmd[index].value) !== 'undefined')
 											eqLogic.cmd[index].value="#["+_el.find('.EqLogicTemplateAttr[data-l1key=object_id] option:selected').text()+"]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
 										if(type == 'updateEqLogic')
@@ -119,12 +119,12 @@ function SaveTemplate(eqLogic){
 		}
 	});
 };
-function searchSameCmd(eqLogic,index,option){
+function searchSameCmd(_el,eqLogic,index,option){
       	var GAD='';
 	if (typeof(eqLogic.cmd[index].SameCmd) !== 'undefined'){
-		$('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
+		_el.find('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
 			if($(this).val() == eqLogic.cmd[index].SameCmd){
-				GAD =  $(option + ' .CmdEqLogicTemplateAttr[data-l1key='+$(this).attr('data-l1key')+'][data-l2key=logicalId]').val();
+				GAD =  _el.find(option + ' .CmdEqLogicTemplateAttr[data-l1key='+$(this).attr('data-l1key')+'][data-l2key=logicalId]').val();
          			return GAD;
 			}
          	});
@@ -158,7 +158,7 @@ $('body').off('.EqLogicTemplateAttr[data-l1key=template]').on('change','.EqLogic
 			$.each(data.result.cmd,function(index, value){
 				var isExist = false;
 				if(typeof value.SameCmd != "undefined") {
-					$(this).closest('.bootbox-body').find('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
+					cmds.find('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
 						if($(this).val() == value.SameCmd){
 							isExist = true;
 							return;
@@ -189,7 +189,7 @@ $('body').off('.EqLogicTemplateAttr[data-l1key=template]').on('change','.EqLogic
 					$.each(options.cmd,function(index, value){
 						var isExist = false;
 						if(typeof value.SameCmd != "undefined") {
-							$(this).closest('.bootbox-body').find('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
+							cmds.find('.CmdEqLogicTemplateAttr[data-l2key=SameCmd]').each(function(){
 								if($(this).val() == value.SameCmd){
 									isExist = true;
 									return;
