@@ -80,12 +80,13 @@
 				<thead>
 					<tr>
 						<th>{{Template}}</th>
+						<th>{{Objet parent}}</th>
 						<th>{{Nom}}</th>
 						<th>{{Adresse Physique}}</th>
 						<th>{{Catégorie}}</th>
-						<th>{{Objet parent}}</th>
 						<th>{{Activer}}</th>
 						<th>{{Visible}}</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -97,6 +98,7 @@
 								echo '<td><div style="display: none;">'.$eqLogic->getConfiguration('typeTemplate').'</div><img src="'.$file.'" height="45"  /></td>';
 							else
 								echo '<td><img src="plugins/eibd/plugin_info/eibd_icon.png" height="45" /></td>';
+							echo '<td class="eqLogicDisplayAttr" data-l1key="object">' . $eqLogic->getObject()->getHumanName(true,true) . '</td>';
 							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="name">' . $eqLogic->getName() . '</span></td>';
 							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="logicalId"> ' . $eqLogic->getLogicalId() . '</span></td>';
 							echo '<td>';
@@ -108,17 +110,18 @@
 									echo '<span class="label label-default eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '">' . $value['name'] . '</span>';
 							}
 							echo '</td>';
-							echo '<td><span class="label label-info eqLogicDisplayAttr" data-l1key="object">' . $eqLogic->getObject()->getName() . '</span></td>';
-							$active = '<span class="label label-success eqLogicDisplayAttr" data-l1key="isEnable">{{OK}}</span>';
+							$active = '<span class="label label-success eqLogicDisplayAttr" data-l1key="isEnable" data-enable="'.$eqLogic->getIsEnable().'">{{Oui}}</span>';
 							if (!$eqLogic->getIsEnable()) {
-								$active = '<span class="label label-danger eqLogicDisplayAttr" data-l1key="isEnable">{{NOK}}</span>';
+								$active = '<span class="label label-danger eqLogicDisplayAttr" data-l1key="isEnable" data-enable="'.$eqLogic->getIsEnable().'">{{Non}}</span>';
 							}
 							echo '<td>' . $active . '</td>';
-							$visible = '<span class="label label-success eqLogicDisplayAttr" data-l1key="isVisible">{{OK}}</span>';
+							$visible = '<span class="label label-success eqLogicDisplayAttr" data-l1key="isVisible" data-enable="'.$eqLogic->getIsVisible().'">{{Oui}}</span>';
 							if (!$eqLogic->getIsVisible()) {
-								$visible = '<span class="label label-danger eqLogicDisplayAttr" data-l1key="isVisible">{{NOK}}</span>';
+								$visible = '<span class="label label-danger eqLogicDisplayAttr" data-l1key="isVisible" data-enable="'.$eqLogic->getIsVisible().'">{{Non}}</span>';
 							}
 							echo '<td>' . $visible . '</td>';
+							//echo '<td><a class="btn btn-default btn-sm eqLogicAction" data-action="copy"><i class="fas fa-copy"></i> {{Dupliquer}}</a></td>';
+							echo '<td></td>';
 							echo '</tr>';
 						}
 					?>
