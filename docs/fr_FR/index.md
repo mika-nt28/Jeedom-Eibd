@@ -373,6 +373,14 @@ Stable
 
 Beta
 ----
+
+### 03/12/2019
+
+* Correction initialisation text dans la changement de vue
+* Affichage des couleur de l'objet (avec son icone)
+* Remplacement de label OK / NOK par Oui / Non sur l'activation et la visibilité de l'equipement
+* Correction de l'affichage multiple de commande identique ETS
+
 ### 30/11/2019
 
 * Correction vue liste
