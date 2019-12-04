@@ -20,7 +20,7 @@ function TemplateDialog(type,template){
 					label: "Valider",
 					className: "btn-primary",
 					callback: function () {
-						var _el =$(this).closest('.bootbox-body');
+						var _el =$(this);
 						if(_el.find('.EqLogicTemplateAttr[data-l1key=template]').value() != ""){
 							$.ajax({
 								type: 'POST',   
@@ -68,11 +68,7 @@ function TemplateDialog(type,template){
 									if(type == 'newEqLogic'){
 										if($('.EqLogicTemplateAttr[data-l1key=name]').value() != ""){	
 											eqLogic.name=_el.find('.EqLogicTemplateAttr[data-l1key=name]').value();
-											if (typeof(eqLogic.logicalId) === 'undefined')
-												eqLogic.logicalId=new Object();
 											eqLogic.logicalId=_el.find('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
-											if (typeof(eqLogic.object_id) === 'undefined')
-												eqLogic.object_id=new Object();
 											eqLogic.object_id=_el.find('.EqLogicTemplateAttr[data-l1key=object_id]').value();
 											eqLogic.configuration.typeTemplate = typeTemplate;
 											SaveTemplate(eqLogic);
@@ -130,9 +126,9 @@ function searchSameCmd(_el,eqLogic,index,option){
          	});
          	return GAD;
 	}
-	$('.CmdEqLogicTemplateAttr[data-l2key=name]').each(function(){
+	_el.find('.CmdEqLogicTemplateAttr[data-l2key=name]').each(function(){
 		if($(this).val() == eqLogic.cmd[index].name){
-			GAD =  $(option + ' .CmdEqLogicTemplateAttr[data-l1key='+$(this).attr('data-l1key')+'][data-l2key=logicalId]').val();
+			GAD =  _el.find(option + ' .CmdEqLogicTemplateAttr[data-l1key='+$(this).attr('data-l1key')+'][data-l2key=logicalId]').val();
 			return GAD;
 		}
 	});
