@@ -9,7 +9,8 @@ $('.eqLogicAction[data-action=List]').off().on('click', function () {
 });
 $('.eqLogicDisplayAttr[data-l1key=name]').off().on('click', function () {
 	var _el = $(this);
-	jeedom.eqLogic.byId({id:$(this).closest('.eqLogicDisplay').attr('data-eqLogic_id'),success:function(eqLogic){
+	var id = $(this).closest('.eqLogicDisplay').attr('data-eqLogic_id');
+	jeedom.eqLogic.byId({id:id,success:function(eqLogic){
 		bootbox.prompt({
 			size: 'small',
 			value : _el.closest('.eqLogicDisplay').find('.eqLogicDisplayAttr[data-l1key=name]').value(),
@@ -25,6 +26,7 @@ $('.eqLogicDisplayAttr[data-l1key=name]').off().on('click', function () {
 						},
 						success: function (_data) {
 							_el.text(_data.name)
+							$('.eqLogicDisplayCard[data-eqLogic_id='+id+'] .name strong').text(_data.name);
 						}
 					});
 				}
@@ -34,7 +36,8 @@ $('.eqLogicDisplayAttr[data-l1key=name]').off().on('click', function () {
 });
 $('.eqLogicDisplayAttr[data-l1key=logicalId]').off().on('click', function () {
 	var _el = $(this);
-	jeedom.eqLogic.byId({id:$(this).closest('.eqLogicDisplay').attr('data-eqLogic_id'),success:function(eqLogic){
+	var id = $(this).closest('.eqLogicDisplay').attr('data-eqLogic_id');
+	jeedom.eqLogic.byId({id:id,success:function(eqLogic){
 		bootbox.prompt({
 			size: 'small',
 			value : _el.closest('.eqLogicDisplay').find('.eqLogicDisplayAttr[data-l1key=logicalId]').value(),
@@ -59,18 +62,19 @@ $('.eqLogicDisplayAttr[data-l1key=logicalId]').off().on('click', function () {
 });
 $('.eqLogicDisplayAttr[data-l1key=object]').off().on('click', function () {
 	var _el = $(this);
-	jeedom.eqLogic.byId({id:$(this).closest('.eqLogicDisplay').attr('data-eqLogic_id'),success:function(eqLogic){
+	var id = $(this).closest('.eqLogicDisplay').attr('data-eqLogic_id');
+	jeedom.eqLogic.byId({id:id,success:function(eqLogic){
 		jeedom.object.all({success:function(objects){ 
-			var html = $('<select>');
+			var SelectHtml = $('<select>');
 			$.each(objects, function(key, object){
 				var option = $('<option>').attr('value',object.id);
-				if(_el.text() == object.name)
+				if($.trim(_el.text()) == $.trim(object.name))
 					option.attr('selected',true);
-				html.append(option.append(object.name));
+				SelectHtml.append(option.append(object.name));
 			});
 			bootbox.dialog({
 				title: "{{Nom de la nouvelle commande}}",
-				message: html,
+				message: SelectHtml,
 				buttons: {
 					"Annuler": {
 						className: "btn-default",
@@ -90,7 +94,25 @@ $('.eqLogicDisplayAttr[data-l1key=object]').off().on('click', function () {
 								$('#div_alert').showAlert({message: error.message, level: 'danger'});
 								},
 								success: function (_data) {
-									_el.text(name);
+									var object= objects[_data.object_id];
+									$.each(objects, function(key, object){
+										if (object.id == _data.object_id) {
+											var ObjectHtml=$('<span class="label">');
+											if (object.configuration.useCustomColor) {
+												ObjectHtml.css('background-color',object.display.tagColor);
+												ObjectHtml.css('color',object.display.tagTextColor);
+												ObjectHtml.append(object.display.icon);
+												ObjectHtml.append(' '+object.name);
+											}else{
+												ObjectHtml.addClass('labelObjectHuman');
+												ObjectHtml.append(object.display.icon);
+												ObjectHtml.append(' '+object.name);		
+											}
+											_el.html(ObjectHtml.prop('outerHTML'));
+											$('.eqLogicDisplayCard[data-eqLogic_id='+id+'] .name span').remove();
+											ObjectHtml.insertBefore($('.eqLogicDisplayCard[data-eqLogic_id='+id+'] .name br'));
+										}
+									});
 								}
 							});
 						}
@@ -102,8 +124,9 @@ $('.eqLogicDisplayAttr[data-l1key=object]').off().on('click', function () {
 });
 $('.eqLogicDisplayAttr[data-l1key=category]').off().on('click', function () {
 	var _el = $(this);
-	jeedom.eqLogic.byId({id:$(this).closest('.eqLogicDisplay').attr('data-eqLogic_id'),success:function(eqLogic){
-		if(_el.hasClass('label-success'))
+	var id = $(this).closest('.eqLogicDisplay').attr('data-eqLogic_id');
+	jeedom.eqLogic.byId({id:id,success:function(eqLogic){
+		if(_el.attr('data-enable') == "1")
 			eqLogic.category[_el.attr('data-l2key')] = false;
 		else
 			eqLogic.category[_el.attr('data-l2key')] = true;
@@ -118,14 +141,16 @@ $('.eqLogicDisplayAttr[data-l1key=category]').off().on('click', function () {
 					_el.removeClass('label-danger').addClass('label-success');
 				else
 					_el.removeClass('label-success').addClass('label-default');
+				_el.attr('data-enable',_data.category[_el.attr('data-l2key')]);
 			}
 		});
 	}});
 });
 $('.eqLogicDisplayAttr[data-l1key=isEnable]').off().on('click', function () {
 	var _el = $(this);
-	jeedom.eqLogic.byId({id:$(this).closest('.eqLogicDisplay').attr('data-eqLogic_id'),success:function(eqLogic){
-		if(_el.attr('data-enable'))
+	var id = $(this).closest('.eqLogicDisplay').attr('data-eqLogic_id');
+	jeedom.eqLogic.byId({id:id,success:function(eqLogic){
+		if(_el.attr('data-enable') == "1")
 			eqLogic.isEnable = false;
 		else
 			eqLogic.isEnable = true;
@@ -136,18 +161,23 @@ $('.eqLogicDisplayAttr[data-l1key=isEnable]').off().on('click', function () {
 				$('#div_alert').showAlert({message: error.message, level: 'danger'});
 			},
 			success: function (_data) {
-				if(_data.isEnable)
+				if(_data.isEnable){
 					_el.removeClass('label-danger').addClass('label-success').text("{{Oui}}");
-				else
+					$('.eqLogicDisplayCard[data-eqLogic_id='+id+']').removeClass('disableCard');
+				}else{
 					_el.removeClass('label-success').addClass('label-danger').text("{{Non}}");
+					$('.eqLogicDisplayCard[data-eqLogic_id='+id+']').addClass('disableCard');
+				}
+				_el.attr('data-enable',_data.isEnable);
 			}
 		});
 	}});
 });
 $('.eqLogicDisplayAttr[data-l1key=isVisible]').off().on('click', function () {
 	var _el = $(this);
-	jeedom.eqLogic.byId({id:$(this).closest('.eqLogicDisplay').attr('data-eqLogic_id'),success:function(eqLogic){
-		if(_el.attr('data-enable'))
+	var id = $(this).closest('.eqLogicDisplay').attr('data-eqLogic_id');
+	jeedom.eqLogic.byId({id:id,success:function(eqLogic){
+		if(_el.attr('data-enable') == "1")
 			eqLogic.isVisible = false;
 		else
 			eqLogic.isVisible = true;
@@ -162,6 +192,7 @@ $('.eqLogicDisplayAttr[data-l1key=isVisible]').off().on('click', function () {
 					_el.removeClass('label-danger').addClass('label-success').text("{{Oui}}");
 				else
 					_el.removeClass('label-success').addClass('label-danger').text("{{Non}}");
+				_el.attr('data-enable',_data.isVisible);
 			}
 		});
 	}});
