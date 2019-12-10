@@ -586,9 +586,6 @@ class eibd extends eqLogic {
 					$Commande->setSubType(Dpt::getDptActionType($Dpt));
 				$Commande->setUnite(Dpt::getDptUnite($Dpt));
 				$Commande->setConfiguration('KnxObjectType',$Dpt);
-
-				$unite=Dpt::getDptUnite($Dpt);
-				$Commande->setUnite($unite);
 			}
 			else{
 				if($Type=='info')
