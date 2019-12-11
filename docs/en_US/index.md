@@ -371,31 +371,13 @@ ChangeLog
 Stable
 ------
 
-Beta
-----
-
-### 03/12/2019
-
-* Correction initialisation text dans la changement de vue
-* Affichage des couleur de l'objet (avec son icone)
-* Remplacement de label OK / NOK par Oui / Non sur l'activation et la visibilité de l'equipement
-* Correction de l'affichage multiple de commande identique ETS
-
-### 30/11/2019
-
-* Correction vue liste
-** Categorie non selectionée en couleur default
-** Selection de la categorie courante dans sont edition
-** filtre par template (id du template)
-** Correction affichage du bandeau outil
-
-### 28/11/2019
-
-* Ajout d'une vue liste pous simplifier la configuration de base
-
-### 26/11/2019
+### 11/12/2019
 
 * Refonte de moteur de template pour simplifié la maintenance
 * Ajout du template AireZone
 * Correction de bug
 * Initialisation des valeur a la sauvegarde (si FlagInit est actif)
+* Ajout d'une vue liste pous simplifier la configuration de base
+
+Beta
+----
