@@ -27,6 +27,7 @@ $('.eqLogicDisplayAttr[data-l1key=name]').off().on('click', function () {
 						success: function (_data) {
 							_el.text(_data.name)
 							$('.eqLogicDisplayCard[data-eqLogic_id='+id+'] .name strong').text(_data.name);
+							$('#table_eqLogicList').trigger('update');
 						}
 					});
 				}
@@ -53,6 +54,7 @@ $('.eqLogicDisplayAttr[data-l1key=logicalId]').off().on('click', function () {
 						},
 						success: function (_data) {
 							_el.text(_data.logicalId)
+							$('#table_eqLogicList').trigger('update');
 						}
 					});
 				}
@@ -111,6 +113,7 @@ $('.eqLogicDisplayAttr[data-l1key=object]').off().on('click', function () {
 											_el.html(ObjectHtml.prop('outerHTML'));
 											$('.eqLogicDisplayCard[data-eqLogic_id='+id+'] .name span').remove();
 											ObjectHtml.insertBefore($('.eqLogicDisplayCard[data-eqLogic_id='+id+'] .name br'));
+											$('#table_eqLogicList').trigger('update');
 										}
 									});
 								}
@@ -134,14 +137,15 @@ $('.eqLogicDisplayAttr[data-l1key=category]').off().on('click', function () {
 			type: eqType,
 			eqLogics: [eqLogic],
 			error: function (error) {
-			$('#div_alert').showAlert({message: error.message, level: 'danger'});
+				$('#div_alert').showAlert({message: error.message, level: 'danger'});
 			},
-				success: function (_data) {
+			success: function (_data) {
 				if(_data.category[_el.attr('data-l2key')])
 					_el.removeClass('label-danger').addClass('label-success');
 				else
 					_el.removeClass('label-success').addClass('label-default');
 				_el.attr('data-enable',_data.category[_el.attr('data-l2key')]);
+				$('#table_eqLogicList').trigger('update');
 			}
 		});
 	}});
@@ -169,6 +173,7 @@ $('.eqLogicDisplayAttr[data-l1key=isEnable]').off().on('click', function () {
 					$('.eqLogicDisplayCard[data-eqLogic_id='+id+']').addClass('disableCard');
 				}
 				_el.attr('data-enable',_data.isEnable);
+				$('#table_eqLogicList').trigger('update');
 			}
 		});
 	}});
@@ -193,6 +198,7 @@ $('.eqLogicDisplayAttr[data-l1key=isVisible]').off().on('click', function () {
 				else
 					_el.removeClass('label-success').addClass('label-danger').text("{{Non}}");
 				_el.attr('data-enable',_data.isVisible);
+				$('#table_eqLogicList').trigger('update');
 			}
 		});
 	}});
