@@ -98,7 +98,7 @@
 								echo '<td><div style="display: none;">'.$eqLogic->getConfiguration('typeTemplate').'</div><img src="'.$file.'" height="45"  /></td>';
 							else
 								echo '<td><img src="plugins/eibd/plugin_info/eibd_icon.png" height="45" /></td>';
-							echo '<td class="eqLogicDisplayAttr" data-l1key="object">'
+							echo '<td class="eqLogicDisplayAttr" data-l1key="object">';
 							if(is_object($eqLogic->getObject()))
 								echo $eqLogic->getObject()->getHumanName(true,true);
 							echo '</td>';
