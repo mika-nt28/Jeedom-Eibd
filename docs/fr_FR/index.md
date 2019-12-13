@@ -370,7 +370,9 @@ ChangeLog
 
 Stable
 ------
+### 13/12/2019 
 
+* BugFix : ***erreur : Call to a member function getHumanName() on null***
 ### 11/12/2019
 
 * Refonte de moteur de template pour simplifié la maintenance
