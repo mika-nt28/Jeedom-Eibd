@@ -39,6 +39,12 @@ function TemplateDialog(type,template){
 										return;
 									}
 									var eqLogic=data.result;
+									_el.find('.EqLogicTemplateAttr[data-l1key=name]').attr("disabled","false")
+									_el.find('.EqLogicTemplateAttr[data-l1key=logicalId]').attr("disabled","false")
+									_el.find('.EqLogicTemplateAttr[data-l1key=object_id]').attr("disabled","false")
+									eqLogic.name=_el.find('.EqLogicTemplateAttr[data-l1key=name]').value();
+									eqLogic.logicalId=_el.find('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
+									eqLogic.object_id=_el.find('.EqLogicTemplateAttr[data-l1key=object_id]').value();
 									var typeTemplate=_el.find('.EqLogicTemplateAttr[data-l1key=template]').value();
 									if (typeof(eqLogic.configuration) === 'undefined')
 										eqLogic.configuration=new Object();
@@ -67,9 +73,6 @@ function TemplateDialog(type,template){
 									});
 									if(type == 'newEqLogic'){
 										if($('.EqLogicTemplateAttr[data-l1key=name]').value() != ""){	
-											eqLogic.name=_el.find('.EqLogicTemplateAttr[data-l1key=name]').value();
-											eqLogic.logicalId=_el.find('.EqLogicTemplateAttr[data-l1key=logicalId]').value();
-											eqLogic.object_id=_el.find('.EqLogicTemplateAttr[data-l1key=object_id]').value();
 											eqLogic.configuration.typeTemplate = typeTemplate;
 											SaveTemplate(eqLogic);
 										}
