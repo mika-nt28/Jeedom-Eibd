@@ -138,7 +138,7 @@ function searchSameCmd(_el,eqLogic,index,option){
 	return GAD;								
 }
 var _optionsMultiple=null;
-$('body').off('.EqLogicTemplateAttr[data-l1key=template]').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
+$('body').off('change','.EqLogicTemplateAttr[data-l1key=template]').on('change','.EqLogicTemplateAttr[data-l1key=template]', function () {
 	var cmds=$(this).closest('.bootbox-body').find('.CmdsTempates');
 	cmds.html($('<div class="option_bt">'));
 	$.ajax({
@@ -235,7 +235,7 @@ function addBtOptionTemplate(id,name){
 				.append($('<i class="fas fa-plus-circle">'))
 				.text(name)));
 	
-	$('body').off('.bt_addOptionTemplate').on('click','.bt_addOptionTemplate',function(){
+	$('body').off('click','.bt_addOptionTemplate').on('click','.bt_addOptionTemplate',function(){
 		if(_optionsMultiple.type == "eqLogic"){
 			TemplateDialog('newEqLogic',_optionsMultiple.template);
 		}
