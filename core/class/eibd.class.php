@@ -319,7 +319,7 @@ class eibd extends eqLogic {
 							$addr = array_slice($Body,12,1)[0]<<8|array_slice($Body,13,1);
 							$result[$NbLoop]['IndividualAddressGateWay']=sprintf ("%d.%d.%d", ($addr >> 12) & 0x0f, ($addr >> 8) & 0x0f, $addr & 0xff);$string='';
 							foreach (array_slice($Body,32) as $hexcar){
-								if($hexcar == 0)
+								if($hexcar == 0 || $hexcar > 170)
 									break;
 								$string .= chr($hexcar);
 							}
