@@ -1,6 +1,7 @@
 {
 	"sirene":{
 		"name":"Sirène",
+		"category": {"heating": "0", "security": "1", "energy": "0", "light": "0", "automatism": "0", "multimedia": "0", "default": "0"},
 		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
