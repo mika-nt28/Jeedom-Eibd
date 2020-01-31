@@ -1,6 +1,7 @@
 {
 	"motion":{
    		"name":"Detecteur Mouvement",
+		"category": {"heating": "0", "security": "0", "energy": "0", "light": "1", "automatism": "0", "multimedia": "0", "default": "0"},
 		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
