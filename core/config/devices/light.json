@@ -1,6 +1,7 @@
 {
 	"light":{
 		"name":"Lumière",
+		"category": {heating: "0", security: "0", energy: "0", light: "1", automatism: "0", multimedia: "0", default: "0"},
 		"Synonyme":["Dimmer","Varriateur","Couleur ambiance","Ambiance"],
 		"isVisible":"1",
 		"isEnable":"1",
