@@ -2,13 +2,22 @@
 	"light":{
 		"name":"Lumière",
 		"category": {"heating": "0", "security": "0", "energy": "0", "light": "1", "automatism": "0", "multimedia": "0", "default": "0"},
-		"Synonyme":["Dimmer","Varriateur","Couleur ambiance","Ambiance"],
+		"Synonyme":["Light","Lights","Dimmer","Variateur","Couleur ambiance","Ambiance"],
 		"isVisible":"1",
 		"isEnable":"1",
+        "category":{
+			"heating":"0",
+			"security":"0",
+			"energy":"0",
+			"light":"1",
+			"automatism":"0",
+			"multimedia":"0",
+			"default":"0"
+		},
 		"cmd":[
           		{
 				"name":"Etat",
-				"Synonyme":[],
+				"Synonyme":["State"],
 				"type":"info",
 				"subType":"string",
 				"isHistorized":"0",
@@ -84,7 +93,7 @@
 				"cmd":[
 					{
 						"name":"Luminosité",
-						"Synonyme":[],
+						"Synonyme":["Luminosity","Brightness"],
 						"type":"info",
 						"subType":"numeric",
 						"isHistorized":"0",
@@ -103,7 +112,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Augmenter",
-						"Synonyme":[],	
+						"Synonyme":["Increase","Brightner"],	
 						"SameCmd":"Augmenter|Diminuer",
 						"type":"action",
 						"subType":"other",
@@ -127,7 +136,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Diminuer",
-						"Synonyme":[],
+						"Synonyme":["Decrease","Darker"],
 						"SameCmd":"Augmenter|Diminuer",
 						"type":"action",
 						"subType":"other",
@@ -151,7 +160,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Variation",
-						"Synonyme":[],
+						"Synonyme":["Dimmer"],
 						"type":"action",
 						"subType":"slider",
 						"isHistorized":"0",
@@ -183,7 +192,7 @@
 				"cmd":[
 					{
 						"name":"Etat Couleur",
-						"Synonyme":[],
+						"Synonyme":["State Color","Color State"],
 						"type":"info",
 						"subType":"color",
 						"isHistorized":"0",
@@ -202,7 +211,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Couleur",
-						"Synonyme":[],
+						"Synonyme":["Color"],
 						"type":"action",
 						"subType":"color",
 						"isHistorized":"0",
@@ -447,7 +456,7 @@
 						},
 						"isVisible":"0"
 					},{
-						"name":"Varriation de couleur",
+						"name":"Variation de couleur",
 						"Synonyme":[],
 						"type":"action",
 						"subType":"other",
