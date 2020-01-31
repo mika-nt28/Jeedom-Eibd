@@ -1,6 +1,7 @@
 {
 	"barrier":{
 		"name":"Portail",
+		"category": {"heating": "0", "security": "0", "energy": "0", "light": "0", "automatism": "1", "multimedia": "0", "default": "0"},
 		"Synonyme":["Portillon","barriere"],
 		"isVisible":"1",
 		"isEnable":"1",
