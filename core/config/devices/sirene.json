@@ -5,7 +5,7 @@
 		"Synonyme":["Siren"],
 		"isVisible":"1",
 		"isEnable":"1",
-        "category":{
+		"category":{
 			"heating":"0",
 			"security":"1",
 			"energy":"0",
