@@ -2,13 +2,22 @@
 	"lock":{
 		"name":"Serrure",
 		"category": {"heating": "0", "security": "1", "energy": "0", "light": "0", "automatism": "0", "multimedia": "0", "default": "0"},
-		"Synonyme":["Verrou"],
+		"Synonyme":["Verrou","Lock"],
 		"isVisible":"1",
 		"isEnable":"1",
+        "category":{
+			"heating":"0",
+			"security":"1",
+			"energy":"0",
+			"light":"0",
+			"automatism":"0",
+			"multimedia":"0",
+			"default":"0"
+		},
 		"cmd":[
 			{
 				"name":"Etat",
-				"Synonyme":[],
+				"Synonyme":["State"],
 				"type":"info",
 				"subType":"string",
 				"isHistorized":"0",
@@ -30,7 +39,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Ouvrir",
-				"Synonyme":[],
+				"Synonyme":["Open"],
 				"SameCmd":"Ouvrir|Fermer",
 				"type":"action",
 				"subType":"other",
@@ -54,7 +63,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Fermer",
-				"Synonyme":[],
+				"Synonyme":["Close"],
 				"SameCmd":"Ouvrir|Fermer",
 				"type":"action",
 				"subType":"other",
