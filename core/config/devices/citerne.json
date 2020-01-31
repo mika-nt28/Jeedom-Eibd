@@ -1,6 +1,7 @@
 {
 	"citerne":{
 		"name":"Citerne eau de pluie",
+		"category": {"heating": "0", "security": "0", "energy": "0", "light": "0", "automatism": "0", "multimedia": "0", "default": "1"},
 		"Synonyme":["Citerne","Puie"],
 		"isVisible":"1",
 		"isEnable":"1",
