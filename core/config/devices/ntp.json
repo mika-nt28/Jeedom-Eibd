@@ -1,6 +1,7 @@
 {
 	"ntp":{
 		"name":"Synchro NTP",
+		"category": {"heating": "0", "security": "0", "energy": "0", "light": "0", "automatism": "0", "multimedia": "0", "default": "1"},
 		"Synonyme":["Horloge"],
 		"isVisible":"0",
 		"isEnable":"1",

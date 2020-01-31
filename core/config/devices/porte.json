@@ -1,10 +1,19 @@
 {
-	"fenetre":{
-		"name":"Fenetre",
+	"porte":{
+		"name":"Porte",
 		"category": {"heating": "0", "security": "0", "energy": "0", "light": "0", "automatism": "1", "multimedia": "0", "default": "0"},
-		"Synonyme":["Windows","Window"],
+		"Synonyme":["Door","Doors"],
 		"isVisible":"1",
 		"isEnable":"1",
+        "category":{
+			"heating":"0",
+			"security":"1",
+			"energy":"0",
+			"light":"0",
+			"automatism":"0",
+			"multimedia":"0",
+			"default":"0"
+		},
 		"cmd":[
 			{
 				"name":"valeur",
@@ -24,8 +33,8 @@
 					"subTypeAuto":"1"
 				},
 				"template":{
-					"dashboard":"window",
-					"mobile":"window"
+					"dashboard":"door",
+					"mobile":"door"
 				},
 				"isVisible":"1"
 			}

@@ -1,13 +1,23 @@
 {
 	"shutter": {
 		"name":"Volet",
-		"Synonyme":["BSO"],
+		"category": {"heating": "0", "security": "0", "energy": "0", "light": "0", "automatism": "1", "multimedia": "0", "default": "0"},
+		"Synonyme":["Shutter","BSO","Roller Shutter","Shutters"],
 		"isVisible":"1",
 		"isEnable":"1",
+        "category":{
+			"heating":"0",
+			"security":"1",
+			"energy":"0",
+			"light":"0",
+			"automatism":"0",
+			"multimedia":"0",
+			"default":"0"
+		},
 		"cmd":[
 			{
 				"name":"Déplacement",
-				"Synonyme":[],
+				"Synonyme":["Move"],
 				"type":"info",
 				"subType":"binary",
 				"isHistorized":"0",
@@ -26,7 +36,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Hauteur",
-				"Synonyme":[],
+				"Synonyme":["height"],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"0",
@@ -67,7 +77,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Montée",
-				"Synonyme":[],
+				"Synonyme":["Up"],
 				"SameCmd":"Montée|Descendre",
 				"type":"action",
 				"subType":"other",
@@ -94,7 +104,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Stop",
-				"Synonyme":[],
+				"Synonyme":["Stop"],
 				"type":"action",
 				"subType":"other",
 				"isHistorized":"1",
@@ -120,7 +130,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Descendre",
-				"Synonyme":[],
+				"Synonyme":["Down"],
 				"SameCmd":"Montée|Descendre",
 				"type":"action",
 				"subType":"other",
@@ -147,7 +157,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Position",
-				"Synonyme":[],
+				"Synonyme":["Position"],
 				"type":"action",
 				"subType":"slider",
 				"isHistorized":"1",
@@ -181,7 +191,7 @@
 				"cmd":[
 					{
 						"name":"Lames Etat",
-						"Synonyme":[],
+						"Synonyme":["Blade state"],
 						"type":"info",
 						"subType":"numeric",
 						"isHistorized":"0",
@@ -207,7 +217,7 @@
 						"isVisible":"1"
 					},{
 						"name":"Lames Commande",
-						"Synonyme":[],
+						"Synonyme":["BSO"],
 						"type":"action",
 						"subType":"slider",
 						"isHistorized":"1",
@@ -229,7 +239,7 @@
 						"isVisible":"1"
 					},{
 						"name":"Lames Montée",
-						"Synonyme":[],
+						"Synonyme":["BSO Up"],
 						"type":"action",
 						"subType":"slider",
 						"isHistorized":"0",
@@ -254,7 +264,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Lames Decente",
-						"Synonyme":[],
+						"Synonyme":["BSO down"],
 						"type":"action",
 						"subType":"slider",
 						"isHistorized":"1",

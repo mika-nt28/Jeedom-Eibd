@@ -1,13 +1,14 @@
 {
 	"garage":{
 		"name":"Garage",
-		"Synonyme":[],
+		"category": {"heating": "0", "security": "0", "energy": "0", "light": "0", "automatism": "1", "multimedia": "0", "default": "0"},
+		"Synonyme":["Garage","Park"],
 		"isVisible":"1",
 		"isEnable":"1",
 		"cmd":[
 			{
 				"name":"Etat",
-				"Synonyme":[],
+				"Synonyme":["State"],
 				"type":"info",
 				"subType":"string",
 				"isHistorized":"0",
@@ -30,7 +31,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Ouvrir",
-				"Synonyme":[],
+				"Synonyme":["Open"],
 				"SameCmd":"Ouvrir|Fermer",
 				"type":"action",
 				"subType":"other",
@@ -54,7 +55,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Fermer",
-				"Synonyme":[],
+				"Synonyme":["Close"],
 				"SameCmd":"Ouvrir|Fermer",
 				"type":"action",
 				"subType":"other",
