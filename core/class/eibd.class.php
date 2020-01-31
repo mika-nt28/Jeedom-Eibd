@@ -157,6 +157,11 @@ class eibd extends eqLogic {
 		if (!is_array($device) || !isset($device['cmd'])) {
 			return true;
 		}
+		if (isset($device['category'])) {
+			foreach ($device['category'] as $key => $value) {
+				$this->setCategory($key, $value);
+			}
+		}
 		if (isset($device['configuration'])) {
 			foreach ($device['configuration'] as $key => $value) {
 				$this->setConfiguration($key, $value);
