@@ -1,6 +1,7 @@
 {
 	"airzone":{
 		"name":"AirZone",
+		"category": {"heating": "1", "security": "0", "energy": "0", "light": "", "automatism": "0", "multimedia": "0", "default": "0"},
 		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
