@@ -1,14 +1,24 @@
 {
     "thermostat": {
 		"name":"Thermostat",
+		"category": {"heating": "1", "security": "0", "energy": "0", "light": "0", "automatism": "0", "multimedia": "0", "default": "0"},
 		"Synonyme":[],
 		"isVisible":"1",
 		"isEnable":"1",
+        "category":{
+			"heating":"1",
+			"security":"0",
+			"energy":"0",
+			"light":"0",
+			"automatism":"0",
+			"multimedia":"0",
+			"default":"0"
+		},
 		"cmd":
 		[
 			{
 				"name":"Etat",
-				"Synonyme":[],
+				"Synonyme":["State"],
 				"type":"info",
 				"subType":"binary",
 				"isHistorized":"1",
@@ -35,7 +45,7 @@
 				"isVisible":"1"
 			},{
 				"name":"Température ambiante",
-				"Synonyme":["Température réel"],
+				"Synonyme":["Température réel","Real Temperature"],
 				"type":"info",
 				"subType":"numeric",
 				"isHistorized":"1",
@@ -184,7 +194,7 @@
 				"cmd":[
 					{
 						"name":"Etat Verrouillage",
-						"Synonyme":["Verrouillage"],
+						"Synonyme":["Verrouillage","State lock"],
 						"type":"info",
 						"subType":"binary",
 						"isHistorized":"1",
@@ -203,7 +213,7 @@
 						"isVisible":"0"
 					},{
 						"name":"Activer le verrouillage",
-						"Synonyme":["Verrouillage"],
+						"Synonyme":["Verrouillage","Enable Lock"],
 						"SameCmd":"Activer le verrouillage|Désactiver le verrouillage",
 						"type":"action",
 						"subType":"other",
@@ -223,7 +233,7 @@
 						"isVisible":"1"
 					},{
 						"name":"Désactiver le verrouillage",
-						"Synonyme":["Verrouillage"],
+						"Synonyme":["Verrouillage","Disable Lock"],
 						"SameCmd":"Activer le verrouillage|Désactiver le verrouillage",
 						"type":"action",
 						"subType":"other",
