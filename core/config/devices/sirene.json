@@ -2,13 +2,22 @@
 	"sirene":{
 		"name":"Sirène",
 		"category": {"heating": "0", "security": "1", "energy": "0", "light": "0", "automatism": "0", "multimedia": "0", "default": "0"},
-		"Synonyme":[],
+		"Synonyme":["Siren"],
 		"isVisible":"1",
 		"isEnable":"1",
+        "category":{
+			"heating":"0",
+			"security":"1",
+			"energy":"0",
+			"light":"0",
+			"automatism":"0",
+			"multimedia":"0",
+			"default":"0"
+		},
 		"cmd":[
 			{
 				"name":"Etat",
-				"Synonyme":[],
+				"Synonyme":["State"],
 				"type":"info",
 				"subType":"string",
 				"isHistorized":"0",
@@ -30,7 +39,7 @@
 				"isVisible":"0"
 			},{
 				"name":"On",
-				"Synonyme":[],
+				"Synonyme":["on"],
 				"SameCmd":"On|Off",
 				"type":"action",
 				"subType":"other",
@@ -54,7 +63,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Off",
-				"Synonyme":[],
+				"Synonyme":["off"],
 				"SameCmd":"On|Off",
 				"type":"action",
 				"subType":"other",
