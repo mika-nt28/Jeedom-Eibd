@@ -1,13 +1,23 @@
 {
 	"switch":{
-		"name":"On/Off",
+		"name":"Interrupteur",
 		"category": {"heating": "0", "security": "0", "energy": "0", "light": "0", "automatism": "1", "multimedia": "0", "default": "0"},
+		"Synonyme":["Switch","On/Off"],
 		"isVisible":"1",
 		"isEnable":"1",
+        "category":{
+			"heating":"0",
+			"security":"0",
+			"energy":"0",
+			"light":"1",
+			"automatism":"0",
+			"multimedia":"0",
+			"default":"0"
+		},
 		"cmd":[
 			{
 				"name":"Etat",
-				"Synonyme":[],
+				"Synonyme":["State"],
 				"type":"info",
 				"subType":"string",
 				"isHistorized":"0",
@@ -26,7 +36,7 @@
 				"isVisible":"0"
 			},{
 				"name":"On",
-				"Synonyme":[],
+				"Synonyme":["on"],
 				"SameCmd":"On|Off",
 				"type":"action",
 				"subType":"other",
@@ -47,7 +57,7 @@
 				"isVisible":"0"
 			},{
 				"name":"Off",
-				"Synonyme":[],
+				"Synonyme":["off"],
 				"SameCmd":"On|Off",
 				"type":"action",
 				"subType":"other",
