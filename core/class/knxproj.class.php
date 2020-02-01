@@ -274,7 +274,8 @@ class knxproj {
 				list($AdressePhysique,$DataPointType)=$this->updateDeviceInfo($GroupId,$GroupName,$AdresseGroupe);				
 				$Level['('.$AdresseGroupe.') '.$GroupName]=array('Id' => $GroupId ,'AdressePhysique' => $AdressePhysique ,'DataPointType' => $DataPointType,'AdresseGroupe' => $AdresseGroupe);
 			}elseif($GroupRange->getName() == 'GroupAddressRef'){	
-				$Level = $this->getGroupAddresse($this->xml_attribute($GroupRange, 'RefId'));
+				foreach($this->getGad($this->xml_attribute($GroupRange, 'RefId')) as $GroupName => $GroupParam)
+	              $Level[$GroupName] = $GroupParam;
 			}elseif($GroupRange->getName() == 'DeviceInstanceRef'){	
 				$Level = $this->getDeviceGad($Level,$this->xml_attribute($GroupRange, 'RefId'));    
 			}else{
@@ -284,17 +285,23 @@ class knxproj {
 		}
 		return $Level;
 	}
-	private function getGroupAddresse($id,$level=null){	
+	private function getGad($id,$level=null,$loop=0){	
 		if($level == null)
 			$level = $this->GroupAddresses;
-		foreach($level as $GroupAddresse){
-			if(strrpos($id,$GroupAddresse['Id']) !== false){
-				return $GroupAddresse;
-			}elseif(is_array($GroupAddresse)){
-				$this->getGroupAddresse($id,$GroupAddresse);
+		$loop++;
+		$Gad = null;
+		foreach($level as $NameGroup => $GroupAddresse){
+			if(isset($GroupAddresse['Id'])){
+				$loop--;
+				if(strrpos($id,$GroupAddresse['Id']) !== false){
+					$Gad[$NameGroup] = $GroupAddresse;
+					break;
+				}
+			}elseif(is_array($GroupAddresse) && $loop < 3 && $Gad == null){
+				$Gad = $this->getGad($id,$GroupAddresse,$loop);
 			}
 		}
-		return null;
+		return $Gad;
 	}
 	private function getDeviceGad($DeviceGad,$id){	
 		if($DeviceGad == null)
