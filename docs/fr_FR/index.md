@@ -645,3 +645,4 @@ Beta
  * Synonmyme anglais sur les templates
  * Ajout de la categorie sur les templates
  * Correction bug creation automatique unitaire des objets
+ * Recherche des gad dans les groupes de la vue batiment
