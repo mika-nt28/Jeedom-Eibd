@@ -404,7 +404,7 @@ function CreateArboressance(data, Arboressance, first){
 		})
 		.on('click','.createObject',function(e){
 			e.stopPropagation();
-			CreateObject($(this).parents('.Level').find('label:first').text());
+			CreateObject($(this).parents('.Level:first').find('label:first').text());
 		})
 		.on('click','.createTemplate',function(e){
 			e.stopPropagation();
