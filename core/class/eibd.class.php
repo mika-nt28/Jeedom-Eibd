@@ -567,23 +567,20 @@ class eibd extends eqLogic {
 	}
 	public function AddCommande($Name,$_logicalId,$Type="info", $Dpt='') {
 		$Commande = $this->getCmd(null,$_logicalId);
-		if (!is_object($Commande))
-		{
+		if (!is_object($Commande)){
 			$VerifName=$Name;
-			$Commande = new EibdCmd();
+			$Commande = new eibdCmd();
 			$Commande->setId(null);
 			$Commande->setLogicalId($_logicalId);
 			$Commande->setEqLogic_id($this->getId());
 			$count=0;
-			while (is_object(cmd::byEqLogicIdCmdName($this->getId(),$VerifName)))
-			{
+			while (is_object(cmd::byEqLogicIdCmdName($this->getId(),$VerifName))){
 				$count++;
 				$VerifName=$Name.'('.$count.')';
 			}
 			$Commande->setName($VerifName);
 			$Commande->setIsVisible(1);
 			$Commande->setType($Type);
-
 			if ($Dpt!=''){
 				if($Type=='info')
 					$Commande->setSubType(Dpt::getDptInfoType($Dpt));
@@ -591,8 +588,7 @@ class eibd extends eqLogic {
 					$Commande->setSubType(Dpt::getDptActionType($Dpt));
 				$Commande->setUnite(Dpt::getDptUnite($Dpt));
 				$Commande->setConfiguration('KnxObjectType',$Dpt);
-			}
-			else{
+			}else{
 				if($Type=='info')
 					$Commande->setSubType('string');
 				else

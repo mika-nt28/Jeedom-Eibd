@@ -691,7 +691,7 @@ class Dpt{
 				}
 			next($All_DPT);
 			}
-		return ;
+		return 'other';
 		}
 	public function getDptInfoType($dpt)	{
 		$All_DPT=self::All_DPT();
@@ -705,7 +705,7 @@ class Dpt{
 				}
 			next($All_DPT);
 			}
-		return ;
+		return 'string';
 		}
 	public function getDptGenericType($dpt)	{
 		$All_DPT=self::All_DPT();
