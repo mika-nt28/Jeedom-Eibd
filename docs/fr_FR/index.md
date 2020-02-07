@@ -639,8 +639,12 @@ Stable
 
 Beta
 ----
+
+### 07/02/2019
+
+* Correction valeur de sous-type automatique, lors d'une creation automatique de commande, si le dpt n'est pas configurer sous jeedom
  
- ### 01/02/2020
+### 01/02/2020
  
  * Synonmyme anglais sur les templates
  * Ajout de la categorie sur les templates
