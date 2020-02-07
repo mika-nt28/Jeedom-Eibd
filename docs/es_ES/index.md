@@ -640,8 +640,13 @@ Stable
 Beta
 ----
 
- ### 01/02/2020
+### 07/02/2019
+
+* Correction valeur de sous-type automatique, lors d'une creation automatique de commande, si le dpt n'est pas configurer sous jeedom
+
+### 01/02/2020
 
  * Synonmyme anglais sur les templates
  * Ajout de la categorie sur les templates
  * Correction bug creation automatique unitaire des objets
+ * Recherche des gad dans les groupes de la vue batiment
