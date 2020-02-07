@@ -75,12 +75,6 @@ class autoCreate {
 			}
 		}   
 	}
-	private function checkLevel($search){
-		foreach($this->options as $level =>$options){
-			if($options == $search)
-				return $level;
-		}
-	}
 	private function createObject($Name,$Father){
 		$Object = jeeObject::byName($Name); 
 		if (!is_object($Object)) {
