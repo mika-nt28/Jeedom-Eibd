@@ -293,7 +293,8 @@ class knxproj {
 		foreach($level as $NameGroup => $GroupAddresse){
 			if(isset($GroupAddresse['Id'])){
 				$loop--;
-				if(strrpos($id,$GroupAddresse['Id']) !== false){
+				//if(strrpos($id,$GroupAddresse['Id']) !== false){
+				if($id == $GroupAddresse['Id']){
 					$Gad[$NameGroup] = $GroupAddresse;
 					break;
 				}
