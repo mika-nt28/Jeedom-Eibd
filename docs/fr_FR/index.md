@@ -625,6 +625,16 @@ ChangeLog
 
 Stable
 ------
+
+### 17/03/2020
+
+* Correction valeur de sous-type automatique, lors d'une creation automatique de commande, si le dpt n'est pas configurer sous jeedom
+* Synonmyme anglais sur les templates
+* Ajout de la categorie sur les templates
+* Correction bug creation automatique unitaire des objets
+* Recherche des gad dans les groupes de la vue batiment
+* Bugfix DPT 19.xxx
+
 ### 13/12/2019 
 
 * BugFix : ***erreur : Call to a member function getHumanName() on null***
@@ -639,14 +649,3 @@ Stable
 
 Beta
 ----
-
-### 07/02/2019
-
-* Correction valeur de sous-type automatique, lors d'une creation automatique de commande, si le dpt n'est pas configurer sous jeedom
- 
-### 01/02/2020
- 
- * Synonmyme anglais sur les templates
- * Ajout de la categorie sur les templates
- * Correction bug creation automatique unitaire des objets
- * Recherche des gad dans les groupes de la vue batiment
