@@ -136,14 +136,18 @@ class Dpt{
 				$data= array(($control << 8) & 0x80 | $value & 0x3f);
 				break;
 			case "19": 
-				$value   = new DateTime($value);
-				$wDay = $value->format('N');
-				$hour = $value->format('H');
-				$min = $value->format('i');
-				$sec = $value->format('s');
-				$day = $value->format('d');
-				$month = $value->format('m');
-				$year = $value->format('Y')-1900;
+				$date = new DateTime(); 
+				if($value != ''){
+					$value = strtotime(str_replace('/', '-', $value)); 
+					$date->setTimestamp($value);
+				}
+				$wDay = $date->format('N');
+				$hour = $date->format('H');
+				$min = $date->format('i');
+				$sec = $date->format('s');
+				$day = $date->format('d');
+				$month = $date->format('m');
+				$year = $date->format('Y')-1900;
 				$data = array($year,$month & 0x0f ,$day & 0x1f,($wDay << 5 ) & 0xe0| $hour  & 0x1f , $min  & 0x3f , $sec & 0x3f,0x00,0x00);
 			break;
 			case "20":
