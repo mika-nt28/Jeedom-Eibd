@@ -11,6 +11,6 @@
 	"require" : "3.3.16",
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile","v4"],
 	"category" : "automation protocol",
- 	"documentation" : "http://mika-nt28.github.io/Documentations/eibd/",
-	"changelog" : "https://mika-nt28.github.io/Documentations/eibd/changelog"
+ 	"documentation" : "http://mika-nt28.github.io/Documentations/eibd/#language#/",
+	"changelog" : "https://mika-nt28.github.io/Documentations/eibd/#language#/changelog"
 }
