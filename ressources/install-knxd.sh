@@ -47,7 +47,7 @@ sudo mkdir /usr/local/src/knxd
 cd /usr/local/src/knxd
 sudo git clone https://github.com/knxd/knxd.git
 cd knxd
-git checkout stable
+git checkout deb
 echo 40 > /tmp/compilation_eibd_in_progress
 sudo dpkg-buildpackage -b -uc -d
 echo 80 > /tmp/compilation_eibd_in_progress
