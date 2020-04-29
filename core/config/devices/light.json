@@ -56,7 +56,7 @@
 					"subTypeAuto":"1",
 					"noBatterieCheck":"0"
 				},
-				template:{
+				"template":{
 					"dashboard": "core::light",
 					"mobile": "core::light"
 				},
@@ -84,7 +84,7 @@
 					"subTypeAuto":"1",
 					"noBatterieCheck":"0"
 				},
-				template:{
+				"template":{
 					"dashboard": "core::light",
 					"mobile": "core::light"
 				},
