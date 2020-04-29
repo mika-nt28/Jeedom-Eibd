@@ -56,6 +56,10 @@
 					"subTypeAuto":"1",
 					"noBatterieCheck":"0"
 				},
+				template:{
+					"dashboard": "core::light",
+					"mobile": "core::light"
+				},
 				"display":{
 					"generic_type":"LIGHT_ON"
 				},
@@ -79,6 +83,10 @@
 					"inverse":"0",
 					"subTypeAuto":"1",
 					"noBatterieCheck":"0"
+				},
+				template:{
+					"dashboard": "core::light",
+					"mobile": "core::light"
 				},
 				"display":{
 					"generic_type":"LIGHT_OFF"
