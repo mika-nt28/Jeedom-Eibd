@@ -97,7 +97,7 @@
 				},
 				"template":"",
 				"display":{
-					"icon":"<i class=\"fa fa-arrow-up\"><\/i>",
+					"icon":"<i class=\"fas fa-arrow-up\"><\/i>",
 					"generic_type":"FLAP_UP"
 				},
 				"value":"Déplacement",
@@ -123,7 +123,7 @@
 				},
 				"template":"",
 				"display":{
-					"icon":"<i class=\"fa fa-stop\"><\/i>",
+					"icon":"<i class=\"fas fa-stop\"><\/i>",
 					"generic_type":"FLAP_STOP"
 				},
 				"value":"Stop - status",
@@ -150,7 +150,7 @@
 				},
 				"template":"",
 				"display":{
-					"icon":"<i class=\"fa fa-arrow-down\"><\/i>",
+					"icon":"<i class=\"fas fa-arrow-down\"><\/i>",
 					"generic_type":"FLAP_DOWN"
 				},
 				"value":"Déplacement",
