@@ -117,6 +117,9 @@
 							"subTypeAuto":"1",
 							"noBatterieCheck":"0"
 						},
+						"display":{
+							"generic_type":"LIGHT_STATE"
+						},
 						"isVisible":"0"
 					},{
 						"name":"Augmenter",
@@ -215,6 +218,9 @@
 							"inverse":"0",
 							"subTypeAuto":"1",
 							"noBatterieCheck":"0"
+						},
+						"display":{
+							"generic_type":"LIGHT_COLOR"
 						},
 						"isVisible":"0"
 					},{

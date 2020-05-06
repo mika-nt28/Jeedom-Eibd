@@ -565,7 +565,7 @@ class eibd extends eqLogic {
 		$Equipement->save();
 		return $Equipement;
 	}
-	public function AddCommande($Name,$_logicalId,$Type="info", $Dpt='') {
+	public function AddCommande($Name,$_logicalId,$Type="info", $Dpt='', $Configuration = null) {
 		$Commande = $this->getCmd(null,$_logicalId);
 		if (!is_object($Commande)){
 			$VerifName=$Name;
@@ -595,6 +595,10 @@ class eibd extends eqLogic {
 					$Commande->setSubType('other');
 				$Commande->setConfiguration('KnxObjectType','1.xxx');
 				$Commande->setUnite('');
+			}
+			if(is_array($Configuration)){
+				foreach($Configuration as $type => $value)
+					$Commande->setConfiguration($type,$value);
 			}
 			$Commande->save();
 		}
