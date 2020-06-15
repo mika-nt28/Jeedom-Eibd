@@ -687,6 +687,7 @@ class eibd extends eqLogic {
 					if($Commande->getConfiguration('FlagTransmit') && $Commande->getValue() != ''){
 						$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $Commande->getId()));
 						if (!is_object($listener)){
+							log::add('eibd','debug',$Commande->getHumanName().' Un probleme sur cette commande provoque l\'arret du demon');
 							$return['state'] = 'nok';
 							return $return;
 						}
