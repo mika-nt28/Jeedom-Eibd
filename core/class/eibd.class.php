@@ -687,6 +687,7 @@ class eibd extends eqLogic {
 					if($Commande->getConfiguration('FlagTransmit') && $Commande->getValue() != ''){
 						$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $Commande->getId()));
 						if (!is_object($listener)){
+							log::add('eibd','debug',$Commande->getHumanName().' Un probleme sur cette commande provoque l\'arret du demon');
 							$return['state'] = 'nok';
 							return $return;
 						}
@@ -833,9 +834,9 @@ class eibdCmd extends cmd {
 		if ($this->getConfiguration('FlagInit')){
 			$BusValue = $this->execute();
 			if($this->getType() == 'info')			
-				log::add('eibd', 'debug', $this->getHumanName().'[Initialisation] Lecture du GAD: '.$this->getLogicalId().' = '.$BusValue);
+				log::add('eibd', 'info', $this->getHumanName().'[Initialisation] Lecture du GAD: '.$this->getLogicalId().' = '.$BusValue);
 			else
-				log::add('eibd', 'debug', $this->getHumanName().'[Initialisation] Envoi sur le GAD: '.$this->getLogicalId());
+				log::add('eibd', 'info', $this->getHumanName().'[Initialisation] Envoi sur le GAD: '.$this->getLogicalId());
 		}
 		$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $this->getId()));
 		if($this->getConfiguration('FlagTransmit') && $this->getValue() != ''){
@@ -900,7 +901,7 @@ class eibdCmd extends cmd {
 						$ActionValue = $this->getOtherActionValue();
 					break;
 				}
-				log::add('eibd','debug',$this->getHumanName().' Valeur a envoyer '.$ActionValue);
+				log::add('eibd','debug',$this->getHumanName().'[Write] Valeur a envoyer '.$ActionValue);
 				$data= Dpt::DptSelectEncode($dpt, $ActionValue, $inverse,$Option);
 				if($ga != '' && $data !== false){
 					if(is_array($data[0])){
@@ -920,24 +921,29 @@ class eibdCmd extends cmd {
 				usleep(config::byKey('SendSleep','eibd')*1000);
 			break;
 			case 'info':
-				try {
-					$DataBus = eibd::EibdRead($ga);
-				} catch (Exception $exception) {
-					$DataBus = false;
+				if($this->getConfiguration('FlagWrite')){
+					return $this->execCmd();
+				}else{
+					try {
+						log::add('eibd','debug',$this->getHumanName().'[Read] Interrogation du bus');
+						$DataBus = eibd::EibdRead($ga);
+					} catch (Exception $exception) {
+						$DataBus = false;
+					}
+					if($DataBus === false){
+						message::add('info',$this->getHumanName().'[Read]: Aucune réponse','',$ga);
+						return;
+					}
+					$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
+					if($BusValue !== false)
+						$this->getEqLogic()->checkAndUpdateCmd($ga,$BusValue);
+					return $BusValue;
 				}
-				if($DataBus === false){
-					message::add('info',$this->getHumanName().'[READ]: Aucune réponse','',$ga);
-					return;
-				}
-				$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
-				if($BusValue !== false)
-					$this->getEqLogic()->checkAndUpdateCmd($ga,$BusValue);
-				return $BusValue;
 			break;
 		}
 	}
 	public function SendReply(){
-		log::add('eibd', 'info',$this->getHumanName().'[Lecture]: Demande de valeur sur l\adresse de groupe : '.$this->getLogicalId());			
+		log::add('eibd', 'info',$this->getHumanName().'[Réponse]: Demande de valeur sur l\adresse de groupe : '.$this->getLogicalId());			
 		$valeur='';
 		$unite='';
 		$dpt=$this->getConfiguration('KnxObjectType');
@@ -950,14 +956,14 @@ class eibdCmd extends cmd {
 			if(is_object($Listener)) {
 				$inverse=$Listener->getConfiguration('inverse');
 				if($Listener->getLogicalId() == $this->getLogicalId()){
-					log::add('eibd', 'debug', $this->getHumanName().'[Lecture]: Impossible de répondre avec le même GAD');
+					log::add('eibd', 'debug', $this->getHumanName().'[Réponse]: Impossible de répondre avec le même GAD');
 					return false;
 				}
 			}
 			$valeur = $this->getOtherActionValue();
 			if($valeur != false && $valeur != ''){
 				$data= Dpt::DptSelectEncode($dpt, $valeur, $inverse,$Option);
-				log::add('eibd', 'info',$this->getHumanName().'[Reponse]: Réponse avec la valeur : '.$valeur.$unite);
+				log::add('eibd', 'info',$this->getHumanName().'[Réponse]: Réponse avec la valeur : '.$valeur.$unite);
 				eibd::EibdReponse($this->getLogicalId(), $data);
 			}
 		}else{
