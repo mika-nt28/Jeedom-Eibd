@@ -921,20 +921,24 @@ class eibdCmd extends cmd {
 				usleep(config::byKey('SendSleep','eibd')*1000);
 			break;
 			case 'info':
-				try {
-					log::add('eibd','debug',$this->getHumanName().'[Read] Interrogation du bus');
-					$DataBus = eibd::EibdRead($ga);
-				} catch (Exception $exception) {
-					$DataBus = false;
+				if($this->getConfiguration('FlagWrite')){
+					return $this->execCmd();
+				}else{
+					try {
+						log::add('eibd','debug',$this->getHumanName().'[Read] Interrogation du bus');
+						$DataBus = eibd::EibdRead($ga);
+					} catch (Exception $exception) {
+						$DataBus = false;
+					}
+					if($DataBus === false){
+						message::add('info',$this->getHumanName().'[Read]: Aucune réponse','',$ga);
+						return;
+					}
+					$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
+					if($BusValue !== false)
+						$this->getEqLogic()->checkAndUpdateCmd($ga,$BusValue);
+					return $BusValue;
 				}
-				if($DataBus === false){
-					message::add('info',$this->getHumanName().'[Read]: Aucune réponse','',$ga);
-					return;
-				}
-				$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
-				if($BusValue !== false)
-					$this->getEqLogic()->checkAndUpdateCmd($ga,$BusValue);
-				return $BusValue;
 			break;
 		}
 	}
