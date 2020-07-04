@@ -47,13 +47,15 @@ sudo mkdir /usr/local/src/knxd
 cd /usr/local/src/knxd
 sudo git clone https://github.com/knxd/knxd.git
 cd knxd
-git checkout deb
-echo 40 > /tmp/compilation_eibd_in_progress
-sudo dpkg-buildpackage -b -uc -d
-echo 80 > /tmp/compilation_eibd_in_progress
-cd /usr/local/src/knxd
-sudo dpkg -i knxd_*.deb knxd-tools_*.deb
-sudo usermod -a -G dialout knxd
+sudo git checkout debian
+sudo rm knxd*.deb
+suod sh knxd/install-debian.sh
+#echo 40 > /tmp/compilation_eibd_in_progress
+#sudo dpkg-buildpackage -b -uc -d
+#echo 80 > /tmp/compilation_eibd_in_progress
+#cd /usr/local/src/knxd
+#sudo dpkg -i knxd_*.deb knxd-tools_*.deb
+#sudo usermod -a -G dialout knxd
 echo 99 > /tmp/compilation_eibd_in_progress
 sudo systemctl knxd stop
 sudo systemctl stop knxd.service
