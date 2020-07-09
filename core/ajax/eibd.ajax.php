@@ -114,9 +114,6 @@ try {
 			}
 			ajax::success(true);
 		break;
-		case 'isObject':
-			ajax::success(is_object(jeeObject::byName(init('name'))));
-		break;
 	}
 	
    throw new Exception(__('Aucune methode correspondante à : ', __FILE__) . init('action'));
