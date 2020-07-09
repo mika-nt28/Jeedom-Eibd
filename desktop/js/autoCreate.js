@@ -14,17 +14,22 @@ function getLevelSelect(Level){
 	return html;
 }
 function getNbLevel(arbo,nbLevel){
-  	nbLevel++;
-  	//var Level = 0;
+	nbLevel++;
+	var maxLevel = 0;
 	$.each(arbo, function(Niveau, Parameter){
-      	if(Parameter == null) 
-          return nbLevel;
-		else if(typeof Parameter.AdresseGroupe == "undefined")
-			getNbLevel(Parameter,nbLevel);
-		else
-			return Level = nbLevel;
+		if(typeof Parameter.AdresseGroupe == "undefined"){
+			if(typeof Parameter == "object") {
+				var level = getNbLevel(Parameter,nbLevel);
+				if(level > maxLevel)
+					maxLevel = level;
+			}
+
+		}else{
+			if(nbLevel > maxLevel)
+				maxLevel = nbLevel;
+		}
 	});
-	return Level;
+	return maxLevel;
 }
 function autoCreate(){
 	var html = $('<form class="autoCreate form-horizontal" onsubmit="return false;">');
