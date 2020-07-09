@@ -232,9 +232,16 @@ function getEtsProj () {
 			if (data.result == false) 
 				return;
 			KnxProject = data.result;
-			CreateArboressance(data.result.Devices,$('.MyDeviceGroup'),true);
-			CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true);
-			CreateArboressance(data.result.Locations,$('.MyLocationsGroup'),true);
+			jeedom.object.all({
+				error: function(error) {
+					$('#div_alert').showAlert({message: error.message, level: 'danger'})
+				},
+				success: function(objects) {
+					CreateArboressance(data.result.Devices,$('.MyDeviceGroup'),true);
+					CreateArboressance(data.result.GAD,$('.MyAdressGroup'),true);
+					CreateArboressance(data.result.Locations,$('.MyLocationsGroup'),true);
+				}
+			});
 		}
 	});
 }
