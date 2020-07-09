@@ -85,6 +85,9 @@ class autoCreate {
 			$Object->setName($Name);
 			$Object->setFather_id($Father);
 			$Object->setIsVisible(true);
+			$Object->setDisplay('icon', "");
+			$Object->setDisplay('tagColor', "#696969");
+			$Object->setDisplay('tagTextColor', "#ebebeb");
 			$Object->save();
 		}
 		return $Object->getId();
