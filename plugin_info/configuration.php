@@ -85,6 +85,7 @@ if (!isConnect()) {
 				</label>
 				<div class="col-lg-4">
 					<select class="configKey form-control" data-l1key="TypeKNXgateway" >
+						<option value="ft12cemi">{{FT12 - CEMI}}</option>
 						<option value="ft12">{{FT12 - Ligne série}}</option>
 						<option value="bcu1s">{{BCU1 - kernel driver}}</option>
 						<option value="tpuarts">{{TPUART - kernel driver Linux 2.6}}</option>
