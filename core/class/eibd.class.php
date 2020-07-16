@@ -748,35 +748,12 @@ class eibd extends eqLogic {
 		if(config::byKey('KnxSoft', 'eibd') == 'knxd')
 			$cmd .= ' -b ';	
 		if($cmd != ''){
-			switch(config::byKey('TypeKNXgateway', 'eibd')){
-				case 'ip':
-					$cmd .=' ip:';
-				break;
-				case 'ipt':
-					$cmd .=' ipt:';
-				break;
-				case 'iptn':
-					$cmd .=' iptn:';
-				break;
-				case 'ft12':
-					$cmd .=' ft12:';
-				break;
-				case 'bcu1':
-					$cmd .=' bcu1:';
-				break;
-				case 'tpuarts':
-					$cmd .=' tpuarts:';
-				break;
-				case 'usb':
-					$cmd .=' usb:';
-				break;
+			$cmd .= ' '. config::byKey('TypeKNXgateway', 'eibd') . ':' . config::byKey('KNXgateway', 'eibd');
+			if(isset($cmd)){
+				$cmd .= ' >> /var/log/knx.log 2>&1';
+				log::add('eibd','info', '[Start] '.$cmd);
+				exec($cmd);
 			}
-			$cmd .=config::byKey('KNXgateway', 'eibd');
-            if(isset($cmd)){
-                $cmd .= ' >> /var/log/knx.log 2>&1';
-          		log::add('eibd','info', '[Start] '.$cmd);
-                exec($cmd);
-            }
 		}
 		$cron = cron::byClassAndFunction('eibd', 'BusMonitor');
 		if (!is_object($cron)) {

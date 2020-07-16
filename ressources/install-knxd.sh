@@ -1,7 +1,10 @@
 #!/bin/bash
 touch /tmp/compilation_eibd_in_progress
 echo 0 > /tmp/compilation_eibd_in_progress
+sudo pkill eibd  
 sudo pkill knxd  
+sudo echo " " > /var/log/knxd.log
+sudo chmod 777 /var/log/knxd.log
 echo 10 > /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
 echo "*                                         Remove knxd                                               *"
@@ -35,19 +38,16 @@ sudo apt-get -qy install libsystemd-daemon-dev
 sudo apt-get -qy install libsystemd-dev
 sudo apt-get -qy install dh-systemd
 sudo apt-get -qy install cmake
+sudo apt-get -qy install --no-install-recommends build-essential devscripts
 echo 30 > /tmp/compilation_eibd_in_progress
 echo "*****************************************************************************************************"
 echo "*                                      Installation de KnxD                                         *"
 echo "*****************************************************************************************************"
-sudo pkill eibd  
-sudo pkill knxd  
-sudo echo " " > /var/log/knxd.log
-sudo chmod 777 /var/log/knxd.log
 sudo mkdir /usr/local/src/knxd
 cd /usr/local/src/knxd
 sudo git clone https://github.com/knxd/knxd.git
 cd knxd
-git checkout deb
+sudo git checkout debian
 echo 40 > /tmp/compilation_eibd_in_progress
 sudo dpkg-buildpackage -b -uc -d
 echo 80 > /tmp/compilation_eibd_in_progress
