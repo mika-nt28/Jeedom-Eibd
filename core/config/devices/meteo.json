@@ -296,7 +296,7 @@
 				"value":"",
 				"isVisible":"1"
 			},{	
-				"name":"Local"
+				"name":"Local",
 				"type":"action",
 				"subType":"slider",
 				"isHistorized":"0",
