@@ -47,7 +47,7 @@
 					"mobile":"core::line"
 				},
 				"value":"",
-				"isVisible":"1",
+				"isVisible":"1"
 			},{
 				"name":"Luminosité",
 				"type":"info",
@@ -72,7 +72,7 @@
 				"template":{
 					"dashboard":"core::line",
 					"mobile":"core::line"
-				}
+				},
 				"isVisible":"1"
 			},{
 				"name":"Vent",
@@ -189,9 +189,9 @@
 					"listValue":"",
 					"KnxObjectValue":"",
 					"subTypeAuto":"1",
-					"CycliqueSend":"",
+					"CycliqueSend":""
 				},
-				"isVisible":"1",
+				"isVisible":"1"
 			},{
 				"name":"JourNuit",
 				"type":"info",
@@ -211,10 +211,10 @@
 					"listValue":"",
 					"KnxObjectValue":"",
 					"subTypeAuto":"1",
-					"CycliqueSend":"",
+					"CycliqueSend":""
 				},
 				"value":"",
-				"isVisible":"1",
+				"isVisible":"1"
 			},{
 				"name":"Etat signal GPS",
 				"type":"info",
@@ -238,7 +238,7 @@
 					"noBatterieCheck":"0"
 				},
 				"value":"",
-				"isVisible":"1",
+				"isVisible":"1"
 			},{
 				"name":"Poursuite solaire",
 				"type":"info",
@@ -266,7 +266,7 @@
 					"mobile":"default"
 				},
 				"value":"",
-				"isVisible":"1",
+				"isVisible":"1"
 			},{
 				"name":"Etat protection chaleur",
 				"type":"info",
@@ -294,9 +294,9 @@
 					"mobile":"default"
 				},
 				"value":"",
-				"isVisible":"1",
+				"isVisible":"1"
 			},{	
-				"name":"Local
+				"name":"Local"
 				"type":"action",
 				"subType":"slider",
 				"isHistorized":"0",
@@ -347,7 +347,7 @@
 					"dashboard":"default",
 					"mobile":"default"
 				},
-				"isVisible":"1",
+				"isVisible":"1"
 			},{
 				"name":"Desativation ombrage",
 				"type":"action",
@@ -375,7 +375,7 @@
 					"mobile":"default"
 				},
 				"value":"RE Desativation ombrage",
-				"isVisible":"1",
+				"isVisible":"1"
 			},{
 				"name":"RE Desativation ombrage",
 				"type":"info",
@@ -402,7 +402,7 @@
 					"dashboard":"default",
 					"mobile":"default"
 				},
-				"isVisible":"1",
+				"isVisible":"1"
 			}
 		]
 	}
