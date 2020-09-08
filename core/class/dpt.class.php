@@ -132,7 +132,7 @@ class Dpt{
 				$data= array($value& 0x3f);
 				break;
 			case "18":
-				$control=cmd::byId(str_replace('#','',$option["control"]));
+				$control = jeedom::evaluateExpression($option["ctrl"]);
 				$data= array(($control << 8) & 0x80 | $value & 0x3f);
 				break;
 			case "19": 
@@ -367,10 +367,8 @@ class Dpt{
 				break;
 			case "18":
 				if ($option != null)	{
-					//Mise à jour de l'objet Jeedom ValInfField
-					if ($option["control"] !=''){	
-						//log::add('eibd', 'debug', 'Mise à jour de l\'objet Jeedom ValInfField: '.$option["ValInfField"]);
-						$control=cmd::byId(str_replace('#','',$option["control"]));
+					if ($option["ctrl"] !=''){	
+						$control=cmd::byId(str_replace('#','',$option["ctrl"]));
 						if (is_object($control)){
 							$ctrl = ($data[0] >> 7) & 0x01;
 							log::add('eibd', 'debug', 'L\'objet '.$control->getName().' à été trouvé et va être mis à jour avec la valeur '. $ctrl);
@@ -2410,7 +2408,7 @@ class Dpt{
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
 				"GenericType"=>"DONT",
-				"Option" =>array(),
+				"Option" =>array("ctrl"),
 				"Unite" =>""),
 			"18.001"=> array(
 				"Name"=>"Scene Control",
@@ -2420,7 +2418,7 @@ class Dpt{
 				"InfoType"=>'numeric',
 				"ActionType"=>'slider',
 				"GenericType"=>"DONT",
-				"Option" =>array(),
+				"Option" =>array("ctrl"),
 				"Unite" =>"")),
 		"DateTime"=> array(
 			"19.xxx"=> array(
