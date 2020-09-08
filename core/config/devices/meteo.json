@@ -73,7 +73,6 @@
 					"dashboard":"core::line",
 					"mobile":"core::line"
 				}
-				"value":"",
 				"isVisible":"1"
 			},{
 				"name":"Vent",
@@ -123,10 +122,6 @@
 					"subTypeAuto":"1",
 					"CycliqueSend":""
 				},
-				"template":{
-					"dashboard":"custom::Alarme-Vent",
-					"mobile":"custom::Alarme-Vent"
-				},
 				"value":"",
 				"isVisible":"1"
 			},{
@@ -149,10 +144,6 @@
 					"KnxObjectValue":"",
 					"subTypeAuto":"1",
 					"CycliqueSend":""
-				},
-				"template":{
-					"dashboard":"custom::Alarme-Vent",
-					"mobile":"custom::Alarme-Vent"
 				},
 				"value":"",
 				"isVisible":"1"
@@ -177,13 +168,9 @@
 					"subTypeAuto":"1",
 					"CycliqueSend":""
 				},
-				"template":{
-					"dashboard":"custom::Alarme-Vent",
-					"mobile":"custom::Alarme-Vent"
-				},
 				"value":"",
 				"isVisible":"1"
-			}},{
+			},{
 				"name":"Alarme-Pluie",
 				"type":"info",
 				"subType":"binary",
@@ -203,10 +190,6 @@
 					"KnxObjectValue":"",
 					"subTypeAuto":"1",
 					"CycliqueSend":"",
-				},
-				"template":{
-					"dashboard":"custom::Alarme-pluie",
-					"mobile":"custom::Alarme-pluie"
 				},
 				"isVisible":"1",
 			},{
@@ -229,10 +212,6 @@
 					"KnxObjectValue":"",
 					"subTypeAuto":"1",
 					"CycliqueSend":"",
-				},
-				"template":{
-					"dashboard":"custom::jour-nuit",
-					"mobile":"custom::jour-nuit"
 				},
 				"value":"",
 				"isVisible":"1",
@@ -257,9 +236,6 @@
 					"subTypeAuto":"1",
 					"CycliqueSend":"",
 					"noBatterieCheck":"0"
-				},"template":{
-					"dashboard":"default",
-					"mobile":"default"
 				},
 				"value":"",
 				"isVisible":"1",
@@ -285,8 +261,8 @@
 					"CycliqueSend":"",
 					"noBatterieCheck":"0"
 				},
-				"template":{"
-					dashboard":"default",
+				"template":{
+					"dashboard":"default",
 					"mobile":"default"
 				},
 				"value":"",
