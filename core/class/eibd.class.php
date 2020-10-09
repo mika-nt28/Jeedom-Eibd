@@ -728,10 +728,16 @@ class eibd extends eqLogic {
 			case 'knxd':
             			$clientAddrs = explode('.',config::byKey('EibdGad', 'eibd'));
             			$clientAddrs[count($clientAddrs)-1] +=1;
-				$cmd .= 'knxd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid -t1023 --eibaddr='.config::byKey('EibdGad', 'eibd').' --client-addrs='.implode('.',$clientAddrs).':'.config::byKey('EibdNbAddr', 'eibd');
+				$cmd .= 'knxd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid';
+				if(config::byKey("log::level::eibd")[1000] != 1)
+					$cmd .= ' -t1023';
+				$cmd .= ' --eibaddr='.config::byKey('EibdGad', 'eibd').' --client-addrs='.implode('.',$clientAddrs).':'.config::byKey('EibdNbAddr', 'eibd');
            		break;
 			case 'eibd':
-				$cmd .= '/usr/local/bin/eibd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid -t1023 --eibaddr='.config::byKey('EibdGad', 'eibd');			
+				$cmd .= '/usr/local/bin/eibd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid';
+				if(config::byKey("log::level::eibd")[1000] != 1)
+					$cmd .= ' -t1023';
+				$cmd .= ' --eibaddr='.config::byKey('EibdGad', 'eibd');			
 			break;
 		}
 		if(config::byKey('KnxSoft', 'eibd') == 'knxd' && config::byKey('ServeurName', 'eibd') !='')
