@@ -545,7 +545,7 @@ class eibd extends eqLogic {
 		$dpt=$Commande->getConfiguration('KnxObjectType');
 		$inverse=$Commande->getConfiguration('inverse');
 		$Option=$Commande->getConfiguration('option');
-		$Option["id"]=$Commande->getId();
+		$Option['id']=$Commande->getId();
 		$data= Dpt::DptSelectEncode($dpt, $_options['value'], $inverse,$Option);
 		$WriteBusValue=eibd::EibdWrite($ga, $data);
 		log::add('eibd','info',$Commande->getHumanName().'[Transmission]: Envoie de la valeur '.$_options['value'].' sur le GAD '.$ga);
@@ -861,7 +861,7 @@ class eibdCmd extends cmd {
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
-		$Option["id"]=$this->getId();
+		$Option['id']=$this->getId();
 		switch ($this->getType()) {
 			case 'action' :
 				$Listener=cmd::byId(str_replace('#','',$this->getValue()));
@@ -932,7 +932,7 @@ class eibdCmd extends cmd {
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
-		$Option["id"]=$this->getId();
+		$Option['id']=$this->getId();
 		if ($dpt != 'aucun' && $dpt!= ''){
 			$unite=Dpt::getDptUnite($dpt);
 			$Listener=cmd::byId(str_replace('#','',$this->getValue()));
@@ -959,7 +959,7 @@ class eibdCmd extends cmd {
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
-		$Option["id"]=$this->getId();
+		$Option['id']=$this->getId();
 		if ($dpt != 'aucun' && $dpt!= ''){
 			$unite=Dpt::getDptUnite($dpt);
 			log::add('eibd', 'debug',$this->getHumanName().' : Décodage de la valeur avec le DPT :'.$dpt);
@@ -989,7 +989,7 @@ class eibdCmd extends cmd {
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
-		$Option["id"]=$this->getId();
+		$Option['id']=$this->getId();
 		$unite=Dpt::getDptUnite($dpt);
 		$valeur=Dpt::DptSelectDecode($dpt, null, $inverse, $Option);
 		if($this->getType() == 'info' && $valeur !== false){
