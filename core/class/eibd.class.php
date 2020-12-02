@@ -861,6 +861,8 @@ class eibdCmd extends cmd {
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
+		if($Option != '' && !is_array($Option))
+			$Option = json_decode($Option,true);
 		$Option['id']=$this->getId();
 		switch ($this->getType()) {
 			case 'action' :
@@ -932,6 +934,8 @@ class eibdCmd extends cmd {
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
+		if($Option != '' && !is_array($Option))
+			$Option = json_decode($Option,true);
 		$Option['id']=$this->getId();
 		if ($dpt != 'aucun' && $dpt!= ''){
 			$unite=Dpt::getDptUnite($dpt);
@@ -960,6 +964,8 @@ class eibdCmd extends cmd {
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
 		$Option['id']=$this->getId();
+		if($Option != '' && !is_array($Option))
+			$Option = json_decode($Option,true);
 		if ($dpt != 'aucun' && $dpt!= ''){
 			$unite=Dpt::getDptUnite($dpt);
 			log::add('eibd', 'debug',$this->getHumanName().' : Décodage de la valeur avec le DPT :'.$dpt);
@@ -990,6 +996,8 @@ class eibdCmd extends cmd {
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
 		$Option['id']=$this->getId();
+		if($Option != '' && !is_array($Option))
+			$Option = json_decode($Option,true);
 		$unite=Dpt::getDptUnite($dpt);
 		$valeur=Dpt::DptSelectDecode($dpt, null, $inverse, $Option);
 		if($this->getType() == 'info' && $valeur !== false){
