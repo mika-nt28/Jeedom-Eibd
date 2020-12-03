@@ -2,9 +2,6 @@
 if (!isConnect('admin')) {
     throw new Exception('401 Unauthorized');
 }
-include_file('3rdparty', 'jquery.tablesorter/theme.bootstrap', 'css');
-include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.min', 'js');
-include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'js');
 ?>
 <legend><a class="btn btn-danger btn-xs BusMonitorAction" data-action="remove"><i class="fa fa-minus-circle"></i> {{Nettoyer}}</a></legend>
 <div style="height: 500px;overflow: auto;">
