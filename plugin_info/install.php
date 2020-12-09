@@ -4,7 +4,7 @@ function eibd_update() {
 	log::add('eibd','debug','Lancement du script de mise à jour'); 
 	$oldPath = dirname(__FILE__) . '/../core/config/';
 	$File = 'KnxProj.json';
-	if(file_exists($oldPath.$File){
+	if(file_exists($oldPath.$File)){
 		$dataPath = dirname(__FILE__) . '/../data/';
 		if (!is_dir($dataPath)) 
 			mkdir($dataPath);
