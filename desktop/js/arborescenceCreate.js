@@ -54,8 +54,7 @@ function CreatebyTemplate(_el,_template){
 		}
 	});
 }
-
-function CreateMenu(data, Arboressance, first){
+function CreateMenu(data){
 	var menu = $('<span class="input-group-btn">');
 	menu.append($('<a class="btn btn-success btn-xs roundedRight createObject">').append($('<i class="far fa-object-group">')));
 	menu.append($('<a class="btn btn-warning btn-xs roundedRight createTemplate">').append($('<i class="fas fa-address-card">')));
@@ -69,7 +68,7 @@ function CreateArboressance(data, Arboressance, first){
 			Arboressance.append($('<li class="col-sm-11 Level">').text(Niveau));
 		}else if(typeof Parameter.AdresseGroupe == "undefined") {
 			Arboressance.append($('<li class="col-sm-11 Level">')
-				.append(CreateMenu())
+				.append(CreateMenu(Parameter))
 				.append($('<label>')
 					.append(Niveau))
 				.append(CreateArboressance(Parameter, $('<ul>').hide(),false)));
@@ -126,7 +125,7 @@ function CreateArboressance(data, Arboressance, first){
 			e.stopPropagation();
 			$(this).parents('.Level').each(function(){
 				var id = $(this).find('.template[data-type=template]').attr('data-id');
-				if(id != ''){
+				if(id != '' && typeof id != 'undefined'){
 					CreatebyTemplate($(this),id);
 					return;
 				}
