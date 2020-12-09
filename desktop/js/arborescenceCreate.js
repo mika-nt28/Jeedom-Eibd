@@ -123,14 +123,19 @@ function CreateArboressance(data, Arboressance, first){
 		})
 		.on('click','.createTemplate',function(e){
 			e.stopPropagation();
-			$(this).parents('.Level').each(function(){
+			var _el = $(this).parents('.Level').find('label:first');
+			/*$(this).parents('.Level').each(function(){
 				var id = $(this).find('.template[data-type=template]').attr('data-id');
 				if(id != '' && typeof id != 'undefined'){
 					CreatebyTemplate($(this),id);
 					return;
 				}
-			});
-			CreatebyTemplate($(this).parents('.Level').find('label:first'),'');
+			});*/
+			var id = _el.find('.template[data-type=template]').attr('data-id');
+			if(typeof id == 'undefined')
+				CreatebyTemplate(_el,'');
+			else
+				CreatebyTemplate(_el,id);
 		});
 		if(SelectAddr != ''){
 			$.each(Arboressance.find(".AdresseGroupe"),function() {
