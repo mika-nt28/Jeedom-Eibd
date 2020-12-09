@@ -1,7 +1,18 @@
 <?php
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 function eibd_update() {
-	log::add('eibd','debug','Lancement du script de mise à jour'); 
+	log::add('eibd','debug','Lancement du script de mise Ã  jour'); 
+	$oldPath = dirname(__FILE__) . '/../core/config/';
+	$File = 'KnxProj.json';
+	if(file_exists($oldPath.$File){
+		$dataPath = dirname(__FILE__) . '/../data/';
+		if (!is_dir($dataPath)) 
+			mkdir($dataPath);
+		exec('sudo chmod -R 777 '.$dataPath);
+		if(!file_exists($dataPath.$File))
+			exec('sudo mv '.$oldPath.$File.' '.$dataPath.$File);
+		exec('sudo rm '.$oldPath.$File);
+	}
 	if(exec("command -v eibd") !='')
 		config::save('KnxSoft', 'eibd','eibd');
 	else{
@@ -37,7 +48,7 @@ function eibd_update() {
 		}
 		$eqLogic->save();
 	}
-	log::add('eibd','debug','Fin du script de mise à jour'); 
+	log::add('eibd','debug','Fin du script de mise Ã  jour'); 
 }
 function eibd_remove() {
 	while(is_object($listener=listener::byClassAndFunction('eibd', 'TransmitValue')))
