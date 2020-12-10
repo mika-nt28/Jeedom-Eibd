@@ -18,19 +18,36 @@ function CreateObject(object){
 		}
 	});
 }
-function CreatebyTemplate(_el,_template){	
-	var select = $('<select class="EqLogicTemplateAttr form-control" data-l1key="template">');
-	var liste = templates;
-	if(_template != '')
-		liste = templates[_template].cmd;
-	$.each(liste,function(id,template){
-		select.append($('<option>')
-			.attr('value',id)
-			.append(template.name));
+
+function htmlMergeTemplate(template,cmds){
+	var selectCmd = $('<select>');
+	$.each(template.cmd,function(id, cmd){
+		selectCmd.append($('<option>').text(cmd.name)));
 	});
+	var html = $('<div>');
+	$.each(cmds,function(id, cmd){
+		html.append($('<div>').text(cmd.name)).append($('<div>').append(selectCmd));
+	});
+	return html;
+}
+function CreatebyTemplate(_equipement){	
+	
+	var _template = _equipement.find('label:first').text();
+	if(_template != ''){
+		var eqLogic = templates[_template];
+		var dataArbo = new Object();
+		_equipement.find('li').each(function(){
+			var cmd = new Object();
+			cmd.AdresseGroupe = $(this).attr('data-AdresseGroupe');
+			cmd.AdressePhysique = $(this).attr('data-AdressePhysique').replace( '-',/\./g);
+			cmd.DataPointType = $(this).attr('data-DataPointType').replace( '-',/\./g);
+			cmd.name = $(this).text();
+			dataArbo.push(cmd);
+		});	
+	}
 	bootbox.dialog({
-		title: "{{Selectionner le template}}",
-		message: select,
+		title: "{{Merge des commandes sur le template}}",
+		message: htmlMergeTemplate(eqLogic,dataArbo),
 		buttons: {
 			"Annuler": {
 				className: "btn-default",
@@ -41,19 +58,25 @@ function CreatebyTemplate(_el,_template){
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
-					var type = 'template';
-					if(_template != '')
-						type =  'cmd';
-					_template = $('.EqLogicTemplateAttr[data-l1key=template]').val();
-					_el.after($('<span class="template label label-success cursor">')
-						   .attr('data-type',type)
-						   .attr('data-id',_template)
-						   .text(templates[_template].name));
+					SaveMergeTemplate(eqLogic);
 				}
 			},
 		}
 	});
+		
 }
+function SaveMergeTemplate(eqLogic){
+	jeedom.eqLogic.save({
+		type: 'eibd',
+		eqLogics: [eqLogic],
+		error: function (error) {
+			$('#div_alert').showAlert({message: error.message, level: 'danger'});
+		},
+		success: function (_data) {
+			
+		}
+	});
+};
 function CreateMenu(data){
 	var menu = $('<span class="input-group-btn">');
 	menu.append($('<a class="btn btn-success btn-xs roundedRight createObject">').append($('<i class="far fa-object-group">')));
@@ -123,19 +146,7 @@ function CreateArboressance(data, Arboressance, first){
 		})
 		.on('click','.createTemplate',function(e){
 			e.stopPropagation();
-			var _el = $(this).parents('.Level').find('label:first');
-			/*$(this).parents('.Level').each(function(){
-				var id = $(this).find('.template[data-type=template]').attr('data-id');
-				if(id != '' && typeof id != 'undefined'){
-					CreatebyTemplate($(this),id);
-					return;
-				}
-			});*/
-			var id = _el.find('.template[data-type=template]').attr('data-id');
-			if(typeof id == 'undefined')
-				CreatebyTemplate(_el,'');
-			else
-				CreatebyTemplate(_el,id);
+			CreatebyTemplate($(this).parents('.Level:first'));
 		});
 		if(SelectAddr != ''){
 			$.each(Arboressance.find(".AdresseGroupe"),function() {
