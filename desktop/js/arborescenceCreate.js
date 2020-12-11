@@ -49,9 +49,15 @@ function htmlMergeTemplate(template,cmds){
 	var selectCmd = $('<select class="EqLogicTemplateAttr form-control" data-l1key="cmd">');
 	var optgroup = $('<optgroup>').attr('label','Base');
 	$.each(template.cmd,function(id,cmd){
-		optgroup.append($('<option>')
-			.attr('value',id)
-			.text(cmd.name));
+		if(typeof(cmd.SameCmd) !== 'Undefinded'){
+			optgroup.append($('<option>')
+				.attr('value',id)
+				.text(cmd.SameCmd));
+		}else{
+			optgroup.append($('<option>')
+				.attr('value',id)
+				.text(cmd.name));
+		}
 	});
 	selectCmd.append(optgroup);
 	$.each(template.options,function(id,option){
@@ -111,7 +117,23 @@ function CreatebyTemplate(_equipement){
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
-					SaveMergeTemplate(eqLogic);
+					$('.EqLogicTemplateAttr[data-l1key=cmd]').each(function(){
+						var index = $(this).val();
+						if (typeof(eqLogic.cmd[index]) !== 'undefined'){
+							eqLogic.cmd[index].logicalId=$(this).attr('data-l2key');
+							if (typeof(eqLogic.cmd[index].value) !== 'undefined')
+								eqLogic.cmd[index].value="#[Aucun]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
+						}
+						$.each(eqLogic.options,function(id, option){	
+							if (typeof(eqLogic.options[id].cmd[index]) !== 'undefined'){
+								eqLogic.options[id].cmd[index].logicalId=$(this).attr('data-l2key');
+								if (typeof(eqLogic.options[id].cmd[index].value) !== 'undefined')
+									eqLogic.options[id].cmd[index].value="#[Aucun]["+eqLogic.name+"]["+eqLogic.options[id].cmd[index].value+"]#";
+							}
+						});
+					});
+                  alert(JSON.stringify(eqLogic));
+					//SaveMergeTemplate(eqLogic);
 				}
 			},
 		}
