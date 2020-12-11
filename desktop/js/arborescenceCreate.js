@@ -19,7 +19,7 @@ function CreateObject(object){
 	});
 }
 function selectTemplate(){
-var select = $('<select class="EqLogicTemplateAttr form-control" data-l1key="template">');
+	var select = $('<select class="EqLogicTemplateAttr form-control" data-l1key="template">');
 	$.each(templates,function(id,template){
 		select.append($('<option>')
 			.attr('value',id)
@@ -46,13 +46,27 @@ var select = $('<select class="EqLogicTemplateAttr form-control" data-l1key="tem
       
 }
 function htmlMergeTemplate(template,cmds){
-	var selectCmd = $('<select>');
-	$.each(template.cmd,function(id, cmd){
-		selectCmd.append($('<option>').text(cmd.name));
+	var selectCmd = $('<select class="EqLogicTemplateAttr form-control" data-l1key="cmd">');
+	var optgroup = $('<optgroup>').attr('label','Base');
+	$.each(template.cmd,function(id,cmd){
+		optgroup.append($('<option>')
+			.attr('value',id)
+			.text(cmd.name));
+	});
+	selectCmd.append(optgroup);
+	$.each(template.options,function(id,option){
+		var optgroup = $('<optgroup>').attr('label',option.name);
+		$.each(option.cmd,function(idCmd, cmd){
+			optgroup.append($('<option>')
+				.attr('value',id)
+				.text(cmd.name));
+		});
+		selectCmd.append(optgroup);
 	});
 	var html = $('<div>');
 	$.each(cmds,function(id, cmd){
-		html.append($('<div>').text(cmd.name)).append($('<div>').append(selectCmd));
+		html.append($('<div class="col-sm-6">').text(cmd.name));
+		html.append($('<div class="col-sm-6">').append(selectCmd.clone().attr('data-l2key',cmd.AdresseGroupe)));
 	});
 	return html;
 }
@@ -60,10 +74,14 @@ function getTemplate(_template){
 	if(_template != ''){
 		if(templates[_template] == 'Undefinded')
 			return templates[selectTemplate()];
+		var isTemplate;
 		$.each(templates,function(id, template){
 			if(template.name.includes(_template))
-				return template;
+				isTemplate = template;
+				return;
 		});
+		if(isTemplate != null)
+			return isTemplate;
 	}
 	return templates[selectTemplate()];
 }
