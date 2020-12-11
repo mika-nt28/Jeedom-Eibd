@@ -20,10 +20,7 @@ function CreateObject(object){
 }
 function selectTemplate(){
 var select = $('<select class="EqLogicTemplateAttr form-control" data-l1key="template">');
-	var liste = templates;
-	if(_template != '')
-		liste = templates[_template].cmd;
-	$.each(liste,function(id,template){
+	$.each(templates,function(id,template){
 		select.append($('<option>')
 			.attr('value',id)
 			.append(template.name));
@@ -59,23 +56,30 @@ function htmlMergeTemplate(template,cmds){
 	});
 	return html;
 }
+function getTemplate(_template){
+	if(_template != ''){
+		if(templates[_template] == 'Undefinded')
+			return templates[selectTemplate()];
+		$.each(templates,function(id, template){
+			if(template.name.includes(_template))
+				return template;
+		});
+	}
+	return templates[selectTemplate()];
+}
 function CreatebyTemplate(_equipement){	
-	var _template = _equipement.find('label:first').text();
-	if(_template == '' && templates[_template] == 'Undefinded')
-  		_template= selectTemplate();
-	var eqLogic = templates[_template];
+	var eqLogic = getTemplate(_equipement.find('label:first').text());
 	var dataArbo = new Array();
 	_equipement.find(' ul:first li').each(function(){
-			var cmd = new Object();
-          if($(this).attr('data-AdresseGroupe') != 'Undefinded'){
+		var cmd = new Object();
+		if($(this).attr('data-AdresseGroupe') != 'Undefinded'){
 			cmd.AdresseGroupe = $(this).attr('data-AdresseGroupe');
 			cmd.AdressePhysique = $(this).attr('data-AdressePhysique').replace( '-',/\./g);
 			cmd.DataPointType = $(this).attr('data-DataPointType').replace( '-',/\./g);
 			cmd.name = $(this).text();
 			dataArbo.push(cmd);
-          }
-		});	
-
+		}
+	});	
 	bootbox.dialog({
 		title: "{{Merge des commandes sur le template}}",
 		message: htmlMergeTemplate(eqLogic,dataArbo),
