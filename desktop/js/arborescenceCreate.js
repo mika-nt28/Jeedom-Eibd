@@ -49,23 +49,27 @@ function htmlMergeTemplate(template,cmds){
 	var selectCmd = $('<select class="EqLogicTemplateAttr form-control" data-l1key="cmd">');
 	var optgroup = $('<optgroup>').attr('label','Base');
 	$.each(template.cmd,function(id,cmd){
-		if(typeof(cmd.SameCmd) !== 'Undefinded'){
+		var optionName = cmd.name;
+		if(isset(cmd.SameCmd) && cmd.SameCmd != '') 
+			optionName = cmd.SameCmd;
+		//if(optgroup.find('*:contains("'+optionName+'")').length == 0){
 			optgroup.append($('<option>')
 				.attr('value',id)
-				.text(cmd.SameCmd));
-		}else{
-			optgroup.append($('<option>')
-				.attr('value',id)
-				.text(cmd.name));
-		}
+				.text(optionName));
+		//}
 	});
 	selectCmd.append(optgroup);
 	$.each(template.options,function(id,option){
 		var optgroup = $('<optgroup>').attr('label',option.name);
 		$.each(option.cmd,function(idCmd, cmd){
-			optgroup.append($('<option>')
-				.attr('value',id)
-				.text(cmd.name));
+			var optionName = cmd.name;
+			if(isset(cmd.SameCmd) && cmd.SameCmd != '') 
+				optionName = cmd.SameCmd;
+			//if(optgroup.find('*:contains("'+optionName+'")').length == 0){
+				optgroup.append($('<option>')
+					.attr('value',id)
+					.text(optionName));
+			//}
 		});
 		selectCmd.append(optgroup);
 	});
