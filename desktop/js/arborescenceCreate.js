@@ -52,11 +52,16 @@ function htmlMergeTemplate(template,cmds){
 		var optionName = cmd.name;
 		if(isset(cmd.SameCmd) && cmd.SameCmd != '') 
 			optionName = cmd.SameCmd;
-		//if(optgroup.find('*:contains("'+optionName+'")').length == 0){
+		var optionExist = false;
+		optgroup.find('option').each(function() {
+			if($(this).text() == optionName)
+				optionExist = true;
+		});
+		if(!optionExist){
 			optgroup.append($('<option>')
 				.attr('value',id)
 				.text(optionName));
-		//}
+		}
 	});
 	selectCmd.append(optgroup);
 	$.each(template.options,function(id,option){
@@ -65,11 +70,16 @@ function htmlMergeTemplate(template,cmds){
 			var optionName = cmd.name;
 			if(isset(cmd.SameCmd) && cmd.SameCmd != '') 
 				optionName = cmd.SameCmd;
-			//if(optgroup.find('*:contains("'+optionName+'")').length == 0){
+			var optionExist = false;
+			optgroup.find('option').each(function() {
+				if($(this).text() == optionName)
+					optionExist = true;
+			});
+			if(!optionExist){
 				optgroup.append($('<option>')
 					.attr('value',id)
 					.text(optionName));
-			//}
+			}
 		});
 		selectCmd.append(optgroup);
 	});
