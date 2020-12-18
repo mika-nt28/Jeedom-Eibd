@@ -143,14 +143,14 @@ function CreatebyTemplate(_equipement){
 							template.cmd[index].logicalId = logicalId;
 							if (typeof(template.cmd[index].value) !== 'undefined')
 								template.cmd[index].value="#[Aucun]["+template.name+"]["+template.cmd[index].value+"]#";
-							eqLogic.push(template.cmd[index]);
+							eqLogic.cmd.push(template.cmd[index]);
 							$.each(template.cmd[index].SameCmd.split('|'),function(id, name){
 								$.each(template.cmd,function(idCmd, cmd){
 									if(cmd.name == name && idCmd != index){
 										template.cmd[idCmd].logicalId=logicalId;
 										if (typeof(template.cmd[index].value) !== 'undefined')
 											template.cmd[index].value="#[Aucun]["+template.name+"]["+template.cmd[index].value+"]#";
-										eqLogic.push(template.cmd[idCmd]);
+										eqLogic.cmd.push(template.cmd[idCmd]);
 									}
 								});
 							});
@@ -160,12 +160,12 @@ function CreatebyTemplate(_equipement){
 								template.options[id].cmd[index].logicalId=$(this).attr('data-l2key');
 								if (typeof(template.options[id].cmd[index].value) !== 'undefined')
 									template.options[id].cmd[index].value="#[Aucun]["+template.name+"]["+template.options[id].cmd[index].value+"]#";
-								eqLogic.push(template.options[id].cmd[index]);
+								eqLogic.cmd.push(template.options[id].cmd[index]);
 								$.each(template.options[id].cmd[index].SameCmd.split('|'),function(id, name){
 									$.each(template.options[id].cmd,function(idCmd, cmd){
 										if(cmd.name == name && idCmd != index){
 											template.options[id].cmd[idCmd].logicalId=logicalId;
-											eqLogic.push(template.options[id].cmd[idCmd]);
+											eqLogic.cmd.push(template.options[id].cmd[idCmd]);
 										}
 									});
 								});
