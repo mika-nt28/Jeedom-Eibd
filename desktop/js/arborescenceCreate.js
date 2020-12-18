@@ -161,7 +161,7 @@ function CreatebyTemplate(_equipement){
 								if (typeof(template.options[id].cmd[index].value) !== 'undefined')
 									template.options[id].cmd[index].value="#[Aucun]["+template.name+"]["+template.options[id].cmd[index].value+"]#";
 								eqLogic.cmd.push(template.options[id].cmd[index]);
-								$.each(template.options[id].cmd[index].SameCmd.split('|'),function(id, name){
+								$.each(template.options[id].cmd[index].SameCmd.split('|'),function(idSameCmd, name){
 									$.each(template.options[id].cmd,function(idCmd, cmd){
 										if(cmd.name == name && idCmd != index){
 											template.options[id].cmd[idCmd].logicalId=logicalId;
