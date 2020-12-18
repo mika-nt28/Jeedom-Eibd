@@ -106,7 +106,11 @@ function getTemplate(_template){
 	return templates[selectTemplate()];
 }
 function CreatebyTemplate(_equipement){	
-	var eqLogic = getTemplate(_equipement.find('label:first').text());
+	var template = getTemplate(_equipement.find('label:first').text());
+	var eqLogic = new Object();
+	eqLogic.name = template.name;
+	eqLogic.isEnable = true;
+	eqLogic.isVisible = true;
 	var dataArbo = new Array();
 	_equipement.find(' ul:first li').each(function(){
 		var cmd = new Object();
@@ -120,7 +124,7 @@ function CreatebyTemplate(_equipement){
 	});	
 	bootbox.dialog({
 		title: "{{Merge des commandes sur le template}}",
-		message: htmlMergeTemplate(eqLogic,dataArbo),
+		message: htmlMergeTemplate(template,dataArbo),
 		buttons: {
 			"Annuler": {
 				className: "btn-default",
@@ -131,22 +135,44 @@ function CreatebyTemplate(_equipement){
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
+					eqLogic.cmd = new Array();
 					$('.EqLogicTemplateAttr[data-l1key=cmd]').each(function(){
 						var index = $(this).val();
-						if (typeof(eqLogic.cmd[index]) !== 'undefined'){
-							eqLogic.cmd[index].logicalId=$(this).attr('data-l2key');
-							if (typeof(eqLogic.cmd[index].value) !== 'undefined')
-								eqLogic.cmd[index].value="#[Aucun]["+eqLogic.name+"]["+eqLogic.cmd[index].value+"]#";
+						if (typeof(template.cmd[index]) !== 'undefined'){
+							var logicalId=$(this).attr('data-l2key');
+							template.cmd[index].logicalId = logicalId;
+							if (typeof(template.cmd[index].value) !== 'undefined')
+								template.cmd[index].value="#[Aucun]["+template.name+"]["+template.cmd[index].value+"]#";
+							eqLogic.push(template.cmd[index]);
+							$.each(template.cmd[index].SameCmd.split('|'),function(id, name){
+								$.each(template.cmd,function(idCmd, cmd){
+									if(cmd.name == name && idCmd != index){
+										template.cmd[idCmd].logicalId=logicalId;
+										if (typeof(template.cmd[index].value) !== 'undefined')
+											template.cmd[index].value="#[Aucun]["+template.name+"]["+template.cmd[index].value+"]#";
+										eqLogic.push(template.cmd[idCmd]);
+									}
+								});
+							});
 						}
-						$.each(eqLogic.options,function(id, option){	
-							if (typeof(eqLogic.options[id].cmd[index]) !== 'undefined'){
-								eqLogic.options[id].cmd[index].logicalId=$(this).attr('data-l2key');
-								if (typeof(eqLogic.options[id].cmd[index].value) !== 'undefined')
-									eqLogic.options[id].cmd[index].value="#[Aucun]["+eqLogic.name+"]["+eqLogic.options[id].cmd[index].value+"]#";
+						$.each(template.options,function(id, option){	
+							if (typeof(template.options[id].cmd[index]) !== 'undefined'){
+								template.options[id].cmd[index].logicalId=$(this).attr('data-l2key');
+								if (typeof(template.options[id].cmd[index].value) !== 'undefined')
+									template.options[id].cmd[index].value="#[Aucun]["+template.name+"]["+template.options[id].cmd[index].value+"]#";
+								eqLogic.push(template.options[id].cmd[index]);
+								$.each(template.options[id].cmd[index].SameCmd.split('|'),function(id, name){
+									$.each(template.options[id].cmd,function(idCmd, cmd){
+										if(cmd.name == name && idCmd != index){
+											template.options[id].cmd[idCmd].logicalId=logicalId;
+											eqLogic.push(template.options[id].cmd[idCmd]);
+										}
+									});
+								});
 							}
 						});
 					});
-                  alert(JSON.stringify(eqLogic));
+                  			alert(JSON.stringify(eqLogic));
 					//SaveMergeTemplate(eqLogic);
 				}
 			},
