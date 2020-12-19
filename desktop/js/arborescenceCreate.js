@@ -144,36 +144,41 @@ function CreatebyTemplate(_equipement){
 							if (typeof(template.cmd[index].value) !== 'undefined')
 								template.cmd[index].value="#[Aucun]["+template.name+"]["+template.cmd[index].value+"]#";
 							eqLogic.cmd.push(template.cmd[index]);
-							$.each(template.cmd[index].SameCmd.split('|'),function(id, name){
-								$.each(template.cmd,function(idCmd, cmd){
-									if(cmd.name == name && idCmd != index){
-										template.cmd[idCmd].logicalId=logicalId;
-										if (typeof(template.cmd[index].value) !== 'undefined')
-											template.cmd[index].value="#[Aucun]["+template.name+"]["+template.cmd[index].value+"]#";
-										eqLogic.cmd.push(template.cmd[idCmd]);
-									}
-								});
-							});
-						}
-						$.each(template.options,function(id, option){	
-							if (typeof(template.options[id].cmd[index]) !== 'undefined'){
-								template.options[id].cmd[index].logicalId=$(this).attr('data-l2key');
-								if (typeof(template.options[id].cmd[index].value) !== 'undefined')
-									template.options[id].cmd[index].value="#[Aucun]["+template.name+"]["+template.options[id].cmd[index].value+"]#";
-								eqLogic.cmd.push(template.options[id].cmd[index]);
-								$.each(template.options[id].cmd[index].SameCmd.split('|'),function(idSameCmd, name){
-									$.each(template.options[id].cmd,function(idCmd, cmd){
+							if(isset(template.cmd[index].SameCmd) && template.cmd[index].SameCmd != '') {
+								$.each(template.cmd[index].SameCmd.split('|'),function(id, name){
+									$.each(template.cmd,function(idCmd, cmd){
 										if(cmd.name == name && idCmd != index){
-											template.options[id].cmd[idCmd].logicalId=logicalId;
-											eqLogic.cmd.push(template.options[id].cmd[idCmd]);
+											template.cmd[idCmd].logicalId=logicalId;
+											if (typeof(template.cmd[index].value) !== 'undefined')
+												template.cmd[index].value="#[Aucun]["+template.name+"]["+template.cmd[index].value+"]#";
+											eqLogic.cmd.push(template.cmd[idCmd]);
 										}
 									});
 								});
 							}
+						}
+						$.each(template.options,function(optionId, option){
+							$.each(option,function(idCmd, optionCmd){	
+								if (typeof(template.options[optionId].cmd[index]) !== 'undefined'){
+									template.options[optionId].cmd[index].logicalId=$(this).attr('data-l2key');
+									if (typeof(template.options[optionId].cmd[index].value) !== 'undefined')
+										template.options[optionId].cmd[index].value="#[Aucun]["+template.name+"]["+template.options[optionId].cmd[index].value+"]#";
+									eqLogic.cmd.push(template.options[optionId].cmd[index]);
+									if(isset(template.options[optionId].cmd[index].SameCmd) && template.options[optionId].cmd[index].SameCmd != '') {
+										$.each(template.options[optionId].cmd[index].SameCmd.split('|'),function(idSameCmd, name){
+											$.each(template.options[optionId].cmd,function(id, cmd){
+												if(cmd.name == name && idCmd != index){
+													template.options[optionId].cmd[id].logicalId=logicalId;
+													eqLogic.cmd.push(template.options[optionId].cmd[id]);
+												}
+											});
+										});
+									}
+								}
+							});
 						});
 					});
-                  			alert(JSON.stringify(eqLogic));
-					//SaveMergeTemplate(eqLogic);
+					SaveMergeTemplate(eqLogic);
 				}
 			},
 		}
