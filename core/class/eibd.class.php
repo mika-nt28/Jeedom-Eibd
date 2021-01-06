@@ -758,9 +758,9 @@ class eibd extends eqLogic {
 		if($cmd != ''){
 			if(config::byKey('TypeKNXgateway', 'eibd') == 'usb'){
 				$USBaddr = explode(':',config::byKey('KNXgateway', 'eibd'));
-				$cmd = sprintf("/dev/bus/usb/%'.03d/%'.03d",$USBaddr[0],$USBaddr[1]);
-				log::add('eibd', 'debug', "Droit d'acces sur la passerelle USB " . $cmd);
-				exec("sudo chmod 777 ".$cmd. ' >> ' . log::getPathToLog('eibd') . ' 2>&1');
+				$cmdUSB = sprintf("/dev/bus/usb/%'.03d/%'.03d",$USBaddr[0],$USBaddr[1]);
+				log::add('eibd', 'debug', "Droit d'acces sur la passerelle USB " . $cmdUSB);
+				exec("sudo chmod 777 ".$cmdUSB. ' >> ' . log::getPathToLog('eibd') . ' 2>&1');
 			}
 			$cmd .= ' '. config::byKey('TypeKNXgateway', 'eibd') . ':' . config::byKey('KNXgateway', 'eibd');
 			if(isset($cmd)){
