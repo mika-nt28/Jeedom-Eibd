@@ -869,7 +869,7 @@ class eibdCmd extends cmd {
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
-		if($Option != '' && !is_array($Option))
+		if($Option != '' || !is_array($Option))
 			$Option = json_decode($Option,true);
 		$Option['id']=$this->getId();
 		switch ($this->getType()) {
@@ -971,7 +971,7 @@ class eibdCmd extends cmd {
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
-		if($Option != '' && !is_array($Option))
+		if($Option != '' || !is_array($Option))
 			$Option = json_decode($Option,true);
 		$Option['id']=$this->getId();
 		if ($dpt != 'aucun' && $dpt!= ''){
@@ -1003,7 +1003,7 @@ class eibdCmd extends cmd {
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
-		if($Option != '' && !is_array($Option))
+		if($Option != '' || !is_array($Option))
 			$Option = json_decode($Option,true);
 		$Option['id']=$this->getId();
 		$unite=Dpt::getDptUnite($dpt);
