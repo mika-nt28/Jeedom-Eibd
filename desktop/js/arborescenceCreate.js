@@ -1,3 +1,4 @@
+var selectTemplate = '';
 function CreateObject(object){
 	$.ajax({
 		type: 'POST',
@@ -38,7 +39,7 @@ function selectTemplate(){
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
-					return $('.EqLogicTemplateAttr[data-l1key=template]').val();
+					selectTemplate = $('.EqLogicTemplateAttr[data-l1key=template]').val();
 				}
 			},
 		}
@@ -103,7 +104,10 @@ function getTemplate(_template){
 		if(isTemplate != null)
 			return isTemplate;
 	}
-	return templates[selectTemplate()];
+	selectTemplate();
+	while (selectTemplate == '')
+		continue;
+	return templates[selectTemplate];
 }
 function CreatebyTemplate(_equipement){	
 	var template = getTemplate(_equipement.find('label:first').text());
