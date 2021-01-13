@@ -1,4 +1,3 @@
-var selectTemplate = '';
 function CreateObject(object){
 	$.ajax({
 		type: 'POST',
@@ -19,7 +18,7 @@ function CreateObject(object){
 		}
 	});
 }
-function selectTemplate(){
+function selectTemplate(_equipement){
 	var select = $('<select class="EqLogicTemplateAttr form-control" data-l1key="template">');
 	$.each(templates,function(id,template){
 		select.append($('<option>')
@@ -39,7 +38,7 @@ function selectTemplate(){
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
-					selectTemplate = $('.EqLogicTemplateAttr[data-l1key=template]').val();
+					CreatebyTemplate(_equipement,$('.EqLogicTemplateAttr[data-l1key=template]').val());
 				}
 			},
 		}
@@ -91,28 +90,28 @@ function htmlMergeTemplate(template,cmds){
 	});
 	return html;
 }
-function getTemplate(_template){
+function getTemplate(_equipement){
+	var _template = _equipement.find('label:first').text();
 	if(_template != ''){
 		if(templates[_template] == 'Undefinded')
 			return templates[selectTemplate()];
 		var isTemplate;
 		$.each(templates,function(id, template){
-			if(template.name.includes(_template))
+			if(template.name.includes(_template)){
 				isTemplate = template;
 				return;
+			}
 		});
-		if(isTemplate != null)
-			return isTemplate;
+		if(isTemplate != null){
+			CreatebyTemplate(_equipement,isTemplate) ;
+			return;
+		}
 	}
-	selectTemplate();
-	while (selectTemplate == '')
-		continue;
-	return templates[selectTemplate];
+	selectTemplate(_equipement);
 }
-function CreatebyTemplate(_equipement){	
-	var template = getTemplate(_equipement.find('label:first').text());
+function CreatebyTemplate(_equipement,_template){	
 	var eqLogic = new Object();
-	eqLogic.name = template.name;
+	eqLogic.name = _template.name;
 	eqLogic.isEnable = true;
 	eqLogic.isVisible = true;
 	var dataArbo = new Array();
@@ -128,7 +127,7 @@ function CreatebyTemplate(_equipement){
 	});	
 	bootbox.dialog({
 		title: "{{Merge des commandes sur le template}}",
-		message: htmlMergeTemplate(template,dataArbo),
+		message: htmlMergeTemplate(_template,dataArbo),
 		buttons: {
 			"Annuler": {
 				className: "btn-default",
@@ -142,38 +141,38 @@ function CreatebyTemplate(_equipement){
 					eqLogic.cmd = new Array();
 					$('.EqLogicTemplateAttr[data-l1key=cmd]').each(function(){
 						var index = $(this).val();
-						if (typeof(template.cmd[index]) !== 'undefined'){
+						if (typeof(_template.cmd[index]) !== 'undefined'){
 							var logicalId=$(this).attr('data-l2key');
-							template.cmd[index].logicalId = logicalId;
-							if (typeof(template.cmd[index].value) !== 'undefined')
-								template.cmd[index].value="#[Aucun]["+template.name+"]["+template.cmd[index].value+"]#";
-							eqLogic.cmd.push(template.cmd[index]);
-							if(isset(template.cmd[index].SameCmd) && template.cmd[index].SameCmd != '') {
-								$.each(template.cmd[index].SameCmd.split('|'),function(id, name){
-									$.each(template.cmd,function(idCmd, cmd){
+							_template.cmd[index].logicalId = logicalId;
+							if (typeof(_template.cmd[index].value) !== 'undefined')
+								_template.cmd[index].value="#[Aucun]["+_template.name+"]["+_template.cmd[index].value+"]#";
+							eqLogic.cmd.push(_template.cmd[index]);
+							if(isset(_template.cmd[index].SameCmd) && _template.cmd[index].SameCmd != '') {
+								$.each(_template.cmd[index].SameCmd.split('|'),function(id, name){
+									$.each(_template.cmd,function(idCmd, cmd){
 										if(cmd.name == name && idCmd != index){
-											template.cmd[idCmd].logicalId=logicalId;
-											if (typeof(template.cmd[index].value) !== 'undefined')
-												template.cmd[index].value="#[Aucun]["+template.name+"]["+template.cmd[index].value+"]#";
-											eqLogic.cmd.push(template.cmd[idCmd]);
+											_template.cmd[idCmd].logicalId=logicalId;
+											if (typeof(_template.cmd[index].value) !== 'undefined')
+												_template.cmd[index].value="#[Aucun]["+_template.name+"]["+_template.cmd[index].value+"]#";
+											eqLogic.cmd.push(_template.cmd[idCmd]);
 										}
 									});
 								});
 							}
 						}
-						$.each(template.options,function(optionId, option){
+						$.each(_template.options,function(optionId, option){
 							$.each(option,function(idCmd, optionCmd){	
-								if (typeof(template.options[optionId].cmd[index]) !== 'undefined'){
-									template.options[optionId].cmd[index].logicalId=$(this).attr('data-l2key');
-									if (typeof(template.options[optionId].cmd[index].value) !== 'undefined')
-										template.options[optionId].cmd[index].value="#[Aucun]["+template.name+"]["+template.options[optionId].cmd[index].value+"]#";
-									eqLogic.cmd.push(template.options[optionId].cmd[index]);
-									if(isset(template.options[optionId].cmd[index].SameCmd) && template.options[optionId].cmd[index].SameCmd != '') {
-										$.each(template.options[optionId].cmd[index].SameCmd.split('|'),function(idSameCmd, name){
-											$.each(template.options[optionId].cmd,function(id, cmd){
+								if (typeof(_template.options[optionId].cmd[index]) !== 'undefined'){
+									_template.options[optionId].cmd[index].logicalId=$(this).attr('data-l2key');
+									if (typeof(_template.options[optionId].cmd[index].value) !== 'undefined')
+										_template.options[optionId].cmd[index].value="#[Aucun]["+_template.name+"]["+_template.options[optionId].cmd[index].value+"]#";
+									eqLogic.cmd.push(_template.options[optionId].cmd[index]);
+									if(isset(_template.options[optionId].cmd[index].SameCmd) && _template.options[optionId].cmd[index].SameCmd != '') {
+										$.each(_template.options[optionId].cmd[index].SameCmd.split('|'),function(idSameCmd, name){
+											$.each(_template.options[optionId].cmd,function(id, cmd){
 												if(cmd.name == name && idCmd != index){
-													template.options[optionId].cmd[id].logicalId=logicalId;
-													eqLogic.cmd.push(template.options[optionId].cmd[id]);
+													_template.options[optionId].cmd[id].logicalId=logicalId;
+													eqLogic.cmd.push(_template.options[optionId].cmd[id]);
 												}
 											});
 										});
@@ -270,7 +269,7 @@ function CreateArboressance(data, Arboressance, first){
 		})
 		.on('click','.createTemplate',function(e){
 			e.stopPropagation();
-			CreatebyTemplate($(this).parents('.Level:first'));
+			getTemplate($(this).parents('.Level:first'));
 		});
 		if(SelectAddr != ''){
 			$.each(Arboressance.find(".AdresseGroupe"),function() {
