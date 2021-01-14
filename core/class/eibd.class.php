@@ -476,7 +476,7 @@ class eibd extends eqLogic {
 						continue;
 					}
 					if ($Commande->getConfiguration('FlagInit')){
-						$BusValue = $Commande->execute();
+						$BusValue = $Commande->execute(array('init'=>true));
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Lecture du GAD: '.$Commande->getLogicalId().' = '.$BusValue);
 						else
@@ -823,7 +823,7 @@ class eibdCmd extends cmd {
 	}
 	public function postSave() {			
 		if ($this->getConfiguration('FlagInit')){
-			$BusValue = $this->execute();
+			$BusValue = $this->execute(array('init'=>true));
 			if($this->getType() == 'info')			
 				log::add('eibd', 'info', $this->getHumanName().'[Initialisation] Lecture du GAD: '.$this->getLogicalId().' = '.$BusValue);
 			else
@@ -914,7 +914,7 @@ class eibdCmd extends cmd {
 				usleep(config::byKey('SendSleep','eibd')*1000);
 			break;
 			case 'info':
-				if($this->getConfiguration('FlagWrite')){
+				if($this->getConfiguration('FlagWrite') && !isset($_options['init'])){
 					return $this->execCmd();
 				}else{
 					try {
