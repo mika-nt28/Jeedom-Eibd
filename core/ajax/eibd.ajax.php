@@ -44,7 +44,7 @@ try {
 		case 'Read':
 			$Commande=cmd::byLogicalId(init('Gad'))[0];
 			if (is_object($Commande))
-				ajax::success($Commande->execute());
+				ajax::success($Commande->execute(array('init'=>true)));
 			else
 				ajax::success(false);
 		break;
