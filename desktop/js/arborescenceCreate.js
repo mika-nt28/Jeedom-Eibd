@@ -38,7 +38,7 @@ function selectTemplate(_equipement){
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
-					CreatebyTemplate(_equipement,$('.EqLogicTemplateAttr[data-l1key=template]').val());
+					CreatebyTemplate(_equipement,templates[$('.EqLogicTemplateAttr[data-l1key=template]').val()]);
 				}
 			},
 		}
@@ -93,8 +93,10 @@ function htmlMergeTemplate(template,cmds){
 function getTemplate(_equipement){
 	var _template = _equipement.find('label:first').text();
 	if(_template != ''){
-		if(templates[_template] == 'Undefinded')
-			return templates[selectTemplate()];
+		if(templates[_template] == 'Undefinded'){
+			selectTemplate(_equipement);
+			return;
+		}
 		var isTemplate;
 		$.each(templates,function(id, template){
 			if(template.name.includes(_template)){
