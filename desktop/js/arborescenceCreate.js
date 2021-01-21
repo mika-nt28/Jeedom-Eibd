@@ -47,8 +47,9 @@ function selectTemplate(_equipement){
 }
 function htmlMergeTemplate(template,cmds){
 	var selectCmd = $('<select class="EqLogicTemplateAttr form-control" data-l1key="cmd">');
+		selectCmd.append($('<option>'));
 	var optgroup = $('<optgroup>').attr('label','Base');
-	$.each(template.cmd,function(id,cmd){
+	$.each(template.cmd,function(idCmd,cmd){
 		var optionName = cmd.name;
 		if(isset(cmd.SameCmd) && cmd.SameCmd != '') 
 			optionName = cmd.SameCmd;
@@ -59,7 +60,7 @@ function htmlMergeTemplate(template,cmds){
 		});
 		if(!optionExist){
 			optgroup.append($('<option>')
-				.attr('value',id)
+				.attr('value','_'+idCmd)
 				.text(optionName));
 		}
 	});
@@ -77,7 +78,7 @@ function htmlMergeTemplate(template,cmds){
 			});
 			if(!optionExist){
 				optgroup.append($('<option>')
-					.attr('value',id)
+					.attr('value',id+'_'+idCmd)
 					.text(optionName));
 			}
 		});
@@ -105,8 +106,8 @@ function htmlMergeTemplate(template,cmds){
 			.append(html));;
 }
 $('body').off('change','.EqLogicTemplateAttr[data-l1key=cmd]').on('change','.EqLogicTemplateAttr[data-l1key=cmd]',function(){
-	$(this).closest('fieldset').find('option[value='+$(this).val()+']').attr('disabled',true);
-	$(this).find('option[value='+$(this).val()+']').attr('disabled',false);;
+	//$(this).closest('fieldset').find('option[value='+$(this).val()+']').attr('disabled',true);
+	//$(this).find('option[value='+$(this).val()+']').attr('disabled',false);;
 });
 function getTemplate(_equipement){
 	var _template = _equipement.find('label:first').text();
@@ -160,44 +161,52 @@ function CreatebyTemplate(_equipement,_template){
 					eqLogic.isVisible = true;
 					eqLogic.cmd = new Array();
 					$('.EqLogicTemplateAttr[data-l1key=cmd]').each(function(){
-						var index = $(this).val();
-						if (typeof(_template.cmd[index]) !== 'undefined'){
-							var logicalId=$(this).attr('data-l2key');
-							_template.cmd[index].logicalId = logicalId;
-							if (typeof(_template.cmd[index].value) !== 'undefined')
-								_template.cmd[index].value="#[Aucun]["+eqLogic.name+"]["+_template.cmd[index].value+"]#";
-							eqLogic.cmd.push(_template.cmd[index]);
-							if(isset(_template.cmd[index].SameCmd) && _template.cmd[index].SameCmd != '') {
-								$.each(_template.cmd[index].SameCmd.split('|'),function(id, name){
-									$.each(_template.cmd,function(idCmd, cmd){
-										if(cmd.name == name && idCmd != index){
-											_template.cmd[idCmd].logicalId=logicalId;
-											eqLogic.cmd.push(_template.cmd[idCmd]);
+						if($(this).val() != null){
+						var _option = $(this).val().split("_")[0];
+						var index = $(this).val().split("_")[1];
+						if(_option == ''){
+							if (typeof(_template.cmd[index]) !== 'undefined'){
+								var logicalId=$(this).attr('data-l2key');
+								_template.cmd[index].logicalId = logicalId;
+								if (typeof(_template.cmd[index].value) !== 'undefined')
+									_template.cmd[index].value="#[Aucun]["+eqLogic.name+"]["+_template.cmd[index].value+"]#";
+								eqLogic.cmd.push(_template.cmd[index]);
+								if(isset(_template.cmd[index].SameCmd) && _template.cmd[index].SameCmd != '') {
+									$.each(_template.cmd[index].SameCmd.split('|'),function(id, name){
+										$.each(_template.cmd,function(idCmd, cmd){
+											if(cmd.name == name && idCmd != index){
+												_template.cmd[idCmd].logicalId=logicalId;
+												eqLogic.cmd.push(_template.cmd[idCmd]);
+											}
+										});
+									});
+								}
+							}
+						}else{
+							$.each(_template.options,function(optionId, option){
+								if(_option == optionId){
+									$.each(option,function(idCmd, optionCmd){	
+										if (typeof(_template.options[optionId].cmd[index]) !== 'undefined'){
+											_template.options[optionId].cmd[index].logicalId=$(this).attr('data-l2key');
+											if (typeof(_template.options[optionId].cmd[index].value) !== 'undefined')
+												_template.options[optionId].cmd[index].value="#[Aucun]["+_template.name+"]["+_template.options[optionId].cmd[index].value+"]#";
+											eqLogic.cmd.push(_template.options[optionId].cmd[index]);
+											if(isset(_template.options[optionId].cmd[index].SameCmd) && _template.options[optionId].cmd[index].SameCmd != '') {
+												$.each(_template.options[optionId].cmd[index].SameCmd.split('|'),function(idSameCmd, name){
+													$.each(_template.options[optionId].cmd,function(id, cmd){
+														if(cmd.name == name && idCmd != index){
+															_template.options[optionId].cmd[id].logicalId=logicalId;
+															eqLogic.cmd.push(_template.options[optionId].cmd[id]);
+														}
+													});
+												});
+											}
 										}
 									});
-								});
-							}
-						}
-						$.each(_template.options,function(optionId, option){
-							$.each(option,function(idCmd, optionCmd){	
-								if (typeof(_template.options[optionId].cmd[index]) !== 'undefined'){
-									_template.options[optionId].cmd[index].logicalId=$(this).attr('data-l2key');
-									if (typeof(_template.options[optionId].cmd[index].value) !== 'undefined')
-										_template.options[optionId].cmd[index].value="#[Aucun]["+_template.name+"]["+_template.options[optionId].cmd[index].value+"]#";
-									eqLogic.cmd.push(_template.options[optionId].cmd[index]);
-									if(isset(_template.options[optionId].cmd[index].SameCmd) && _template.options[optionId].cmd[index].SameCmd != '') {
-										$.each(_template.options[optionId].cmd[index].SameCmd.split('|'),function(idSameCmd, name){
-											$.each(_template.options[optionId].cmd,function(id, cmd){
-												if(cmd.name == name && idCmd != index){
-													_template.options[optionId].cmd[id].logicalId=logicalId;
-													eqLogic.cmd.push(_template.options[optionId].cmd[id]);
-												}
-											});
-										});
-									}
 								}
 							});
-						});
+						}
+                      }
 					});
 					SaveMergeTemplate(eqLogic);
 				}
