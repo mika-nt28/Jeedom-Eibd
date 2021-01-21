@@ -83,10 +83,6 @@ function htmlMergeTemplate(template,cmds){
 		});
 		selectCmd.append(optgroup);
 	});
-	selectCmd.off().on('change',function(){
-		$(this).closest('fieldset').find('option[value='+$(this).val()+']').attr('disabled',true);
-		$(this).find('option[value='+$(this).val()+']').attr('disabled',false);;
-	});
 	var html = $('<div>')
 	$.each(cmds,function(id, cmd){
 		html.append($('<div class="form-group">')
@@ -100,7 +96,7 @@ function htmlMergeTemplate(template,cmds){
 			.append($('<legend>').text("{{Commandes}}"))
 			.append($('<div class="form-group">')
 				.append($('<label class="col-sm-3 control-label">')
-					.append($('{{Nom de l\'équipement KNX}}'))
+					.append('{{Nom de l\'équipement KNX}}')
 					.append($('<sup>')
 						.append($('<i class="fas fa-question-circle tooltips" title="{{Indiquez le nom de votre équipement}}">'))))
 				.append($('<div class="col-sm-3">')
@@ -108,6 +104,10 @@ function htmlMergeTemplate(template,cmds){
 			.append($('<legend>').text("{{Commandes}}"))
 			.append(html));;
 }
+$('body').off('change','.EqLogicTemplateAttr[data-l1key=cmd]').on('change','.EqLogicTemplateAttr[data-l1key=cmd]',function(){
+	$(this).closest('fieldset').find('option[value='+$(this).val()+']').attr('disabled',true);
+	$(this).find('option[value='+$(this).val()+']').attr('disabled',false);;
+});
 function getTemplate(_equipement){
 	var _template = _equipement.find('label:first').text();
 	if(_template != ''){
