@@ -865,6 +865,9 @@ class eibdCmd extends cmd {
 		return $ActionValue;
 	}
 	public function execute($_options = null){
+		$deamon_info = eibd::deamon_info();
+		if ($deamon_info['state'] != 'ok') 
+			return false;		
 		$ga=$this->getLogicalId();
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
