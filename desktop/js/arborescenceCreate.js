@@ -46,6 +46,12 @@ function selectTemplate(_equipement){
       
 }
 function htmlMergeTemplate(template,cmds){
+	var selectParent = $('<select class="EqLogicTemplateAttr form-control" data-l1key="object">');
+	jeedom.object.all({success:function(objects){
+		$.each(objects,function(index,object){
+			selectParent.append($('<option id="'+object.id+'">').text(object.name));
+		});
+	}});
 	var selectCmd = $('<select class="EqLogicTemplateAttr form-control" data-l1key="cmd">');
 	selectCmd.append($('<option>').text('Aucun'));
 	var optgroup = $('<optgroup>').attr('label','Base');
@@ -94,7 +100,7 @@ function htmlMergeTemplate(template,cmds){
 	});
 	return $('<form class="form-horizontal">')
 		.append($('<fieldset>')
-			.append($('<legend>').text("{{Commandes}}"))
+			.append($('<legend>').text("{{Equipement}}"))
 			.append($('<div class="form-group">')
 				.append($('<label class="col-sm-3 control-label">')
 					.append('{{Nom de l\'équipement KNX}}')
@@ -102,8 +108,15 @@ function htmlMergeTemplate(template,cmds){
 						.append($('<i class="fas fa-question-circle tooltips" title="{{Indiquez le nom de votre équipement}}">'))))
 				.append($('<div class="col-sm-3">')
 					.append($('<input type="text" class="EqLogicTemplateAttr form-control" data-l1key="name" placeholder="{{Nom de l\'équipement KNX}}"/>'))))			
+			.append($('<div class="form-group">')
+				.append($('<label class="col-sm-3 control-label">')
+					.append('{{Objet parent}}')
+					.append($('<sup>')
+						.append($('<i class="fas fa-question-circle tooltips" title="{{Séléctionner l\'objet parent}}">'))))
+				.append($('<div class="col-sm-3">')
+					.append(selectParent)))			
 			.append($('<legend>').text("{{Commandes}}"))
-			.append(html));;
+			.append(html));	
 }
 $('body').off('change','.EqLogicTemplateAttr[data-l1key=cmd]').on('change','.EqLogicTemplateAttr[data-l1key=cmd]',function(){
 	//$(this).closest('fieldset').find('option[value='+$(this).val()+']').attr('disabled',true);
@@ -176,6 +189,7 @@ function CreatebyTemplate(_equipement,_template){
 											$.each(_template.cmd,function(idCmd, cmd){
 												if(cmd.name == name && idCmd != index){
 													_template.cmd[idCmd].logicalId=logicalId;
+													_template.cmd[idCmd].value="#[Aucun]["+eqLogic.name+"]["+_template.cmd[idCmd].value+"]#";
 													eqLogic.cmd.push(_template.cmd[idCmd]);
 												}
 											});
