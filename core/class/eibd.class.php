@@ -914,7 +914,6 @@ class eibdCmd extends cmd {
 						}*/
 					}
 				}
-				usleep(config::byKey('SendSleep','eibd')*1000);
 			break;
 			case 'info':
 				if($this->getConfiguration('FlagWrite') && !isset($_options['init'])){
@@ -937,6 +936,7 @@ class eibdCmd extends cmd {
 				}
 			break;
 		}
+		sleep(config::byKey('SendSleep','eibd')*1000);
 	}
 	public function SendReply(){
 		log::add('eibd', 'info',$this->getHumanName().'[Réponse]: Demande de valeur sur l\adresse de groupe : '.$this->getLogicalId());			
