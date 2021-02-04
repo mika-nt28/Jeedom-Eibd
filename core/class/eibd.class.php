@@ -914,6 +914,7 @@ class eibdCmd extends cmd {
 						}*/
 					}
 				}
+				sleep(config::byKey('SendSleep','eibd')*1000);
 			break;
 			case 'info':
 				if($this->getConfiguration('FlagWrite') && !isset($_options['init'])){
@@ -932,11 +933,11 @@ class eibdCmd extends cmd {
 					$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
 					if($BusValue !== false)
 						$this->getEqLogic()->checkAndUpdateCmd($ga,$BusValue);
+					sleep(config::byKey('SendSleep','eibd')*1000);
 					return $BusValue;
 				}
 			break;
 		}
-		sleep(config::byKey('SendSleep','eibd')*1000);
 	}
 	public function SendReply(){
 		log::add('eibd', 'info',$this->getHumanName().'[Réponse]: Demande de valeur sur l\adresse de groupe : '.$this->getLogicalId());			
