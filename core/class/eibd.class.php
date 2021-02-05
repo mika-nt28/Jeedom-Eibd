@@ -933,7 +933,7 @@ class eibdCmd extends cmd {
 					$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
 					if($BusValue !== false)
 						$this->getEqLogic()->checkAndUpdateCmd($ga,$BusValue);
-					sleep(config::byKey('SendSleep','eibd')*1000);
+					usleep(config::byKey('SendSleep','eibd')*1000);
 					return $BusValue;
 				}
 			break;
