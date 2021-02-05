@@ -47,9 +47,10 @@ function selectTemplate(_equipement){
 }
 function htmlMergeTemplate(template,cmds){
 	var selectParent = $('<select class="EqLogicTemplateAttr form-control" data-l1key="object">');
+	selectParent.append($('<option>').text("{{Aucun}}"));
 	jeedom.object.all({success:function(objects){
 		$.each(objects,function(index,object){
-			selectParent.append($('<option id="'+object.id+'">').text(object.name));
+			selectParent.append($('<option value="'+object.id+'">').text(object.name));
 		});
 	}});
 	var selectCmd = $('<select class="EqLogicTemplateAttr form-control" data-l1key="cmd">');
@@ -170,6 +171,7 @@ function CreatebyTemplate(_equipement,_template){
 				className: "btn-primary",
 				callback: function () {
 					eqLogic.name = $('.EqLogicTemplateAttr[data-l1key=name]').val();
+					eqLogic.object_id = $('.EqLogicTemplateAttr[data-l1key=object]').val();
 					eqLogic.isEnable = true;
 					eqLogic.isVisible = true;
 					eqLogic.cmd = new Array();
@@ -182,14 +184,14 @@ function CreatebyTemplate(_equipement,_template){
 									var logicalId=$(this).attr('data-l2key');
 									_template.cmd[index].logicalId = logicalId;
 									if (typeof(_template.cmd[index].value) !== 'undefined')
-										_template.cmd[index].value="#[Aucun]["+eqLogic.name+"]["+_template.cmd[index].value+"]#";
+										_template.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object]').text()+"]["+eqLogic.name+"]["+_template.cmd[index].value+"]#";
 									eqLogic.cmd.push(_template.cmd[index]);
 									if(isset(_template.cmd[index].SameCmd) && _template.cmd[index].SameCmd != '') {
 										$.each(_template.cmd[index].SameCmd.split('|'),function(id, name){
 											$.each(_template.cmd,function(idCmd, cmd){
 												if(cmd.name == name && idCmd != index){
 													_template.cmd[idCmd].logicalId=logicalId;
-													_template.cmd[idCmd].value="#[Aucun]["+eqLogic.name+"]["+_template.cmd[idCmd].value+"]#";
+													_template.cmd[idCmd].value="#["+$('.EqLogicTemplateAttr[data-l1key=object]').text()+"]["+eqLogic.name+"]["+_template.cmd[idCmd].value+"]#";
 													eqLogic.cmd.push(_template.cmd[idCmd]);
 												}
 											});
