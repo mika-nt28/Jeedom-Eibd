@@ -184,14 +184,14 @@ function CreatebyTemplate(_equipement,_template){
 									var logicalId=$(this).attr('data-l2key');
 									_template.cmd[index].logicalId = logicalId;
 									if (typeof(_template.cmd[index].value) !== 'undefined')
-										_template.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object]').text()+"]["+eqLogic.name+"]["+_template.cmd[index].value+"]#";
+										_template.cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object] option:selected').text()+"]["+eqLogic.name+"]["+_template.cmd[index].value+"]#";
 									eqLogic.cmd.push(_template.cmd[index]);
 									if(isset(_template.cmd[index].SameCmd) && _template.cmd[index].SameCmd != '') {
 										$.each(_template.cmd[index].SameCmd.split('|'),function(id, name){
 											$.each(_template.cmd,function(idCmd, cmd){
 												if(cmd.name == name && idCmd != index){
 													_template.cmd[idCmd].logicalId=logicalId;
-													_template.cmd[idCmd].value="#["+$('.EqLogicTemplateAttr[data-l1key=object]').text()+"]["+eqLogic.name+"]["+_template.cmd[idCmd].value+"]#";
+													_template.cmd[idCmd].value="#["+$('.EqLogicTemplateAttr[data-l1key=object] option:selected').text()+"]["+eqLogic.name+"]["+_template.cmd[idCmd].value+"]#";
 													eqLogic.cmd.push(_template.cmd[idCmd]);
 												}
 											});
@@ -205,7 +205,7 @@ function CreatebyTemplate(_equipement,_template){
 											if (typeof(_template.options[optionId].cmd[index]) !== 'undefined'){
 												_template.options[optionId].cmd[index].logicalId=$(this).attr('data-l2key');
 												if (typeof(_template.options[optionId].cmd[index].value) !== 'undefined')
-													_template.options[optionId].cmd[index].value="#[Aucun]["+_template.name+"]["+_template.options[optionId].cmd[index].value+"]#";
+													_template.options[optionId].cmd[index].value="#["+$('.EqLogicTemplateAttr[data-l1key=object] option:selected').text()+"]["+_template.name+"]["+_template.options[optionId].cmd[index].value+"]#";
 												eqLogic.cmd.push(_template.options[optionId].cmd[index]);
 												if(isset(_template.options[optionId].cmd[index].SameCmd) && _template.options[optionId].cmd[index].SameCmd != '') {
 													$.each(_template.options[optionId].cmd[index].SameCmd.split('|'),function(idSameCmd, name){
