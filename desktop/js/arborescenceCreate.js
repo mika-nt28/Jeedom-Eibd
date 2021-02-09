@@ -171,9 +171,10 @@ function CreatebyTemplate(_equipement,_template){
 				className: "btn-primary",
 				callback: function () {
 					eqLogic.name = $('.EqLogicTemplateAttr[data-l1key=name]').val();
+					eqLogic.category = _template["category"];
 					eqLogic.object_id = $('.EqLogicTemplateAttr[data-l1key=object]').val();
-					eqLogic.isEnable = true;
-					eqLogic.isVisible = true;
+					eqLogic.isEnable =  _template["isEnable"];
+					eqLogic.isVisible =  _template["isVisible"];
 					eqLogic.cmd = new Array();
 					$('.EqLogicTemplateAttr[data-l1key=cmd]').each(function(){
 						if($(this).val() != null){
@@ -201,7 +202,7 @@ function CreatebyTemplate(_equipement,_template){
 							}else{
 								$.each(_template.options,function(optionId, option){
 									if(_option == optionId){
-										$.each(option,function(idCmd, optionCmd){	
+										$.each(option,function(idoptionCmd, optionCmd){	
 											if (typeof(_template.options[optionId].cmd[index]) !== 'undefined'){
 												_template.options[optionId].cmd[index].logicalId=$(this).attr('data-l2key');
 												if (typeof(_template.options[optionId].cmd[index].value) !== 'undefined')
@@ -209,10 +210,11 @@ function CreatebyTemplate(_equipement,_template){
 												eqLogic.cmd.push(_template.options[optionId].cmd[index]);
 												if(isset(_template.options[optionId].cmd[index].SameCmd) && _template.options[optionId].cmd[index].SameCmd != '') {
 													$.each(_template.options[optionId].cmd[index].SameCmd.split('|'),function(idSameCmd, name){
-														$.each(_template.options[optionId].cmd,function(id, cmd){
+														$.each(_template.options[optionId].cmd,function(idCmd, cmd){
 															if(cmd.name == name && idCmd != index){
-																_template.options[optionId].cmd[id].logicalId=logicalId;
-																eqLogic.cmd.push(_template.options[optionId].cmd[id]);
+																_template.options[optionId].cmd[idCmd].logicalId=logicalId;
+																_template.options[optionId].cmd[idCmd].value="#["+$('.EqLogicTemplateAttr[data-l1key=object] option:selected').text()+"]["+eqLogic.name+"]["+_template.cmd[idCmd].value+"]#";
+																eqLogic.cmd.push(_template.options[optionId].cmd[idCmd]);
 															}
 														});
 													});
