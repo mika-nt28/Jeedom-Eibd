@@ -94,27 +94,27 @@ function htmlMergeTemplate(template,cmds){
 	var html = $('<div>')
 	$.each(cmds,function(id, cmd){
 		html.append($('<div class="form-group">')
-			.append($('<label class="col-sm-3 control-label">')
+			.append($('<label class="col-sm-5 control-label">')
 				.append(cmd.name))
-			.append($('<div class="col-sm-3">')
+			.append($('<div class="col-sm-7">')
 				.append(selectCmd.clone().attr('data-l2key',cmd.AdresseGroupe))));		
 	});
 	return $('<form class="form-horizontal">')
 		.append($('<fieldset>')
 			.append($('<legend>').text("{{Equipement}}"))
 			.append($('<div class="form-group">')
-				.append($('<label class="col-sm-3 control-label">')
+				.append($('<label class="col-sm-5 control-label">')
 					.append('{{Nom de l\'équipement KNX}}')
 					.append($('<sup>')
 						.append($('<i class="fas fa-question-circle tooltips" title="{{Indiquez le nom de votre équipement}}">'))))
-				.append($('<div class="col-sm-3">')
+				.append($('<div class="col-sm-7">')
 					.append($('<input type="text" class="EqLogicTemplateAttr form-control" data-l1key="name" placeholder="{{Nom de l\'équipement KNX}}"/>'))))			
 			.append($('<div class="form-group">')
-				.append($('<label class="col-sm-3 control-label">')
+				.append($('<label class="col-sm-5 control-label">')
 					.append('{{Objet parent}}')
 					.append($('<sup>')
 						.append($('<i class="fas fa-question-circle tooltips" title="{{Séléctionner l\'objet parent}}">'))))
-				.append($('<div class="col-sm-3">')
+				.append($('<div class="col-sm-7">')
 					.append(selectParent)))			
 			.append($('<legend>').text("{{Commandes}}"))
 			.append(html));	
@@ -171,9 +171,10 @@ function CreatebyTemplate(_equipement,_template){
 				className: "btn-primary",
 				callback: function () {
 					eqLogic.name = $('.EqLogicTemplateAttr[data-l1key=name]').val();
+					eqLogic.category = _template["category"];
 					eqLogic.object_id = $('.EqLogicTemplateAttr[data-l1key=object]').val();
-					eqLogic.isEnable = true;
-					eqLogic.isVisible = true;
+					eqLogic.isEnable =  _template["isEnable"];
+					eqLogic.isVisible =  _template["isVisible"];
 					eqLogic.cmd = new Array();
 					$('.EqLogicTemplateAttr[data-l1key=cmd]').each(function(){
 						if($(this).val() != null){
@@ -201,7 +202,7 @@ function CreatebyTemplate(_equipement,_template){
 							}else{
 								$.each(_template.options,function(optionId, option){
 									if(_option == optionId){
-										$.each(option,function(idCmd, optionCmd){	
+										$.each(option,function(idoptionCmd, optionCmd){	
 											if (typeof(_template.options[optionId].cmd[index]) !== 'undefined'){
 												_template.options[optionId].cmd[index].logicalId=$(this).attr('data-l2key');
 												if (typeof(_template.options[optionId].cmd[index].value) !== 'undefined')
@@ -209,10 +210,11 @@ function CreatebyTemplate(_equipement,_template){
 												eqLogic.cmd.push(_template.options[optionId].cmd[index]);
 												if(isset(_template.options[optionId].cmd[index].SameCmd) && _template.options[optionId].cmd[index].SameCmd != '') {
 													$.each(_template.options[optionId].cmd[index].SameCmd.split('|'),function(idSameCmd, name){
-														$.each(_template.options[optionId].cmd,function(id, cmd){
+														$.each(_template.options[optionId].cmd,function(idCmd, cmd){
 															if(cmd.name == name && idCmd != index){
-																_template.options[optionId].cmd[id].logicalId=logicalId;
-																eqLogic.cmd.push(_template.options[optionId].cmd[id]);
+																_template.options[optionId].cmd[idCmd].logicalId=logicalId;
+																_template.options[optionId].cmd[idCmd].value="#["+$('.EqLogicTemplateAttr[data-l1key=object] option:selected').text()+"]["+eqLogic.name+"]["+_template.cmd[idCmd].value+"]#";
+																eqLogic.cmd.push(_template.options[optionId].cmd[idCmd]);
 															}
 														});
 													});
