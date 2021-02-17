@@ -914,7 +914,7 @@ class eibdCmd extends cmd {
 						}*/
 					}
 				}
-				sleep(config::byKey('SendSleep','eibd')*1000);
+				usleep(config::byKey('SendSleep','eibd')*1000);
 			break;
 			case 'info':
 				if($this->getConfiguration('FlagWrite') && !isset($_options['init'])){
