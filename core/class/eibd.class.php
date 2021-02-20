@@ -691,12 +691,14 @@ class eibd extends eqLogic {
 						if (!is_object($listener)){
 							log::add('eibd','debug',$Commande->getHumanName().' Un probleme sur cette commande provoque l\'arret du demon');
 							$return['state'] = 'nok';
+							cache::set('eibd::demonState', $return['state'], 0);
 							return $return;
 						}
 					}	
 				}
 			}
 		}
+		cache::set('eibd::demonState', $return['state'], 0);
 		return $return;
 	}
 	public static function deamon_start($_debug = false) {
@@ -865,8 +867,7 @@ class eibdCmd extends cmd {
 		return $ActionValue;
 	}
 	public function execute($_options = null){
-		$deamon_info = eibd::deamon_info();
-		if ($deamon_info['state'] != 'ok') 
+		if (cache::byKey('eibd::demonState')->getValue('nok') != 'ok') 
 			return false;		
 		$ga=$this->getLogicalId();
 		$dpt=$this->getConfiguration('KnxObjectType');
