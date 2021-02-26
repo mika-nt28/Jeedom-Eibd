@@ -769,6 +769,7 @@ class eibd extends eqLogic {
 				$cmd .= ' >> /var/log/knx.log 2>&1';
 				log::add('eibd','info', '[Start] '.$cmd);
 				exec($cmd);
+				cache::set('eibd::demonState',true, 0);
 			}
 		}
 		$cron = cron::byClassAndFunction('eibd', 'BusMonitor');
@@ -797,6 +798,7 @@ class eibd extends eqLogic {
 		if(isset($cmd)){
 			$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1';
 			exec($cmd);
+			cache::set('eibd::demonState',false, 0);
 		}
 		$cron = cron::byClassAndFunction('eibd', 'BusMonitor');
 		if (is_object($cron)) {
