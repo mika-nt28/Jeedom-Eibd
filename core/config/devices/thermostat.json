@@ -35,8 +35,8 @@
 					"noBatterieCheck":"0"
 				},
 				"template":{
-					"dashboard":"thermometre",
-					"mobile":"badge"
+					"dashboard":"core::heat",
+					"mobile":"core::heat"
 				},
 				"display":{
 					"icon":"",
@@ -64,8 +64,8 @@
 					"noBatterieCheck":"0"
 				},
 				"template":{
-					"dashboard":"thermometre",
-					"mobile":"badge"
+					"dashboard":"default",
+					"mobile":"default"
 				},
 				"display":{
 					"icon":"",
@@ -93,8 +93,8 @@
 					"noBatterieCheck":"0"
 				},
 				"template":{
-					"dashboard":"badge",
-					"mobile":"badge"
+					"dashboard":"core::badge",
+					"mobile":"core::badge"
 				},
 				"display":{
 					"icon":"",
@@ -122,8 +122,8 @@
 					"noBatterieCheck":"0"
 				},
 				"template":{
-					"dashboard":"thermostat",
-					"mobile":"thermostat"
+					"dashboard":"core::button",
+					"mobile":"core::button"
 				},
 				"display":{
 					"icon":"",
@@ -175,10 +175,6 @@
 					"inverse":"0",
 					"subTypeAuto":"1",
 					"noBatterieCheck":"0"
-				},
-				"template":{
-					"dashboard":"HeatingMode",
-					"mobile":"HeatingMode"
 				},
 				"display":{
 					"icon":"",
