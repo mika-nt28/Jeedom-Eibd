@@ -504,20 +504,13 @@ class eibd extends eqLogic {
 			sleep(1);
 		}
 		self::InitInformation();
-		$nbError = 0;
 		while(true) {    
 			$src = new EIBAddr;
 			$dest = new EIBAddr;
 			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);      
-			if ($len == -1){
-				if($nbError >3){
-					message::add('info','[BusMonitor] 3 erreur consécutive, nous redémarront le demon', '', '') ;
-              				break;
-				} 
-				$nbError++;
-			}
+			if ($len == -1)
+				continue;
 			if ($len >= 2) {
-				$nbError = 0;
 				$mon = self::parseread($len,$buf);
 				if($mon !== false){
 					$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
