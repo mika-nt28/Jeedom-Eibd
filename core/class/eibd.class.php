@@ -476,7 +476,7 @@ class eibd extends eqLogic {
 						continue;
 					}
 					if ($Commande->getConfiguration('FlagInit')){
-						$BusValue = $Commande->execute();
+						$BusValue = $Commande->execute(array('init'=>true));
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Lecture du GAD: '.$Commande->getLogicalId().' = '.$BusValue);
 						else
@@ -504,20 +504,13 @@ class eibd extends eqLogic {
 			sleep(1);
 		}
 		self::InitInformation();
-		$nbError = 0;
 		while(true) {    
 			$src = new EIBAddr;
 			$dest = new EIBAddr;
 			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);      
-			if ($len == -1){
-				if($nbError >3){
-					message::add('info','[BusMonitor] 3 erreur consécutive, nous redémarront le demon', '', '') ;
-              				break;
-				} 
-				$nbError++;
-			}
+			if ($len == -1)
+				continue;
 			if ($len >= 2) {
-				$nbError = 0;
 				$mon = self::parseread($len,$buf);
 				if($mon !== false){
 					$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
@@ -545,7 +538,7 @@ class eibd extends eqLogic {
 		$dpt=$Commande->getConfiguration('KnxObjectType');
 		$inverse=$Commande->getConfiguration('inverse');
 		$Option=$Commande->getConfiguration('option');
-		if($Option != '' && !is_array($Option))
+		if(!is_array($Option))
 			$Option = json_decode($Option,true);
 		$Option['id']=$Commande->getId();
 		$data= Dpt::DptSelectEncode($dpt, $_options['value'], $inverse,$Option);
@@ -691,12 +684,14 @@ class eibd extends eqLogic {
 						if (!is_object($listener)){
 							log::add('eibd','debug',$Commande->getHumanName().' Un probleme sur cette commande provoque l\'arret du demon');
 							$return['state'] = 'nok';
+							cache::set('eibd::demonState', $return['state'], 0);
 							return $return;
 						}
 					}	
 				}
 			}
 		}
+		cache::set('eibd::demonState', $return['state'], 0);
 		return $return;
 	}
 	public static function deamon_start($_debug = false) {
@@ -756,11 +751,18 @@ class eibd extends eqLogic {
 		if(config::byKey('KnxSoft', 'eibd') == 'knxd')
 			$cmd .= ' -b ';	
 		if($cmd != ''){
+			if(config::byKey('TypeKNXgateway', 'eibd') == 'usb'){
+				$USBaddr = explode(':',config::byKey('KNXgateway', 'eibd'));
+				$cmdUSB = sprintf("/dev/bus/usb/%'.03d/%'.03d",$USBaddr[0],$USBaddr[1]);
+				log::add('eibd', 'debug', "Droit d'acces sur la passerelle USB " . $cmdUSB);
+				exec("sudo chmod 777 ".$cmdUSB. ' >> ' . log::getPathToLog('eibd') . ' 2>&1');
+			}
 			$cmd .= ' '. config::byKey('TypeKNXgateway', 'eibd') . ':' . config::byKey('KNXgateway', 'eibd');
 			if(isset($cmd)){
 				$cmd .= ' >> /var/log/knx.log 2>&1';
 				log::add('eibd','info', '[Start] '.$cmd);
 				exec($cmd);
+				cache::set('eibd::demonState',true, 0);
 			}
 		}
 		$cron = cron::byClassAndFunction('eibd', 'BusMonitor');
@@ -789,6 +791,7 @@ class eibd extends eqLogic {
 		if(isset($cmd)){
 			$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1';
 			exec($cmd);
+			cache::set('eibd::demonState',false, 0);
 		}
 		$cron = cron::byClassAndFunction('eibd', 'BusMonitor');
 		if (is_object($cron)) {
@@ -817,7 +820,7 @@ class eibdCmd extends cmd {
 	}
 	public function postSave() {			
 		if ($this->getConfiguration('FlagInit')){
-			$BusValue = $this->execute();
+			$BusValue = $this->execute(array('init'=>true));
 			if($this->getType() == 'info')			
 				log::add('eibd', 'info', $this->getHumanName().'[Initialisation] Lecture du GAD: '.$this->getLogicalId().' = '.$BusValue);
 			else
@@ -859,11 +862,13 @@ class eibdCmd extends cmd {
 		return $ActionValue;
 	}
 	public function execute($_options = null){
+		if (cache::byKey('eibd::demonState')->getValue('nok') != 'ok') 
+			return false;		
 		$ga=$this->getLogicalId();
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
-		if($Option != '' && !is_array($Option))
+		if(!is_array($Option))
 			$Option = json_decode($Option,true);
 		$Option['id']=$this->getId();
 		switch ($this->getType()) {
@@ -908,7 +913,7 @@ class eibdCmd extends cmd {
 				usleep(config::byKey('SendSleep','eibd')*1000);
 			break;
 			case 'info':
-				if($this->getConfiguration('FlagWrite')){
+				if($this->getConfiguration('FlagWrite') && !isset($_options['init'])){
 					return $this->execCmd();
 				}else{
 					try {
@@ -924,6 +929,7 @@ class eibdCmd extends cmd {
 					$BusValue=Dpt::DptSelectDecode($dpt, $DataBus, $inverse,$Option);
 					if($BusValue !== false)
 						$this->getEqLogic()->checkAndUpdateCmd($ga,$BusValue);
+					usleep(config::byKey('SendSleep','eibd')*1000);
 					return $BusValue;
 				}
 			break;
@@ -936,7 +942,7 @@ class eibdCmd extends cmd {
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
-		if($Option != '' && !is_array($Option))
+		if(!is_array($Option))
 			$Option = json_decode($Option,true);
 		$Option['id']=$this->getId();
 		if ($dpt != 'aucun' && $dpt!= ''){
@@ -965,7 +971,7 @@ class eibdCmd extends cmd {
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
-		if($Option != '' && !is_array($Option))
+		if(!is_array($Option))
 			$Option = json_decode($Option,true);
 		$Option['id']=$this->getId();
 		if ($dpt != 'aucun' && $dpt!= ''){
@@ -997,7 +1003,7 @@ class eibdCmd extends cmd {
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
-		if($Option != '' && !is_array($Option))
+		if(!is_array($Option))
 			$Option = json_decode($Option,true);
 		$Option['id']=$this->getId();
 		$unite=Dpt::getDptUnite($dpt);

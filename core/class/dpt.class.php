@@ -744,7 +744,7 @@ class Dpt{
 			break;
 		}
 	}
-	public function All_DPT()	{
+	public static function All_DPT(){
 		return array (
 		"Boolean"=> array(
 			"1.xxx"=> array(

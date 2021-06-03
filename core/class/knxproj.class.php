@@ -8,7 +8,7 @@ class knxproj {
 	private $Templates=array();
 	private $myProject=array();
 	public static function ExtractTX100ProjectFile($File){
-		$path = dirname(__FILE__) . '/../config/knxproj/';
+		$path = dirname(__FILE__) . '/../../data/knxproj/';
 		if (!is_dir($path)) 
 			mkdir($path);
 		exec('sudo chmod -R 777 '.$path);
@@ -16,7 +16,7 @@ class knxproj {
 		log::add('eibd','debug','[Import TX100] Extraction des fichiers de projets');
 	}
 	public static function ExtractETSProjectFile($File){
-		$path = dirname(__FILE__) . '/../config/knxproj/';
+		$path = dirname(__FILE__) . '/../../data/knxproj/';
 		if (!is_dir($path)) 
 			mkdir($path);
 		exec('sudo chmod -R 777 '.$path);
@@ -29,12 +29,12 @@ class knxproj {
 		log::add('eibd','debug','[Import ETS] Extraction des fichiers de projets');
 	}
  	public function __construct($_Merge,$_ProjetType){
-		$this->path = dirname(__FILE__) . '/../config/knxproj/';
+		$this->path = dirname(__FILE__) . '/../../data/knxproj/';
 		$this->Templates=eibd::devicesParameters();
 		$this->ProjetType=$_ProjetType;
 		if($_Merge != 'false'){
 			log::add('eibd','debug','[Import ETS] Chargement du fichier projet');
-			$filename=dirname(__FILE__) . '/../config/KnxProj.json';
+			$filename=dirname(__FILE__) . '/../../data/KnxProj.json';
 			$myKNX=json_decode(file_get_contents($filename),true);
 			$this->Devices=$myKNX['DevicesAll'];
 			$this->GroupAddresses=$myKNX['GAD'];
@@ -58,12 +58,12 @@ class knxproj {
 		}
 	}
  	public function __destruct(){
-		$path = dirname(__FILE__) . '/../config/knxproj/';
+		$path = dirname(__FILE__) . '/../../data/knxproj/';
 		if (file_exists($path)) 
 			exec('sudo rm -R '.$path );
 	}
 	public function WriteJsonProj(){
-		$filename=dirname(__FILE__) . '/../config/KnxProj.json';
+		$filename=dirname(__FILE__) . '/../../data/KnxProj.json';
 		if (file_exists($filename)) 
 			exec('sudo rm '.$filename);
 		$file=fopen($filename,"a+");

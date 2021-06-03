@@ -44,7 +44,7 @@ try {
 		case 'Read':
 			$Commande=cmd::byLogicalId(init('Gad'))[0];
 			if (is_object($Commande))
-				ajax::success($Commande->execute());
+				ajax::success($Commande->execute(array('init'=>true)));
 			else
 				ajax::success(false);
 		break;
@@ -90,7 +90,7 @@ try {
 			ajax::success(json_decode($knxproj->getAll(),true));
 		break;
 		case 'getEtsProj':
-			$filename=dirname(__FILE__) . '/../config/KnxProj.json';
+			$filename=dirname(__FILE__) . '/../../data/KnxProj.json';
 			if (file_exists($filename))
 				ajax::success(json_decode(file_get_contents($filename),true));
 			ajax::success(false);
