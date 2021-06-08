@@ -508,19 +508,21 @@ class eibd extends eqLogic {
 			$src = new EIBAddr;
 			$dest = new EIBAddr;
 			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);      
-			if ($len == -1)
+			if ($len == -1){
+				log::add('eibd', 'debug', "[Moniteur Bus] Trame de data non prise en charge par la plugin:".json_encode($buf)." (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr).")");
 				continue;
+			}
 			if ($len >= 2) {
 				$mon = self::parseread($len,$buf);
 				if($mon !== false){
 					$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
 					$Traitement->run(); 
 				}else
-					log::add('eibd', 'debug', "Type de data non prise en charge par la plugin (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr).")");
+					log::add('eibd', 'debug', "[Moniteur Bus] Type de data non prise en charge par la plugin (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr).")");
 			}
 		}
 		$conBusMonitor->EIBClose();		
-		log::add('eibd', 'debug', 'Deconnexion a EIBD sur le serveur '.$host.':'.$port);	
+		log::add('eibd', 'info', '[Moniteur Bus] Deconnexion a EIBD sur le serveur '.$host.':'.$port);	
 	}
 	public static function TransmitValue($_options) 	{
 		$Event = cmd::byId($_options['event_id']);
@@ -650,18 +652,26 @@ class eibd extends eqLogic {
 		$return['state'] = 'nok';
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
-				$result=exec("ps aux | grep knxd | grep -v grep | awk '{print $2}'",$result);	
-				if($result!="")
-					$return['state'] = 'ok';
 				if(config::byKey('EibdPort', 'eibd')!=''&&config::byKey('EibdGad', 'eibd')!=''&&config::byKey('KNXgateway', 'eibd')!='')
 					$return['launchable'] = 'ok';
+				$result=exec("ps aux | grep knxd | grep -v grep | awk '{print $2}'",$result);	
+				if($result!=""){
+					$return['state'] = 'ok';
+				}else{
+					log::add('eibd','debug','[Moniteur Bus] KNXd est arrété');
+					return $return;
+				}
 			break;
 			case 'eibd':
-				$result=exec("ps aux | grep eibd | grep -v grep | awk '{print $2}'",$result);	
-				if($result!="")
-					$return['state'] = 'ok';
 				if(config::byKey('EibdPort', 'eibd')!=''&&config::byKey('EibdGad', 'eibd')!=''&&config::byKey('KNXgateway', 'eibd')!='')
 					$return['launchable'] = 'ok';
+				$result=exec("ps aux | grep eibd | grep -v grep | awk '{print $2}'",$result);	
+				if($result!=""){
+					$return['state'] = 'ok';
+				}else{
+					log::add('eibd','debug','[Moniteur Bus] EIBD est arrété');
+					return $return;
+				}
 			break;
 			case 'manual':
 				$return['state'] = 'ok';
@@ -671,10 +681,13 @@ class eibd extends eqLogic {
 		
 		if($return['state'] == 'ok'){
 			$cron = cron::byClassAndFunction('eibd', 'BusMonitor');
-			if(is_object($cron) && $cron->running())
+			if(is_object($cron) && $cron->running()){
 				$return['state'] = 'ok';
-			else
+			}else{
 				$return['state'] = 'nok';
+				log::add('eibd','debug','[Moniteur Bus] Le demon du plugin est arrété');
+				return $return;
+			}
 		}
 		foreach(eqLogic::byType('eibd') as $Equipement)	{
 			if ($Equipement->getIsEnable()){
@@ -682,7 +695,7 @@ class eibd extends eqLogic {
 					if($Commande->getConfiguration('FlagTransmit') && $Commande->getValue() != ''){
 						$listener = listener::byClassAndFunction('eibd', 'TransmitValue', array('eibdCmd_id' => $Commande->getId()));
 						if (!is_object($listener)){
-							log::add('eibd','debug',$Commande->getHumanName().' Un probleme sur cette commande provoque l\'arret du demon');
+							log::add('eibd','debug','[Moniteur Bus]'.$Commande->getHumanName().' Un probleme sur cette commande provoque l\'arret du demon');
 							$return['state'] = 'nok';
 							cache::set('eibd::demonState', $return['state'], 0);
 							return $return;
