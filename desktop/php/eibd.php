@@ -62,7 +62,7 @@
 					foreach ($eqLogics as $eqLogic) {
 						$opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
 						echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
-						$file='plugins/eibd/core/config/devices/'.$eqLogic->getConfiguration('typeTemplate').'.png';
+						$file='plugins/eibd/core/config/templates/'.$eqLogic->getConfiguration('typeTemplate').'.png';
 						if(file_exists($file))					
 							echo '<img src="'.$file.'" height="105" width="95" />';
 						else
@@ -93,7 +93,7 @@
 					<?php
 						foreach ($eqLogics as $eqLogic) {
 							echo '<tr class="eqLogicDisplay" data-eqLogic_id="' . $eqLogic->getId() . '">';
-							$file='plugins/eibd/core/config/devices/'.$eqLogic->getConfiguration('typeTemplate').'.png';
+							$file='plugins/eibd/core/config/templates/'.$eqLogic->getConfiguration('typeTemplate').'.png';
 							if(file_exists($file))
 								echo '<td><div style="display: none;">'.$eqLogic->getConfiguration('typeTemplate').'</div><img src="'.$file.'" height="45"  /></td>';
 							else
