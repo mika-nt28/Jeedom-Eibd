@@ -21,7 +21,7 @@ $eqLogics = eibd::byType('eibd');
 		<tbody>
 		<?php
 			foreach ($eqLogics as $eqLogic) {
-				$file='plugins/eibd/core/config/devices/'.$eqLogic->getConfiguration('typeTemplate').'.png';
+				$file='plugins/eibd/core/config/templates/'.$eqLogic->getConfiguration('typeTemplate').'.png';
 				if(file_exists($file))
 					echo '<td><img src="'.$file.'" height="45"  /></td>';
 				else
