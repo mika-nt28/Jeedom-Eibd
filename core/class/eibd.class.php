@@ -113,7 +113,7 @@ class eibd extends eqLogic {
 	//                                                                                                                                               //
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static function devicesParameters($_device = '') {
-		$path = dirname(__FILE__) . '/../config/devices';
+		$path = dirname(__FILE__) . '/../config/templates';
 		if (isset($_device) && $_device != '') {
 			$files = ls($path, $_device . '.json', false, array('files', 'quiet'));
 			if (count($files) == 1) {

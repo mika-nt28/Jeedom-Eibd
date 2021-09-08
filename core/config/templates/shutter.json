@@ -7,7 +7,8 @@
 		"isEnable":"1",
         "category":{
 			"heating":"0",
-			"security":"1",
+			"security":"0",
+			"opening":"1",
 			"energy":"0",
 			"light":"0",
 			"automatism":"0",
