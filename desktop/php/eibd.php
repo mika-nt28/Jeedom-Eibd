@@ -107,7 +107,9 @@
 							echo '<td>';
 							$Categorie=$eqLogic->getCategory();
 							foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
-								if ($Categorie[$key]) 
+								if(!isset($Categorie[$key]))
+									echo '<span class="label label-success eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '" data-enable="0">' . $value['name'] . '</span>';
+								elseif($Categorie[$key]) 
 									echo '<span class="label label-success eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '" data-enable="'.$Categorie[$key].'">' . $value['name'] . '</span>';
 								else
 									echo '<span class="label label-default eqLogicDisplayAttr" data-l1key="category" data-l2key="' . $key . '" data-enable="'.$Categorie[$key].'">' . $value['name'] . '</span>';
