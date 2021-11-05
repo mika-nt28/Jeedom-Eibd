@@ -10,9 +10,7 @@ class autoCreate {
  	public function __construct($_options){
 		$this->Templates=eibd::devicesParameters();
 		$this->options=$_options[0];
-		
-		$myKNX=json_decode(file_get_contents(dirname(__FILE__) . '/../config/KnxProj.json'),true);
-		
+		$myKNX=json_decode(file_get_contents(dirname(__FILE__) . '/../../data/KnxProj.json'),true);
 		switch($this->options['arborescence']){
 			case 'gad':
 				$this->Arborescence=$myKNX['GAD'];
