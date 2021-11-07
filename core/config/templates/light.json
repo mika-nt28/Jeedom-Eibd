@@ -10,7 +10,7 @@
 				"name":"Etat",
 				"Synonyme":["State"],
 				"type":"info",
-				"subType":"string",
+				"subType":"binary",
 				"isHistorized":"0",
 				"unite":"",
 				"configuration":{
