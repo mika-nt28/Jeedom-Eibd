@@ -50,7 +50,8 @@ class autoCreate {
 			else{
 				foreach($this->ObjetLevel as $ObjetLevel){
 					if($NbLevel == $ObjetLevel){
-						$Groupe['Object']=$this->createObject($Name,$parents);
+						$this->createObject($Name,$parents);
+						$Groupe['Object']=$Name;
 					}
 				}
 		    	}
@@ -93,6 +94,7 @@ class autoCreate {
 	private function createEqLogic($Object,$Name,$Cmds){
 		if(!$this->options['createEqLogic'])
 			return;
+		$Object = $this->createObject($Name,'');
 		$TemplateId=$this->getTemplateName($Name);
 		if($TemplateId != false){
 			$TemplateOptions=$this->getTemplateOptions($TemplateId,$Cmds);
