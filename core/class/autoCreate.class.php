@@ -39,25 +39,26 @@ class autoCreate {
 		}
 	}
   	private function getOptionLevel($GroupLevel,$Groupe,$NbLevel=0){
-        	$NextLevel = $NbLevel + 1;
+		$NextLevel = $NbLevel + 1;
 		if($Groupe['Object'] != null)
 			$parents =$Groupe['Object'];
 		foreach ($GroupLevel as $Name => $Level) {
-			if($NbLevel == $this->TemplateLevel && $this->TemplateLevel != null)
+			if($NbLevel == $this->TemplateLevel){
 				$Groupe['Template']=$Name;
-			if($NbLevel == $this->CommandeLevel && $this->CommandeLevel != null)
-				$Groupe['Commande'] = $Name;
-			else{
+			}elseif($NbLevel == $this->CommandeLevel){								
+				$Groupe['Commande']=$Name;
+			}else{
 				foreach($this->ObjetLevel as $ObjetLevel){
 					if($NbLevel == $ObjetLevel){
-						$Groupe['Object']=$this->createObject($Name,$parents);
+						$this->createObject($Name,$parents);
+						$Groupe['Object']=$Name;
 					}
 				}
-		    	}
+			}
 			if(!isset($Level['AdresseGroupe']))
 				$this->getOptionLevel($Level,$Groupe,$NextLevel);
-			else
-                		$this->Architecture[$Groupe['Object']][$Groupe['Template']][$Groupe['Commande']]=$Level;
+			elseif($Groupe['Object'] != '' && $Groupe['Template'] != '' && $Groupe['Commande'] != '')
+				$this->Architecture[$Groupe['Object']][$Groupe['Template']][$Groupe['Commande']]=$Level;
 		}
 		return;
 	}
@@ -93,6 +94,7 @@ class autoCreate {
 	private function createEqLogic($Object,$Name,$Cmds){
 		if(!$this->options['createEqLogic'])
 			return;
+		$Object = $this->createObject($Name,'');
 		$TemplateId=$this->getTemplateName($Name);
 		if($TemplateId != false){
 			$TemplateOptions=$this->getTemplateOptions($TemplateId,$Cmds);
@@ -122,7 +124,11 @@ class autoCreate {
 		}
 	}
 	private function getTemplateName($TemplateName){
+                log::add('eibd','debug','$TemplateName = '.$TemplateName);
+
 		foreach($this->Templates as $TemplateId => $Template){
+                          log::add('eibd','debug',$Template['name'].' = '.$TemplateName);
+
 			if(strpos($TemplateName,$Template['name']) !== false || strpos($Template['name'],$TemplateName) !== false)
 				return $TemplateId;
 			foreach($Template['Synonyme'] as $SynonymeName){
