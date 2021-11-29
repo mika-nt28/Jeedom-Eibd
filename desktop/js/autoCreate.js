@@ -7,7 +7,7 @@ function getLevelSelect(Level){
 			.append($('<option value="object">')
 				  .append('{{Objet}}'))
 			.append($('<option value="function">')
-				.append('{{Fonction}}'))
+				.append('{{Equipement}}'))
 			.append($('<option value="cmd">')
 				.append('{{Commande}}')));
 	}
