@@ -51,7 +51,9 @@ class autoCreate {
 				foreach($this->ObjetLevel as $ObjetLevel){
 					if($NbLevel == $ObjetLevel){
 						$this->createObject($Name,$parents);
-						$Groupe['Object']=$Name;
+						$Name = substr($Name,strpos($Name,$Groupe['Template']),strlen($Groupe['Template']));
+						$Name = substr($Name,strpos($Name,$Groupe['Template']),strlen($Groupe['Template']));
+						$Groupe['Object'] = $Name;
 					}
 				}
 			}
