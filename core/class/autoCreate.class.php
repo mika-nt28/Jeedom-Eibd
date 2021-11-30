@@ -40,8 +40,6 @@ class autoCreate {
 	}
   	private function getOptionLevel($GroupLevel,$Groupe,$NbLevel=0){
 		$NextLevel = $NbLevel + 1;
-		if($Groupe['Object'] != null)
-			$parents =$Groupe['Object'];
 		foreach ($GroupLevel as $Name => $Level) {
 			if($NbLevel == $this->TemplateLevel){
 				$Groupe['Template']=$Name;
@@ -50,10 +48,10 @@ class autoCreate {
 			}else{
 				foreach($this->ObjetLevel as $ObjetLevel){
 					if($NbLevel == $ObjetLevel){
-						$this->createObject($Name,$parents);
-						$Name = substr($Name,strpos($Name,$Groupe['Template']),strlen($Groupe['Template']));
+						$Name = substr($Name,strpos($Name,$Groupe['Commande']),strlen($Groupe['Commande']));
 						$Name = substr($Name,strpos($Name,$Groupe['Template']),strlen($Groupe['Template']));
 						$Groupe['Object'] = $Name;
+						$Groupe['Parent'] = $this->createObject($Name,$Groupe['Parent']);
 					}
 				}
 			}
@@ -68,7 +66,7 @@ class autoCreate {
 		$Groupe['Object'] = null;
 		$Groupe['Template'] = null;
 		$Groupe['Commande'] = null;
-		$Groupe['Commande'] = null;
+		$Groupe['Parent'] = null;
 		$this->getOptionLevel($this->Arborescence,$Groupe);
 		foreach($this->Architecture as $Object => $Template){
 			foreach($Template as $TemplateName => $Cmds){
@@ -126,11 +124,7 @@ class autoCreate {
 		}
 	}
 	private function getTemplateName($TemplateName){
-                log::add('eibd','debug','$TemplateName = '.$TemplateName);
-
 		foreach($this->Templates as $TemplateId => $Template){
-                          log::add('eibd','debug',$Template['name'].' = '.$TemplateName);
-
 			if(strpos($TemplateName,$Template['name']) !== false || strpos($Template['name'],$TemplateName) !== false)
 				return $TemplateId;
 			foreach($Template['Synonyme'] as $SynonymeName){
