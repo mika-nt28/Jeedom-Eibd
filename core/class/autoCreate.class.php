@@ -48,8 +48,9 @@ class autoCreate {
 			}else{
 				foreach($this->ObjetLevel as $ObjetLevel){
 					if($NbLevel == $ObjetLevel){
-						$Name = substr($Name,strpos($Name,$Groupe['Commande']),strlen($Groupe['Commande']));
-						$Name = substr($Name,strpos($Name,$Groupe['Template']),strlen($Groupe['Template']));
+						$Name = str_replace($Groupe['Commande'],"",$Name);
+						$Name$Name = str_replace($Groupe['Template'],"",$Name);
+						$Name = preg_replace('/\s\s+/', ' ', $Name);
 						$Groupe['Object'] = $Name;
 						$Groupe['Parent'] = $this->createObject($Name,$Groupe['Parent']);
 					}
