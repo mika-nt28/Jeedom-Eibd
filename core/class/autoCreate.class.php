@@ -40,8 +40,6 @@ class autoCreate {
 	}
   	private function getOptionLevel($GroupLevel,$Groupe,$NbLevel=0){
 		$NextLevel = $NbLevel + 1;
-		if($Groupe['Object'] != null)
-			$parents =$Groupe['Object'];
 		foreach ($GroupLevel as $Name => $Level) {
 			if($NbLevel == $this->TemplateLevel){
 				$Groupe['Template']=$Name;
@@ -50,14 +48,19 @@ class autoCreate {
 			}else{
 				foreach($this->ObjetLevel as $ObjetLevel){
 					if($NbLevel == $ObjetLevel){
-						$this->createObject($Name,$parents);
-						$Groupe['Object']=$Name;
+						if(isset($Groupe['Commande']))
+							$Name = str_replace($Groupe['Commande'],"",$Name);
+						if(isset($Groupe['Template']))
+							$Name = str_replace($Groupe['Template'],"",$Name);
+						$Name = preg_replace('/\s\s+/', ' ', $Name);                      
+						$Groupe['Object'] = $Name;
+						$Groupe['Parent'] = $this->createObject($Name,$Groupe['Parent']);
 					}
 				}
 			}
 			if(!isset($Level['AdresseGroupe']))
 				$this->getOptionLevel($Level,$Groupe,$NextLevel);
-			elseif($Groupe['Object'] != '' && $Groupe['Template'] != '' && $Groupe['Commande'] != '')
+			elseif($Groupe['Object'] != null && $Groupe['Template'] != null && $Groupe['Commande'] != null)
 				$this->Architecture[$Groupe['Object']][$Groupe['Template']][$Groupe['Commande']]=$Level;
 		}
 		return;
@@ -66,7 +69,7 @@ class autoCreate {
 		$Groupe['Object'] = null;
 		$Groupe['Template'] = null;
 		$Groupe['Commande'] = null;
-		$Groupe['Commande'] = null;
+		$Groupe['Parent'] = null;
 		$this->getOptionLevel($this->Arborescence,$Groupe);
 		foreach($this->Architecture as $Object => $Template){
 			foreach($Template as $TemplateName => $Cmds){
@@ -94,7 +97,7 @@ class autoCreate {
 	private function createEqLogic($Object,$Name,$Cmds){
 		if(!$this->options['createEqLogic'])
 			return;
-		$Object = $this->createObject($Name,'');
+		$Object = $this->createObject($Object,'');
 		$TemplateId=$this->getTemplateName($Name);
 		if($TemplateId != false){
 			$TemplateOptions=$this->getTemplateOptions($TemplateId,$Cmds);
@@ -103,12 +106,11 @@ class autoCreate {
 			$EqLogic->applyModuleConfiguration($TemplateId,$TemplateOptions);
 			foreach($EqLogic->getCmd() as $Commande){
 				foreach($Cmds as $Name => $Cmd){
-					$TemplateName = $this->getTemplateCmdByName($TemplateId,$Name);
-					if($Commande->getName() != $TemplateName)
-						continue;
-					$Commande->setLogicalId($Cmd['AdresseGroupe']);
-					$Commande->save();
-					break;
+					if($this->getTemplateCmdByName($TemplateId,$TemplateOptions,$Name,$Commande->getName())){
+						$Commande->setLogicalId($Cmd['AdresseGroupe']);
+						$Commande->save();
+						break;
+					}
 				}
 			}
 		}else{
@@ -124,11 +126,7 @@ class autoCreate {
 		}
 	}
 	private function getTemplateName($TemplateName){
-                log::add('eibd','debug','$TemplateName = '.$TemplateName);
-
 		foreach($this->Templates as $TemplateId => $Template){
-                          log::add('eibd','debug',$Template['name'].' = '.$TemplateName);
-
 			if(strpos($TemplateName,$Template['name']) !== false || strpos($Template['name'],$TemplateName) !== false)
 				return $TemplateId;
 			foreach($Template['Synonyme'] as $SynonymeName){
@@ -158,30 +156,34 @@ class autoCreate {
 		}
 		return $Options;
 	}
-	private function getTemplateCmdByName($TemplateId,$CmdName){
+	private function getTemplateCmdByName($TemplateId,$TemplateOptions,$TemplateName,$CmdName){
 		foreach($this->Templates[$TemplateId]['cmd'] as $Commande){
-			if(strpos($CmdName,$Commande['name']) !== false || strpos($Commande['name'],$CmdName) !== false){
-				log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvée  ' .$Commande['name']);
-				return $Commande['name'];
+			if($Commande['name'] != $CmdName)
+				continue;
+			if(strpos($TemplateName,$Commande['name']) !== false || strpos($Commande['name'],$TemplateName) !== false){
+				log::add('eibd','info','[Création automatique] La commande ('.$TemplateName.') a été trouvée  ' .$Commande['name']);
+				return true;
 			}
 			foreach($Commande['Synonyme'] as $Synonyme){
-				if(strpos($CmdName,$Synonyme) !== false || strpos($Synonyme,$CmdName) !== false){
-					log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvée en synonyme de ' .$Commande['name']);
-					return $Commande['name'];
+				if(strpos($TemplateName,$Synonyme) !== false || strpos($Synonyme,$TemplateName) !== false){
+					log::add('eibd','info','[Création automatique] La commande ('.$TemplateName.') a été trouvée en synonyme de ' .$Commande['name']);
+					return true;
 				}
 			}
 		}
 		foreach ($this->Templates[$TemplateId]['options'] as $DeviceOptionsId => $DeviceOptions) {
 			if(isset($TemplateOptions[$DeviceOptionsId])){
 				foreach ($DeviceOptions['cmd'] as $Commande) {
-					if(strpos($CmdName,$Commande['name']) !== false || strpos($Commande['name'],$CmdName) !== false){
-						log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvée  ' .$Commande['name']);
-						return $Commande['name'];
+					if($Commande['name'] != $CmdName)
+						continue;
+					if(strpos($TemplateName,$Commande['name']) !== false || strpos($Commande['name'],$TemplateName) !== false){
+						log::add('eibd','info','[Création automatique] La commande ('.$TemplateName.') a été trouvée  ' .$Commande['name']);
+						return true;
 					}
 					foreach($Commande['Synonyme'] as $Synonyme){
-						if(strpos($CmdName,$Synonyme) !== false || strpos($Synonyme,$CmdName) !== false){
-							log::add('eibd','info','[Création automatique] La commande ('.$CmdName.') a été trouvée en synonyme de ' .$Commande['name']);
-							return $Commande['name'];
+						if(strpos($TemplateName,$Synonyme) !== false || strpos($Synonyme,$TemplateName) !== false){
+							log::add('eibd','info','[Création automatique] La commande ('.$TemplateName.') a été trouvée en synonyme de ' .$Commande['name']);
+							return true;
 						}
 					}
 				}
