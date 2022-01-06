@@ -1,4 +1,7 @@
 {
   "name": "Jeedom Atlas Pro KNX- Box Jeedom",
   "ref" : "ATLASPROKNX",
-}
+"type": "Passerelle IP",
+"protocole ": "KNX"
+} 
+

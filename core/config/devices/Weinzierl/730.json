@@ -1,4 +1,6 @@
 {
-  "name": "Weinzierl - Interface IP",
-  "ref" : "730"
+  "name": "Weinzierl 730",
+  "ref" : "730",
+"type": "Passerelle IP",
+"protocole ": "KNX"
 }
