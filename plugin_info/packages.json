@@ -1,0 +1,24 @@
+{
+  "pre-install" : {
+  },
+  "apt" : {
+    "build-essential " : {},
+    "cmake" : {},
+    "automake" : {},
+    "autoconf" : {},
+    "libtool" : {},
+    "git" : {},
+    "debhelper" : {},
+    "cdbs" : {},
+    "libsystemd-dev" : {},
+    "libsystemd0" : {},
+    "pkg-config" : {},
+    "libusb-dev" : {},
+    "libusb-1.0-0-dev" : {},
+    " libev-dev" : {},
+    "setserial" : {}
+  },
+  "post-install" : {
+    "script" : "plugins/eibd/resources/install-knxd.sh"
+  }
+}
