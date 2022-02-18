@@ -2,7 +2,7 @@
   "pre-install" : {
   },
   "apt" : {
-    "build-essential " : {},
+    "build-essential" : {},
     "cmake" : {},
     "automake" : {},
     "autoconf" : {},
@@ -15,10 +15,10 @@
     "pkg-config" : {},
     "libusb-dev" : {},
     "libusb-1.0-0-dev" : {},
-    " libev-dev" : {},
+    "libev-dev" : {},
     "setserial" : {}
   },
   "post-install" : {
-    "script" : "plugins/eibd/resources/install-knxd.sh"
+    "script" : "plugins/eibd/ressources/install-knxd.sh"
   }
 }
