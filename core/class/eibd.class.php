@@ -681,44 +681,18 @@ class eibd extends eqLogic {
 				}
 			}
 		}
-		if(config::byKey('KnxSoft', 'eibd') == 'knxd'){
-			exec("sudo touch /var/log/knx.log");
-			exec("sudo chmod 777 /var/log/knx.log");
-			$cmd = '';
-            		$clientAddrs = explode('.',config::byKey('EibdGad', 'eibd'));
-            		$clientAddrs[count($clientAddrs)-1] +=1;
-			$cmd .= 'knxd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid';
-			if(config::byKey("log::level::eibd")[1000] != 1)
-				$cmd .= ' -t1023';
-			$cmd .= ' --eibaddr='.config::byKey('EibdGad', 'eibd').' --client-addrs='.implode('.',$clientAddrs).':'.config::byKey('EibdNbAddr', 'eibd');
-			if(config::byKey('ServeurName', 'eibd') !='')
-				$cmd .= ' --Name='.config::byKey('ServeurName', 'eibd');
-			if(config::byKey('Discovery', 'eibd'))
-					$cmd .= ' -D';
-			if(config::byKey('Routing', 'eibd'))
-					$cmd .= ' -R';
-			if(config::byKey('Tunnelling', 'eibd'))
-					$cmd .= ' -T';
-			if(config::byKey('Discovery', 'eibd') || config::byKey('Routing', 'eibd') || config::byKey('Tunnelling', 'eibd'))
-					$cmd .= ' -S';
-			$cmd .= ' --listen-tcp='.config::byKey('EibdPort', 'eibd');
-			$cmd .= ' -b ';	
-			if($cmd != ''){
-				if(config::byKey('TypeKNXgateway', 'eibd') == 'usb'){
-					$USBaddr = explode(':',config::byKey('KNXgateway', 'eibd'));
-					$cmdUSB = sprintf("/dev/bus/usb/%'.03d/%'.03d",$USBaddr[0],$USBaddr[1]);
-					log::add('eibd', 'debug', "Droit d'acces sur la passerelle USB " . $cmdUSB);
-					exec("sudo chmod 777 ".$cmdUSB. ' >> ' . log::getPathToLog('eibd') . ' 2>&1');
-				}
-				$cmd .= ' '. config::byKey('TypeKNXgateway', 'eibd') . ':' . config::byKey('KNXgateway', 'eibd');
-				if(isset($cmd)){
-					$cmd .= ' >> /var/log/knx.log 2>&1';
-					log::add('eibd','info', '[Start] '.$cmd);
-					exec($cmd);
-					cache::set('eibd::demonState',true, 0);
-				}
-			}
+		self::genKnxOpt();
+		switch(config::byKey('KnxSoft', 'eibd')){
+			case 'knxd':
+				$cmd= 'sudo systemctl start knxd.service';
+				log::add('eibd','info', '[KNXD] '.$cmd);
+				exec($cmd);
+				$cmd= 'sudo systemctl start knxd.socket';
+				log::add('eibd','info', '[KNXD] '.$cmd);
+				exec($cmd);
+			break;
 		}
+		cache::set('eibd::demonState',true, 0);			
 		$cron = cron::byClassAndFunction('eibd', 'BusMonitor');
 		if (!is_object($cron)) {
 			$cron = new cron();
@@ -733,13 +707,55 @@ class eibd extends eqLogic {
 		$cron->start();
 		$cron->run();
 	}
+	public static function genKnxOpt(){
+		//KNXD_OPTIONS="--eibaddr=1.1.128 --client-addrs=1.1.129:8 -d -D -T -R -S -i --listen-local=/tmp/knx -b tpuart:/dev/ttyS0"
+		if(config::byKey('KnxSoft', 'eibd') == 'knxd'){
+			
+			$knxOptFile = "/etc/knxd.conf";
+			if(file_exists($knxOptFile))			
+				exec("sudo rm ".$knxOptFile);
+			exec("sudo touch ".$knxOptFile);
+			exec("sudo chmod 777 ".$knxOptFile);
+			if($fp = fopen($knxOptFile,"w")){
+				fputs($fp,'KNXD_OPTS="');
+            			$clientAddrs = explode('.',config::byKey('EibdGad', 'eibd'));
+            			$clientAddrs[count($clientAddrs)-1] +=1;
+				fputs($fp,'--eibaddr='.config::byKey('EibdGad', 'eibd'));
+				fputs($fp,' --client-addrs='.implode('.',$clientAddrs).':'.config::byKey('EibdNbAddr', 'eibd'));
+				if(config::byKey('ServeurName', 'eibd') !='')
+					fputs($fp,' --Name='.config::byKey('ServeurName', 'eibd'));
+				if(config::byKey('Discovery', 'eibd'))
+					fputs($fp,' -D');
+				if(config::byKey('Routing', 'eibd'))
+					fputs($fp,' -R');
+				if(config::byKey('Tunnelling', 'eibd'))
+					fputs($fp,' -T');
+				if(config::byKey('Discovery', 'eibd') || config::byKey('Routing', 'eibd') || config::byKey('Tunnelling', 'eibd'))
+					fputs($fp,' -S');
+				//fputs($fp,' --listen-tcp='.config::byKey('EibdPort', 'eibd'));
+				fputs($fp,' -u /tmp/eib');	
+				fputs($fp,' -b');	
+				if(config::byKey('TypeKNXgateway', 'eibd') == 'usb'){
+					$USBaddr = explode(':',config::byKey('KNXgateway', 'eibd'));
+					$cmdUSB = sprintf("/dev/bus/usb/%'.03d/%'.03d",$USBaddr[0],$USBaddr[1]);
+					log::add('eibd', 'debug', "Droit d'acces sur la passerelle USB " . $cmdUSB);
+					exec("sudo chmod 777 ".$cmdUSB. ' >> ' . log::getPathToLog('eibd') . ' 2>&1');
+				}
+				fputs($fp, ' '. config::byKey('TypeKNXgateway', 'eibd') . ':' . config::byKey('KNXgateway', 'eibd'));
+			}
+			fclose($fp);
+		}
+		
+	}
 	public static function deamon_stop() {
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
-				$cmd='sudo pkill knxd';
-			break;
-			case 'eibd':
-				$cmd='sudo pkill eibd';
+				$cmd= 'sudo systemctl stop knxd.service';
+				log::add('eibd','info', '[KNXD] '.$cmd);
+				exec($cmd);
+				$cmd= 'sudo systemctl stop knxd.socket';
+				log::add('eibd','info', '[KNXD] '.$cmd);
+				exec($cmd);
 			break;
 		}
 		if(isset($cmd)){
