@@ -508,18 +508,16 @@ class eibd extends eqLogic {
 			$src = new EIBAddr;
 			$dest = new EIBAddr;
 			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);      
-			if ($len == -1){
-				log::add('eibd', 'debug', "[Moniteur Bus] Trame de data non prise en charge par la plugin:".json_encode($buf)." (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr).")");
-				continue;
-			}
 			if ($len >= 2) {
 				$mon = self::parseread($len,$buf);
 				if($mon !== false){
 					$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
 					$Traitement->run(); 
 				}else
+					log::add('eibd', 'debug', "[Moniteur Bus] Trame de data non prise en charge par la plugin:".json_encode($buf)." (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr).")");
+			}else
 					log::add('eibd', 'debug', "[Moniteur Bus] Type de data non prise en charge par la plugin (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr).")");
-			}
+              
 		}
 		$conBusMonitor->EIBClose();		
 		log::add('eibd', 'info', '[Moniteur Bus] Deconnexion a EIBD sur le serveur '.$host.':'.$port);	
@@ -708,7 +706,6 @@ class eibd extends eqLogic {
 		$cron->run();
 	}
 	public static function genKnxOpt(){
-		//KNXD_OPTIONS="--eibaddr=1.1.128 --client-addrs=1.1.129:8 -d -D -T -R -S -i --listen-local=/tmp/knx -b tpuart:/dev/ttyS0"
 		if(config::byKey('KnxSoft', 'eibd') == 'knxd'){
 			
 			$knxOptFile = "/etc/knxd.conf";
@@ -732,8 +729,9 @@ class eibd extends eqLogic {
 					fputs($fp,' -T');
 				if(config::byKey('Discovery', 'eibd') || config::byKey('Routing', 'eibd') || config::byKey('Tunnelling', 'eibd'))
 					fputs($fp,' -S');
-				//fputs($fp,' --listen-tcp='.config::byKey('EibdPort', 'eibd'));
+				//$cmd .= ' --listen-tcp='.config::byKey('EibdPort', 'eibd');
 				fputs($fp,' -u /tmp/eib');	
+				fputs($fp,' -B single');	
 				fputs($fp,' -b');	
 				if(config::byKey('TypeKNXgateway', 'eibd') == 'usb'){
 					$USBaddr = explode(':',config::byKey('KNXgateway', 'eibd'));
@@ -744,6 +742,13 @@ class eibd extends eqLogic {
 				fputs($fp, ' '. config::byKey('TypeKNXgateway', 'eibd') . ':' . config::byKey('KNXgateway', 'eibd'));
 			}
 			fclose($fp);
+			/*exec("sudo touch /var/log/knx.log");
+			exec("sudo chmod 777 /var/log/knx.log");
+			$cmd = '';
+			$cmd .= 'knxd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid';
+			if(config::byKey("log::level::eibd")[1000] != 1)
+				$cmd .= ' -t1023';
+			*/
 		}
 		
 	}
