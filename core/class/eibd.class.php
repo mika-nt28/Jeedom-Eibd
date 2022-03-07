@@ -707,48 +707,86 @@ class eibd extends eqLogic {
 	}
 	public static function genKnxOpt(){
 		if(config::byKey('KnxSoft', 'eibd') == 'knxd'){
-			
+			if(config::byKey('TypeKNXgateway', 'eibd') == 'usb'){
+				$USBaddr = explode(':',config::byKey('KNXgateway', 'eibd'));
+				$cmdUSB = sprintf("/dev/bus/usb/%'.03d/%'.03d",$USBaddr[0],$USBaddr[1]);
+				log::add('eibd', 'debug', "Droit d'acces sur la passerelle USB " . $cmdUSB);
+				exec("sudo chmod 777 ".$cmdUSB. ' >> ' . log::getPathToLog('eibd') . ' 2>&1');
+			}
+			$clientAddrs = explode('.',config::byKey('EibdGad', 'eibd'));
+			$clientAddrs[count($clientAddrs)-1] +=1;
 			$knxOptFile = "/etc/knxd.conf";
 			if(file_exists($knxOptFile))			
 				exec("sudo rm ".$knxOptFile);
 			exec("sudo touch ".$knxOptFile);
 			exec("sudo chmod 777 ".$knxOptFile);
+			if($fp = fopen($knxOptFile,"w"))
+				fputs($fp,'KNXD_OPTS=/etc/knxd.ini');
+			fclose($fp);
+			$knxOptFile = "/etc/knxd.ini";
+			if(file_exists($knxOptFile))			
+				exec("sudo rm ".$knxOptFile);
+			exec("sudo touch ".$knxOptFile);
+			exec("sudo chmod 777 ".$knxOptFile);
 			if($fp = fopen($knxOptFile,"w")){
-				fputs($fp,'KNXD_OPTS="');
-            			$clientAddrs = explode('.',config::byKey('EibdGad', 'eibd'));
-            			$clientAddrs[count($clientAddrs)-1] +=1;
-				fputs($fp,'--eibaddr='.config::byKey('EibdGad', 'eibd'));
-				fputs($fp,' --client-addrs='.implode('.',$clientAddrs).':'.config::byKey('EibdNbAddr', 'eibd'));
-				if(config::byKey('ServeurName', 'eibd') !='')
-					fputs($fp,' --Name='.config::byKey('ServeurName', 'eibd'));
-				if(config::byKey('Discovery', 'eibd'))
-					fputs($fp,' -D');
-				if(config::byKey('Routing', 'eibd'))
-					fputs($fp,' -R');
-				if(config::byKey('Tunnelling', 'eibd'))
-					fputs($fp,' -T');
-				if(config::byKey('Discovery', 'eibd') || config::byKey('Routing', 'eibd') || config::byKey('Tunnelling', 'eibd'))
-					fputs($fp,' -S');
-				//$cmd .= ' --listen-tcp='.config::byKey('EibdPort', 'eibd');
-				fputs($fp,' -u /tmp/eib');	
-				fputs($fp,' -B single');	
-				fputs($fp,' -b');	
-				if(config::byKey('TypeKNXgateway', 'eibd') == 'usb'){
-					$USBaddr = explode(':',config::byKey('KNXgateway', 'eibd'));
-					$cmdUSB = sprintf("/dev/bus/usb/%'.03d/%'.03d",$USBaddr[0],$USBaddr[1]);
-					log::add('eibd', 'debug', "Droit d'acces sur la passerelle USB " . $cmdUSB);
-					exec("sudo chmod 777 ".$cmdUSB. ' >> ' . log::getPathToLog('eibd') . ' 2>&1');
+				fputs($fp,'[A.unix]'."\r\n");
+				fputs($fp,'path = /tmp/knxd'."\r\n");
+				fputs($fp,'server = knxd_unix'."\r\n");
+				fputs($fp,'systemd-ignore = false'."\r\n");
+
+				fputs($fp,'[B.gateway]'."\r\n");
+				fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
+				fputs($fp,'filters = single,C.pace'."\r\n");
+				switch(config::byKey('TypeKNXgateway', 'eibd')){
+					case 'ip':
+						fputs($fp,'multicast-address = 224.0.23.12:3671'."\r\n");
+						break;
+					case 'ipt':
+					case 'iptn':
+						fputs($fp,'ip-address = '.config::byKey('KNXgateway', 'eibd')."\r\n");
+						break;
+					default:
+						fputs($fp,'device = '.config::byKey('KNXgateway', 'eibd')."\r\n");
+						break;
 				}
-				fputs($fp, ' '. config::byKey('TypeKNXgateway', 'eibd') . ':' . config::byKey('KNXgateway', 'eibd'));
+
+				fputs($fp,'[C.pace]'."\r\n");
+				fputs($fp,'delay = 10'."\r\n");
+				fputs($fp,'filter = pace'."\r\n");
+
+				fputs($fp,'[debug-main]'."\r\n");
+				fputs($fp,'error-level = 0x9'."\r\n");
+				fputs($fp,'trace-mask = 0xffc'."\r\n");
+
+				fputs($fp,'[debug-server]'."\r\n");
+				fputs($fp,'name = mcast:knxd'."\r\n");
+
+				fputs($fp,'[main]'."\r\n");
+				if(config::byKey('ServeurName', 'eibd') !='')
+					fputs($fp,'name = '.config::byKey('ServeurName', 'eibd')."\r\n");
+				else
+				fputs($fp,'name = knxd'."\r\n");
+				fputs($fp,'addr = '.config::byKey('EibdGad', 'eibd')."\r\n");
+				fputs($fp,'cache = A.cache'."\r\n");
+				fputs($fp,'client-addrs = '.implode('.',$clientAddrs).':'.config::byKey('EibdNbAddr', 'eibd')."\r\n");
+				fputs($fp,'connections = A.unix,B.gateway,server'."\r\n");
+				fputs($fp,'debug = debug-main'."\r\n");
+				fputs($fp,'systemd = systemd'."\r\n");
+
+				fputs($fp,'[server]'."\r\n");
+				fputs($fp,'debug = debug-server'."\r\n");				
+				if(config::byKey('Discovery', 'eibd'))
+					fputs($fp,'discover = true'."\r\n");
+				else
+					fputs($fp,'discover = false'."\r\n");
+				if(config::byKey('Routing', 'eibd'))
+					fputs($fp,'router = router'."\r\n");
+				if(config::byKey('Discovery', 'eibd') || config::byKey('Routing', 'eibd') || config::byKey('Tunnelling', 'eibd'))
+					fputs($fp,'server = ets_router'."\r\n");
+				if(config::byKey('Tunnelling', 'eibd'))
+					fputs($fp,'tunnel = tunnel'."\r\n");
 			}
 			fclose($fp);
-			/*exec("sudo touch /var/log/knx.log");
-			exec("sudo chmod 777 /var/log/knx.log");
-			$cmd = '';
-			$cmd .= 'knxd --daemon=/var/log/knx.log --pid-file=/var/run/knx.pid';
-			if(config::byKey("log::level::eibd")[1000] != 1)
-				$cmd .= ' -t1023';
-			*/
 		}
 		
 	}
