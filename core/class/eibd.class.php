@@ -733,13 +733,15 @@ class eibd extends eqLogic {
 				fputs($fp,'path = /tmp/knxd'."\r\n");
 				fputs($fp,'server = knxd_unix'."\r\n");
 				fputs($fp,'systemd-ignore = false'."\r\n");
+				fputs($fp,"\r\n");
 
 				fputs($fp,'[B.gateway]'."\r\n");
 				fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
 				fputs($fp,'filters = single,C.pace'."\r\n");
 				switch(config::byKey('TypeKNXgateway', 'eibd')){
 					case 'ip':
-						fputs($fp,'multicast-address = 224.0.23.12:3671'."\r\n");
+						fputs($fp,'multicast-address = 224.0.23.12'."\r\n");
+						fputs($fp,'port  = 3671'."\r\n");
 						break;
 					case 'ipt':
 					case 'iptn':
@@ -749,29 +751,34 @@ class eibd extends eqLogic {
 						fputs($fp,'device = '.config::byKey('KNXgateway', 'eibd')."\r\n");
 						break;
 				}
+				fputs($fp,"\r\n");
 
 				fputs($fp,'[C.pace]'."\r\n");
 				fputs($fp,'delay = 10'."\r\n");
 				fputs($fp,'filter = pace'."\r\n");
+				fputs($fp,"\r\n");
 
 				fputs($fp,'[debug-main]'."\r\n");
 				fputs($fp,'error-level = 0x9'."\r\n");
 				fputs($fp,'trace-mask = 0xffc'."\r\n");
+				fputs($fp,"\r\n");
 
 				fputs($fp,'[debug-server]'."\r\n");
 				fputs($fp,'name = mcast:knxd'."\r\n");
+				fputs($fp,"\r\n");
 
 				fputs($fp,'[main]'."\r\n");
 				if(config::byKey('ServeurName', 'eibd') !='')
 					fputs($fp,'name = '.config::byKey('ServeurName', 'eibd')."\r\n");
 				else
-				fputs($fp,'name = knxd'."\r\n");
+					fputs($fp,'name = knxd'."\r\n");
 				fputs($fp,'addr = '.config::byKey('EibdGad', 'eibd')."\r\n");
 				fputs($fp,'cache = A.cache'."\r\n");
 				fputs($fp,'client-addrs = '.implode('.',$clientAddrs).':'.config::byKey('EibdNbAddr', 'eibd')."\r\n");
 				fputs($fp,'connections = A.unix,B.gateway,server'."\r\n");
 				fputs($fp,'debug = debug-main'."\r\n");
 				fputs($fp,'systemd = systemd'."\r\n");
+				fputs($fp,"\r\n");
 
 				fputs($fp,'[server]'."\r\n");
 				fputs($fp,'debug = debug-server'."\r\n");				
@@ -785,6 +792,7 @@ class eibd extends eqLogic {
 					fputs($fp,'server = ets_router'."\r\n");
 				if(config::byKey('Tunnelling', 'eibd'))
 					fputs($fp,'tunnel = tunnel'."\r\n");
+				fputs($fp,"\r\n");
 			}
 			fclose($fp);
 		}
