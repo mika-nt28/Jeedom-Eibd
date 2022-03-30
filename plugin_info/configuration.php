@@ -19,8 +19,7 @@ if (!isConnect()) {
 				</label>
 				<div class="col-lg-4">
 					<select class="configKey form-control" data-l1key="KnxSoft" >
-						<option value="knxd">KNXd (Recommandé)</option>
-						<option value="eibd">EIBD (Déprécié)</option>
+						<option value="knxd">KNXD</option>
 						<option value="manual">Manuel</option>
 					</select>
 				</div>
@@ -209,7 +208,6 @@ if (!isConnect()) {
 $('.configKey[data-l1key=KnxSoft]').off().on('change',function(){
 	switch($(this).val()){
 		case 'knxd':
-		case 'eibd':
 			$('.configKey[data-l1key=EibdHost]').val('127.0.0.1');
 			$('.configKey[data-l1key=EibdPort]').val('6720');
 			$('.Soft').show();
