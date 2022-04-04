@@ -773,7 +773,7 @@ class eibd extends eqLogic {
 				else
 					fputs($fp,'name = knxd'."\r\n");
 				fputs($fp,'addr = '.config::byKey('EibdGad', 'eibd')."\r\n");
-				fputs($fp,'cache = A.cache'."\r\n");
+				//fputs($fp,'cache = A.cache'."\r\n");
 				fputs($fp,'client-addrs = '.implode('.',$clientAddrs).':'.config::byKey('EibdNbAddr', 'eibd')."\r\n");
 				fputs($fp,'connections = A.unix,B.gateway,server'."\r\n");
 				fputs($fp,'debug = debug-main'."\r\n");
