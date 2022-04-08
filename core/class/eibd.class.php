@@ -753,14 +753,16 @@ class eibd extends eqLogic {
 					case 'ip':
 						fputs($fp,'multicast-address = 224.0.23.12'."\r\n");
 						fputs($fp,'port  = 3671'."\r\n");
-						break;
+					break;
 					case 'ipt':
 					case 'iptn':
 						fputs($fp,'ip-address = '.config::byKey('KNXgateway', 'eibd')."\r\n");
-						break;
+						if(config::byKey('KNXgatewayPort', 'eibd') != '')
+							fputs($fp,'dest-port = '.config::byKey('KNXgatewayPort', 'eibd')."\r\n");
+					break;
 					default:
 						fputs($fp,'device = '.config::byKey('KNXgateway', 'eibd')."\r\n");
-						break;
+					break;
 				}
 				fputs($fp,"\r\n");
 				fputs($fp,'[debug-main]'."\r\n");
