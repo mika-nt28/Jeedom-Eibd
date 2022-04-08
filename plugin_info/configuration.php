@@ -206,7 +206,6 @@ if (!isConnect()) {
 	</form>
 </div>
 <script>
-$('.KNXgatewayPort').hide();	
 $('.configKey[data-l1key=KnxSoft]').off().on('change',function(){
 	switch($(this).val()){
 		case 'knxd':
@@ -247,6 +246,7 @@ $('.SearchGatway').off().on('click',function(){
 					break;
 					case 'ipt':
 					case 'iptn':
+						$('.KNXgateway').show()
 						$('.KNXgatewayPort').show();
 						var Detect = $('<tbody>');
 						$.each(data.result,function(index, value){
@@ -283,8 +283,11 @@ $('.SearchGatway').off().on('click',function(){
 					case 'bcu1':
 					break;
 					case 'tpuarts':
-					break;*/
-					case 'usb':
+					break;
+					case 'usb':*/
+					default:
+						$('.KNXgateway').show()
+						$('.KNXgatewayPort').hide();
 						$('.configKey[data-l1key=KNXgateway]').val(data.result);
 					break;
 				}
