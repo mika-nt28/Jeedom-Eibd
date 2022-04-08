@@ -102,18 +102,18 @@ if (!isConnect()) {
 						<i class="fa fa-question-circle tooltips" title="{{Saisir l'adresse IP de votre passerelle.}}"></i>
 					</sup>
 				</label>
-				<div class="col-lg-4">
+				<div class="col-lg-4 KNXgateway">
 					<div class="input-group">
 						<input class="configKey form-control input-sm roundedLeft tooltipstered" data-l1key="KNXgateway" placeholder="Adresse IP de la passerelle">
-						<span class="input-group-btn roundedRight">:</span>
-						<input class="configKey form-control input-sm roundedLeft tooltipstered" data-l1key="KNXgatewayPort" placeholder="Port de la passerelle">
+						<span class="input-group-addon roundedLeft KNXgatewayPort">:</span>
+						<input class="configKey form-control input-sm roundedLeft tooltipstered KNXgatewayPort" data-l1key="KNXgatewayPort" placeholder="Port de la passerelle">
 						<span class="input-group-btn roundedRight">
 							<a class="btn btn-primary btn-sm SearchGatway">
 								<i class="fas fa-search">{{Rechercher}}</i>
 							</a>
 						</span>
 					</div>
-					<div class="KNXgateway"></div>
+					<div class="KNXgatewayFind"></div>
 				</div>
 			</div>
 		</fieldset>
@@ -206,7 +206,7 @@ if (!isConnect()) {
 	</form>
 </div>
 <script>
-	
+$('.KNXgatewayPort').hide();	
 $('.configKey[data-l1key=KnxSoft]').off().on('change',function(){
 	switch($(this).val()){
 		case 'knxd':
@@ -243,8 +243,11 @@ $('.SearchGatway').off().on('click',function(){
 				var format = '';
 				switch($('.configKey[data-l1key=TypeKNXgateway]').val()){
 					case 'ip':
+						$('.KNXgateway').hide();
+					break;
 					case 'ipt':
 					case 'iptn':
+						$('.KNXgatewayPort').show();
 						var Detect = $('<tbody>');
 						$.each(data.result,function(index, value){
 							Detect.append($('<tr>')
@@ -257,8 +260,8 @@ $('.SearchGatway').off().on('click',function(){
 								      .append($('<td class="KnxPortGateway">')
 									      .append(value.KnxPortGateway)));
 						});
-						$('.KNXgateway').find('#table_KNXgateway').remove();
-						$('.KNXgateway').append($('<table id="table_KNXgateway" class="table table-bordered table-condensed ui-sortable">')
+						$('.KNXgatewayFind').find('#table_KNXgateway').remove();
+						$('.KNXgatewayFind').append($('<table id="table_KNXgateway" class="table table-bordered table-condensed ui-sortable">')
 							.append($('<thead>')
 								.append($('<tr>')
 									.append($('<th>')
