@@ -272,6 +272,7 @@ $('.SearchGatway').off().on('click',function(){
 							.append(Detect));
 						$('#table_KNXgateway tbody tr').off().on('click',function(){
 							$('.configKey[data-l1key=KNXgateway]').val($(this).find('.KnxIpGateway').text());
+							$('.configKey[data-l1key=KNXgatewayPort]').val($(this).find('.KnxPortGateway').text());
 						});
 					break;
 					/*case 'ft12':
