@@ -552,6 +552,8 @@ function addCmdToTable(_cmd) {
 						 .append('{{Toutes les minutes}}'))
 					 .append($('<option value="cron5">')
 						 .append('{{Toutes les 5 minutes}}'))
+					 .append($('<option value="cron10">')
+						 .append('{{Toutes les 10 minutes}}'))
 					 .append($('<option value="cron15">')
 						 .append('{{Toutes les 15 minutes}}'))
 					 .append($('<option value="cron30">')
