@@ -36,6 +36,22 @@ class eibd extends eqLogic {
 			}
 		}
 	}
+	public static function cron10() {
+		foreach(eqLogic::byType('eibd') as $Equipement){		
+			if($Equipement->getIsEnable()){
+				foreach($Equipement->getCmd() as $Commande){
+					if ($Commande->getConfiguration('CycliqueSend') == "cron10"){
+						$ga=$Commande->getLogicalId();
+						$BusValue = $Commande->execute();
+						if($Commande->getType() == 'info')			
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
+						else
+							log::add('eibd', 'debug', $Commande->getHumanName().'[Envoi Cyclique] GAD: '.$ga);
+					}
+				}
+			}
+		}
+	}
 	public static function cron15() {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
@@ -233,12 +249,12 @@ class eibd extends eqLogic {
 	//                                                      Recherche automatique passerelle                                                       // 
 	//                                                                                                                                               //
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public static function SearchUsbGateway(){		
+	public static function SearchUsbGateway(){
 		if(config::byKey('KnxSoft', 'eibd') == 'knxd')
 			$cmd="sudo /usr/local/src/knxd/knxd/src/usb/findknxusb";
 		else
 			$cmd="sudo findknxusb";
-		$result=explode(" ",exec($cmd));	
+		$result=explode(" ",exec($cmd));
 		$USBaddr = explode(":",$result[1]);
 		$cmd = sprintf("/dev/bus/usb/%'.03d/%'.03d",$USBaddr[0],$USBaddr[1]);
 		log::add('eibd', 'debug', "Droit d'acces sur la passerelle USB " . $cmd);
@@ -247,11 +263,11 @@ class eibd extends eqLogic {
 			return $USBaddr[0].":".$USBaddr[1];
 		}else{
 			$cmd="sudo findknxusb";
-			$result=explode(" ",exec($cmd));	
+			$result=explode(" ",exec($cmd));
 			return $result[1];
 		}
 	}
-	public static function SearchBroadcastGateway(){	
+	public static function SearchBroadcastGateway(){
 		$result[0]['KnxIpGateway'] ="";
 		$result[0]['KnxPortGateway'] ="";
 		$result[0]['IndividualAddressGateWay']="";
@@ -270,7 +286,7 @@ class eibd extends eqLogic {
 			log::add('eibd', 'debug', "socket_set_option() failed: reason: " . socket_strerror(socket_last_error($BroadcastSocket)));
 			return false;
 		}
-     		if (!socket_set_option($BroadcastSocket,SOL_SOCKET,SO_RCVTIMEO,array("sec"=>1,"usec"=>0))) {
+		if (!socket_set_option($BroadcastSocket,SOL_SOCKET,SO_RCVTIMEO,array("sec"=>1,"usec"=>0))) {
 			log::add('eibd', 'debug', "socket_set_option() failed: reason: " . socket_strerror(socket_last_error($BroadcastSocket)));
 			return false;
 		}
@@ -306,7 +322,7 @@ class eibd extends eqLogic {
 			$dataBrute='';
 			foreach ($ReadFrame as $Byte)
 				$dataBrute.=sprintf('0x%02x ',$Byte);
-			log::add('eibd', 'debug', 'Data recus: ' . $dataBrute);		
+			log::add('eibd', 'debug', 'Data recus: ' . $dataBrute);
 			
 			$HeaderSize=array_slice($ReadFrame,0,1)[0];
 			$Header=array_slice($ReadFrame,0,$HeaderSize);
@@ -332,7 +348,7 @@ class eibd extends eqLogic {
 						break;
 					}
 				break;
-			}	
+			}
 			$NbLoop++;
 		}
 		socket_close($BroadcastSocket);
@@ -363,7 +379,7 @@ class eibd extends eqLogic {
 			return array ("Read", null);
 		}
 	}
-   	private static function gaddrparse ($addr)	{
+	private static function gaddrparse ($addr){
 		$addr = explode("/", $addr);
 		if (count ($addr) >= 3)
 			$r =(($addr[0] & 0x1f) << 11) | (($addr[1] & 0x7) << 8) | (($addr[2] & 0xff));
@@ -386,7 +402,7 @@ class eibd extends eqLogic {
 		$data = pack ("n", $val);
 		$len = $EibdConnexion->EIBSendAPDU($data);
 		if ($len == -1)
-          		return false;
+			return false;
 		$loop=0;
 		$return=null;
 		while (1){ 
@@ -402,7 +418,7 @@ class eibd extends eqLogic {
 				throw new Exception(__("Type de data non prise en charge par la plugin (".BusMonitorTraitement::formatiaddr($src->addr).")", __FILE__));
 			}
 			else if (($buf[2] & 0xC0) == 0x40){
-				if ($len == 2)                     
+				if ($len == 2)
 					$return=$buf[2] & 0x3F;
 				else
 					$return=array_slice($buf, 2);
@@ -411,8 +427,8 @@ class eibd extends eqLogic {
 		}
 		$EibdConnexion->EIBClose();
 		return $return;
-	}		
-   	public static function EibdReponse($addr, $val){
+	}
+	public static function EibdReponse($addr, $val){
 		$host=config::byKey('EibdHost', 'eibd');
 		$port=config::byKey('EibdPort', 'eibd');
 		$EibdConnexion = new EIBConnection($host,$port);
@@ -440,8 +456,7 @@ class eibd extends eqLogic {
 		$host=config::byKey('EibdHost', 'eibd');
 		$port=config::byKey('EibdPort', 'eibd');
 		$EibdConnexion = new EIBConnection($host,$port);
-		if(!is_array($val))
-		{
+		if(!is_array($val)){
 			$val = ($val + 0) & 0x3f;
 			$val |= 0x0080;
 			$data = pack ("n", $val);
@@ -468,7 +483,7 @@ class eibd extends eqLogic {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static function InitInformation() { 
 		log::add('eibd', 'debug', 'Initialisation de valeur des objets KNX');
-		foreach(eqLogic::byType('eibd') as $Equipement){		
+		foreach(eqLogic::byType('eibd') as $Equipement){
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd() as $Commande){
 					if($Commande->getLogicalId() == ''){
@@ -477,7 +492,7 @@ class eibd extends eqLogic {
 					}
 					if ($Commande->getConfiguration('FlagInit')){
 						$BusValue = $Commande->execute(array('init'=>true));
-						if($Commande->getType() == 'info')			
+						if($Commande->getType() == 'info')
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Lecture du GAD: '.$Commande->getLogicalId().' = '.$BusValue);
 						else
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Envoi sur le GAD: '.$Commande->getLogicalId());
@@ -492,13 +507,13 @@ class eibd extends eqLogic {
 		$port=config::byKey('EibdPort', 'eibd');
 		log::add('eibd', 'debug', 'Connexion a EIBD sur le serveur '.$host.':'.$port);
 		$conBusMonitor = new EIBConnection($host,$port);
-		$buf = new EIBBuffer();		
+		$buf = new EIBBuffer();
 		if ($conBusMonitor->EIBOpen_GroupSocket(0) == -1)
 			log::add('eibd', 'error',$conBusMonitor->getLastError);	
-		while(true){	
+		while(true){
 			$src = new EIBAddr;
 			$dest = new EIBAddr;
-			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);  
+			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);
 			if($len != -1)
 				break;
 			sleep(1);
@@ -507,7 +522,7 @@ class eibd extends eqLogic {
 		while(true) {    
 			$src = new EIBAddr;
 			$dest = new EIBAddr;
-			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);      
+			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);
 			if ($len >= 2) {
 				$mon = self::parseread($len,$buf);
 				if($mon !== false){
@@ -517,12 +532,11 @@ class eibd extends eqLogic {
 					log::add('eibd', 'debug', "[Moniteur Bus] Trame de data non prise en charge par la plugin:".json_encode($buf)." (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr).")");
 			}else
 					log::add('eibd', 'debug', "[Moniteur Bus] Type de data non prise en charge par la plugin (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr).")");
-              
 		}
-		$conBusMonitor->EIBClose();		
+		$conBusMonitor->EIBClose();
 		log::add('eibd', 'info', '[Moniteur Bus] Deconnexion a EIBD sur le serveur '.$host.':'.$port);	
 	}
-	public static function TransmitValue($_options) 	{
+	public static function TransmitValue($_options){
 		$Event = cmd::byId($_options['event_id']);
 		if(!is_object($Event)){
 			log::add('eibd','error','Impossible de touvée l\'objet '.$_options['event_id']);
@@ -613,11 +627,11 @@ class eibd extends eqLogic {
 			case 'knxd':
 				if(config::byKey('EibdPort', 'eibd')!=''&&config::byKey('EibdGad', 'eibd')!=''&&config::byKey('KNXgateway', 'eibd')!='')
 					$return['launchable'] = 'ok';
-				$result=exec("ps aux | grep knxd | grep -v grep | awk '{print $2}'",$result);	
-				if($result!=""){
+				$result=exec("sudo systemctl is-active knxd.service",$result);	
+				if($result == "active"){
 					$return['state'] = 'ok';
 				}else{
-					log::add('eibd','debug','[Moniteur Bus] KNXd est arrété');
+					//log::add('eibd','debug','[Moniteur Bus] KNXd est arrété');
 					return $return;
 				}
 			break;
@@ -674,23 +688,20 @@ class eibd extends eqLogic {
 							$listener->emptyEvent();
 							$listener->addEvent($ActionValue->getId());
 							$listener->save();
-						}	
-					}	
+						}
+					}
 				}
 			}
 		}
 		self::genKnxOpt();
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
-				$cmd= 'sudo systemctl start knxd.service';
-				log::add('eibd','info', '[KNXD] '.$cmd);
-				exec($cmd);
-				$cmd= 'sudo systemctl start knxd.socket';
+				$cmd= 'sudo systemctl start knxd';
 				log::add('eibd','info', '[KNXD] '.$cmd);
 				exec($cmd);
 			break;
 		}
-		cache::set('eibd::demonState',true, 0);			
+		cache::set('eibd::demonState',true, 0);
 		$cron = cron::byClassAndFunction('eibd', 'BusMonitor');
 		if (!is_object($cron)) {
 			$cron = new cron();
@@ -716,7 +727,7 @@ class eibd extends eqLogic {
 			$clientAddrs = explode('.',config::byKey('EibdGad', 'eibd'));
 			$clientAddrs[count($clientAddrs)-1] +=1;
 			$knxOptFile = "/etc/knxd.conf";
-			if(file_exists($knxOptFile))			
+			if(file_exists($knxOptFile))
 				exec("sudo rm ".$knxOptFile);
 			exec("sudo touch ".$knxOptFile);
 			exec("sudo chmod 777 ".$knxOptFile);
@@ -724,7 +735,7 @@ class eibd extends eqLogic {
 				fputs($fp,'KNXD_OPTS=/etc/knxd.ini');
 			fclose($fp);
 			$knxOptFile = "/etc/knxd.ini";
-			if(file_exists($knxOptFile))			
+			if(file_exists($knxOptFile))
 				exec("sudo rm ".$knxOptFile);
 			exec("sudo touch ".$knxOptFile);
 			exec("sudo chmod 777 ".$knxOptFile);
@@ -732,10 +743,9 @@ class eibd extends eqLogic {
 				fputs($fp,'[TCP]'."\r\n");
 				fputs($fp,'server = knxd_tcp'."\r\n");
 				//fputs($fp,'ip-address = 127.0.0.1'."\r\n");
-				//fputs($fp,'port = 6720'."\r\n");              
+				//fputs($fp,'port = 6720'."\r\n");
 				fputs($fp,'systemd-ignore = true'."\r\n");
 				fputs($fp,"\r\n");
-              
 
 				fputs($fp,'[Gateway]'."\r\n");
 				fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
@@ -773,7 +783,7 @@ class eibd extends eqLogic {
 				fputs($fp,"\r\n");
 
 				fputs($fp,'[server]'."\r\n");
-				fputs($fp,'debug = debug-server'."\r\n");				
+				fputs($fp,'debug = debug-server'."\r\n");
 				if(config::byKey('Discovery', 'eibd'))
 					fputs($fp,'discover = true'."\r\n");
 				else
@@ -793,10 +803,7 @@ class eibd extends eqLogic {
 	public static function deamon_stop() {
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
-				$cmd= 'sudo systemctl stop knxd.service';
-				log::add('eibd','info', '[KNXD] '.$cmd);
-				exec($cmd);
-				$cmd= 'sudo systemctl stop knxd.socket';
+				$cmd= 'sudo systemctl stop knxd';
 				log::add('eibd','info', '[KNXD] '.$cmd);
 				exec($cmd);
 			break;
@@ -813,7 +820,7 @@ class eibd extends eqLogic {
 		}
 		while(is_object($listener=listener::byClassAndFunction('eibd', 'TransmitValue')))
 			$listener->remove();
-		if(file_exists("/var/log/knx.log"))			
+		if(file_exists("/var/log/knx.log"))
 			exec("sudo rm /var/log/knx.log");
 			
 	}
@@ -827,14 +834,14 @@ class eibdCmd extends cmd {
 					throw new Exception(__('{{Il est impossible de transmettre / retransmettre un état sur le même GAD}}', __FILE__));
 			}
 		}
-		if ($this->getConfiguration('KnxObjectType') == '') 
+		if ($this->getConfiguration('KnxObjectType') == '')
 			throw new Exception(__('Le type de commande ne peut être vide', __FILE__));
-		$this->setLogicalId(trim($this->getLogicalId()));    
+		$this->setLogicalId(trim($this->getLogicalId()));
 	}
-	public function postSave() {			
+	public function postSave() {
 		if ($this->getConfiguration('FlagInit')){
 			$BusValue = $this->execute(array('init'=>true));
-			if($this->getType() == 'info')			
+			if($this->getType() == 'info')
 				log::add('eibd', 'info', $this->getHumanName().'[Initialisation] Lecture du GAD: '.$this->getLogicalId().' = '.$BusValue);
 			else
 				log::add('eibd', 'info', $this->getHumanName().'[Initialisation] Envoi sur le GAD: '.$this->getLogicalId());
@@ -876,7 +883,7 @@ class eibdCmd extends cmd {
 	}
 	public function execute($_options = null){
 		if (cache::byKey('eibd::demonState')->getValue('nok') != 'ok') 
-			return false;		
+			return false;
 		$ga=$this->getLogicalId();
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
@@ -979,8 +986,8 @@ class eibdCmd extends cmd {
 		}
 		return $valeur.$unite ;
 	}
-	public function UpdateCommande($data){	
-		$valeur='';		
+	public function UpdateCommande($data){
+		$valeur='';
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
 		$Option=$this->getConfiguration('option');
@@ -1011,7 +1018,7 @@ class eibdCmd extends cmd {
 		}
 		return $valeur.$unite ;
 	}
-	public function UpdateCmdOption($_options) { 
+	public function UpdateCmdOption($_options) {
 		log::add('eibd', 'Info', 'Mise à jour d\'une commande par ses options');
 		$dpt=$this->getConfiguration('KnxObjectType');
 		$inverse=$this->getConfiguration('inverse');
