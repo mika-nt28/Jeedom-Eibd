@@ -220,6 +220,29 @@ $('.configKey[data-l1key=KnxSoft]').off().on('change',function(){
 		break;
 	}
 });
+$('.configKey[data-l1key=TypeKNXgateway]').off().on('change',function(){
+	switch($('.configKey[data-l1key=TypeKNXgateway]').val()){
+		case 'ip':
+			$('.KNXgateway').closest('.form-group').hide();
+		break;
+		case 'ipt':
+		case 'iptn':
+			$('.KNXgateway').closest('.form-group').show()
+			$('.KNXgatewayPort').show();
+			$('.SearchGatway').closest('.input-group-btn').show();
+		break;
+		case 'usb':
+			$('.KNXgateway').closest('.form-group').show()
+			$('.KNXgatewayPort').hide();
+			$('.SearchGatway').closest('.input-group-btn').show();
+		break;
+		default:
+			$('.KNXgateway').closest('.form-group').show()
+			$('.KNXgatewayPort').hide();
+			$('.SearchGatway').closest('.input-group-btn').hide();
+		break;
+	}
+});
 $('.SearchGatway').off().on('click',function(){
 	$.ajax({
 		type: 'POST',
@@ -241,24 +264,19 @@ $('.SearchGatway').off().on('click',function(){
 			if(data.result){
 				var format = '';
 				switch($('.configKey[data-l1key=TypeKNXgateway]').val()){
-					case 'ip':
-						$('.KNXgateway').hide();
-					break;
 					case 'ipt':
 					case 'iptn':
-						$('.KNXgateway').show()
-						$('.KNXgatewayPort').show();
 						var Detect = $('<tbody>');
 						$.each(data.result,function(index, value){
 							Detect.append($('<tr>')
-								      .append($('<td class="DeviceName">')
-									      .append(value.DeviceName))
-								      .append($('<td class="IndividualAddressGateWay">')
-									      .append(value.IndividualAddressGateWay))
-								      .append($('<td class="KnxIpGateway">')
-									      .append(value.KnxIpGateway))
-								      .append($('<td class="KnxPortGateway">')
-									      .append(value.KnxPortGateway)));
+								.append($('<td class="DeviceName">')
+									.append(value.DeviceName))
+								.append($('<td class="IndividualAddressGateWay">')
+									.append(value.IndividualAddressGateWay))
+								.append($('<td class="KnxIpGateway">')
+									.append(value.KnxIpGateway))
+								.append($('<td class="KnxPortGateway">')
+									.append(value.KnxPortGateway)));
 						});
 						$('.KNXgatewayFind').find('#table_KNXgateway').remove();
 						$('.KNXgatewayFind').append($('<table id="table_KNXgateway" class="table table-bordered table-condensed ui-sortable">')
@@ -278,16 +296,7 @@ $('.SearchGatway').off().on('click',function(){
 							$('.configKey[data-l1key=KNXgatewayPort]').val($(this).find('.KnxPortGateway').text());
 						});
 					break;
-					/*case 'ft12':
-					break;
-					case 'bcu1':
-					break;
-					case 'tpuarts':
-					break;
-					case 'usb':*/
-					default:
-						$('.KNXgateway').show()
-						$('.KNXgatewayPort').hide();
+					case 'usb':
 						$('.configKey[data-l1key=KNXgateway]').val(data.result);
 					break;
 				}
