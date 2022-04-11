@@ -696,9 +696,13 @@ class eibd extends eqLogic {
 		self::genKnxOpt();
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
-				$cmd= 'sudo systemctl start knxd';
+				$cmd= 'sudo systemctl start knxd.socket';
 				log::add('eibd','info', '[KNXD] '.$cmd);
 				exec($cmd);
+				$cmd= 'sudo systemctl start knxd.service';
+				log::add('eibd','info', '[KNXD] '.$cmd);
+				exec($cmd);
+				sleep(5);
 			break;
 		}
 		cache::set('eibd::demonState',true, 0);
@@ -742,17 +746,16 @@ class eibd extends eqLogic {
 			if($fp = fopen($knxOptFile,"w")){
 				fputs($fp,'[TCP]'."\r\n");
 				fputs($fp,'server = knxd_tcp'."\r\n");
-				//fputs($fp,'ip-address = 127.0.0.1'."\r\n");
-				//fputs($fp,'port = 6720'."\r\n");
 				fputs($fp,'systemd-ignore = true'."\r\n");
 				fputs($fp,"\r\n");
 
 				fputs($fp,'[Gateway]'."\r\n");
 				fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
+				fputs($fp,'filters = single,FilterPace'."\r\n");
 				switch(config::byKey('TypeKNXgateway', 'eibd')){
 					case 'ip':
 						fputs($fp,'multicast-address = 224.0.23.12'."\r\n");
-						fputs($fp,'port  = 3671'."\r\n");
+						fputs($fp,'port = 3671'."\r\n");
 					break;
 					case 'ipt':
 					case 'iptn':
@@ -779,12 +782,12 @@ class eibd extends eqLogic {
 					fputs($fp,'name = '.config::byKey('ServeurName', 'eibd')."\r\n");
 				fputs($fp,'addr = '.config::byKey('EibdGad', 'eibd')."\r\n");
 				fputs($fp,'client-addrs = '.implode('.',$clientAddrs).':'.config::byKey('EibdNbAddr', 'eibd')."\r\n");
-				fputs($fp,'connections = Gateway,server,TCP'."\r\n");
+				fputs($fp,'connections = TCP,Gateway,Server'."\r\n");
 				fputs($fp,'debug = debug-main'."\r\n");
 				fputs($fp,'systemd = systemd'."\r\n");
 				fputs($fp,"\r\n");
 
-				fputs($fp,'[server]'."\r\n");
+				fputs($fp,'[Server]'."\r\n");
 				fputs($fp,'debug = debug-server'."\r\n");
 				if(config::byKey('Discovery', 'eibd'))
 					fputs($fp,'discover = true'."\r\n");
@@ -797,6 +800,10 @@ class eibd extends eqLogic {
 				if(config::byKey('Tunnelling', 'eibd'))
 					fputs($fp,'tunnel = tunnel'."\r\n");
 				fputs($fp,"\r\n");
+				
+				fputs($fp,'[FilterPace]'."\r\n");
+				fputs($fp,'delay = 10'."\r\n");
+				fputs($fp,'filter = pace'."\r\n");
 			}
 			fclose($fp);
 		}
@@ -805,7 +812,10 @@ class eibd extends eqLogic {
 	public static function deamon_stop() {
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
-				$cmd= 'sudo systemctl stop knxd';
+				$cmd= 'sudo systemctl stop knxd.socket';
+				log::add('eibd','info', '[KNXD] '.$cmd);
+				exec($cmd);
+				$cmd= 'sudo systemctl stop knxd.service';
 				log::add('eibd','info', '[KNXD] '.$cmd);
 				exec($cmd);
 			break;
