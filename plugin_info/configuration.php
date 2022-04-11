@@ -113,6 +113,11 @@ if (!isConnect()) {
 							</a>
 						</span>
 					</div>
+					<div class="input-group KNXNAT">
+						<input class="configKey form-control input-sm roundedLeft tooltipstered" data-l1key="KNXIPNAT" placeholder="Adresse IP NAT">
+						<span class="input-group-addon roundedLeft ">:</span>
+						<input class="configKey form-control input-sm roundedLeft tooltipstered" data-l1key="KNXPORTNAT" placeholder="Port NAT">
+					</div>
 					<div class="KNXgatewayFind"></div>
 				</div>
 			</div>
@@ -226,17 +231,25 @@ $('.configKey[data-l1key=TypeKNXgateway]').off().on('change',function(){
 			$('.KNXgateway').closest('.form-group').hide();
 		break;
 		case 'ipt':
+			$('.KNXNAT').hide();
+			$('.KNXgateway').closest('.form-group').show()
+			$('.KNXgatewayPort').show();
+			$('.SearchGatway').closest('.input-group-btn').show();
+		break;
 		case 'iptn':
+			$('.KNXNAT').show();
 			$('.KNXgateway').closest('.form-group').show()
 			$('.KNXgatewayPort').show();
 			$('.SearchGatway').closest('.input-group-btn').show();
 		break;
 		case 'usb':
+			$('.KNXNAT').hide();
 			$('.KNXgateway').closest('.form-group').show()
 			$('.KNXgatewayPort').hide();
 			$('.SearchGatway').closest('.input-group-btn').show();
 		break;
 		default:
+			$('.KNXNAT').hide();
 			$('.KNXgateway').closest('.form-group').show()
 			$('.KNXgatewayPort').hide();
 			$('.SearchGatway').closest('.input-group-btn').hide();
