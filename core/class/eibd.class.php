@@ -750,20 +750,32 @@ class eibd extends eqLogic {
 				fputs($fp,"\r\n");
 
 				fputs($fp,'[Gateway]'."\r\n");
-				fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
 				fputs($fp,'filters = single,FilterPace'."\r\n");
 				switch(config::byKey('TypeKNXgateway', 'eibd')){
 					case 'ip':
+						fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
 						fputs($fp,'multicast-address = 224.0.23.12'."\r\n");
 						fputs($fp,'port = 3671'."\r\n");
 					break;
 					case 'ipt':
-					case 'iptn':
+						fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
 						fputs($fp,'ip-address = '.config::byKey('KNXgateway', 'eibd')."\r\n");
 						if(config::byKey('KNXgatewayPort', 'eibd') != '')
 							fputs($fp,'dest-port = '.config::byKey('KNXgatewayPort', 'eibd')."\r\n");
 					break;
+					case 'iptn':
+						fputs($fp,'driver = ipt'."\r\n");
+						fputs($fp,'nat = true'."\r\n");
+						fputs($fp,'ip-address = '.config::byKey('KNXgateway', 'eibd')."\r\n");
+						if(config::byKey('KNXgatewayPort', 'eibd') != '')
+							fputs($fp,'dest-port = '.config::byKey('KNXgatewayPort', 'eibd')."\r\n");
+						if(config::byKey('KNXIPNAT', 'eibd') != '')
+							fputs($fp,'nat-ipt = '.config::byKey('KNXIPNAT', 'eibd')."\r\n");
+						if(config::byKey('KNXPORTNAT', 'eibd') != '')
+							fputs($fp,'data-port = '.config::byKey('KNXPORTNAT', 'eibd')."\r\n");
+					break;
 					default:
+						fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
 						fputs($fp,'device = '.config::byKey('KNXgateway', 'eibd')."\r\n");
 					break;
 				}
