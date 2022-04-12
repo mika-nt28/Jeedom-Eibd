@@ -9,7 +9,9 @@ echo "**************************************************************************
 echo "*                                         Remove knxd                                               *"
 echo "*****************************************************************************************************"
 suso systemctl stop knxd.socket
-suso systemctl stop knxd
+suso systemctl stop knxd.service
+sudo dpkg --purge knxd
+sudo dpkg --remove knxd
 sudo apt-get autoremove -y knxd
 echo 20 > /tmp/jeedom_install_in_progress_eibd
 echo "*****************************************************************************************************"
