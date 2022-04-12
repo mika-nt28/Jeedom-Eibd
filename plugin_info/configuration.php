@@ -87,7 +87,7 @@ if (!isConnect()) {
 						<option value="ft12cemi">{{FT12 - CEMI}}</option>
 						<option value="ft12">{{FT12 - Ligne série}}</option>
 						<option value="bcu1s">{{BCU1 - kernel driver}}</option>
-						<option value="tpuarts">{{TPUART - kernel driver Linux 2.6}}</option>
+						<option value="tpuart">{{TPUART - kernel driver Linux 2.6}}</option>
 						<option value="ip">{{IP - EIBnet/IP Routing protocol}}</option>
 						<option value="ipt">{{IPT - EIBnet/IP Tunneling protocol}}</option>
 						<option value="iptn">{{IPTN - EIBnet/IP NAT mode}}</option>
