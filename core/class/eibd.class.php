@@ -622,18 +622,18 @@ class eibd extends eqLogic {
 		$return = array();
 		$return['log'] = 'eibd';	
 		$return['launchable'] = 'nok';
-		$return['state'] = 'nok';
+		$return['state'] = 'ok';
 		switch(config::byKey('KnxSoft', 'eibd')){
 			case 'knxd':
 				if(config::byKey('EibdPort', 'eibd')!=''&&config::byKey('EibdGad', 'eibd')!=''&&config::byKey('KNXgateway', 'eibd')!='')
 					$return['launchable'] = 'ok';
-				$result=exec("sudo systemctl is-active knxd.service",$result);	
+			/*	$result=exec("sudo systemctl is-active knxd.service",$result);	
 				if($result == "active"){
 					$return['state'] = 'ok';
 				}else{
 					//log::add('eibd','debug','[Moniteur Bus] KNXd est arrété');
 					return $return;
-				}
+				}*/
 			break;
 			case 'manual':
 				$return['state'] = 'ok';
@@ -694,17 +694,6 @@ class eibd extends eqLogic {
 			}
 		}
 		self::genKnxOpt();
-		switch(config::byKey('KnxSoft', 'eibd')){
-			case 'knxd':
-				$cmd= 'sudo systemctl start knxd.socket';
-				log::add('eibd','info', '[KNXD] '.$cmd);
-				exec($cmd);
-				$cmd= 'sudo systemctl start knxd.service';
-				log::add('eibd','info', '[KNXD] '.$cmd);
-				exec($cmd);
-				sleep(5);
-			break;
-		}
 		cache::set('eibd::demonState',true, 0);
 		$cron = cron::byClassAndFunction('eibd', 'BusMonitor');
 		if (!is_object($cron)) {
@@ -818,27 +807,14 @@ class eibd extends eqLogic {
 				fputs($fp,'filter = pace'."\r\n");
 			}
 			fclose($fp);
+			$cmd= 'sudo systemctl restart knxd.service';
+			log::add('eibd','info', '[KNXD] '.$cmd);
+			exec($cmd);
 		}
 		
 	}
 	public static function deamon_stop() {
-		switch(config::byKey('KnxSoft', 'eibd')){
-			case 'knxd':
-				$cmd= 'sudo systemctl stop knxd.socket';
-				log::add('eibd','info', '[KNXD] '.$cmd);
-				exec($cmd);
-				$cmd= 'sudo systemctl stop knxd.service';
-				log::add('eibd','info', '[KNXD] '.$cmd);
-				exec($cmd);
-			break;
-		}
-		if(isset($cmd)){
-			$cmd .= ' >> ' . log::getPathToLog('eibd') . ' 2>&1';
-			exec($cmd);
-			cache::set('eibd::demonState',false, 0);
-		}
-		$cron = cron::byClassAndFunction('eibd', 'BusMonitor');
-		if (is_object($cron)) {
+		while (is_object($cron = cron::byClassAndFunction('eibd', 'BusMonitor'))) {
 			$cron->stop();
 			$cron->remove();
 		}
@@ -846,7 +822,7 @@ class eibd extends eqLogic {
 			$listener->remove();
 		if(file_exists("/var/log/knx.log"))
 			exec("sudo rm /var/log/knx.log");
-			
+		cache::set('eibd::demonState',false, 0);
 	}
   }
 class eibdCmd extends cmd {
