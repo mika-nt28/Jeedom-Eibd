@@ -739,7 +739,7 @@ class eibd extends eqLogic {
 				fputs($fp,"\r\n");
 
 				fputs($fp,'[Gateway]'."\r\n");
-				fputs($fp,'filters = single,FilterPace'."\r\n");
+				//fputs($fp,'filters = single,FilterPace'."\r\n");
 				switch(config::byKey('TypeKNXgateway', 'eibd')){
 					case 'ip':
 						fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
