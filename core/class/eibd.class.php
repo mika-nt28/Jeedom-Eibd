@@ -523,7 +523,10 @@ class eibd extends eqLogic {
 			$src = new EIBAddr;
 			$dest = new EIBAddr;
 			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);
-			if ($len >= 2) {
+			if ($len == -1) {
+				log::add('eibd', 'debug',"[Moniteur Bus] ".$conBusMonitor->getLastError);	
+				break;
+			}elseif ($len >= 2) {
 				$mon = self::parseread($len,$buf);
 				if($mon !== false){
 					$Traitement=new BusMonitorTraitement($mon[0],$mon[1],$src->addr,$dest->addr);
@@ -531,7 +534,7 @@ class eibd extends eqLogic {
 				}else
 					log::add('eibd', 'debug', "[Moniteur Bus] Trame de data non prise en charge par la plugin:".json_encode($buf)." (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr).")");
 			}else
-					log::add('eibd', 'debug', "[Moniteur Bus] Type de data non prise en charge par la plugin (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr).")");
+				log::add('eibd', 'debug', "[Moniteur Bus] Type de data non prise en charge par la plugin (".BusMonitorTraitement::formatiaddr($src->addr).' - '.BusMonitorTraitement::formatgaddr($dest->addr).")");
 		}
 		$conBusMonitor->EIBClose();
 		log::add('eibd', 'info', '[Moniteur Bus] Deconnexion a EIBD sur le serveur '.$host.':'.$port);	
