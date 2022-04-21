@@ -650,7 +650,6 @@ class eibd extends eqLogic {
 				$return['state'] = 'ok';
 			}else{
 				$return['state'] = 'nok';
-				log::add('eibd','debug','[Moniteur Bus] Le demon du plugin est arrété');
 				return $return;
 			}
 		}
