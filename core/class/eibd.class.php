@@ -482,7 +482,7 @@ class eibd extends eqLogic {
 	//                                                                                                                                               //
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static function InitInformation() { 
-		log::add('eibd', 'debug', 'Initialisation de valeur des objets KNX');
+		log::add('eibd', 'debug', '[Moniteur Bus] Initialisation de valeur des objets KNX');
 		foreach(eqLogic::byType('eibd') as $Equipement){
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd() as $Commande){
@@ -502,20 +502,21 @@ class eibd extends eqLogic {
 		}
 	}
 	public static function BusMonitor() { 
-		log::add('eibd', 'debug', 'Lancement du Bus Monitor');
+		log::add('eibd', 'debug', '[Moniteur Bus] Lancement du Bus Monitor');
 		$host=config::byKey('EibdHost', 'eibd');
 		$port=config::byKey('EibdPort', 'eibd');
-		log::add('eibd', 'debug', 'Connexion a EIBD sur le serveur '.$host.':'.$port);
-		$conBusMonitor = new EIBConnection($host,$port);
-		$buf = new EIBBuffer();
-		if ($conBusMonitor->EIBOpen_GroupSocket(0) == -1)
-			log::add('eibd', 'error',$conBusMonitor->getLastError);	
+		log::add('eibd', 'debug', '[Moniteur Bus] Connexion a EIBD sur le serveur '.$host.':'.$port);
 		while(true){
+          $conBusMonitor = new EIBConnection($host,$port);
+          $buf = new EIBBuffer();
+          if ($conBusMonitor->EIBOpen_GroupSocket(0) == -1)
+			log::add('eibd', 'error',$conBusMonitor->getLastError);	
 			$src = new EIBAddr;
 			$dest = new EIBAddr;
 			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);
 			if($len != -1)
 				break;
+			$conBusMonitor->EIBClose();
 			sleep(1);
 		}
 		self::InitInformation();
