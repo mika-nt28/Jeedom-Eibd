@@ -19,7 +19,7 @@ class eibd extends eqLogic {
 				}
 			}
 		}
-    	}
+	}
 	public static function cron5() {
 		foreach(eqLogic::byType('eibd') as $Equipement){		
 			if($Equipement->getIsEnable()){
@@ -122,7 +122,7 @@ class eibd extends eqLogic {
 	}
 	public function preSave() {
 		$this->setLogicalId(trim($this->getLogicalId()));    
-	}	
+	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                                                                                                                               //
 	//                                                      Gestion des Template d'equipement                                                       // 
@@ -187,7 +187,7 @@ class eibd extends eqLogic {
 			$cmd = null;
 			foreach ($this->getCmd() as $liste_cmd) {
 				if (isset($command['name']) && $liste_cmd->getName() == $command['name']) {
-					$cmd = $liste_cmd;	
+					$cmd = $liste_cmd;
 					break;
 				}
 			}
@@ -201,7 +201,7 @@ class eibd extends eqLogic {
 						$cmd = null;
 						foreach ($this->getCmd() as $liste_cmd) {
 							if (isset($command['name']) && $liste_cmd->getName() == $command['name']) {
-								$cmd = $liste_cmd;	
+								$cmd = $liste_cmd;
 								break;
 							}
 						}
@@ -296,7 +296,7 @@ class eibd extends eqLogic {
 		"0201" .			// servicetypeidentifier
 		"000E".						// totallength,14octets
 		
-		//Host Protocol Address Information (HPAI)		
+		//Host Protocol Address Information (HPAI)
 		"08".						// structure length
 		"01".						//host protocol code, e.g. 01h, for UDP over IPv4
 		bin2hex(inet_pton($ServerAddr)).					//192.168.0.49
@@ -445,14 +445,14 @@ class eibd extends eqLogic {
 		$addr = self::gaddrparse ($addr);
 		$len = $EibdConnexion->EIBOpenT_Group ($addr, 1);
 		if ($len == -1)
-          		return false;
+			return false;
 		$len = $EibdConnexion->EIBSendAPDU($data);
 		if ($len == -1)
-          		return false;
+			return false;
 		$EibdConnexion->EIBClose();
 		return true;
 	}
-   	public static function EibdWrite($addr, $val){
+	public static function EibdWrite($addr, $val){
 		$host=config::byKey('EibdHost', 'eibd');
 		$port=config::byKey('EibdPort', 'eibd');
 		$EibdConnexion = new EIBConnection($host,$port);
@@ -482,7 +482,7 @@ class eibd extends eqLogic {
 	//                                                                                                                                               //
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static function InitInformation() { 
-		log::add('eibd', 'debug', 'Initialisation de valeur des objets KNX');
+		log::add('eibd', 'debug', '[Moniteur Bus] Initialisation de valeur des objets KNX');
 		foreach(eqLogic::byType('eibd') as $Equipement){
 			if($Equipement->getIsEnable()){
 				foreach($Equipement->getCmd() as $Commande){
@@ -502,20 +502,23 @@ class eibd extends eqLogic {
 		}
 	}
 	public static function BusMonitor() { 
-		log::add('eibd', 'debug', 'Lancement du Bus Monitor');
+		log::add('eibd', 'debug', '[Moniteur Bus] Lancement du Bus Monitor');
 		$host=config::byKey('EibdHost', 'eibd');
 		$port=config::byKey('EibdPort', 'eibd');
-		log::add('eibd', 'debug', 'Connexion a EIBD sur le serveur '.$host.':'.$port);
-		$conBusMonitor = new EIBConnection($host,$port);
-		$buf = new EIBBuffer();
-		if ($conBusMonitor->EIBOpen_GroupSocket(0) == -1)
-			log::add('eibd', 'error',$conBusMonitor->getLastError);	
+		log::add('eibd', 'debug', '[Moniteur Bus] Connexion a EIBD sur le serveur '.$host.':'.$port);
 		while(true){
+			$conBusMonitor = new EIBConnection($host,$port);
+			$buf = new EIBBuffer();
+			if ($conBusMonitor->EIBOpen_GroupSocket(0) == -1){
+				log::add('eibd', 'error',$conBusMonitor->getLastError);	
+				continue;
+			}
 			$src = new EIBAddr;
 			$dest = new EIBAddr;
 			$len = $conBusMonitor->EIBGetGroup_Src($buf, $src, $dest);
 			if($len != -1)
 				break;
+			$conBusMonitor->EIBClose();
 			sleep(1);
 		}
 		self::InitInformation();
@@ -650,7 +653,6 @@ class eibd extends eqLogic {
 				$return['state'] = 'ok';
 			}else{
 				$return['state'] = 'nok';
-				log::add('eibd','debug','[Moniteur Bus] Le demon du plugin est arrété');
 				return $return;
 			}
 		}
