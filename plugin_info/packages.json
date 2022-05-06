@@ -1,4 +1,7 @@
 {
+  "pre-install" : {
+    "script" : "pre-install.sh"
+  }
   "apt" : {
     "knxd" : {},
     "knxd-tools" : {}
