@@ -1,4 +1,7 @@
 {
+  "pre-install" : {
+    "script" : "plugins/eibd/plugin_info/pre-install.sh"
+  },
   "apt" : {
     "knxd" : {},
     "knxd-tools" : {}
