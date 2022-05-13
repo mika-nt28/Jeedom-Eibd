@@ -674,7 +674,7 @@ $('body').off('change','.cmdAttr[data-l1key=type]').on('change','.cmdAttr[data-l
 			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagTransmit]').attr('disabled',false);
 			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagWrite]').attr('checked',false);
 			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagWrite]').attr('disabled',true);
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagRead]').attr('disabled',true);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagRead]').attr('disabled',false);
 		break;
 	}
 	setTimeout(function() {
