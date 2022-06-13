@@ -12,13 +12,9 @@ sudo rm -R /var/log/knxd.log
 echo "*****************************************************************************************************"
 echo "*                                         Remove knxd                                               *"
 echo "*****************************************************************************************************"
+sudo apt-get autoremove -y knxd
+sudo apt-get purge -y knxd
 sudo rm /etc/knxd.conf
 sudo rm /etc/knxd.ini
 sudo rm -R /usr/lib/knxd
-cd /usr/local/src/
-if [ -d "knxd" ]
-then
-  sudo rm -R knxd
-fi
-sudo apt-get autoremove -y knxd
-sudo apt-get purge -y knxd
+sudo rm -R /usr/local/src/knxd
