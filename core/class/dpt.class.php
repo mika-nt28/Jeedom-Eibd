@@ -216,7 +216,7 @@ class Dpt{
 			case "251":
 				list($r, $g, $b)=self::html2rgb($value);
 				$w=jeedom::evaluateExpression($option["Température"]);
-				$data= array($w, $r, $g, $b);
+				$data= array($w, $r, $g, $b, 0x00,0x0F);
 			break;
 			case "Color":	
 				$data= false;
