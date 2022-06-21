@@ -520,7 +520,7 @@ class Dpt{
 			break;
 			case "251":
 				$Temperature=cmd::byId(str_replace('#','',$option["Température"]));
-				if (is_object($Temperature))/* && $data[5]&0x01*/){
+				if (is_object($Temperature)/* && $data[5]&0x01*/){
 					$valeur=$data[3];
 					log::add('eibd', 'debug', 'L\'objet '.$Temperature->getName().' à été trouvé et va être mis à jour avec la valeur '. $valeur);
 					$Temperature->event($valeur);
