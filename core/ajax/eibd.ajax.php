@@ -1,7 +1,7 @@
 <?php
 try {
 	require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-    	include_file('core', 'authentification', 'php');
+	include_file('core', 'authentification', 'php');
 	include_file('core', 'dpt', 'class', 'eibd');
 	include_file('core', 'knxproj', 'class', 'eibd');
 	include_file('core', 'autoCreate', 'class', 'eibd');
@@ -16,7 +16,10 @@ try {
 			ajax::success(cache::byKey('eibd::isInclude')->getValue(false));
 		break;
 		case 'getLog':
-			ajax::success("<pre>".exec('sudo journalctl -u knxd.service --since "1 minutes ago"')."</pre>");
+			exec('sudo journalctl -u knxd.service -n 20 -o json',$result);
+			foreach($result as $log)
+				$return[] = json_decode($log,true);
+			ajax::success($return);
 		break;
 		case 'SearchGatway':
 			switch(init('type')){
@@ -114,8 +117,7 @@ try {
 			ajax::success(true);
 		break;
 	}
-	
-   throw new Exception(__('Aucune methode correspondante à : ', __FILE__) . init('action'));
+	throw new Exception(__('Aucune methode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */
 } catch (Exception $e) {
     ajax::error(displayExeption($e), $e->getCode());
