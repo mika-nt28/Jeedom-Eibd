@@ -5,10 +5,9 @@ try {
 	include_file('core', 'dpt', 'class', 'eibd');
 	include_file('core', 'knxproj', 'class', 'eibd');
 	include_file('core', 'autoCreate', 'class', 'eibd');
-
-    	if (!isConnect('admin')) {
-        	throw new Exception(__('401 - Accès non autorisé', __FILE__));
-    	}
+	if (!isConnect('admin')) {
+		throw new Exception(__('401 - Accès non autorisé', __FILE__));
+	}
 	switch(init('action')){
 		case 'setIsInclude':
 			ajax::success(cache::set('eibd::isInclude',init('value'), 0));
@@ -17,7 +16,7 @@ try {
 			ajax::success(cache::byKey('eibd::isInclude')->getValue(false));
 		break;
 		case 'getLog':
-			ajax::success("<pre>".file_get_contents('/var/log/knx.log')."</pre>");
+			ajax::success("<pre>".exec('sudo journalctl -u knxd.service --since "1 minutes ago"')."</pre>");
 		break;
 		case 'SearchGatway':
 			switch(init('type')){
