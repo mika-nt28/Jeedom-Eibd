@@ -17,7 +17,9 @@ function getLog(){
 		},
 		dataType: 'json',
 		error: function(request, status, error) {
-			handleAjaxError(request, status, error);
+			setTimeout(function() {
+				getLog()
+			}, 100);
 		},
 		success: function(data) { 
 			if (data.state != 'ok') {
@@ -25,6 +27,9 @@ function getLog(){
 				return;
 			}
 			$('.Log').html(data.result);
+			setTimeout(function() {
+				getLog()
+			}, 60000);
 		}
 	});	
 }
