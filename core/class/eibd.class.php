@@ -722,6 +722,8 @@ class eibd extends eqLogic {
 				log::add('eibd', 'debug', "Droit d'acces sur la passerelle USB " . $cmdUSB);
 				exec("sudo chmod 777 ".$cmdUSB. ' >> ' . log::getPathToLog('eibd') . ' 2>&1');
 			}
+			if(config::byKey('TypeKNXgateway', 'eibd') == 'ft12cemi')
+				exec('sudo chmod 777 /dev/ttys2 >> ' . log::getPathToLog('eibd') . ' 2>&1');
 			$clientAddrs = explode('.',config::byKey('EibdGad', 'eibd'));
 			$clientAddrs[count($clientAddrs)-1] +=1;
 			$knxOptFile = "/etc/knxd.conf";
