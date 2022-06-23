@@ -12,6 +12,10 @@ sudo rm -R /var/log/knxd.log
 echo "*****************************************************************************************************"
 echo "*                                         Remove knxd                                               *"
 echo "*****************************************************************************************************"
+sudo sytemctl enable knx.service
+sudo sytemctl enable knx.socket
+sudo sytemctl status knx.service
+sudo sytemctl status knx.socket
 sudo apt-get autoremove -y knxd
 sudo apt-get purge -y knxd
 sudo rm /etc/knxd.conf
