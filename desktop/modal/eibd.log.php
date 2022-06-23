@@ -5,14 +5,14 @@ if (!isConnect()) {
 
 ?>
 <table id="table_Log" class="table table-bordered table-condensed tablesorter">
-			<thead>
-				<tr>
-					<th>{{Date}}</th>
-					<th>{{Message}}</th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-		</table>
+	<thead>
+		<tr>
+			<th>{{Date}}</th>
+			<th>{{Message}}</th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
 <script>
 getLog();
 function getLog(){
@@ -38,7 +38,7 @@ function getLog(){
 			$('#table_Log tbody').html('');
 			$.each(data.result,function(key, value) {
 				var tr=$("<tr>");
-				tr.append($("<td>").text(timeConverter(value.__REALTIME_TIMESTAMP)));
+				tr.append($("<td>").text(timeConverter(parseInt(value.__REALTIME_TIMESTAMP)/1000)));
 				tr.append($("<td>").text(value.MESSAGE));
 				$('#table_Log tbody').append(tr);
 			});	
@@ -57,7 +57,8 @@ function timeConverter(UNIX_timestamp){
 	var hour = a.getHours();
 	var min = a.getMinutes();
 	var sec = a.getSeconds();
-	var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+	var milisec = a.getMilliseconds()
+	var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec + ':' + milisec;
 	return time;
 }
 </script>
