@@ -16,7 +16,7 @@ try {
 			ajax::success(cache::byKey('eibd::isInclude')->getValue(false));
 		break;
 		case 'getLog':
-			exec('sudo journalctl -u knxd.service -n 20 -o json',$result);
+			exec('sudo journalctl -u knxd.service -n 30 -o json',$result);
 			foreach($result as $log)
 				$return[] = json_decode($log,true);
 			ajax::success($return);
