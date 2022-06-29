@@ -10,7 +10,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron"){
 						$ga=$Commande->getLogicalId();
-						$BusValue = $Commande->execCmd();
+						$BusValue = $Commande->execute(array('init'=>true));
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
 						else
@@ -26,7 +26,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron5"){
 						$ga=$Commande->getLogicalId();
-						$BusValue = $Commande->execCmd();
+						$BusValue = $Commande->execute(array('init'=>true));
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
 						else
@@ -42,7 +42,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron10"){
 						$ga=$Commande->getLogicalId();
-						$BusValue = $Commande->execCmd();
+						$BusValue = $Commande->execute(array('init'=>true));
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
 						else
@@ -58,7 +58,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron15"){
 						$ga=$Commande->getLogicalId();
-						$BusValue = $Commande->execCmd();
+						$BusValue = $Commande->execute(array('init'=>true));
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
 						else
@@ -74,7 +74,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cron30"){
 						$ga=$Commande->getLogicalId();
-						$BusValue = $Commande->execCmd();
+						$BusValue = $Commande->execute(array('init'=>true));
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
 						else
@@ -90,7 +90,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronHourly"){
 						$ga=$Commande->getLogicalId();
-						$BusValue = $Commande->execCmd();
+						$BusValue = $Commande->execute(array('init'=>true));
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
 						else
@@ -106,7 +106,7 @@ class eibd extends eqLogic {
 				foreach($Equipement->getCmd() as $Commande){
 					if ($Commande->getConfiguration('CycliqueSend') == "cronDaily"){
 						$ga=$Commande->getLogicalId();
-						$BusValue = $Commande->execCmd();
+						$BusValue = $Commande->execute(array('init'=>true));
 						if($Commande->getType() == 'info')			
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Lecture Cyclique] GAD: '.$ga.' = '.$BusValue);
 						else
