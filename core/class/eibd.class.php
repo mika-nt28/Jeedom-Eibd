@@ -900,9 +900,6 @@ class eibdCmd extends cmd {
 		$Option['id']=$this->getId();
 		switch ($this->getType()) {
 			case 'action' :
-				$Listener=cmd::byId(str_replace('#','',$this->getValue()));
-				if (isset($Listener) && is_object($Listener)) 
-					$inverse=$Listener->getConfiguration('inverse');
 				switch ($this->getSubType()) {
 					case 'slider':    
 						$ActionValue = $_options['slider'];
@@ -920,6 +917,13 @@ class eibdCmd extends cmd {
 						$ActionValue = $this->getOtherActionValue();
 					break;
 				}
+				$Listener=cmd::byId(str_replace('#','',$this->getValue()));
+				if (isset($Listener) && is_object($Listener)){
+					$inverse=$Listener->getConfiguration('inverse');
+					if($ga == ""){
+						return $Listener->event($ActionValue);
+					}
+                }
 				log::add('eibd','debug',$this->getHumanName().'[Write] Valeur a envoyer '.$ActionValue);
 				$data= Dpt::DptSelectEncode($dpt, $ActionValue, $inverse,$Option);
 				if($ga != '' && $data !== false){
