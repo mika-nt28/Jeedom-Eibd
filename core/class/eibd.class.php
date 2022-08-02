@@ -746,7 +746,7 @@ class eibd extends eqLogic {
 				fputs($fp,"\r\n");
 
 				fputs($fp,'[Gateway]'."\r\n");
-				//fputs($fp,'filters = single,FilterPace'."\r\n");
+				fputs($fp,'filters = FilterGateway'."\r\n");
 				switch(config::byKey('TypeKNXgateway', 'eibd')){
 					case 'ip':
 						fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
@@ -809,9 +809,9 @@ class eibd extends eqLogic {
 					fputs($fp,'tunnel = tunnel'."\r\n");
 				fputs($fp,"\r\n");
 				
-				fputs($fp,'[FilterPace]'."\r\n");
-				fputs($fp,'delay = 10'."\r\n");
-				fputs($fp,'filter = pace'."\r\n");
+				fputs($fp,'[FilterGateway]'."\r\n");
+				fputs($fp,'filter = single'."\r\n");
+				fputs($fp,'address = 15.15.255'."\r\n");
 			}
 			fclose($fp);
 			$cmd= 'sudo systemctl restart knxd.service';
@@ -900,9 +900,6 @@ class eibdCmd extends cmd {
 		$Option['id']=$this->getId();
 		switch ($this->getType()) {
 			case 'action' :
-				$Listener=cmd::byId(str_replace('#','',$this->getValue()));
-				if (isset($Listener) && is_object($Listener)) 
-					$inverse=$Listener->getConfiguration('inverse');
 				switch ($this->getSubType()) {
 					case 'slider':    
 						$ActionValue = $_options['slider'];
@@ -920,6 +917,13 @@ class eibdCmd extends cmd {
 						$ActionValue = $this->getOtherActionValue();
 					break;
 				}
+				$Listener=cmd::byId(str_replace('#','',$this->getValue()));
+				if (isset($Listener) && is_object($Listener)){
+					$inverse=$Listener->getConfiguration('inverse');
+					if($ga == ""){
+						return $Listener->event($ActionValue);
+					}
+                }
 				log::add('eibd','debug',$this->getHumanName().'[Write] Valeur a envoyer '.$ActionValue);
 				$data= Dpt::DptSelectEncode($dpt, $ActionValue, $inverse,$Option);
 				if($ga != '' && $data !== false){
