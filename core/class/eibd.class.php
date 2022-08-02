@@ -746,7 +746,7 @@ class eibd extends eqLogic {
 				fputs($fp,"\r\n");
 
 				fputs($fp,'[Gateway]'."\r\n");
-				fputs($fp,'filters = FilterPace'."\r\n");
+				fputs($fp,'filters = FilterGateway'."\r\n");
 				switch(config::byKey('TypeKNXgateway', 'eibd')){
 					case 'ip':
 						fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
@@ -809,10 +809,8 @@ class eibd extends eqLogic {
 					fputs($fp,'tunnel = tunnel'."\r\n");
 				fputs($fp,"\r\n");
 				
-				fputs($fp,'[FilterPace]'."\r\n");
-				//fputs($fp,'delay = 10'."\r\n");
+				fputs($fp,'[FilterGateway]'."\r\n");
 				fputs($fp,'filter = single'."\r\n");
-				//fputs($fp,'filter = pace'."\r\n");
 				fputs($fp,'address = 15.15.255'."\r\n");
 			}
 			fclose($fp);
