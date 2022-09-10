@@ -491,7 +491,7 @@ class eibd extends eqLogic {
 						continue;
 					}
 					if ($Commande->getConfiguration('FlagInit')){
-						$BusValue = $Commande->execCmd(array('init'=>true));
+						$BusValue = $Commande->execute(array('init'=>true));
 						if($Commande->getType() == 'info')
 							log::add('eibd', 'debug', $Commande->getHumanName().'[Initialisation] Lecture du GAD: '.$Commande->getLogicalId().' = '.$BusValue);
 						else
@@ -847,7 +847,7 @@ class eibdCmd extends cmd {
 	}
 	public function postSave() {
 		if ($this->getConfiguration('FlagInit')){
-			$BusValue = $this->execCmd(array('init'=>true));
+			$BusValue = $this->execute(array('init'=>true));
 			if($this->getType() == 'info')
 				log::add('eibd', 'info', $this->getHumanName().'[Initialisation] Lecture du GAD: '.$this->getLogicalId().' = '.$BusValue);
 			else
@@ -945,7 +945,7 @@ class eibdCmd extends cmd {
 			break;
 			case 'info':
 				if($this->getConfiguration('FlagWrite') && !isset($_options['init'])){
-					return $this->execCmd();
+					return $this->execute();
 				}else{
 					try {
 						log::add('eibd','debug',$this->getHumanName().'[Read] Interrogation du bus');
