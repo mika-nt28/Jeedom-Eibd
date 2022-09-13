@@ -655,26 +655,26 @@ $('body').off('change','.cmdAttr[data-l1key=type]').on('change','.cmdAttr[data-l
 			$(this).closest('.cmd').find('.bt_read').show();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').hide();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().show();
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagUpdate]').attr('checked',true);
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagUpdate]').attr('disabled',false);
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagTransmit]').attr('checked',false);
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagTransmit]').attr('disabled',true);
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagWrite]').attr('checked',true);
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagWrite]').attr('disabled',true);
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagRead]').attr('checked',false);
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagRead]').attr('disabled',true);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagUpdate]').prop('checked',true);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagUpdate]').prop('disabled',false);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagTransmit]').prop('checked',false);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagTransmit]').prop('disabled',true);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagWrite]').prop('checked',true);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagWrite]').prop('disabled',true);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagRead]').prop('checked',false);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagRead]').prop('disabled',true);
 		break;
 		case "action":		
 			$(this).closest('.cmd').find('.RetourEtat').show();
 			$(this).closest('.cmd').find('.bt_read').hide();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=configuration][data-l2key=KnxObjectValue]').show();
 			$(this).closest('.cmd').find('.cmdAttr[data-l1key=isHistorized]').closest('.input-group').parent().hide();
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagUpdate]').attr('checked',false);
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagUpdate]').attr('disabled',true);
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagTransmit]').attr('disabled',false);
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagWrite]').attr('checked',false);
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagWrite]').attr('disabled',true);
-			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagRead]').attr('disabled',false);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagUpdate]').prop('checked',false);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagUpdate]').prop('disabled',true);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagTransmit]').prop('disabled',false);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagWrite]').prop('checked',false);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagWrite]').prop('disabled',true);
+			$(this).closest('.cmd').find('.cmdAttr[data-l2key=FlagRead]').prop('disabled',false);
 		break;
 	}
 	setTimeout(function() {
