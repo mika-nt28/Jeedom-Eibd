@@ -164,6 +164,17 @@ if (!isConnect()) {
 				</div>
 				<div class="form-group">
 					<label class="col-lg-4 control-label">
+						{{Filtre serveur KNX}}
+						<sup>
+							<i class="fa fa-question-circle tooltips" title="{{Voulez vous activer les filtre duserveur Jeedom (Obligatoire pour le téléchargement ETS).}}"></i>
+						</sup>
+					</label>
+					<div class="col-lg-4">
+						<input type="checkbox" class="configKey tooltips" data-l1key="Filter"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-4 control-label">
 						{{Visibilité du serveur KNX}}
 						<sup>
 							<i class="fa fa-question-circle tooltips" title="{{Voulez vous que le serveur Jeedom soit visible sous ETS.}}"></i>
