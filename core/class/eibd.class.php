@@ -746,7 +746,8 @@ class eibd extends eqLogic {
 				fputs($fp,"\r\n");
 
 				fputs($fp,'[Gateway]'."\r\n");
-				fputs($fp,'filters = FilterGateway'."\r\n");
+				if(config::byKey('Filter', 'eibd') != '')
+					fputs($fp,'filters = FilterGateway'."\r\n");
 				switch(config::byKey('TypeKNXgateway', 'eibd')){
 					case 'ip':
 						fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
@@ -809,9 +810,11 @@ class eibd extends eqLogic {
 					fputs($fp,'tunnel = tunnel'."\r\n");
 				fputs($fp,"\r\n");
 				
-				fputs($fp,'[FilterGateway]'."\r\n");
-				fputs($fp,'filter = single'."\r\n");
-				fputs($fp,'address = 15.15.255'."\r\n");
+				if(config::byKey('Filter', 'eibd') != ''){
+					fputs($fp,'[FilterGateway]'."\r\n");
+					fputs($fp,'filter = single'."\r\n");
+					//fputs($fp,'address = 15.15.255'."\r\n");
+				}
 			}
 			fclose($fp);
 			$cmd= 'sudo systemctl restart knxd.service';
