@@ -751,8 +751,8 @@ class eibd extends eqLogic {
 				switch(config::byKey('TypeKNXgateway', 'eibd')){
 					case 'ip':
 						fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
-						fputs($fp,'multicast-address = 224.0.23.12'."\r\n");
-						fputs($fp,'port = 3671'."\r\n");
+						fputs($fp,'multicast-address ='. config::byKey('multicast-address', 'eibd')."\r\n");
+						fputs($fp,'port = '. config::byKey('multicast-port', 'eibd')."\r\n");
 					break;
 					case 'ipt':
 						fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
@@ -808,6 +808,8 @@ class eibd extends eqLogic {
 					fputs($fp,'server = ets_router'."\r\n");
 				if(config::byKey('Tunnelling', 'eibd'))
 					fputs($fp,'tunnel = tunnel'."\r\n");
+				fputs($fp,'multicast-address ='. config::byKey('multicast-address', 'eibd')."\r\n");
+				fputs($fp,'port = '. config::byKey('multicast-port', 'eibd')."\r\n");
 				fputs($fp,"\r\n");
 				
 				if(config::byKey('Filter', 'eibd')){
