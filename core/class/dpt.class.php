@@ -2483,7 +2483,7 @@ class Dpt{
 				"Unite" =>""),
 			"20.105"=> array(
 				"Name"=>"Heating controle mode",
-				"Valeurs"=>array("Auto","Heat","Morning Warmup","Cool","Night Purge","Precool","Off","Test","Emergency Heat","Fan only","Free Cool","Ice"),
+				"Valeurs"=>array("Auto","Heat","Morning Warmup","Cool","Night Purge","Precool","Off","Test","Emergency Heat","Fan only","Free Cool","Ice","Maximum Heating Mode","Economic Heat/Cool Mode","Dehumidification","Calibration Mode","Emergency Cool Mode","Emergency Steam Mode"),
 				"min"=>'',
 				"max"=>'',
 				"InfoType"=>'string',
