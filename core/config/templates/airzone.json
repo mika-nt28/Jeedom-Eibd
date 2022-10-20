@@ -46,7 +46,7 @@
 					"inverse":"0",
 					"subTypeAuto":"1",
 					"noBatterieCheck":"0",
-          				"listValue":"Heat|Chauffage; Cool|Climatisation; Off|Arrêt; Fan only|Ventilation; Dehumidification|Déshumidification"
+					"listValue":"Heat|Chauffage;Cool|Climatisation;Off|Arrêt;Fan only|Ventilation;Dehumidification|Déshumidification"
 				},
 				"display":{
 					"generic_type":"DONT"
