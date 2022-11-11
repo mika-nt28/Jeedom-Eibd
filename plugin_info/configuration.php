@@ -129,16 +129,26 @@ if (!isConnect()) {
 		<legend><i class="icon fas fa-cog"></i> {{Configuration avancée du démon}} <i class="fas fa-plus-circle" data-toggle="collapse" href="#OptionsCollapse" role="button" aria-expanded="false" aria-controls="OptionsCollapse"></i></legend>
 		<fieldset>
 			<div class="collapse" id="OptionsCollapse">
-				<div class="input-group">
-					<input class="configKey form-control input-sm roundedLeft tooltipstered" data-l1key="multicast-address" placeholder="Adresse IP MULTICAST">
-					<span class="input-group-addon roundedLeft">:</span>
-					<input class="configKey form-control input-sm roundedLeft tooltipstered" data-l1key="multicast-port" placeholder="Port MULTICAST">
+				<div class="form-group">
+					<label class="col-lg-4 control-label">
+						{{Adresse multicaste du serveur KNX}}
+						<sup>
+							<i class="fa fa-question-circle tooltips" title="{{Saisir l'adresse de connexion multicast de votre reseau KNX}}"></i>
+						</sup>
+					</label>
+					<div class="col-lg-4">
+						<div class="input-group">
+							<input class="configKey form-control input-sm roundedLeft tooltipstered" data-l1key="multicast-address" placeholder="Adresse IP MULTICAST">
+							<span class="input-group-addon roundedLeft">:</span>
+							<input class="configKey form-control input-sm roundedLeft tooltipstered" data-l1key="multicast-port" placeholder="Port MULTICAST">
+						</div>
+					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-lg-4 control-label">
 						{{Nom du serveur KNX}}
 						<sup>
-							<i class="fa fa-question-circle tooltips" title="{{Nom visible sous ETS (pour KNXd uniquement.}}"></i>
+							<i class="fa fa-question-circle tooltips" title="{{Nom visible sous ETS}}"></i>
 						</sup>
 					</label>
 					<div class="col-lg-4">
