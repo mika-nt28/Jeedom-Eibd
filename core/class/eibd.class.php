@@ -778,8 +778,29 @@ class eibd extends eqLogic {
 				}
 				fputs($fp,"\r\n");
 				fputs($fp,'[debug-main]'."\r\n");
-				fputs($fp,'error-level = 0x9'."\r\n");
-				fputs($fp,'trace-mask = 0xffc'."\r\n");
+				switch(config::byKey('log::level::eibd')){
+					case 1000://AUCUN
+						fputs($fp,'error-level = 0x0'."\r\n");
+						fputs($fp,'trace-mask = 0x42'."\r\n");
+					break;
+					case 'default'://Defaut
+					case 100://Debug
+						fputs($fp,'error-level = 0x4'."\r\n");
+						fputs($fp,'trace-mask = 0xffc'."\r\n");
+					break;
+					case 200://Info'
+						fputs($fp,'error-level = 0x2'."\r\n");
+						fputs($fp,'trace-mask = 0x42'."\r\n");
+					break;
+					case 300://Warning
+						fputs($fp,'error-level = 0x5'."\r\n");
+						fputs($fp,'trace-mask = 0xffc'."\r\n");
+					break;
+					case 400://Error
+						fputs($fp,'error-level = 0x6'."\r\n");
+						fputs($fp,'trace-mask = 0xffc'."\r\n");
+					break;
+				}
 				fputs($fp,"\r\n");
 
 				fputs($fp,'[debug-server]'."\r\n");
