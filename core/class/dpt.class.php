@@ -56,19 +56,9 @@ class Dpt{
 				$data= array(($value >> 8)&0xff, ($value& 0xff));
 				break;
 			case "8":
-			  /*      if data >= 0x8000:
-					data = -((data - 1) ^ 0xffff)  # invert twos complement
-				else:
-					data = data
-				if self._dpt is self.DPT_DeltaTime10Msec:
-					value = data * 10.
-				elif self._dpt is self.DPT_DeltaTime100Msec:
-					value =data * 100.
-				elif self._dpt is self.DPT_Percent_V16:
-					value = data / 100.
-				else:
-					value = data*/
-				$data= array($value);
+				if $value >= 0x8000:
+					$value = -(($value - 1) ^ 0xffff)  # invert twos complement
+				$data= array(($value >> 8)&0xff, ($value& 0xff));
 				break;
 			case "9": 
 				if($value<0){
@@ -311,10 +301,10 @@ class Dpt{
 			case "7":
 				$value = $data[0] << 8 | $data[1];
 				break;
-			case "8":
-				if ($data[0] >= 0x8000)
-					$data[0] = -(($data - 1) ^ 0xffff);  # invert twos complement
-				$value = $data[0];
+			case "8":  
+				$value = $data[0] << 8 | $data[1];
+				if ($value >= 0x8000)
+					$value = -(($value - 1) ^ 0xffff);  # invert twos complement
 				break;
 			case "9": 
 				$exp = ($data[0] & 0x78) >> 3;
