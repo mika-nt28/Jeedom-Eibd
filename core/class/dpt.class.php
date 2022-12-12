@@ -27,8 +27,7 @@ class Dpt{
 				$data = $option["ctrl"] << 3 | $stepCode;
 				break;
 			case "5":
-				switch ($dpt)
-				{
+				switch ($dpt){
 					case "5.001":
 						if ($inverse)
 							$value=100-$value;
@@ -56,7 +55,7 @@ class Dpt{
 				$data= array(($value >> 8)&0xff, ($value& 0xff));
 				break;
 			case "8":
-				if $value >= 0x8000:
+				if($value >= 0x8000)
 					$value = -(($value - 1) ^ 0xffff)  # invert twos complement
 				$data= array(($value >> 8)&0xff, ($value& 0xff));
 				break;
@@ -101,11 +100,8 @@ class Dpt{
 				$data= array($value);
 				break;
 			case "13":
-			 if ($value < 0)
-				   $value = (abs($value) ^ 0xffffffff) + 1 ; # twos complement
-			   /* if self._dpt is self.DPT_Value_FlowRate_m3h:
-					$data = int(round($value * 10000.))
-				else*/
+				if ($value < 0)
+					$value = (abs($value) ^ 0xffffffff) + 1 ; # twos complement
 				$data= array(($value>>24) & 0xFF, ($value>>16) & 0xFF,($value>>8) & 0xFF,$value & 0xFF);
 				break;
 			case "14":
