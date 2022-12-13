@@ -56,7 +56,7 @@ class Dpt{
 				break;
 			case "8":
 				if($value >= 0x8000)
-					$value = -(($value - 1) ^ 0xffff)  # invert twos complement
+					$value = -(($value - 1) ^ 0xffff);  # invert twos complement
 				$data= array(($value >> 8)&0xff, ($value& 0xff));
 				break;
 			case "9": 
