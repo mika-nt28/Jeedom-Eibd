@@ -742,6 +742,7 @@ class eibd extends eqLogic {
 			if($fp = fopen($knxOptFile,"w")){
 				fputs($fp,'[TCP]'."\r\n");
 				fputs($fp,'server = knxd_tcp'."\r\n");
+				fputs($fp,'port = 6721'."\r\n");
 				fputs($fp,'systemd-ignore = true'."\r\n");
 				fputs($fp,"\r\n");
 
@@ -770,6 +771,11 @@ class eibd extends eqLogic {
 							fputs($fp,'nat-ipt = '.config::byKey('KNXIPNAT', 'eibd')."\r\n");
 						if(config::byKey('KNXPORTNAT', 'eibd') != '')
 							fputs($fp,'data-port = '.config::byKey('KNXPORTNAT', 'eibd')."\r\n");
+					break;
+					case 'ft12cemi':
+						fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
+						fputs($fp,'device = '.config::byKey('KNXgateway', 'eibd')."\r\n");
+						fputs($fp,'retry-delay = 5 '."\r\n");
 					break;
 					default:
 						fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
