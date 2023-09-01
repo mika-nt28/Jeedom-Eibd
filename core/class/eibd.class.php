@@ -812,6 +812,19 @@ class eibd extends eqLogic {
 				fputs($fp,'[debug-server]'."\r\n");
 				fputs($fp,'name = mcast:knxd'."\r\n");
 				fputs($fp,"\r\n");
+				
+				fputs($fp,'[router]'."\r\n");
+				fputs($fp,'filters = A.pace'."\r\n");
+				fputs($fp,"\r\n");
+				
+				fputs($fp,'[tunnel]'."\r\n");
+				fputs($fp,'filters = log'."\r\n");
+				fputs($fp,"\r\n");
+				
+				fputs($fp,'[A.pace]'."\r\n");
+				fputs($fp,'delay = 50'."\r\n");
+				fputs($fp,'filters = pace'."\r\n");
+				fputs($fp,"\r\n");
 
 				fputs($fp,'[main]'."\r\n");
 				if(config::byKey('ServeurName', 'eibd') !='')
