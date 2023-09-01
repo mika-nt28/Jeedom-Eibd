@@ -953,9 +953,9 @@ class eibdCmd extends cmd {
 				if (isset($Listener) && is_object($Listener)){
 					$inverse=$Listener->getConfiguration('inverse');
 					if($ga == ""){
-						return $Listener->event($ActionValue);
+						return $Listener->execute($ActionValue);
 					}
-                }
+				}
 				log::add('eibd','debug',$this->getHumanName().'[Write] Valeur a envoyer '.$ActionValue);
 				$data= Dpt::DptSelectEncode($dpt, $ActionValue, $inverse,$Option);
 				if($ga != '' && $data !== false){
@@ -967,10 +967,6 @@ class eibdCmd extends cmd {
 						break;
 					}else{
 						$WriteBusValue=eibd::EibdWrite($ga, $data);
-						/*if ($WriteBusValue != -1 && isset($Listener) && is_object($Listener) && $ga==$Listener->getLogicalId()){
-							$Listener->event($ActionValue);
-							$Listener->setCache('collectDate', date('Y-m-d H:i:s'));
-						}*/
 					}
 				}
 				usleep(config::byKey('SendSleep','eibd')*1000);
