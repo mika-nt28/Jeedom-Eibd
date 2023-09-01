@@ -742,6 +742,7 @@ class eibd extends eqLogic {
 			if($fp = fopen($knxOptFile,"w")){
 				fputs($fp,'[TCP]'."\r\n");
 				fputs($fp,'server = knxd_tcp'."\r\n");
+				fputs($fp,'port = 6721'."\r\n");
 				fputs($fp,'systemd-ignore = true'."\r\n");
 				fputs($fp,"\r\n");
 
@@ -770,6 +771,11 @@ class eibd extends eqLogic {
 							fputs($fp,'nat-ipt = '.config::byKey('KNXIPNAT', 'eibd')."\r\n");
 						if(config::byKey('KNXPORTNAT', 'eibd') != '')
 							fputs($fp,'data-port = '.config::byKey('KNXPORTNAT', 'eibd')."\r\n");
+					break;
+					case 'ft12cemi':
+						fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
+						fputs($fp,'device = '.config::byKey('KNXgateway', 'eibd')."\r\n");
+						fputs($fp,'retry-delay = 5 '."\r\n");
 					break;
 					default:
 						fputs($fp,'driver = '.config::byKey('TypeKNXgateway', 'eibd')."\r\n");
@@ -947,9 +953,9 @@ class eibdCmd extends cmd {
 				if (isset($Listener) && is_object($Listener)){
 					$inverse=$Listener->getConfiguration('inverse');
 					if($ga == ""){
-						return $Listener->event($ActionValue);
+						return $Listener->execute($ActionValue);
 					}
-                }
+				}
 				log::add('eibd','debug',$this->getHumanName().'[Write] Valeur a envoyer '.$ActionValue);
 				$data= Dpt::DptSelectEncode($dpt, $ActionValue, $inverse,$Option);
 				if($ga != '' && $data !== false){
@@ -961,10 +967,6 @@ class eibdCmd extends cmd {
 						break;
 					}else{
 						$WriteBusValue=eibd::EibdWrite($ga, $data);
-						/*if ($WriteBusValue != -1 && isset($Listener) && is_object($Listener) && $ga==$Listener->getLogicalId()){
-							$Listener->event($ActionValue);
-							$Listener->setCache('collectDate', date('Y-m-d H:i:s'));
-						}*/
 					}
 				}
 				usleep(config::byKey('SendSleep','eibd')*1000);
