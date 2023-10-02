@@ -743,7 +743,7 @@ class eibd extends eqLogic {
 				fputs($fp,'[TCP]'."\r\n");
 				fputs($fp,'server = knxd_tcp'."\r\n");
 				fputs($fp,'port = 6721'."\r\n");
-				fputs($fp,'systemd-ignore = true'."\r\n");
+				#fputs($fp,'systemd-ignore = true'."\r\n");
 				fputs($fp,"\r\n");
 
 				fputs($fp,'[Gateway]'."\r\n");
@@ -813,6 +813,24 @@ class eibd extends eqLogic {
 				fputs($fp,'name = mcast:knxd'."\r\n");
 				fputs($fp,"\r\n");
 
+				fputs($fp,'[debug-systemd]'."\r\n");
+				fputs($fp,'error-level = 0x9'."\r\n");
+				fputs($fp,'trace-mask = 0xfc'."\r\n");
+				fputs($fp,"\r\n");
+              
+				fputs($fp,'[router]'."\r\n");
+				fputs($fp,'filters = log'."\r\n");
+				fputs($fp,"\r\n");
+				
+				fputs($fp,'[tunnel]'."\r\n");
+				fputs($fp,'filters = log'."\r\n");
+				fputs($fp,"\r\n");
+              
+				fputs($fp,'[systemd]'."\r\n");
+				fputs($fp,'debug = debug-systemd'."\r\n");
+				fputs($fp,'filters = log'."\r\n");
+				fputs($fp,"\r\n");
+				
 				fputs($fp,'[main]'."\r\n");
 				if(config::byKey('ServeurName', 'eibd') !='')
 					fputs($fp,'name = '.config::byKey('ServeurName', 'eibd')."\r\n");
