@@ -115,7 +115,7 @@ class Dpt{
 					$data[$i]=ord($chr[$i]);
 				break;
 			case "17":
-				$data= array($value& 0x3f);
+				$data= array(($value -1) & 0x3f);
 				break;
 			case "18":
 				$control = jeedom::evaluateExpression($option["ctrl"]);
@@ -349,6 +349,7 @@ class Dpt{
 
 			case "17":
 				$value = $data[0] & 0x3f;
+				$value += 1;
 				break;
 			case "18":
 				if ($option != null)	{
