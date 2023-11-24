@@ -97,7 +97,7 @@ class Dpt{
 				$data = array($day,$month ,$year);
 				break;
 			case "12":
-				$data= array($value);
+				$data= unpack("C*", pack("L", $value));
 				break;
 			case "13":
 				if ($value < 0)
@@ -330,7 +330,7 @@ class Dpt{
 				$value =/* new DateTime(*/$day.'/'.$month.'/'.$year;//);
 				break;
 			case "12":
-				$value = $data[0];
+				$value = unpack("L",pack("C*",$data[3],$data[2],$data[1],$data[0]));
 				break;
 			case "13":
 				$value = $data[0] << 24 | $data[1] << 16 | $data[2] << 8 | $data[3] ;
