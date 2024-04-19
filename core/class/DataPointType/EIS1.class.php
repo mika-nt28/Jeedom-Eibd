@@ -1,6 +1,6 @@
 <?php
 class EIS1{
-	public function DptSelectEncode ($dpt, $value, $inverse=false, $option=null){
+	public static function DptSelectEncode ($dpt, $value, $inverse=false, $option=null){
 		$All_DPT=self::All_DPT();
 		if(explode('.',$dpt)[0] == "1"){
 			if ($value != 0 && $value != 1){
@@ -16,7 +16,7 @@ class EIS1{
 			return $value;
 		}
 	}
-	public function DptSelectDecode ($dpt, $data, $inverse=false, $option=null){
+	public static function DptSelectDecode ($dpt, $data, $inverse=false, $option=null){
 		$All_DPT=self::All_DPT();		
 		if(explode('.',$dpt)[0] == "1"){
 			$value = $data;		
@@ -28,7 +28,7 @@ class EIS1{
 			}
      		}
 	}
-	public function OtherValue ($dpt, $oldValue){
+	public static function OtherValue ($dpt, $oldValue){
 		$All_DPT=self::All_DPT();
 		if(explode('.',$dpt)[0] == "1"){
 				if ($oldValue == 1)
@@ -37,7 +37,7 @@ class EIS1{
 					return 1;
 		}
 	}
-	public function All_DPT(){
+	public static function All_DPT(){
 		return array (
 		"Boolean"=> array(
 			"1.xxx"=> array(
