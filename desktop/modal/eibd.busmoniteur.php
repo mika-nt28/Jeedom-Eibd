@@ -21,7 +21,7 @@ if (!isConnect('admin')) {
 		<tbody></tbody>
 	</table>
 	<script>
-	initTableSorter();
+	jeedomUtils.initTableSorter();
 	$('.BusMonitorAction[data-action=remove]').off().on('click', function () {
 		$('#table_BusMonitor tbody tr').remove();
 	});	
