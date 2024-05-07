@@ -53,6 +53,6 @@ $eqLogics = eibd::byType('eibd');
 	</table>
 
 	<script>
-	initTableSorter();
+	jeedomUtils.initTableSorter();
 	</script>
 </div>
