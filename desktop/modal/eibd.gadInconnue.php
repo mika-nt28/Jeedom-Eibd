@@ -162,7 +162,7 @@ $('.bt_autoCreate').off().on('click', function() {
 	autoCreate();
 });
 var SelectGad='';
-initTableSorter();
+jeedomUtils.initTableSorter();
 $("#table_GadInconue .tablesorter-filter[data-column=2]").val(SelectDpt);
 $("#table_GadInconue .tablesorter-filter[data-column=0]").val(SelectAddr);
 getKnxGadInconue();
