@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/DataPointType/EIS14_ABB_ControlAcces.class.php';
 class Dpt{
-	public function DptSelectEncode ($dpt, $value, $inverse=false, $option=null){
+	public static function DptSelectEncode ($dpt, $value, $inverse=false, $option=null){
 		$All_DPT=self::All_DPT();
 		switch (explode('.',$dpt)[0]){
 			case "1":
@@ -241,7 +241,7 @@ class Dpt{
 		};
 		return $data;
 	}
-	public function DptSelectDecode ($dpt, $data, $inverse=false, $option=null){
+	public static function DptSelectDecode ($dpt, $data, $inverse=false, $option=null){
 		if ($inverse)
 			log::add('eibd', 'debug','La commande sera inversée');
 		$All_DPT=self::All_DPT();
@@ -591,7 +591,7 @@ class Dpt{
 		};
 		return $value;
 	}
-	public function OtherValue ($dpt, $oldValue){
+	public static function OtherValue ($dpt, $oldValue){
 		$All_DPT=self::All_DPT();
 		$type= substr($dpt,0,strpos( $dpt, '.' ));
 		switch ($type){
@@ -607,7 +607,7 @@ class Dpt{
 		}
 		return $value;
 	}
-	private function html2rgb($color){
+	private static function html2rgb($color){
 		if ($color[0] == '#')
 			$color = substr($color, 1);
 		if (strlen($color) == 6)
@@ -623,7 +623,7 @@ class Dpt{
 		$b = hexdec($b);
 		return array($r, $g, $b);
 	}
-	private function rgb2html($r, $g=-1, $b=-1)	{
+	private static function rgb2html($r, $g=-1, $b=-1)	{
 		if (is_array($r) && sizeof($r) == 3)
 			list($r, $g, $b) = $r;
 		$r = intval($r); 
@@ -639,7 +639,7 @@ class Dpt{
 		$color .= (strlen($b) < 2?'0':'').$b;
 		return '#'.$color;
 	}
-	public function getDptUnite($dpt){
+	public static function getDptUnite($dpt){
 		$All_DPT=self::All_DPT();
 		while ($Type = current($All_DPT))
 			{
@@ -653,7 +653,7 @@ class Dpt{
 			}
 		return '';
 		}
-	public function getDptOption($dpt)	{
+	public static function getDptOption($dpt)	{
 		$All_DPT=self::All_DPT();
 		while ($Type = current($All_DPT))
 			{
@@ -667,7 +667,7 @@ class Dpt{
 			}
 		return ;
 		}
-	public function getDptActionType($dpt)	{
+	public static function getDptActionType($dpt)	{
 		$All_DPT=self::All_DPT();
 		while ($Type = current($All_DPT))
 			{
@@ -681,7 +681,7 @@ class Dpt{
 			}
 		return 'other';
 		}
-	public function getDptInfoType($dpt)	{
+	public static function getDptInfoType($dpt)	{
 		$All_DPT=self::All_DPT();
 		while ($Type = current($All_DPT))
 			{
@@ -695,7 +695,7 @@ class Dpt{
 			}
 		return 'string';
 		}
-	public function getDptGenericType($dpt)	{
+	public static function getDptGenericType($dpt)	{
 		$All_DPT=self::All_DPT();
 		while ($Type = current($All_DPT))
 			{
@@ -709,7 +709,7 @@ class Dpt{
 			}
 		return ;
 		}
-	public function getDptFromData($data)	{
+	public static function getDptFromData($data)	{
 		if(!is_array($data))
 			return "1.xxx";
 		switch(count($data)){
