@@ -977,7 +977,7 @@ class eibdCmd extends cmd {
 				log::add('eibd','debug',$this->getHumanName().'[Write] Valeur a envoyer '.$ActionValue);
 				$data= Dpt::DptSelectEncode($dpt, $ActionValue, $inverse,$Option);
 				if($ga != '' && $data !== false){
-					if(is_array($data[0])){
+					if(is_array($data) && is_array($data[0])){
 						foreach($data as $frame){
 							$WriteBusValue=eibd::EibdWrite($ga, $frame);
 							usleep(config::byKey('SendSleep','eibd')*1000);
