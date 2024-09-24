@@ -26,16 +26,15 @@ if (!isConnect('admin')) {
 		$('#table_BusMonitor tbody tr').remove();
 	});	
 	$('body').off('eibd::monitor').on('eibd::monitor', function (_event,_options) {
-		var monitors=jQuery.parseJSON(_options);
 		$('#table_BusMonitor tbody').prepend($("<tr>")
-			.append($("<td>").text(monitors.datetime))
-			.append($("<td>").text(monitors.Mode))
-			.append($("<td>").text(monitors.AdressePhysique))
-			.append($("<td>").text(monitors.cmdJeedom))
-			.append($("<td>").text(monitors.AdresseGroupe))
-			.append($("<td>").text(monitors.data))
-			.append($("<td>").text(monitors.DataPointType))
-			.append($("<td>").text(monitors.valeur)));		
+			.append($("<td>").text(_options.datetime))
+			.append($("<td>").text(_options.Mode))
+			.append($("<td>").text(_options.AdressePhysique))
+			.append($("<td>").text(_options.cmdJeedom))
+			.append($("<td>").text(_options.AdresseGroupe))
+			.append($("<td>").text(_options.data))
+			.append($("<td>").text(_options.DataPointType))
+			.append($("<td>").text(_options.valeur)));		
 		if($('#table_BusMonitor tbody tr').length >= 255)
 			$('#table_BusMonitor tbody tr:last').remove();
 		$('#table_BusMonitor').trigger('update');
