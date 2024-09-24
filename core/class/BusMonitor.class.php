@@ -51,7 +51,7 @@ class BusMonitorTraitement /*extends Thread*/{
 			log::add('eibd', 'debug', '[Bus Monitor] : Aucune commande avec l\'adresse de groupe  '.$this->AdrGroup.' n\'a pas été trouvée');
 		}
 		$monitor['datetime'] = date('d-m-Y H:i:s');
-		event::add('eibd::monitor', json_encode($monitor));
+		event::add('eibd::monitor', $monitor);
 	}
 	public static function formatiaddr ($addr){
 		return sprintf ("%d.%d.%d", ($addr >> 12) & 0x0f, ($addr >> 8) & 0x0f, $addr & 0xff);
